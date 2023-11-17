@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4367482323726034759
 Transform:
   m_ObjectHideFlags: 0
@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8280983515475190983
 MeshFilter:
@@ -152,7 +152,7 @@ MonoBehaviour:
   _timeBeforeGoingDown: 0.4
   _decreasingForcePhaseTime: 0.05
   _decreasingForce: 3
-  _reboundHorizontalDirectionFactor: 0.1
-  _reboundVerticalDirectionFactor: 50
-  _bouncingForce: 250
+  _reboundHorizontalDirectionFactor: 1
+  _reboundVerticalDirectionFactor: 1
+  _bouncingForce: 800
   _clampMaximumVelocity: 30
