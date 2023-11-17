@@ -5940,7 +5940,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 40.5, y: 20, z: 30}
   m_Center: {x: 0, y: 0, z: 10}
@@ -8021,7 +8021,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605981219065923437}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a1e919917bb920498219ca6e5db50f8, type: 3}
   m_Name: 
@@ -8899,6 +8899,7 @@ GameObject:
   - component: {fileID: 390182140442714212}
   - component: {fileID: 9127353872525647489}
   - component: {fileID: 8335083375512950770}
+  - component: {fileID: 9127353872525647491}
   m_Layer: 3
   m_Name: Bot Luigi With Racket
   m_TagString: Untagged
@@ -12819,11 +12820,31 @@ MonoBehaviour:
   - {fileID: 1961376066}
   - {fileID: 330511883}
   - {fileID: 1549048599}
-  _ballInstance: {fileID: 0}
   _ballDetection: {fileID: 5342351297477191419}
   _speed: 7.5
   _minimumHitForce: 300
   _maximumHitForce: 450
+--- !u!65 &9127353872525647491
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007223981508146278}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 40.301548, y: 20.65809, z: 12.38695}
+  m_Center: {x: -0.09896635, y: 10.247392, z: 5.6934743}
 --- !u!1 &9130742584333113956
 GameObject:
   m_ObjectHideFlags: 0

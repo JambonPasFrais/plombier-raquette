@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         Player currentPlayer = _playerControllersAssociated[lastPlayerToHit];
         Player otherPlayer = GetOtherPlayer(lastPlayerToHit);
 
-        //BallInstance.GetComponent<Ball>().ResetBallFunction();
+        BallInstance.GetComponent<Ball>().ResetBallFunction();
         
         if (reboundCount == 1)
         {

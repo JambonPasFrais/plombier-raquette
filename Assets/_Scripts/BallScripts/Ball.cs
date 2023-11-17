@@ -63,13 +63,14 @@ public class Ball : MonoBehaviour
 
     #endregion
 
-    private void ResetBallFunction()
+    #region PHYSICS BEHAVIOR METHODS
+
+    public void ResetBallFunction()
     {
         _rigidBody.velocity = Vector3.zero;
         gameObject.SetActive(false);
+        _lastPlayerToApplyForce = null;
     }
-    
-    #region PHYSICS BEHAVIOR METHODS
 
     public void ApplyForce(float force, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {

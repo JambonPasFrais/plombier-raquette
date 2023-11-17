@@ -9,7 +9,6 @@ public class BotBehavior : ControllersParent
     #region Private Fields
 
     [Header("Instances")] [SerializeField] private Transform[] _targets;
-    [SerializeField] private Ball _ballInstance;
     [SerializeField] private BallDetection _ballDetection;
     
     [Header("GD")]
@@ -17,6 +16,7 @@ public class BotBehavior : ControllersParent
     [SerializeField] private float _minimumHitForce;
     [SerializeField] private float _maximumHitForce;
 
+    private Ball _ballInstance;
     private Vector3 _targetPosVector3;
 
     #endregion
@@ -33,15 +33,20 @@ public class BotBehavior : ControllersParent
     {
         MoveTowardsBallX();
 
-        if (_ballDetection.IsBallInHitZone)
+        /*if (_ballDetection.IsBallInHitZone)
         {
             HitBall();
-        }
+        }*/
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        
+        if (other.gameObject.TryGetComponent<Ball>(out var ball))
+        {
+            Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
+            Vector3 direction = Vector3.Project(targetPoint - other.contacts[0].point, Vector3.forward) + Vector3.Project(targetPoint - other.contacts[0].point, Vector3.right);
+            ball.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), direction.normalized, this);
+        }
     }
 
     #endregion
