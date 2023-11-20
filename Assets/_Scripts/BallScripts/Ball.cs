@@ -16,10 +16,6 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _timeBeforeGoingDown;
     [SerializeField] private float _decreasingForcePhaseTime;
     [SerializeField] private float _decreasingForce;
-    [SerializeField] private float _reboundHorizontalDirectionFactor;
-    [SerializeField] private float _reboundVerticalDirectionFactor;
-    [SerializeField] private float _bouncingForce;
-    [SerializeField] private float _clampMaximumVelocity;
 
     private ControllersParent _lastPlayerToApplyForce;
     private float _lastForceApplied;
@@ -106,18 +102,6 @@ public class Ball : MonoBehaviour
 
             countdown += Time.deltaTime;
         }
-    }
-
-    public void Rebound()
-    {
-        if (_currentCoroutineMovement != null)
-            StopCoroutine(_currentCoroutineMovement);
-
-        _reboundsCount++;
-
-        Vector3 reboundDirection = new Vector3(_rigidBody.velocity.x, 0, _rigidBody.velocity.z).normalized * _reboundHorizontalDirectionFactor + Vector3.up * _reboundVerticalDirectionFactor;
-        float weightedForce = _bouncingForce * (Mathf.Clamp(_rigidBody.velocity.magnitude, 0f, _clampMaximumVelocity) / _clampMaximumVelocity);
-        _rigidBody.AddForce(weightedForce * reboundDirection.normalized);
     }
 
     #endregion

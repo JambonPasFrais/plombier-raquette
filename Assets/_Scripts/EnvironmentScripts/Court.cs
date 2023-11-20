@@ -6,8 +6,6 @@ public class Court : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
         {
-            ball.Rebound();
-
             if (ball.PointNotFinished)
             {
                 // Si le joueur a touché l'extérieur du terrain au premier rebond ou si un deuxième rebond a lieu sans interception, alors le point est fini.

@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4367482323726034759
 Transform:
   m_ObjectHideFlags: 0
@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8280983515475190983
 MeshFilter:
@@ -93,7 +93,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5628292310031842273}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 80b899a43ab20d141a14e109dbe876d3, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -148,11 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PointNotFinished: 0
   _rigidBody: {fileID: 7965401428493319483}
-  _risingForce: 200
-  _timeBeforeGoingDown: 0.4
+  _risingForce: 150
+  _timeBeforeGoingDown: 0.5
   _decreasingForcePhaseTime: 0.05
-  _decreasingForce: 3
-  _reboundHorizontalDirectionFactor: 1
-  _reboundVerticalDirectionFactor: 1
-  _bouncingForce: 800
-  _clampMaximumVelocity: 30
+  _decreasingForce: 1
