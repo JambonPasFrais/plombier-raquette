@@ -960,18 +960,6 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4367482323726034759, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4367482323726034759, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4367482323726034759, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4367482323726034759, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.042
       objectReference: {fileID: 0}
@@ -1014,10 +1002,6 @@ PrefabInstance:
     - target: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
       propertyPath: m_Name
       value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2289,18 +2273,6 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2339,14 +2311,6 @@ PrefabInstance:
     - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2015187621588100880, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: _minimumHitForce
-      value: 350
-      objectReference: {fileID: 0}
-    - target: {fileID: 3054435092572442858, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_Center.z
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7513561124101130894, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
       propertyPath: m_Name
@@ -12820,14 +12784,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc96aadbd1c0ef643817a97982189f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _possibleActions:
+  - Name: Flat
+    Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _targets:
   - {fileID: 330511883}
   - {fileID: 1961376066}
   - {fileID: 1549048599}
   _ballDetection: {fileID: 5342351297477191419}
   _speed: 7.5
-  _minimumHitForce: 350
-  _maximumHitForce: 500
+  _minimumHitForce: 300
+  _maximumHitForce: 450
 --- !u!1 &9130742584333113956
 GameObject:
   m_ObjectHideFlags: 0

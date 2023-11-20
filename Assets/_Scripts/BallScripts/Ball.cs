@@ -8,14 +8,10 @@ public class Ball : MonoBehaviour
 
     #region PRIVATE FIELDS
 
+    [SerializeField] private ActionParameters _actionParameters;
+
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
-
-    [Header("Physics Parameters")]
-    [SerializeField] private float _risingForce;
-    [SerializeField] private float _timeBeforeGoingDown;
-    [SerializeField] private float _decreasingForcePhaseTime;
-    [SerializeField] private float _decreasingForce;
 
     private ControllersParent _lastPlayerToApplyForce;
     private float _lastForceApplied;
@@ -67,7 +63,12 @@ public class Ball : MonoBehaviour
         gameObject.SetActive(false);
         _lastPlayerToApplyForce = null;
     }
-    
+
+    public void InitializeActionParameters(ActionParameters actionParameters)
+    {
+        _actionParameters = actionParameters;
+    }
+
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
@@ -89,14 +90,14 @@ public class Ball : MonoBehaviour
         _reboundsCount = 0;
 
         _rigidBody.AddForce(normalizedDirection * force);
-        _rigidBody.AddForce(Vector3.up * _risingForce * _risingForceFactor);
+        _rigidBody.AddForce(Vector3.up * _actionParameters.RisingForce * _risingForceFactor);
 
-        yield return new WaitForSeconds(_timeBeforeGoingDown);
+        yield return new WaitForSeconds(_actionParameters.TimeBeforeGoingDown);
 
         float countdown = 0;
-        while (countdown < _decreasingForcePhaseTime)
+        while (countdown < _actionParameters.DecreasingForcePhaseTime)
         {
-            _rigidBody.AddForce(-Vector3.up * _decreasingForce);
+            _rigidBody.AddForce(-Vector3.up * _actionParameters.DecreasingForce);
 
             yield return new WaitForSeconds(Time.deltaTime);
 

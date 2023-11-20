@@ -1,9 +1,14 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : ControllersParent
 {
     #region PRIVATE FIELDS
+
+    [SerializeField] private List<NamedActions> _possibleActions;
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
@@ -16,11 +21,10 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
-    private Vector3 _movementVector;
-    private float _verticalInput;
-    private float _horizontalInput;
+    private Vector2 _movementVector;
     private float _hitKeyPressedTime;
     private float _hitForce;
+    private bool _isCharging;
 
     #endregion
 
@@ -29,68 +33,169 @@ public class PlayerController : ControllersParent
     private void Start()
     {
         _hitKeyPressedTime = 0f;
+        _isCharging = false;
     }
 
     void Update()
     {
-        _movementVector = Vector3.zero;
-
-        if ((_verticalInput = Input.GetAxis("Vertical")) != 0) 
-        {
-            // Set vertical input to zero if no vertical movement key is pressed anymore.
-            _verticalInput = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow)) ? _verticalInput : 0;
-            _movementVector += _verticalInput * Vector3.forward;
-        }
-
-        if ((_horizontalInput = Input.GetAxis("Horizontal")) != 0) 
-        {
-            // Set horizontal input to zero if no horizontal movement key is pressed anymore.
-            _horizontalInput = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow)) ? _horizontalInput : 0;
-            _movementVector += _horizontalInput * Vector3.right;
-        }
-
-        // The player pressed the hit key.
-        if (Input.GetKeyDown(KeyCode.Space))
+        // The player is pressing the hit key.
+        if (_isCharging)
         {
             if (_hitKeyPressedTime < _maximumHitKeyPressTime)
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
         }
-
-        // The player wants to hit the ball with a specific force.
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this)
-            {
-                _hitKeyPressedTime = 0f;
-                return;
-            }
-
-            float hitKeyPressTime = Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
-            _hitForce = _minimumHitForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumHitForce - _minimumHitForce);
-            
-            _hitKeyPressedTime = 0f;
-
-            Vector3 horizontalDirection;
-
-            // The hit direction is set according to the mouse position on the screen.
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player"))) 
-            {
-                horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
-            }
-            else
-            {
-                horizontalDirection = Vector3.forward;
-            }
-
-            _ballDetectionArea.Ball.ApplyForce(_hitForce, _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
-        }
     }
 
     private void FixedUpdate()
     {
-        _rigidBody.velocity = _movementVector.normalized * _movementSpeed;
+        // The player moves according to the movement inputs.
+        _rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _movementSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+    }
+
+    #endregion
+
+    #region ACTION METHODS
+
+    private void Shoot(HitType hitType)
+    {
+        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this)
+        {
+            _hitKeyPressedTime = 0f;
+            _isCharging = false;
+            return;
+        }
+
+        float hitKeyPressTime = Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
+        _hitForce = _minimumHitForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumHitForce - _minimumHitForce);
+
+        _hitKeyPressedTime = 0f;
+        _isCharging = false;
+
+        Vector3 horizontalDirection;
+
+        // The hit direction is set according to the mouse position on the screen.
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+        {
+            horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
+        }
+        else
+        {
+            horizontalDirection = Vector3.forward;
+        }
+
+        _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+        _ballDetectionArea.Ball.ApplyForce(_hitForce, _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+    }
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        _movementVector = context.ReadValue<Vector2>();
+    }
+
+    public void ChargeShot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _isCharging = true;
+        }
+    }
+
+    public void Lob(InputAction.CallbackContext context)
+    {
+/*        if (context.performed)
+        {
+            if (CanShoot)
+            {
+                CanShoot = false;
+                Shoot(HitType.Lob);
+            }
+            else if (CanShoot == false)
+            {
+                chargeForce = 1;
+                isCharging = false;
+            }
+            if (ball == null)
+            {
+                CanShoot = false;
+                chargeForce = 1;
+            }
+        }*/
+    }
+
+    public void Slice(InputAction.CallbackContext context)
+    {
+/*        if (context.performed)
+        {
+            if (CanShoot)
+            {
+                CanShoot = false;
+                Shoot(HitType.Slice);
+            }
+            else if (CanShoot == false)  
+            {
+                chargeForce = 1;
+                isCharging = false;
+            }
+            if (CanShoot)
+            {
+                CanShoot = false;
+                Shoot(HitType.Slice);
+            }
+        }*/
+    }
+
+    public void TopSpin(InputAction.CallbackContext context)
+    {
+/*        if (context.performed)
+        {
+            if (ball != null)
+            {
+                CanShoot = false;
+                Shoot(HitType.TopSpin);
+            }
+            else if (CanShoot == false)
+            {
+                chargeForce = 1;
+                isCharging = false;
+            }
+            if (CanShoot)
+            {
+                CanShoot = false;
+                Shoot(HitType.TopSpin);
+            }
+        }*/
+    }
+
+    public void Drop(InputAction.CallbackContext context)
+    {
+/*        if (context.performed)
+        {
+            if (CanShoot)
+            {
+                CanShoot = false;
+                Shoot(HitType.Drop);
+            }
+            else if (CanShoot == false)
+            {
+                chargeForce = 1;
+                isCharging = false;
+            }
+        }*/
+    }
+
+    public void Flat(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Shoot(HitType.Flat);
+        }
+    }
+
+    public void ServeThrow(InputAction.CallbackContext context)
+    {
+
     }
 
     #endregion
