@@ -50,7 +50,7 @@ public class PlayerController : ControllersParent
         }
 
         // The player pressed the hit key.
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_hitKeyPressedTime < _maximumHitKeyPressTime)
             {
@@ -61,15 +61,21 @@ public class PlayerController : ControllersParent
         // The player wants to hit the ball with a specific force.
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this)
+            {
+                _hitKeyPressedTime = 0f;
+                return;
+            }
+
             float hitKeyPressTime = Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
             _hitForce = _minimumHitForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumHitForce - _minimumHitForce);
+            
             _hitKeyPressedTime = 0f;
 
-            RaycastHit hit;
-            Vector3 horizontalDirection = Vector3.zero;
+            Vector3 horizontalDirection;
 
-            // The hit direction is set accroding to the mouse position on the screen.
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, ~LayerMask.GetMask("Player"))) 
+            // The hit direction is set according to the mouse position on the screen.
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player"))) 
             {
                 horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
             }
@@ -78,11 +84,7 @@ public class PlayerController : ControllersParent
                 horizontalDirection = Vector3.forward;
             }
 
-            // If there is a ball that entered the hit zone and that is still there, the player hit the ball.
-            if (_ballDetectionArea.IsBallInHitZone)
-            {
-                _ballDetectionArea.Ball.ApplyForce(_hitForce, _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
-            }
+            _ballDetectionArea.Ball.ApplyForce(_hitForce, _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
         }
     }
 

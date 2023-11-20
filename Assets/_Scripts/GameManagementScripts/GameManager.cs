@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
         // Ball instantiation.
         if (Input.GetKeyDown(KeyCode.C))
         {
+            BallInstance.GetComponent<Ball>().ResetBallFunction();
+            
             BallInstance.transform.position = BallInitializationTransform.position;
             //BallInstance.transform.rotation = BallInitializationTransform.localRotation;
             BallInstance.SetActive(true);

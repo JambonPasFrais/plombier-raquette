@@ -33,19 +33,9 @@ public class BotBehavior : ControllersParent
     {
         MoveTowardsBallX();
 
-        /*if (_ballDetection.IsBallInHitZone)
+        if (_ballDetection.IsBallInHitZone && _ballDetection.Ball.LastPlayerToApplyForce != this)
         {
             HitBall();
-        }*/
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.TryGetComponent<Ball>(out var ball))
-        {
-            Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
-            Vector3 direction = Vector3.Project(targetPoint - other.contacts[0].point, Vector3.forward) + Vector3.Project(targetPoint - other.contacts[0].point, Vector3.right);
-            ball.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), direction.normalized, this);
         }
     }
 

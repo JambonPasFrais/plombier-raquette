@@ -47,7 +47,7 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < 0)
+        if (transform.position.y < -1)
         {
             ResetBallFunction();
         }
@@ -71,26 +71,7 @@ public class Ball : MonoBehaviour
         gameObject.SetActive(false);
         _lastPlayerToApplyForce = null;
     }
-
-    public void ApplyForce(float force, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
-    {
-        _rigidBody.velocity = Vector3.zero;
-        
-        if (_currentCoroutineMovement != null)
-            StopCoroutine(_currentCoroutineMovement);
-        
-        _risingForceFactor = 1;
-
-        if (playerToApplyForce != _lastPlayerToApplyForce)
-        {
-            _currentCoroutineMovement = StartCoroutine(BallMovement(force, normalizedHorizontalDirection));
-        }
-
-        _lastPlayerToApplyForce = playerToApplyForce;
-        _lastForceApplied = force;
-        _lastNormalizedHorizontalDirection = normalizedHorizontalDirection;
-    }
-
+    
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
@@ -100,10 +81,7 @@ public class Ball : MonoBehaviour
         
         _risingForceFactor = risingForceFactor;
 
-        if (playerToApplyForce != _lastPlayerToApplyForce)
-        {
-            _currentCoroutineMovement = StartCoroutine(BallMovement(force, normalizedHorizontalDirection));
-        }
+        _currentCoroutineMovement = StartCoroutine(BallMovement(force, normalizedHorizontalDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
         _lastForceApplied = force;

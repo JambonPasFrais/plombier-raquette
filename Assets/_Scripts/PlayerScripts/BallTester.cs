@@ -23,7 +23,7 @@ public class BallTester : ControllersParent
         {
             Vector3 targetPoint = LeftOpposedCorner.position + Random.Range(0f, 1f) * (RightOpposedCorner.position - LeftOpposedCorner.position);
             Vector3 direction = Vector3.Project(targetPoint - collision.contacts[0].point, Vector3.forward) + Vector3.Project(targetPoint - collision.contacts[0].point, Vector3.right);
-            ball.ApplyForce(_hitForce, direction.normalized, this);
+            ball.ApplyForce(_hitForce, 1, direction.normalized, this);
         }
     }
 }
