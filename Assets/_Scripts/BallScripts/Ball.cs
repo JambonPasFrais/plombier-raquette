@@ -26,6 +26,7 @@ public class Ball : MonoBehaviour
     private Vector3 _lastNormalizedHorizontalDirection;
     private float _risingForceFactor;
     private int _reboundsCount;
+    private Coroutine _currentCoroutineMovement;
 
     #endregion
 
@@ -46,9 +47,9 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < 0)
+        if (transform.position.y < -1)
         {
-            Destroy(gameObject);
+            ResetBallFunction();
         }
     }
 
@@ -56,7 +57,7 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerController>())
         {
-            Destroy(gameObject);
+            ResetBallFunction();
         }
     }
 
@@ -64,32 +65,23 @@ public class Ball : MonoBehaviour
 
     #region PHYSICS BEHAVIOR METHODS
 
-    public void ApplyForce(float force, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
+    public void ResetBallFunction()
     {
         _rigidBody.velocity = Vector3.zero;
-        StopCoroutine(BallMovement(_lastForceApplied, _lastNormalizedHorizontalDirection));
-        _risingForceFactor = 1;
-
-        if (playerToApplyForce != _lastPlayerToApplyForce)
-        {
-            StartCoroutine(BallMovement(force, normalizedHorizontalDirection));
-        }
-
-        _lastPlayerToApplyForce = playerToApplyForce;
-        _lastForceApplied = force;
-        _lastNormalizedHorizontalDirection = normalizedHorizontalDirection;
+        gameObject.SetActive(false);
+        _lastPlayerToApplyForce = null;
     }
-
+    
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
-        StopCoroutine(BallMovement(_lastForceApplied, _lastNormalizedHorizontalDirection));
+        
+        if (_currentCoroutineMovement != null)
+            StopCoroutine(_currentCoroutineMovement);
+        
         _risingForceFactor = risingForceFactor;
 
-        if (playerToApplyForce != _lastPlayerToApplyForce)
-        {
-            StartCoroutine(BallMovement(force, normalizedHorizontalDirection));
-        }
+        _currentCoroutineMovement = StartCoroutine(BallMovement(force, normalizedHorizontalDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
         _lastForceApplied = force;
@@ -118,11 +110,12 @@ public class Ball : MonoBehaviour
 
     public void Rebound()
     {
-        StopCoroutine(BallMovement(_lastForceApplied, _lastNormalizedHorizontalDirection));
+        if (_currentCoroutineMovement != null)
+            StopCoroutine(_currentCoroutineMovement);
 
         _reboundsCount++;
 
-        Vector3 reboundDirection = new Vector3(_rigidBody.velocity.x * _reboundHorizontalDirectionFactor, _reboundVerticalDirectionFactor * _rigidBody.velocity.magnitude, _rigidBody.velocity.z * _reboundHorizontalDirectionFactor);
+        Vector3 reboundDirection = new Vector3(_rigidBody.velocity.x, 0, _rigidBody.velocity.z).normalized * _reboundHorizontalDirectionFactor + Vector3.up * _reboundVerticalDirectionFactor;
         float weightedForce = _bouncingForce * (Mathf.Clamp(_rigidBody.velocity.magnitude, 0f, _clampMaximumVelocity) / _clampMaximumVelocity);
         _rigidBody.AddForce(weightedForce * reboundDirection.normalized);
     }

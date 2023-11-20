@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public Transform BallInitializationTransform;
-    public GameObject BallPrefab;
+    public GameObject BallInstance;
 
     #endregion
 
@@ -56,7 +57,11 @@ public class GameManager : MonoBehaviour
         // Ball instantiation.
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Instantiate(BallPrefab, BallInitializationTransform.position, BallInitializationTransform.rotation);
+            BallInstance.GetComponent<Ball>().ResetBallFunction();
+            
+            BallInstance.transform.position = BallInitializationTransform.position;
+            //BallInstance.transform.rotation = BallInitializationTransform.localRotation;
+            BallInstance.SetActive(true);
         }
     }
 
@@ -67,6 +72,8 @@ public class GameManager : MonoBehaviour
         Player currentPlayer = _playerControllersAssociated[lastPlayerToHit];
         Player otherPlayer = GetOtherPlayer(lastPlayerToHit);
 
+        BallInstance.GetComponent<Ball>().ResetBallFunction();
+        
         if (reboundCount == 1)
         {
             // Si on est en avantage, on revient à 40.
