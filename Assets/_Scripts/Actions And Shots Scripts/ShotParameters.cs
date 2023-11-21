@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ActionsParameters", menuName = "ScriptableObjects/ActionsParameters", order = 0)] 
-public class ActionParameters : ScriptableObject
+[CreateAssetMenu(fileName = "ShotParameters", menuName = "ScriptableObjects/ShotParameters", order = 0)] 
+public class ShotParameters : ScriptableObject
 {
+    #region PRIVATE FIELDS
+
     [Header("Ball Physical Parameters")]
     [SerializeField] private float _shotForceFactor;
     [SerializeField] private float _risingForce;
@@ -16,6 +16,10 @@ public class ActionParameters : ScriptableObject
     [SerializeField] private float _afterReboudCurvingForce;
     [SerializeField] private float _afterReboudCurvingEffectDuration;
 
+    #endregion
+
+    #region GETTERS
+
     public float ShotForceFactor { get { return _shotForceFactor; } }
     public float RisingForce { get { return _risingForce; } }
     public float TimeBeforeGoingDown { get { return _timeBeforeGoingDown; } }
@@ -25,4 +29,6 @@ public class ActionParameters : ScriptableObject
     public float InAirCurvingForce { get { return _inAirCurvingForce; } }
     public float AfterReboudCurvingForce { get { return _afterReboudCurvingForce; } }
     public float AfterReboudCurvingEffectDuration { get { return _afterReboudCurvingEffectDuration; } }
+
+    #endregion
 }

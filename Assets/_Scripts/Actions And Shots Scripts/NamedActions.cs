@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class NamedActions
 {
     public string Name;
-    public ActionParameters Parameters;
+    public ShotParameters Parameters;
 
-    public static ActionParameters GetActionParametersByName(List<NamedActions> namedActions, string name)
+    public static ShotParameters GetActionParametersByName(List<NamedActions> namedActions, string name)
     {
         foreach(NamedActions namedAction in namedActions)
         {

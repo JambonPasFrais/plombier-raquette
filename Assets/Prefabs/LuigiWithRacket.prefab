@@ -9350,7 +9350,7 @@ Transform:
   - {fileID: 7295647867813171620}
   - {fileID: 7864075272887158302}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4901136132972770209
 Rigidbody:
@@ -9460,6 +9460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -9475,7 +9476,7 @@ MonoBehaviour:
   - Name: Normal
     PhysicMaterial: {fileID: 13400000, guid: 368022c5343cfe749b19ad63ae0274af, type: 2}
   - Name: Drop
-    PhysicMaterial: {fileID: 13400000, guid: 21ed6f29186a5ab48aae4b6908645166, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
   _rigidBody: {fileID: 4901136132972770209}
   _ballDetectionArea: {fileID: 1027590233534068807}
   _movementSpeed: 7.5
@@ -9665,9 +9666,25 @@ MonoBehaviour:
     m_ActionId: d54bf2cd-b105-4673-b77a-4c280ad02bd9
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2015187621588100880}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SlowTime
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 00a257b5-6f1d-46dc-b5ef-91e6a189f478
     m_ActionName: Player/SlowTime[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 44001010-2874-4318-959f-aa17fca1a600
+    m_ActionName: Player/TechnicalShot
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

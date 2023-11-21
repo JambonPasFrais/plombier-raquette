@@ -8,6 +8,8 @@ public class PlayerController : ControllersParent
 {
     #region PRIVATE FIELDS
 
+    [SerializeField] private ActionParameters _actionParameters;
+
     [Header("Ball Physical Behavior Parameters")]
     [SerializeField] private List<NamedActions> _possibleActions;
     [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
@@ -24,6 +26,7 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _maximumHitKeyPressTime;
 
     private Vector2 _movementVector;
+    private float _currentSpeed;
     private float _hitKeyPressedTime;
     private float _hitForce;
     private bool _isCharging;
@@ -36,6 +39,7 @@ public class PlayerController : ControllersParent
     {
         _hitKeyPressedTime = 0f;
         _isCharging = false;
+        _currentSpeed = _movementSpeed;
     }
 
     void Update()
@@ -53,7 +57,7 @@ public class PlayerController : ControllersParent
     private void FixedUpdate()
     {
         // The player moves according to the movement inputs.
-        _rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _movementSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        _rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
     }
 
     #endregion
@@ -149,6 +153,25 @@ public class PlayerController : ControllersParent
         {
             Shoot(HitType.Lob);
         }
+    }
+
+    public void SlowTime(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Time.timeScale = _actionParameters.SlowTimeScaleFactor;
+            _currentSpeed = _movementSpeed / Time.timeScale;
+        }
+        else if (context.canceled)
+        {
+            Time.timeScale = 1f;
+            _currentSpeed = _movementSpeed;
+        }
+    }
+
+    public void TechnicalShot(InputAction.CallbackContext context)
+    {
+
     }
 
     public void ServeThrow(InputAction.CallbackContext context)

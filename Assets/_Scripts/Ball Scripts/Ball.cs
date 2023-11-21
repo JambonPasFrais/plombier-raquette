@@ -8,7 +8,7 @@ public class Ball : MonoBehaviour
 
     #region PRIVATE FIELDS
 
-    [SerializeField] private ActionParameters _actionParameters;
+    [SerializeField] private ShotParameters _actionParameters;
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
@@ -72,7 +72,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void InitializeActionParameters(ActionParameters actionParameters)
+    public void InitializeActionParameters(ShotParameters actionParameters)
     {
         _actionParameters = actionParameters;
     }
