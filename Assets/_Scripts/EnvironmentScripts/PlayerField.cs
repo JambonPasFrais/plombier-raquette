@@ -8,6 +8,8 @@ public class PlayerField : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<Ball>(out Ball ball)) 
         {
+            ball.Rebound();
+
             if (ball.PointNotFinished)
             {
                 string lastPlayerToApplyForceName = GameManager.Instance.GetPlayerName(ball.LastPlayerToApplyForce);

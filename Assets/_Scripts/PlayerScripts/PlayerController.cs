@@ -8,7 +8,9 @@ public class PlayerController : ControllersParent
 {
     #region PRIVATE FIELDS
 
+    [Header("Ball Physical Behavior Parameters")]
     [SerializeField] private List<NamedActions> _possibleActions;
+    [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
@@ -16,8 +18,8 @@ public class PlayerController : ControllersParent
 
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
-    [SerializeField] protected float _minimumHitForce;
-    [SerializeField] protected float _maximumHitForce;
+    [SerializeField] protected float _minimumShotForce;
+    [SerializeField] protected float _maximumShotForce;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
@@ -68,7 +70,7 @@ public class PlayerController : ControllersParent
         }
 
         float hitKeyPressTime = Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
-        _hitForce = _minimumHitForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumHitForce - _minimumHitForce);
+        _hitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
 
         _hitKeyPressedTime = 0f;
         _isCharging = false;
@@ -85,7 +87,14 @@ public class PlayerController : ControllersParent
             horizontalDirection = Vector3.forward;
         }
 
+        // Initialization of the correct ball physic material.
+        _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
+            NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
+
+        // Initialization of the other ball physic parameters.
         _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+
+        // Applying a specific force in a specific direction and with a specific rising force factor.
         _ballDetectionArea.Ball.ApplyForce(_hitForce, _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
     }
 
@@ -102,94 +111,43 @@ public class PlayerController : ControllersParent
         }
     }
 
-    public void Lob(InputAction.CallbackContext context)
+    public void Flat(InputAction.CallbackContext context)
     {
-/*        if (context.performed)
+        if (context.performed && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift))
         {
-            if (CanShoot)
-            {
-                CanShoot = false;
-                Shoot(HitType.Lob);
-            }
-            else if (CanShoot == false)
-            {
-                chargeForce = 1;
-                isCharging = false;
-            }
-            if (ball == null)
-            {
-                CanShoot = false;
-                chargeForce = 1;
-            }
-        }*/
-    }
-
-    public void Slice(InputAction.CallbackContext context)
-    {
-/*        if (context.performed)
-        {
-            if (CanShoot)
-            {
-                CanShoot = false;
-                Shoot(HitType.Slice);
-            }
-            else if (CanShoot == false)  
-            {
-                chargeForce = 1;
-                isCharging = false;
-            }
-            if (CanShoot)
-            {
-                CanShoot = false;
-                Shoot(HitType.Slice);
-            }
-        }*/
+            Shoot(HitType.Flat);
+        }
     }
 
     public void TopSpin(InputAction.CallbackContext context)
     {
-/*        if (context.performed)
+        if (context.performed && !Input.GetKey(KeyCode.LeftControl)) 
         {
-            if (ball != null)
-            {
-                CanShoot = false;
-                Shoot(HitType.TopSpin);
-            }
-            else if (CanShoot == false)
-            {
-                chargeForce = 1;
-                isCharging = false;
-            }
-            if (CanShoot)
-            {
-                CanShoot = false;
-                Shoot(HitType.TopSpin);
-            }
-        }*/
+            Shoot(HitType.TopSpin);
+        }
     }
 
     public void Drop(InputAction.CallbackContext context)
     {
-/*        if (context.performed)
+        if (context.performed)
         {
-            if (CanShoot)
-            {
-                CanShoot = false;
-                Shoot(HitType.Drop);
-            }
-            else if (CanShoot == false)
-            {
-                chargeForce = 1;
-                isCharging = false;
-            }
-        }*/
+            Shoot(HitType.Drop);
+        }
     }
 
-    public void Flat(InputAction.CallbackContext context)
+    public void Slice(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Shoot(HitType.Flat);
+            Shoot(HitType.Slice);
+        }
+    }
+
+    public void Lob(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Shoot(HitType.Lob);
         }
     }
 

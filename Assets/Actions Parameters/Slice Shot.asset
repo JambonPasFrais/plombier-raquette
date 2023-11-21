@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d9ba89b9f6f89f4e942240121adf3dc, type: 3}
-  m_Name: Flat Hit
+  m_Name: Slice Shot
   m_EditorClassIdentifier: 
-  _hitForceFactor: 1
+  _shotForceFactor: 1
   _risingForce: 150
   _timeBeforeGoingDown: 0.5
   _decreasingForcePhaseTime: 0.05
   _decreasingForce: 1
-  _dynamicFriction: 0.1
+  _addedForceInSameDirection: 0
+  _inAirCurvingForce: 0.5
+  _afterReboudCurvingForce: 1
+  _afterReboudCurvingEffectDuration: 0.2

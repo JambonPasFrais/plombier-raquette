@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4367482323726034759
 Transform:
   m_ObjectHideFlags: 0
@@ -30,11 +30,11 @@ Transform:
   m_GameObject: {fileID: 5628292310031842273}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.042, y: 2.012, z: -7.234}
-  m_LocalScale: {x: 0.26, y: 0.26, z: 0.26}
+  m_LocalScale: {x: 0.17333333, y: 0.17333333, z: 0.17333333}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8280983515475190983
 MeshFilter:
@@ -93,7 +93,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5628292310031842273}
-  m_Material: {fileID: 13400000, guid: 80b899a43ab20d141a14e109dbe876d3, type: 2}
+  m_Material: {fileID: 13400000, guid: 368022c5343cfe749b19ad63ae0274af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -105,7 +105,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.2
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7965401428493319483
 Rigidbody:
@@ -147,8 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PointNotFinished: 0
+  _actionParameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _rigidBody: {fileID: 7965401428493319483}
-  _risingForce: 150
-  _timeBeforeGoingDown: 0.5
-  _decreasingForcePhaseTime: 0.05
-  _decreasingForce: 1

@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SlowTime",
+                    "type": "Button",
+                    "id": "00a257b5-6f1d-46dc-b5ef-91e6a189f478",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -159,7 +168,7 @@
                 {
                     "name": "",
                     "id": "f8c2b382-0ddd-4868-9abf-79dce79307db",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -181,7 +190,7 @@
                 {
                     "name": "",
                     "id": "cacc52f8-b6d6-4a7d-a321-5fb691db5324",
-                    "path": "<Keyboard>/space",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -202,17 +211,6 @@
                 },
                 {
                     "name": "",
-                    "id": "8609df8e-51ac-4ccd-894b-72aaea371bf1",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Slice",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4de93159-9484-4104-baf7-6711bb1748da",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "Press(behavior=1)",
@@ -221,6 +219,39 @@
                     "action": "Slice",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "339a27ca-bd6c-46f4-bbcd-50a7f2e8ba3f",
+                    "path": "OneModifier",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Slice",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "19dcc9ef-200b-44c3-90b4-c21140a8058f",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Slice",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "cf1a8726-0f4e-48d8-b212-85d748cbfb1b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Slice",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -234,15 +265,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "587ae504-1dbc-4fe3-a10f-26a530270e26",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "Press(behavior=1)",
+                    "name": "One Modifier",
+                    "id": "828397f7-d025-47f1-a46a-f5aadda8c088",
+                    "path": "OneModifier",
+                    "interactions": "Press",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
+                    "action": "Lob",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "ce62fcf9-ec3e-4025-b2c0-0c62b9c64f0e",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Lob",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "47bce2d7-b72e-4216-986a-b64188143318",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lob",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -252,28 +305,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "ChargeShot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3f26ff48-b75c-46cf-b278-8b9b094a2eef",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ChargeShot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ddfc1003-b34f-44bb-b8d1-d0f5d09a3707",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -289,34 +320,45 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "One Modifier",
+                    "id": "79af0908-d0d2-4a10-bdcb-6b017714d7cf",
+                    "path": "OneModifier",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "20b15b24-75ad-4907-844f-4b1f7431d87f",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "831a8549-bf08-42f7-b923-10e122550ad7",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "a4997ad6-589d-4183-a6f1-ac8f481e506d",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ChargeShot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "23a67446-d699-4c03-b7e4-712c64a7e8f0",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ChargeShot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a812e717-381e-49fa-9d43-46ecec0c85a8",
-                    "path": "<Keyboard>/space",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
                     "action": "ChargeShot",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -345,8 +387,19 @@
                 },
                 {
                     "name": "",
-                    "id": "af8a0c25-ffad-4beb-8a16-b18660fec58b",
-                    "path": "<Keyboard>/rightArrow",
+                    "id": "dae17120-5c0b-40ad-b1b3-062946acb3cc",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ChargeShot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6de562b7-dd85-4c4c-ad84-069df0bd23a8",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -417,6 +470,39 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Throw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89cc540b-0242-41da-b21f-8220d66e1920",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SlowTime",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9cf00b1-950c-4089-872e-59dd4487de3f",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SlowTime",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0fe1fab-7588-4b77-ae06-27b89aa4a7bb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SlowTime",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
