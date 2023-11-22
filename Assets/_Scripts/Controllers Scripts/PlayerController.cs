@@ -171,7 +171,46 @@ public class PlayerController : ControllersParent
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
+        if (context.performed)
+        {
+            float tempForwardMovementFactor = 0f;
+            float tempRightMovementFactor = 0f;
+            int forwardMovementFactor = 0;
+            int rightMovementFactor = 0;
 
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) 
+            {
+                tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
+            }
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
+            }
+
+            if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor)) 
+            {
+                forwardMovementFactor = 0;
+                rightMovementFactor = (int)tempRightMovementFactor;
+            }
+            else
+            {
+                forwardMovementFactor = Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor) ? (int)tempForwardMovementFactor : 0;
+                rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
+            }
+
+            Vector3 wantedDirection = forwardMovementFactor * Vector3.forward + rightMovementFactor * Vector3.right;
+            float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection);
+
+            if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
+            {
+                transform.position += wantedDirection * _actionParameters.TechnicalShotMovementLength;
+            }
+            else
+            {
+                transform.position += wantedDirection * distanceToBorderInWantedDirection;
+            }
+        }
     }
 
     public void ServeThrow(InputAction.CallbackContext context)

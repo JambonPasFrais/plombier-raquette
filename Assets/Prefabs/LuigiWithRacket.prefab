@@ -9682,7 +9682,19 @@ MonoBehaviour:
     m_ActionId: 00a257b5-6f1d-46dc-b5ef-91e6a189f478
     m_ActionName: Player/SlowTime[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2015187621588100880}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: TechnicalShot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 44001010-2874-4318-959f-aa17fca1a600
     m_ActionName: Player/TechnicalShot
   m_NeverAutoSwitchControlSchemes: 0

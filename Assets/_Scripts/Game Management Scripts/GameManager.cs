@@ -17,10 +17,12 @@ public class GameManager : MonoBehaviour
     #region PRIVATE FIELDS
 
     [SerializeField] private List<ControllersParent> _controllers;
+    [SerializeField] private PlayerField[] _playerFields;
 
     private Dictionary<ControllersParent, Player> _playerControllersAssociated;
     private Dictionary<Player, int> _playersPoints;
     private Dictionary<Player, int> _playersGames;
+    private Dictionary<string, PlayerField> _playerFieldsByPlayerName;
 
     #endregion
 
@@ -48,6 +50,13 @@ public class GameManager : MonoBehaviour
             _playersPoints.Add(newPlayer, 0);
             _playersGames.Add(newPlayer, 0);
             i++;
+        }
+
+        _playerFieldsByPlayerName = new Dictionary<string, PlayerField>();
+
+        foreach (PlayerField playerField in _playerFields)
+        {
+            _playerFieldsByPlayerName.Add(playerField.PlayerName, playerField);
         }
 
         ScoreUpdate();
@@ -173,5 +182,31 @@ public class GameManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public float GetDistanceToBorderByDirection(ControllersParent playerController, Vector3 movementDirection)
+    {
+        string playerName = GetPlayerName(playerController);
+        Vector3 playerPosition = playerController.gameObject.transform.position;
+        PlayerField playerField = _playerFieldsByPlayerName[playerName];
+
+        if (movementDirection == Vector3.forward) 
+        {
+            return Mathf.Abs(playerField.FrontPointTransform.position.z - playerPosition.z);
+        }
+        else if(movementDirection == -Vector3.forward)
+        {
+            return Mathf.Abs(playerField.BackPointTransform.position.z - playerPosition.z);
+        }
+        else if(movementDirection == Vector3.right)
+        {
+            return Mathf.Abs(playerField.RightPointTransform.position.x - playerPosition.x);
+        }
+        else if(movementDirection == -Vector3.right)
+        {
+            return Mathf.Abs(playerField.LeftPointTransform.position.x - playerPosition.x);
+        }
+
+        return 0f;
     }
 }
