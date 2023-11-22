@@ -8,7 +8,12 @@ public class BotBehavior : ControllersParent
 {
     #region Private Fields
 
-    [Header("Instances")] [SerializeField] private Transform[] _targets;
+    [Header("Ball Physical Behavior Parameters")]
+    [SerializeField] private List<NamedActions> _possibleActions;
+    [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
+
+    [Header("Instances")] 
+    [SerializeField] private Transform[] _targets;
     [SerializeField] private BallDetection _ballDetection;
     
     [Header("GD")]
@@ -47,11 +52,10 @@ public class BotBehavior : ControllersParent
     {
         Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
         Vector3 direction = Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.forward) + Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.right);
-        
-        _ballInstance.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), 
-            _ballDetection.GetRisingForceFactor(), 
-            direction.normalized, 
-            this);
+
+        _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
+        _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
+        _ballInstance.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), _ballDetection.GetRisingForceFactor(), direction.normalized, this);
     }
 
     private void MoveTowardsBallX()

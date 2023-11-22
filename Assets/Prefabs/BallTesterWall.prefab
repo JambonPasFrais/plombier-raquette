@@ -118,8 +118,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23b68d27f8daa3940b37fdfeff2c1e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-  BallInitializationTransform: {fileID: 0}
   LeftOpposedCorner: {fileID: 0}
   RightOpposedCorner: {fileID: 0}
+  _possibleActions:
+  - Name: Flat
+    Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
+  _possiblePhysicMaterials:
+  - Name: Normal
+    PhysicMaterial: {fileID: 13400000, guid: 80b899a43ab20d141a14e109dbe876d3, type: 2}
   _hitForce: 400

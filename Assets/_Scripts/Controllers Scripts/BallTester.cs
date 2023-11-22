@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class BallTester : ControllersParent
 
     #region PRIVATE FIELDS
 
+    [SerializeField] private List<NamedActions> _possibleActions;
+    [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
     [SerializeField] private float _hitForce;
 
     #endregion
@@ -23,6 +26,9 @@ public class BallTester : ControllersParent
         {
             Vector3 targetPoint = LeftOpposedCorner.position + Random.Range(0f, 1f) * (RightOpposedCorner.position - LeftOpposedCorner.position);
             Vector3 direction = Vector3.Project(targetPoint - collision.contacts[0].point, Vector3.forward) + Vector3.Project(targetPoint - collision.contacts[0].point, Vector3.right);
+
+            ball.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
+            ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
             ball.ApplyForce(_hitForce, 1, direction.normalized, this);
         }
     }
