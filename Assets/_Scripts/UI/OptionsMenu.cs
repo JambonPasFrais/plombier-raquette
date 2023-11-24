@@ -48,7 +48,7 @@ public class OptionsMenu : MonoBehaviour
 	private void Start()
 	{
 		CreateResolutionsItems();
-		CreateMaxFpsItems();
+		CreateMaxFPSItems();
 		CreateQualityItems();
 		UpdateSliders();
 	}
@@ -78,7 +78,7 @@ public class OptionsMenu : MonoBehaviour
 		_resolutionDropdown.RefreshShownValue();
 	}
 
-	private void CreateMaxFpsItems()
+	private void CreateMaxFPSItems()
 	{
 		_fpsDropdown.ClearOptions();
 
@@ -155,7 +155,7 @@ public class OptionsMenu : MonoBehaviour
 		Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 	}
 
-	public void SetFpsMax(int fpsIndex)
+	public void SetFPSMax(int fpsIndex)
 	{
 		int fps = _maxFps[fpsIndex];
 		Application.targetFrameRate = fps;
