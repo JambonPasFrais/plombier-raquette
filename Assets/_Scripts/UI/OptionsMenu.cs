@@ -111,6 +111,7 @@ public class OptionsMenu : MonoBehaviour
 		_globalVolumeText.text = $"{Math.Round(_globalVolumeSlider.value, 2) * 100}";
 		_sfxVolumeText.text = $"{Math.Round(_sfxVolumeSlider.value, 2) * 100}";
 		_musicVolumeText.text = $"{Math.Round(_musicVolumeSlider.value, 2) * 100}";
+
 	}
 
 	#endregion
@@ -119,11 +120,11 @@ public class OptionsMenu : MonoBehaviour
 
 	public void SetGlobalVolume(float volume)
 	{
-		_audioMixer.SetFloat("MAIN_Volume", Mathf.Log10(volume) * 20);
+		_audioMixer.SetFloat("Master_Volume", Mathf.Log10(volume) * 20);
 		_globalVolumeText.text = (Math.Round(volume, 2) * 100).ToString();
 	}
 
-	public void SetSfxVolume(float volume)
+	public void SetSFXVolume(float volume)
 	{
 		_audioMixer.SetFloat("SFX_Volume", Mathf.Log10(volume) * 20);
 		_sfxVolumeText.text = (Math.Round(volume, 2) * 100).ToString();
@@ -131,7 +132,7 @@ public class OptionsMenu : MonoBehaviour
 
 	public void SetMusicVolume(float volume)
 	{
-		_audioMixer.SetFloat("MUSIC_Volume", Mathf.Log10(volume) * 20);
+		_audioMixer.SetFloat("Music_Volume", Mathf.Log10(volume) * 20);
 		_musicVolumeText.text = (Math.Round(volume, 2) * 100).ToString();
 	}
 
