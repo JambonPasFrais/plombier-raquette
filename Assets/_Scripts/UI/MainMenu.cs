@@ -5,21 +5,14 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
 	[SerializeField] private GameObject _mainMenu;
-    [SerializeField] private GameObject _localGameMenu;
-    [SerializeField] private GameObject _onlineGameMenu;
+    [SerializeField] private GameObject _freeGameMenu;
     [SerializeField] private GameObject _tournamentMenu;
     [SerializeField] private GameObject _optionsMenu;
 
-    public void ShowLocalGameMenu()
+    public void ShowFreeGameMenu()
     {
         _mainMenu.SetActive(false);
-        _localGameMenu.SetActive(true);
-    }
-    
-    public void ShowOnlineGameMenu()
-    {
-        _mainMenu.SetActive(false);
-        _onlineGameMenu.SetActive(true);
+        _freeGameMenu.SetActive(true);
     }
     
     public void ShowTournamentMenu()
@@ -33,6 +26,14 @@ public class MainMenu : MonoBehaviour
 		_mainMenu.SetActive(false);
 		_optionsMenu.SetActive(true);
 	}
+
+    public void ReturnToMainMenu()
+    {
+        _mainMenu.SetActive(true);
+        _optionsMenu.SetActive(false);
+        _freeGameMenu.SetActive(false);
+        _tournamentMenu.SetActive(false);
+    }
 
     public void QuitGame()
     {
