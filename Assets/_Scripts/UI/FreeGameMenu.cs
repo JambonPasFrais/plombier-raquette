@@ -11,18 +11,17 @@ public class FreeGameMenu : MonoBehaviour
 	private void Start()
 	{
 		_currentNumberOfPlayers = 1;
+		_playerNumberText.text = $"Players: {_currentNumberOfPlayers}";
 	}
 
-	public void IncreaseNumberOfPlayer()
+	public void ModifyNumberOfPlayer(int value)
     {
-		_currentNumberOfPlayers = Mathf.Clamp(_currentNumberOfPlayers + 1, 1, 4);
+		_currentNumberOfPlayers = Mathf.Clamp(_currentNumberOfPlayers + value, 1, 4);
 		_playerNumberText.text = $"Players: {_currentNumberOfPlayers}";
-
 	}
-    
-    public void DecreaseNumberOfPlayer()
-    {
-		_currentNumberOfPlayers = Mathf.Clamp(_currentNumberOfPlayers - 1, 1, 4);
-		_playerNumberText.text = $"Players: {_currentNumberOfPlayers}";
+
+	public void GameMenu()
+	{
+
 	}
 }
