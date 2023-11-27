@@ -7,6 +7,7 @@ public class FreeGameMenu : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _playerNumberText;
     [SerializeField] private int _currentNumberOfPlayers;
+	[SerializeField] private GameObject _rulesMenu;
 
 	private void Start()
 	{
@@ -20,8 +21,9 @@ public class FreeGameMenu : MonoBehaviour
 		_playerNumberText.text = $"Players: {_currentNumberOfPlayers}";
 	}
 
-	public void GameMenu()
+	public void GoToRulesSelection(bool isOnline)
 	{
-
+		gameObject.SetActive(false);
+		_rulesMenu.SetActive(true);
 	}
 }
