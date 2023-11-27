@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public Transform BallInitializationTransform;
-    public GameObject BallInstance;
+    public GameObject BallPrefab;
 
     public GameState CurrentState;
 
@@ -23,14 +23,21 @@ public class GameManager : MonoBehaviour
     #region PRIVATE FIELDS
 
     [SerializeField] private List<ControllersParent> _controllers;
-    [SerializeField] private PlayerField[] _playerFields;
+    [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
 
     private Dictionary<ControllersParent, Player> _playerControllersAssociated;
     private Dictionary<Player, int> _playersPoints;
     private Dictionary<Player, int> _playersGames;
-    private Dictionary<string, PlayerField> _playerFieldsByPlayerName;
+    private Dictionary<string, FieldBorderPointsContainer> _fieldBorderPointsByPlayerName;
 
+    private GameObject _ballInstance;
     private int _serverIndex;
+
+    #endregion
+
+    #region GETTERS
+
+    public GameObject BallInstance {  get { return _ballInstance; } }
 
     #endregion
 
@@ -51,6 +58,11 @@ public class GameManager : MonoBehaviour
         ServeRight = true;
 
         _serverIndex = 0;
+        CurrentState = GameState.SERVICE;
+        _controllers[_serverIndex].IsServing = true;
+        SideManager.Instance.ChangeSidesInGameSimple(_controllers, ServeRight, HasChangeSidesSinceBeginning);
+        _ballInstance = Instantiate(BallPrefab);
+        _ballInstance.SetActive(false);
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();
@@ -66,23 +78,24 @@ public class GameManager : MonoBehaviour
             i++;
         }
 
-        _playerFieldsByPlayerName = new Dictionary<string, PlayerField>();
+        _fieldBorderPointsByPlayerName = new Dictionary<string, FieldBorderPointsContainer>();
 
-        foreach (PlayerField playerField in _playerFields)
+        foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
         {
-            _playerFieldsByPlayerName.Add(playerField.PlayerName, playerField);
+            _fieldBorderPointsByPlayerName.Add(borderPointsContainer.PlayerName, borderPointsContainer); 
         }
     }
 
     void Update()
     {
         // Ball instantiation.
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && _controllers[_serverIndex].CurrentState == PlayerStates.IDLE && _controllers[_serverIndex].IsServing)
         {
-            BallInstance.GetComponent<Ball>().ResetBallFunction();
+            _ballInstance.GetComponent<Ball>().ResetBallFunction();
 
-            BallInstance.transform.position = BallInitializationTransform.position;
-            BallInstance.SetActive(true);
+            _controllers[_serverIndex].CurrentState = PlayerStates.SERVE;
+            _ballInstance.transform.position = BallInitializationTransform.position;
+            _ballInstance.SetActive(true);
         }
     }
 
@@ -118,23 +131,23 @@ public class GameManager : MonoBehaviour
     {
         string playerName = GetPlayerName(playerController);
         Vector3 playerPosition = playerController.gameObject.transform.position;
-        PlayerField playerField = _playerFieldsByPlayerName[playerName];
+        FieldBorderPointsContainer borderPointsContainer = _fieldBorderPointsByPlayerName[playerName];
 
         if (movementDirection == Vector3.forward) 
         {
-            return Mathf.Abs(playerField.FrontPointTransform.position.z - playerPosition.z);
+            return Mathf.Abs(borderPointsContainer.FrontPointTransform.position.z - playerPosition.z);
         }
         else if(movementDirection == -Vector3.forward)
         {
-            return Mathf.Abs(playerField.BackPointTransform.position.z - playerPosition.z);
+            return Mathf.Abs(borderPointsContainer.BackPointTransform.position.z - playerPosition.z);
         }
         else if(movementDirection == Vector3.right)
         {
-            return Mathf.Abs(playerField.RightPointTransform.position.x - playerPosition.x);
+            return Mathf.Abs(borderPointsContainer.RightPointTransform.position.x - playerPosition.x);
         }
         else if(movementDirection == -Vector3.right)
         {
-            return Mathf.Abs(playerField.LeftPointTransform.position.x - playerPosition.x);
+            return Mathf.Abs(borderPointsContainer.LeftPointTransform.position.x - playerPosition.x);
         }
 
         return 0f;

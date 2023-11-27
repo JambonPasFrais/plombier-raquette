@@ -217,7 +217,7 @@ public class Ball : MonoBehaviour
         _rigidBody.velocity = Vector3.zero;
     }
 
-    public IEnumerator ReinitializeBall()
+/*    public IEnumerator ReinitializeBall()
     {
         enabled = false;
         _reboundsCount = 0;
@@ -226,8 +226,8 @@ public class Ball : MonoBehaviour
         yield return new WaitForSeconds(.2f);
 
         _rigidBody.velocity = Vector3.zero;
-        /*gameObject.SetActive(false);*/
+        gameObject.SetActive(false);
         _lastPlayerToApplyForce = null;
         enabled = true;
-    }
+    }*/
 }

@@ -5,16 +5,27 @@ using UnityEngine;
 
 public class SideManager : MonoBehaviour
 {
+    #region PRIVATE FIELDS
+
     private static SideManager _instance;
+
 	[SerializeField] private Transform _servicePointsFirstSideParent;
 	[SerializeField] private Transform _servicePointsSecondSideParent;
 	[SerializeField] private Transform _cameraParent;
-
 	[SerializeField] private List<GameObject> _cameras;
+
 	private Dictionary<string, Transform> _servicePointsFirstSide = new Dictionary<string, Transform>();
 	private Dictionary<string, Transform> _servicePointsSecondSide = new Dictionary<string, Transform>();
+	private Transform _activeCameraTransform;
 
-	public static SideManager Instance => _instance;
+    #endregion
+
+    #region GETTERS
+
+    public static SideManager Instance => _instance;
+	public Transform ActiveCameraTransform { get { return _activeCameraTransform; } }
+
+	#endregion
 
 	private void Awake()
 	{
@@ -41,7 +52,8 @@ public class SideManager : MonoBehaviour
 
 		if (_originalSides)
 		{
-			_cameras[0].SetActive(true);
+			_activeCameraTransform = _cameras[0].transform;
+            _cameras[0].SetActive(true);
 			_cameras[1].SetActive(false);
 			players[0].transform.position = _servicePointsFirstSide[side].position;
 			players[0].transform.rotation = _servicePointsFirstSide[side].rotation;
@@ -50,7 +62,8 @@ public class SideManager : MonoBehaviour
 		}
 		else
 		{
-			_cameras[0].SetActive(false);
+            _activeCameraTransform = _cameras[1].transform;
+            _cameras[0].SetActive(false);
 			_cameras[1].SetActive(true);
 			players[0].transform.position = _servicePointsSecondSide[side].position;
 			players[0].transform.rotation = _servicePointsSecondSide[side].rotation;

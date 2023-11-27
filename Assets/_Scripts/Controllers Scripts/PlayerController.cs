@@ -56,8 +56,14 @@ public class PlayerController : ControllersParent
 
     private void FixedUpdate()
     {
+        // The global player directions depend on the side he is on.
+        Vector3 rightVector = SideManager.Instance.ActiveCameraTransform.right;
+        Vector3 forwardVector = Vector3.Project(SideManager.Instance.ActiveCameraTransform.forward, Vector3.forward);
+        Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
+
         // The player moves according to the movement inputs.
-        _rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
+        _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
     }
 
     #endregion
@@ -78,6 +84,14 @@ public class PlayerController : ControllersParent
 
         _hitKeyPressedTime = 0f;
         _isCharging = false;
+
+        if (CurrentState == PlayerStates.SERVE)
+        {
+            CurrentState = PlayerStates.PLAY;
+            _ballServiceDetectionArea.gameObject.SetActive(false);
+            ServiceManager.Instance.DisableLockServiceColliders();
+            GameManager.Instance.CurrentState = GameState.PLAYING;
+        }
 
         Vector3 horizontalDirection;
 

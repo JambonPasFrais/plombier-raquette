@@ -4912,6 +4912,73 @@ Transform:
   m_Father: {fileID: 5728424781731996242}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -44.903}
+--- !u!1 &4141971069425055135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5334710950252287336}
+  - component: {fileID: 1765349028068965594}
+  - component: {fileID: 3437315211321540031}
+  m_Layer: 3
+  m_Name: ServiceDetectionArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5334710950252287336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4141971069425055135}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.22, z: 7.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1932400804854287694}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1765349028068965594
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4141971069425055135}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 25, y: 4, z: 17}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3437315211321540031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4141971069425055135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47952626242d1274d8864634af896855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 2015187621588100880}
 --- !u!1 &4166512246521315701
 GameObject:
   m_ObjectHideFlags: 0
@@ -9303,6 +9370,7 @@ Transform:
   m_Children:
   - {fileID: 7307401391690933076}
   - {fileID: 8107189029252382483}
+  - {fileID: 5334710950252287336}
   - {fileID: 8646501234265518404}
   - {fileID: 6117288123474221374}
   - {fileID: 7749689796212532519}
@@ -9350,7 +9418,7 @@ Transform:
   - {fileID: 7295647867813171620}
   - {fileID: 7864075272887158302}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4901136132972770209
 Rigidbody:
@@ -9460,6 +9528,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsServing: 0
+  CurrentState: 0
+  _playerTeam: 0
+  _ballServiceDetectionArea: {fileID: 3437315211321540031}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _possibleActions:
   - Name: Flat
