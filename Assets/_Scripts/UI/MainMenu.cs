@@ -8,8 +8,14 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _freeGameMenu;
     [SerializeField] private GameObject _tournamentMenu;
     [SerializeField] private GameObject _optionsMenu;
+    [SerializeField] private GameObject _characterSelectionMenu;
 
-    public void ShowFreeGameMenu()
+	private void Start()
+	{
+		ReturnToMainMenu();
+	}
+
+	public void ShowFreeGameMenu()
     {
         _mainMenu.SetActive(false);
         _freeGameMenu.SetActive(true);
@@ -32,6 +38,7 @@ public class MainMenu : MonoBehaviour
         _mainMenu.SetActive(true);
         _optionsMenu.SetActive(false);
         _freeGameMenu.SetActive(false);
+        _characterSelectionMenu.SetActive(false);
         _tournamentMenu.SetActive(false);
     }
 

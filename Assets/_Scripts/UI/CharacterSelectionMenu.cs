@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CharacterSelectionMenu : MonoBehaviour
@@ -48,5 +49,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 				_playerIndex = (_playerIndex + 1) % 4;
 			}
 		}
+	}
+
+	public void Play()
+	{
+		SceneManager.LoadScene(1);
 	}
 }
