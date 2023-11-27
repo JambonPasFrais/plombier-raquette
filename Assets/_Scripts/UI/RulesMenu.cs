@@ -15,6 +15,7 @@ public class RulesMenu : MonoBehaviour
 		"Expert",
 		"Invincible"
 	};
+	[SerializeField] private GameObject _characterSelectionMenu;
 	private int _currentDifficulty;
 
 	private void Start()
@@ -29,9 +30,9 @@ public class RulesMenu : MonoBehaviour
         _COMDifficultyText.text = _difficulties[_currentDifficulty];
     }
     
-    /*public void DecreaseCOMDifficulty()
-    {
-        _currentDifficulty = (_currentDifficulty + 1) % _difficulties.Count;
-        _COMDifficultyText.text = _difficulties[_currentDifficulty];
-    }*/
+    public void ValidateParameters()
+	{
+		gameObject.SetActive(false);
+		_characterSelectionMenu.SetActive(true);
+	}
 }
