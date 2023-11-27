@@ -56,4 +56,9 @@ public class PlayerAnimator : MonoBehaviour
     {
         ChangeAnimationState(PlayerAnimations.Run.ToString());
     }
+
+    public void ServiceAnimation()
+    {
+        ChangeAnimationState(PlayerAnimations.Service.ToString());
+    }
 }

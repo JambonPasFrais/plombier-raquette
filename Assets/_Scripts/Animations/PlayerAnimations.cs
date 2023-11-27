@@ -8,5 +8,6 @@ public enum PlayerAnimations
     RotateBackhand2,
     Smash,
     Strike1,
-    Strike2
+    Strike2,
+    Service
 }
