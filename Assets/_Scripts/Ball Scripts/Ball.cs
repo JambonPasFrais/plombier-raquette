@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public bool PointNotFinished;
-
     #region PRIVATE FIELDS
+
+    [SerializeField] private bool _isOnOtherSide;
 
     [SerializeField] private ShotParameters _actionParameters;
 
@@ -33,7 +34,7 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         _reboundsCount = 0;
-        PointNotFinished = true;
+        _isOnOtherSide = false;
     }
 
     private void Update()
@@ -46,23 +47,75 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>())
+        if (GameManager.Instance.CurrentState == GameState.SERVICE)
         {
+            if (collision.gameObject.TryGetComponent<BallServiceDetection>(out BallServiceDetection ballServiceDetection))
+            {
+                gameObject.SetActive(false);
+                _rigidBody.velocity = Vector3.zero;
+                ballServiceDetection.Player.CurrentState = PlayerStates.IDLE;
+            }
+            else if (!collision.gameObject.GetComponent<ServiceBoxDetection>() && _reboundsCount == 0)
+            {
+                Debug.Log("Service Faux... Deuxième Service !");
+            }
+        }
+
+        if (!_isOnOtherSide && GameManager.Instance.CurrentState == GameState.PLAYING)
+        {
+            Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)_lastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+            ScoreManager.Instance.AddPoint(otherTeam);
+            /*StartCoroutine(ReinitializeBall());*/
             ResetBallFunction();
         }
+        else if (GameManager.Instance.CurrentState == GameState.PLAYING)
+        {
+            if (collision.gameObject.GetComponent<PlayerController>() && _lastPlayerToApplyForce != collision.gameObject.GetComponent<ControllersParent>())
+            {
+                ScoreManager.Instance.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+                /*StartCoroutine(ReinitializeBall());*/
+                ResetBallFunction();
+            }
+
+            else if (collision.gameObject.TryGetComponent<CourtDetections>(out CourtDetections detection))
+            {
+                Debug.Log(collision.gameObject.name);
+
+                if (_reboundsCount == 1)
+                {
+                    ScoreManager.Instance.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+                    /*StartCoroutine(ReinitializeBall());*/
+                    ResetBallFunction();
+                }
+
+                else
+                {
+                    if (detection.IsFault)
+                    {
+                        Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)_lastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                        ScoreManager.Instance.AddPoint(otherTeam);
+                        /*StartCoroutine(ReinitializeBall());*/
+                        ResetBallFunction();
+                    }
+
+                    else
+                    {
+                        _reboundsCount++;
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<NetDetection>())
+            _isOnOtherSide = true;
     }
 
     #endregion
 
     #region PHYSICS BEHAVIOR METHODS
-
-    public void ResetBallFunction()
-    {
-        _lastPlayerToApplyForce = null;
-        _rigidBody.velocity = Vector3.zero;
-        /*gameObject.SetActive(false);*/
-        _lastPlayerToApplyForce = null;
-    }
 
     public void InitializePhysicsMaterial(PhysicMaterial physicMaterial)
     {
@@ -155,4 +208,26 @@ public class Ball : MonoBehaviour
     }
 
     #endregion
+
+    public void ResetBallFunction()
+    {
+        _reboundsCount = 0;
+        GameManager.Instance.EndOfPoint();
+        _lastPlayerToApplyForce = null;
+        _rigidBody.velocity = Vector3.zero;
+    }
+
+    public IEnumerator ReinitializeBall()
+    {
+        enabled = false;
+        _reboundsCount = 0;
+        GameManager.Instance.EndOfPoint();
+
+        yield return new WaitForSeconds(.2f);
+
+        _rigidBody.velocity = Vector3.zero;
+        /*gameObject.SetActive(false);*/
+        _lastPlayerToApplyForce = null;
+        enabled = true;
+    }
 }

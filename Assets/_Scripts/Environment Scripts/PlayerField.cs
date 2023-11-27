@@ -30,7 +30,7 @@ public class PlayerField : MonoBehaviour
         {
             ball.Rebound();
 
-            if (ball.PointNotFinished)
+/*            if (ball.PointNotFinished)
             {
                 string lastPlayerToApplyForceName = GameManager.Instance.GetPlayerName(ball.LastPlayerToApplyForce);
 
@@ -41,7 +41,7 @@ public class PlayerField : MonoBehaviour
 
                     GameManager.Instance.PointFinished(ball.ReboundsCount, ball.LastPlayerToApplyForce);
                 }
-            }
+            }*/
         }
     }
 }

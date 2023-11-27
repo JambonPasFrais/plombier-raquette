@@ -8,7 +8,7 @@ public class Court : MonoBehaviour
         {
             ball.Rebound();
 
-            if (ball.PointNotFinished)
+/*            if (ball.PointNotFinished)
             {
                 // Si le joueur a touché l'extérieur du terrain au premier rebond ou si un deuxième rebond a lieu sans interception, alors le point est fini.
                 if (ball.ReboundsCount == 1 || ball.ReboundsCount == 2)
@@ -17,7 +17,7 @@ public class Court : MonoBehaviour
 
                     GameManager.Instance.PointFinished(ball.ReboundsCount, ball.LastPlayerToApplyForce);
                 }
-            }
+            }*/
         }
     }
 }

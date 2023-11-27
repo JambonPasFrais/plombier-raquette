@@ -4,7 +4,7 @@ public class Net : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball) && ball.PointNotFinished)
+/*        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball) && ball.PointNotFinished)
         {
             if (ball.PointNotFinished)
             {
@@ -16,6 +16,6 @@ public class Net : MonoBehaviour
                     GameManager.Instance.PointFinished(ball.ReboundsCount, ball.LastPlayerToApplyForce);
                 }
             }
-        }
+        }*/
     }
 }

@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
     public Transform BallInitializationTransform;
     public GameObject BallInstance;
 
+    public GameState CurrentState;
+
+    [HideInInspector] public bool HasChangeSidesSinceBeginning;
+    [HideInInspector] public bool IsGameFinished;
+    [HideInInspector] public bool ServeRight;
+
     #endregion
 
     #region PRIVATE FIELDS
@@ -23,6 +29,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<Player, int> _playersPoints;
     private Dictionary<Player, int> _playersGames;
     private Dictionary<string, PlayerField> _playerFieldsByPlayerName;
+
+    private int _serverIndex;
 
     #endregion
 
@@ -38,6 +46,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        HasChangeSidesSinceBeginning = false;
+        IsGameFinished = false;
+        ServeRight = true;
+
+        _serverIndex = 0;
+
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();
         _playersGames = new Dictionary<Player, int>();
@@ -58,8 +72,6 @@ public class GameManager : MonoBehaviour
         {
             _playerFieldsByPlayerName.Add(playerField.PlayerName, playerField);
         }
-
-        ScoreUpdate();
     }
 
     void Update()
@@ -75,88 +87,6 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
-
-    public void PointFinished(int reboundCount, ControllersParent lastPlayerToHit)
-    {
-        Player currentPlayer = _playerControllersAssociated[lastPlayerToHit];
-        Player otherPlayer = GetOtherPlayer(lastPlayerToHit);
-
-        BallInstance.GetComponent<Ball>().ResetBallFunction();
-        
-        if (reboundCount == 1)
-        {
-            // Si on est en avantage, on revient à 40.
-            if (_playersPoints[currentPlayer] == 4)
-            {
-                _playersPoints[currentPlayer]--;
-            }
-            // Sinon si l'autre est en avantage ou (qu'il est à 40 mais que nous avons moins de 40), les sets gagnants de l'autre sont incrémentés et on fixe les points des 2 joueurs à 0.
-            else if (_playersPoints[otherPlayer] == 4 || (_playersPoints[otherPlayer] == 3 && _playersPoints[currentPlayer] < 3))
-            {
-                _playersPoints[currentPlayer] = 0;
-                _playersPoints[otherPlayer] = 0;
-
-                _playersGames[otherPlayer]++;
-                EndOfGameVerification(otherPlayer);
-            }
-            // Sinon on incrémente les points de l'autre joueur.
-            else
-            {
-                _playersPoints[otherPlayer]++;
-            }
-        }
-        else if (reboundCount == 2)
-        {
-            // Si l'autre a l'avantage, il revient à 40.
-            if (_playersPoints[otherPlayer] == 4)
-            {
-                _playersPoints[otherPlayer]--;
-            }
-            // Sinon si on est en avantage ou (à 40 et que l'autre a moins de 40), on incrémente le set et on fixe les points des 2 joueurs à 0.
-            else if (_playersPoints[currentPlayer] == 4 || (_playersPoints[currentPlayer] == 3 && _playersPoints[otherPlayer] < 3))
-            {
-                _playersPoints[currentPlayer] = 0;
-                _playersPoints[otherPlayer] = 0;
-
-                _playersGames[currentPlayer]++;
-                EndOfGameVerification(currentPlayer);
-            }
-            // Sinon on incrémente les points de ce joueur.
-            else
-            {
-                _playersPoints[currentPlayer]++;
-            }
-        }
-
-        ScoreUpdate();
-    }
-
-    private void ScoreUpdate()
-    {
-        string scoreLog = "";
-
-        foreach(KeyValuePair<ControllersParent, Player> kvp in _playerControllersAssociated)
-        {
-            Player player = kvp.Value;
-            scoreLog += $"{player.Name} (Games : {_playersGames[player]} ; Points : {_playersPoints[player]}) - ";
-        }
-
-        Debug.Log(scoreLog);
-    }
-
-    private void EndOfGameVerification(Player gameWinner)
-    {
-        if (_playersGames[gameWinner] == 2)
-        {
-            EndOfGame(gameWinner);
-        }
-    }
-
-    private void EndOfGame(Player finalWinner)
-    {
-        ScoreUpdate();
-        Debug.Log($"End of the game - The winner is : {finalWinner.Name}");
-    }
 
     private Player GetOtherPlayer(ControllersParent currentPlayer)
     {
@@ -208,5 +138,23 @@ public class GameManager : MonoBehaviour
         }
 
         return 0f;
+    }
+
+    public void EndOfPoint()
+    {
+        CurrentState = GameState.ENDPOINT;
+
+        foreach (var player in _controllers)
+        {
+            player.ResetAtService();
+        }
+    }
+
+    public void ChangeServer()
+    {
+        int newServer = (_serverIndex + 1) % _controllers.Count;
+        _controllers[_serverIndex].IsServing = false;
+        _controllers[newServer].IsServing = true;
+        _serverIndex = newServer;
     }
 }
