@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     #region PRIVATE FIELDS
 
+    [Header("Environment Objects")]
+    [SerializeField] private GameObject _net;
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
 
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
     #region GETTERS
 
     public GameObject BallInstance {  get { return _ballInstance; } }
+    public GameObject Net {  get { return _net; } }
 
     #endregion
 
