@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _tournamentMenu;
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _characterSelectionMenu;
+    [SerializeField] private GameObject _rulesSelectionMenu;
 
 	private void Start()
 	{
@@ -39,6 +40,7 @@ public class MainMenu : MonoBehaviour
         _optionsMenu.SetActive(false);
         _freeGameMenu.SetActive(false);
         _characterSelectionMenu.SetActive(false);
+        _rulesSelectionMenu.SetActive(false);
         _tournamentMenu.SetActive(false);
     }
 

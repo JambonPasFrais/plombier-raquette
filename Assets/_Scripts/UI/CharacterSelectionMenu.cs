@@ -15,11 +15,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private List<Transform> _characterModelLocation = new List<Transform>();
 	[SerializeField] private List<Image> _selectedCharacterBackground = new List<Image>();
 	[SerializeField] private LayerMask _characterUILayerMask;
+	private List<CharacterData> _playersCharacter;
 	private int _playerIndex = 0;
 
 	private void Start()
 	{
-		foreach(var item in _characters)
+		_playersCharacter = new List<CharacterData>(new CharacterData[4]);
+		foreach (var item in _characters)
 		{
 			GameObject go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
@@ -46,6 +48,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				}
 
 				Instantiate(characterUI.Character.Model3D, _characterModelLocation[_playerIndex]);
+				_playersCharacter[_playerIndex] = characterUI.Character;
 				_playerIndex = (_playerIndex + 1) % 4;
 			}
 		}
@@ -53,6 +56,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	public void Play()
 	{
+		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		SceneManager.LoadScene(1);
 	}
 }
