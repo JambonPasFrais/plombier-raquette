@@ -23,6 +23,8 @@ public class FreeGameMenu : MonoBehaviour
 
 	public void GoToRulesSelection(bool isOnline)
 	{
+		GameParameters.Instance.SetNumberOfPlayer(_currentNumberOfPlayers);
+		GameParameters.Instance.SetMode(isOnline);
 		gameObject.SetActive(false);
 		_rulesMenu.SetActive(true);
 	}
