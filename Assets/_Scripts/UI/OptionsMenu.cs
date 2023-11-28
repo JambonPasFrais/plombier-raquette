@@ -62,8 +62,7 @@ public class OptionsMenu : MonoBehaviour
 
 		List<string> options = new List<string>();
 
-		int currentResolutionIndex = 0;
-		int cpt = 0;
+		int currentResolutionIndex = 0, cpt = 0;
 
 		foreach(var resolution in _resolutions)
 		{
@@ -71,6 +70,8 @@ public class OptionsMenu : MonoBehaviour
 
 			if (resolution.width == Screen.currentResolution.width && resolution.height == Screen.currentResolution.height)
 				currentResolutionIndex = cpt;
+
+			cpt++;
 		}
 
 		_resolutionDropdown.AddOptions(options);
