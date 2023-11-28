@@ -23,3 +23,9 @@ public enum Teams
 	TEAM1,
 	TEAM2
 }
+
+public enum FieldSide
+{
+	FIRSTSIDE,
+	SECONDSIDE
+}

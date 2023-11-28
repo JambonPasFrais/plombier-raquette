@@ -89,7 +89,7 @@ public class ScoreManager : MonoBehaviour
 			}
 
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 6 == 0)
-				GameManager.Instance.HasChangeSidesSinceBeginning = !GameManager.Instance.HasChangeSidesSinceBeginning;
+				GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
 
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 2 == 1)
 				GameManager.Instance.ChangeServer();
@@ -117,7 +117,7 @@ public class ScoreManager : MonoBehaviour
 		_score[_currentSetIndex] = newScore;
 
 		if ((_score[_currentSetIndex].Item1 + _score[_currentSetIndex].Item2) % 2 == 1)
-			GameManager.Instance.HasChangeSidesSinceBeginning = !GameManager.Instance.HasChangeSidesSinceBeginning;
+			GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
 
 		if (((_score[_currentSetIndex].Item1 == _nbOfGamesToWin && _score[_currentSetIndex].Item1 >= _score[_currentSetIndex].Item2 + 2) ||
 			_score[_currentSetIndex].Item1 == _nbOfGamesToWin + 1) || (_nbOfGamesToWin == 1 && _score[_currentSetIndex].Item1 == _nbOfGamesToWin))

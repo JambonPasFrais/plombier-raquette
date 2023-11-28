@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public GameState CurrentState;
 
-    [HideInInspector] public bool HasChangeSidesSinceBeginning;
+    [HideInInspector] public bool ServiceOnOriginalSide;
     [HideInInspector] public bool IsGameFinished;
     [HideInInspector] public bool ServeRight;
 
@@ -49,20 +49,21 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        _ballInstance = Instantiate(BallPrefab);
+        _ballInstance.SetActive(false);
     }
 
     void Start()
     {
-        HasChangeSidesSinceBeginning = false;
+        ServiceOnOriginalSide = true;
         IsGameFinished = false;
         ServeRight = true;
 
         _serverIndex = 0;
         CurrentState = GameState.SERVICE;
         _controllers[_serverIndex].IsServing = true;
-        SideManager.Instance.ChangeSidesInGameSimple(_controllers, ServeRight, HasChangeSidesSinceBeginning);
-        _ballInstance = Instantiate(BallPrefab);
-        _ballInstance.SetActive(false);
+        SideManager.Instance.ChangeSidesInGameSimple(_controllers, ServeRight, ServiceOnOriginalSide);
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();

@@ -12,8 +12,10 @@ public class BotBehavior : ControllersParent
     [SerializeField] private List<NamedActions> _possibleActions;
     [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
 
-    [Header("Instances")] 
+    [Header("Instances")]
     [SerializeField] private Transform[] _targets;
+    [SerializeField] private Transform[] _firstSideTargetsPositions;
+    [SerializeField] private Transform[] _secondSideTargetsPositions;
     [SerializeField] private BallDetection _ballDetection;
     
     [Header("GD")]
@@ -23,10 +25,20 @@ public class BotBehavior : ControllersParent
 
     private Ball _ballInstance;
     private Vector3 _targetPosVector3;
+    private Dictionary<string, Transform[]> _targetPositionsBySide;
 
     #endregion
-    
+
     #region Unity Methods
+
+    private void Awake()
+    {
+        _targetPositionsBySide = new Dictionary<string, Transform[]>()
+        {
+            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
+            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
+        };
+    }
 
     private void Start()
     {
@@ -62,6 +74,15 @@ public class BotBehavior : ControllersParent
     {
         _targetPosVector3.x = _ballInstance.gameObject.transform.position.x;
         transform.position = Vector3.MoveTowards(transform.position, _targetPosVector3, _speed * Time.deltaTime);
+    }
+
+    public void SetTargetsSide(string sideName)
+    {
+        for(int i = 0; i < _targets.Length; i++)
+        {
+            Transform target = _targets[i];
+            target.position = _targetPositionsBySide[sideName][i].position;
+        }
     }
     
     #endregion

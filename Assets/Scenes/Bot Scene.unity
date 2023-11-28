@@ -221,6 +221,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6158525152370027648, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
   m_PrefabInstance: {fileID: 10320970}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &10320972 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7149170198442752686, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &10320973 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2661106444941520428, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &10320974 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6326856674745639748, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &10320975 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6575071565374045062, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &10320976 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3064930953899712180, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &10320977 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7600912880084244355, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &56132860
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +345,7 @@ MonoBehaviour:
   BallInitializationTransform: {fileID: 1687099903}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   CurrentState: 0
-  HasChangeSidesSinceBeginning: 0
+  ServiceOnOriginalSide: 0
   IsGameFinished: 0
   ServeRight: 0
   _controllers:
@@ -13297,9 +13327,17 @@ MonoBehaviour:
   - Name: Normal
     PhysicMaterial: {fileID: 13400000, guid: 368022c5343cfe749b19ad63ae0274af, type: 2}
   _targets:
-  - {fileID: 330511883}
   - {fileID: 1961376066}
+  - {fileID: 330511883}
   - {fileID: 1549048599}
+  _firstSideTargetsPositions:
+  - {fileID: 10320977}
+  - {fileID: 10320976}
+  - {fileID: 10320975}
+  _secondSideTargetsPositions:
+  - {fileID: 10320974}
+  - {fileID: 10320973}
+  - {fileID: 10320972}
   _ballDetection: {fileID: 5342351297477191419}
   _speed: 7.5
   _minimumHitForce: 300
