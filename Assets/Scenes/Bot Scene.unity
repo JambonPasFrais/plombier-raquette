@@ -342,9 +342,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ab2fa191ef7d448bbe33d8683f3373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentState: 0
+  SideManager: {fileID: 175529523}
+  ServiceManager: {fileID: 175529522}
+  ScoreManager: {fileID: 175529524}
   BallInitializationTransform: {fileID: 1687099903}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-  CurrentState: 0
   ServiceOnOriginalSide: 0
   IsGameFinished: 0
   ServeRight: 0

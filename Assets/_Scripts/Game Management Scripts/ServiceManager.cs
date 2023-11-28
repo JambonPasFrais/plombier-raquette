@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class ServiceManager : MonoBehaviour
 {
-    private static ServiceManager _instance;
-	[SerializeField] private Transform _serviceBoxesParentSide1;
+    #region PRIVATE FIELDS
+
+    [SerializeField] private Transform _serviceBoxesParentSide1;
 	[SerializeField] private Transform _serviceBoxesParentSide2;
 	[SerializeField] private List<GameObject> _lockServiceMovementColliders;
-	//[SerializeField] private GameObject _lockServiceMovementCollidersSide2;
 
 	private List<GameObject> _serviceBoxesSide1 = new List<GameObject>();
 	private List<GameObject> _serviceBoxesSide2 = new List<GameObject>();
@@ -17,16 +17,8 @@ public class ServiceManager : MonoBehaviour
 	[SerializeField] private int _lastServiceLateralSide = 1;
 	[SerializeField] private bool _changeSides;
 	[SerializeField] private int _nbOfGames = 0;
-	
 
-	public static ServiceManager Instance => _instance;
-
-
-	private void Awake()
-	{
-		if (_instance == null)
-			_instance = this;
-	}
+	#endregion
 
 	private void Start()
 	{

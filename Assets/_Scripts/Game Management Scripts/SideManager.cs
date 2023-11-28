@@ -7,8 +7,6 @@ public class SideManager : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
-    private static SideManager _instance;
-
 	[SerializeField] private Transform _servicePointsFirstSideParent;
 	[SerializeField] private Transform _servicePointsSecondSideParent;
 	[SerializeField] private Transform _cameraParent;
@@ -22,16 +20,12 @@ public class SideManager : MonoBehaviour
 
     #region GETTERS
 
-    public static SideManager Instance => _instance;
 	public Transform ActiveCameraTransform { get { return _activeCameraTransform; } }
 
 	#endregion
 
 	private void Awake()
 	{
-		if (_instance == null)
-			_instance = this;
-
 		for (int i = 0; i < _servicePointsFirstSideParent.childCount; i++)
 		{
 			_servicePointsFirstSide.Add(_servicePointsFirstSideParent.GetChild(i).name, _servicePointsFirstSideParent.GetChild(i));

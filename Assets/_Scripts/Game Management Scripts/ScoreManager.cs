@@ -9,11 +9,12 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-	private List<Tuple<int, int>> _score = new List<Tuple<int, int>>(5);
+    #region PRIVATE FIELDS
+
+    private List<Tuple<int, int>> _score = new List<Tuple<int, int>>(5);
 
 	private Tuple<int, int> _currentGameScore = new Tuple<int, int>(0, 0);
 
-    private static ScoreManager _instance;
 	private static List<string> _possiblePoints = new List<string>(5)
 	{
 		"0",
@@ -29,13 +30,7 @@ public class ScoreManager : MonoBehaviour
 	[SerializeField] private bool _isTieBreak = false;
 	[SerializeField] private TextMeshProUGUI _scoreText;
 
-    public static ScoreManager Instance => _instance;
-
-	private void Awake()
-	{
-		if(_instance == null)
-            _instance = this;
-	}
+	#endregion
 
 	private void Start()
 	{
@@ -56,7 +51,7 @@ public class ScoreManager : MonoBehaviour
 			else if (winnerPoints == 3 && loserPoints == 4)
 			{
 				_currentGameScore = new Tuple<int, int>(3, 3);
-				ServiceManager.Instance.SetServiceBoxCollider(false);
+				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 			}
 			else
 			{
@@ -65,7 +60,7 @@ public class ScoreManager : MonoBehaviour
 				else
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
 
-				ServiceManager.Instance.SetServiceBoxCollider(false);
+                GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 			}
 		}
 		else
@@ -74,13 +69,13 @@ public class ScoreManager : MonoBehaviour
 			{
 				_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1 + 1, _currentGameScore.Item2);
 				winnerPoints++;
-				ServiceManager.Instance.SetServiceBoxCollider(false);
+                GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 			}
 			else
 			{
 				_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
 				winnerPoints++;
-				ServiceManager.Instance.SetServiceBoxCollider(false);
+				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 			}
 
 			if (winnerPoints >= 7 && winnerPoints >= loserPoints + 2)
@@ -137,7 +132,7 @@ public class ScoreManager : MonoBehaviour
 			_currentGameScore = new Tuple<int, int>(0, 0);
 		}
 
-		ServiceManager.Instance.SetServiceBoxCollider(true);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
 	}
 
 	public void ChangeSet(int player)

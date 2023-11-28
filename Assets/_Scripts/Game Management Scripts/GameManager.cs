@@ -9,10 +9,16 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+    public GameState CurrentState;
+
+    [Header("Manager Instances")]
+    public SideManager SideManager;
+    public ServiceManager ServiceManager;
+    public ScoreManager ScoreManager;
+
+    [Header("Ball Management")]
     public Transform BallInitializationTransform;
     public GameObject BallPrefab;
-
-    public GameState CurrentState;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
     [HideInInspector] public bool IsGameFinished;
@@ -63,7 +69,7 @@ public class GameManager : MonoBehaviour
         _serverIndex = 0;
         CurrentState = GameState.SERVICE;
         _controllers[_serverIndex].IsServing = true;
-        SideManager.Instance.ChangeSidesInGameSimple(_controllers, ServeRight, ServiceOnOriginalSide);
+        GameManager.Instance.SideManager.ChangeSidesInGameSimple(_controllers, ServeRight, ServiceOnOriginalSide);
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();

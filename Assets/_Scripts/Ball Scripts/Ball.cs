@@ -64,7 +64,7 @@ public class Ball : MonoBehaviour
         if (!_isOnOtherSide && GameManager.Instance.CurrentState == GameState.PLAYING)
         {
             Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)_lastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-            ScoreManager.Instance.AddPoint(otherTeam);
+            GameManager.Instance.ScoreManager.AddPoint(otherTeam);
             /*StartCoroutine(ReinitializeBall());*/
             ResetBallFunction();
         }
@@ -72,7 +72,7 @@ public class Ball : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<PlayerController>() && _lastPlayerToApplyForce != collision.gameObject.GetComponent<ControllersParent>())
             {
-                ScoreManager.Instance.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+                GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
                 /*StartCoroutine(ReinitializeBall());*/
                 ResetBallFunction();
             }
@@ -83,7 +83,7 @@ public class Ball : MonoBehaviour
 
                 if (_reboundsCount == 1)
                 {
-                    ScoreManager.Instance.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+                    GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
                     /*StartCoroutine(ReinitializeBall());*/
                     ResetBallFunction();
                 }
@@ -93,7 +93,7 @@ public class Ball : MonoBehaviour
                     if (detection.IsFault)
                     {
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)_lastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-                        ScoreManager.Instance.AddPoint(otherTeam);
+                        GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                         /*StartCoroutine(ReinitializeBall());*/
                         ResetBallFunction();
                     }
