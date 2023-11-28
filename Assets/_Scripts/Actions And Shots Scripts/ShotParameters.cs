@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ShotParameters", menuName = "ScriptableObjects/ShotParameters", order = 0)] 
+[CreateAssetMenu(fileName = "ShotParameters", menuName = "ScriptableObjects/BallParameters/ShotParameters")] 
 public class ShotParameters : ScriptableObject
 {
     #region PRIVATE FIELDS

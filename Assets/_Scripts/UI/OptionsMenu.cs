@@ -47,6 +47,8 @@ public class OptionsMenu : MonoBehaviour
 
 	private void Start()
 	{
+		_audioMixer = AudioManager.AudioMixer;
+
 		CreateResolutionsItems();
 		CreateMaxFPSItems();
 		CreateQualityItems();
