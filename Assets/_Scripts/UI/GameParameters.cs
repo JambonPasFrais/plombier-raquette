@@ -7,7 +7,7 @@ public class GameParameters : MonoBehaviour
 {
 	[SerializeField] private int _numberOfPlayers;
 	[SerializeField] private bool _isOnline;
-	[SerializeField] private bool _isDouble;
+	[SerializeField] private int _numberOfPlayerBySide;
 	[SerializeField] private int _nbOfSets;
 	[SerializeField] private int _nbOfGames;
 	[SerializeField] private int _COMDifficulty;
@@ -34,9 +34,9 @@ public class GameParameters : MonoBehaviour
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(bool isDouble, int gameMode, int COMDifficulty)
+    public void SetGameParameters(int isDouble, int gameMode, int COMDifficulty)
     {
-        _isDouble = isDouble;
+        _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
 
         switch (gameMode)
