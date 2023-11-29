@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject BallInstance {  get { return _ballInstance; } }
     public GameObject Net {  get { return _net; } }
+    public List<ControllersParent> Controllers {  get { return _controllers; } }
 
     #endregion
 
@@ -78,6 +79,7 @@ public class GameManager : MonoBehaviour
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
         GameManager.Instance.SideManager.ChangeSidesInGameSimple(_controllers, ServeRight, ServiceOnOriginalSide);
+        ServiceManager.SetServiceBoxCollider(false);
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();

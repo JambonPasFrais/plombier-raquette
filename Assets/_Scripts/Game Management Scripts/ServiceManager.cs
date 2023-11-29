@@ -5,34 +5,38 @@ using UnityEngine;
 
 public class ServiceManager : MonoBehaviour
 {
+    #region PUBLIC FIELDS
+
+    public bool ChangeSides;
+
+    #endregion
+
     #region PRIVATE FIELDS
 
-    [SerializeField] private Transform _serviceBoxesParentSide1;
-	[SerializeField] private Transform _serviceBoxesParentSide2;
-	[SerializeField] private List<GameObject> _lockServiceMovementColliders;
+    [SerializeField] private List<GameObject> _lockServiceMovementColliders;
 
-	private List<GameObject> _serviceBoxesSide1 = new List<GameObject>();
-	private List<GameObject> _serviceBoxesSide2 = new List<GameObject>();
-
-	[SerializeField] private int _lastServiceLateralSide = 1;
-	[SerializeField] private bool _changeSides;
+	[SerializeField] private int _lastServiceLateralSide = 0;
 	[SerializeField] private int _nbOfGames = 0;
+
+    #endregion
+
+    #region GETTERS
+
+    public int LastServiceLateralSide { get { return _lastServiceLateralSide; } }
 
 	#endregion
 
 	private void Start()
 	{
-		for(int i = 0; i < 2; i++)
-		{
-			_serviceBoxesSide1.Add(_serviceBoxesParentSide1.GetChild(i).gameObject);
-			_serviceBoxesSide2.Add(_serviceBoxesParentSide2.GetChild(i).gameObject);
-		}
-
-		_nbOfGames = 0;
-		_changeSides = false;
-		SetServiceBoxCollider(false);
+		_lastServiceLateralSide = 1;
+        _nbOfGames = 0;
+		ChangeSides = false;
 	}
 
+	/// <summary>
+	/// Places the restraining colliders on the serving player's side of the field, according to the side changes of the tennis rules.
+	/// </summary>
+	/// <param name="newGame"></param>
 	public void SetServiceBoxCollider(bool newGame)
 	{
 		if (newGame)
@@ -40,41 +44,38 @@ public class ServiceManager : MonoBehaviour
 			_nbOfGames = (_nbOfGames + 1) % 2;
 			_lastServiceLateralSide = 0;
 
-			for (int i = 0; i < 2; i++)
-			{
-				_serviceBoxesSide1[i].SetActive(false);
-				_serviceBoxesSide2[i].SetActive(false);
-				_lockServiceMovementColliders[i].SetActive(false);
-			}
+			DisableLockServiceColliders();
 
-			if (_nbOfGames == 0)
-				_changeSides = !_changeSides;
+            if (_nbOfGames == 1)
+				ChangeSides = !ChangeSides;
 		}
-
 		else
 		{
 			_lastServiceLateralSide = (_lastServiceLateralSide + 1) % 2;
 		}		
 
-		if (_changeSides)
+		if (!ChangeSides)
 		{
-			_serviceBoxesSide2[_lastServiceLateralSide].SetActive(true);
-			_serviceBoxesSide2[(_lastServiceLateralSide + 1) % 2].SetActive(false);
 			EnableLockServiceColliders(0);
 		}
 		else
 		{
-			_serviceBoxesSide1[_lastServiceLateralSide].SetActive(true);
-			_serviceBoxesSide1[(_lastServiceLateralSide + 1) % 2].SetActive(false);
 			EnableLockServiceColliders(1);
 		}
 	}
 
+	/// <summary>
+	/// Activates the colliders of a specific side of the field.
+	/// </summary>
+	/// <param name="side"></param>
 	private void EnableLockServiceColliders(int side)
 	{
 		_lockServiceMovementColliders[side].SetActive(true);
 	}
 
+	/// <summary>
+	/// Disables all the service colliders.
+	/// </summary>
 	public void DisableLockServiceColliders()
 	{
 		foreach(var item in _lockServiceMovementColliders)

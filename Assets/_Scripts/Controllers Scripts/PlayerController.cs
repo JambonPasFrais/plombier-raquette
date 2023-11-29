@@ -56,7 +56,7 @@ public class PlayerController : ControllersParent
 
     private void FixedUpdate()
     {
-        // The global player directions depend on the side he is on.
+        // The global player directions depend on the side he is on and its forward movement depends on the game phase.
         Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
         Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
         Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;

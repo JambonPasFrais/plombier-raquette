@@ -38,6 +38,12 @@ public class SideManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Alternates the player's fields and set the players, the cameras and the bot targets to the correct positions for a 1v1 match.
+	/// </summary>
+	/// <param name="players"></param>
+	/// <param name="serveRight"></param>
+	/// <param name="_originalSides"></param>
 	public void ChangeSidesInGameSimple(List<ControllersParent> players, bool serveRight, bool _originalSides)
 	{
 		string side = "";
@@ -68,7 +74,13 @@ public class SideManager : MonoBehaviour
 		ChangeBotTargetsSide(players, _originalSides);
     }
 
-	public void ChangeSidesInGameDouble(List<PlayerController> players, bool serveRight, bool _originalSides)
+    /// <summary>
+    /// Alternates the player's fields and set the players, the cameras and the bot targets to the correct positions in a 2v2 match.
+    /// </summary>
+    /// <param name="players"></param>
+    /// <param name="serveRight"></param>
+    /// <param name="_originalSides"></param>
+    public void ChangeSidesInGameDouble(List<PlayerController> players, bool serveRight, bool _originalSides)
 	{
 		string side = "";
 

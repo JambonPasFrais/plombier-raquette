@@ -102,7 +102,7 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // If the ball enters in the net collider volume, then the ball passed on the other side.
+/*        // If the ball enters in the net collider volume, then the ball passed on the other side.
         if (other.gameObject.GetComponent<NetDetection>())
             _isOnOtherSide = true;
 
@@ -111,7 +111,7 @@ public class Ball : MonoBehaviour
         {
             _rigidBody.velocity = Vector3.zero;
             ballServiceDetection.Player.PlayerState = PlayerStates.IDLE;
-        }
+        }*/
     }
 
     #endregion
