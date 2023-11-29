@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +16,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private List<Transform> _characterModelLocation = new List<Transform>();
 	[SerializeField] private List<Image> _selectedCharacterBackground = new List<Image>();
 	[SerializeField] private LayerMask _characterUILayerMask;
+	[SerializeField] private Transform _charactersModelsParent;
+	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private List<CharacterData> _playersCharacter;
 	private int _playerIndex = 0;
 
@@ -25,6 +28,11 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			GameObject go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
+		}
+
+		for (int i = 0; i < _charactersModelsParent.childCount; i++)
+		{
+			_charactersModel.Add(_charactersModelsParent.GetChild(i).name, _charactersModelsParent.GetChild(i).gameObject);
 		}
 	}
 
@@ -47,7 +55,11 @@ public class CharacterSelectionMenu : MonoBehaviour
 					}
 				}
 
-				Instantiate(characterUI.Character.Model3D, _characterModelLocation[_playerIndex]);
+				//Instantiate(characterUI.Character.Model3D, _characterModelLocation[_playerIndex]);
+				_charactersModel.TryGetValue(characterUI.Character.Name, out GameObject go);
+				go.transform.SetParent(_characterModelLocation[_playerIndex]);
+				go.transform.localPosition = Vector3.zero;
+				go.SetActive(true);
 				_playersCharacter[_playerIndex] = characterUI.Character;
 				_playerIndex = (_playerIndex + 1) % 4;
 			}
