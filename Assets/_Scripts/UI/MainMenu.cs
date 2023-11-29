@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private GameObject _loadingScreen;
 	[SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject _freeGameMenu;
     [SerializeField] private GameObject _tournamentMenu;
@@ -14,6 +15,8 @@ public class MainMenu : MonoBehaviour
 	private void Start()
 	{
 		ReturnToMainMenu();
+        _mainMenu.SetActive(false);
+        _loadingScreen.SetActive(true);
 	}
 
 	public void ShowFreeGameMenu()
