@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameParameters : MonoBehaviour
@@ -33,12 +34,30 @@ public class GameParameters : MonoBehaviour
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(bool isDouble, int nbOfSets, int nbOfGames, int COMDifficulty)
+    public void SetGameParameters(bool isDouble, int gameMode, int COMDifficulty)
     {
         _isDouble = isDouble;
-        _nbOfSets = nbOfSets;
-        _nbOfGames = nbOfGames;
         _COMDifficulty = COMDifficulty;
+
+        switch (gameMode)
+        {
+            case 0:
+                _nbOfSets = 1;
+                _nbOfGames = 1;
+                break;
+			case 1:
+				_nbOfSets = 1;
+				_nbOfGames = 6;
+				break;
+            case 2:
+				_nbOfSets = 2;
+				_nbOfGames = 6;
+				break;
+            case 3:
+				_nbOfSets = 3;
+				_nbOfGames = 6;
+				break;
+		}
     }
 
     public void SetCharactersPlayers(List<CharacterData> playersCharacters)
