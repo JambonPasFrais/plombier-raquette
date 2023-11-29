@@ -131,6 +131,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1877488717}
     m_Modifications:
+    - target: {fileID: 284168354273578382, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 9127353872525647490}
+    - target: {fileID: 1549989131340410667, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 9127353872525647490}
+    - target: {fileID: 1773003915773665770, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 534994376}
+    - target: {fileID: 1805646794831550741, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 9127353872525647490}
+    - target: {fileID: 3105107556669345995, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 9127353872525647490}
+    - target: {fileID: 3187024997350471719, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 534994376}
     - target: {fileID: 6158525152370027648, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -175,6 +199,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7183868423397239381, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 9127353872525647490}
+    - target: {fileID: 8215627872845771109, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 534994376}
+    - target: {fileID: 8566750339095923896, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 534994376}
+    - target: {fileID: 8826042505208906036, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: _ownerPlayer
+      value: 
+      objectReference: {fileID: 534994376}
     - target: {fileID: 9113566642155893178, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_Name
       value: NewCourt
@@ -310,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ab2fa191ef7d448bbe33d8683f3373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentState: 0
+  GameState: 0
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
@@ -338,8 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77b91b67d7c90744ac47c13dddabf97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serviceBoxesParentSide1: {fileID: 2024003194}
-  _serviceBoxesParentSide2: {fileID: 1256655395}
+  _serviceBoxesParentSide1: {fileID: 0}
+  _serviceBoxesParentSide2: {fileID: 0}
   _lockServiceMovementColliders:
   - {fileID: 1243780555}
   - {fileID: 1080589701}
@@ -1075,11 +1115,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6452562265072210526, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
   m_PrefabInstance: {fileID: 10320970}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1256655395 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 807274177901378629, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-  m_PrefabInstance: {fileID: 10320970}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1335233997 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6802484200358806829, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -1479,11 +1514,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2024003194 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3801477712044235029, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-  m_PrefabInstance: {fileID: 10320970}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2042717044
 GameObject:
   m_ObjectHideFlags: 0
@@ -13294,7 +13324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsServing: 0
-  CurrentState: 0
+  PlayerState: 0
   _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 571791135}
   _possibleActions:

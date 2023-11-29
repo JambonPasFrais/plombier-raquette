@@ -85,13 +85,15 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
 
-        if (CurrentState == PlayerStates.SERVE)
+        if (PlayerState == PlayerStates.SERVE)
         {
-            CurrentState = PlayerStates.PLAY;
+            PlayerState = PlayerStates.PLAY;
             _ballServiceDetectionArea.gameObject.SetActive(false);
             GameManager.Instance.ServiceManager.DisableLockServiceColliders();
-            GameManager.Instance.CurrentState = GameState.PLAYING;
         }
+
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
+            GameManager.Instance.GameState = GameState.PLAYING;
 
         Vector3 horizontalDirection;
 

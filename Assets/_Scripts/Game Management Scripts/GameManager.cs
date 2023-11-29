@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    public GameState CurrentState;
+    public GameState GameState;
 
     [Header("Manager Instances")]
     public SideManager SideManager;
@@ -69,8 +69,13 @@ public class GameManager : MonoBehaviour
         IsGameFinished = false;
         ServeRight = true;
 
+        GameState = GameState.SERVICE;
+        foreach(ControllersParent controller in _controllers)
+        {
+            controller.PlayerState = PlayerStates.IDLE;
+        }
+
         _serverIndex = 0;
-        CurrentState = GameState.SERVICE;
         _controllers[_serverIndex].IsServing = true;
         GameManager.Instance.SideManager.ChangeSidesInGameSimple(_controllers, ServeRight, ServiceOnOriginalSide);
 
@@ -99,11 +104,12 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Ball instantiation.
-        if (Input.GetKeyDown(KeyCode.C) && _controllers[_serverIndex].CurrentState == PlayerStates.IDLE && _controllers[_serverIndex].IsServing)
+        if (Input.GetKeyDown(KeyCode.C) && _controllers[_serverIndex].PlayerState == PlayerStates.IDLE && _controllers[_serverIndex].IsServing)
         {
             _ballInstance.GetComponent<Ball>().ResetBallFunction();
 
-            _controllers[_serverIndex].CurrentState = PlayerStates.SERVE;
+            _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
+            GameState = GameState.SERVICE;
             _ballInstance.transform.position = BallInitializationTransform.position;
             _ballInstance.SetActive(true);
         }
@@ -165,7 +171,7 @@ public class GameManager : MonoBehaviour
 
     public void EndOfPoint()
     {
-        CurrentState = GameState.ENDPOINT;
+        GameState = GameState.ENDPOINT;
 
         foreach (var player in _controllers)
         {

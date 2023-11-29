@@ -27,6 +27,7 @@ public class ServiceManager : MonoBehaviour
 			_serviceBoxesSide1.Add(_serviceBoxesParentSide1.GetChild(i).gameObject);
 			_serviceBoxesSide2.Add(_serviceBoxesParentSide2.GetChild(i).gameObject);
 		}
+
 		_nbOfGames = 0;
 		_changeSides = false;
 		SetServiceBoxCollider(false);

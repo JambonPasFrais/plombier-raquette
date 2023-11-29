@@ -47,7 +47,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (GameManager.Instance.CurrentState == GameState.PLAYING)
+        /*if (GameManager.Instance.CurrentState == GameState.PLAYING)
         {
             // If the ball enters in collision with a part of the court ground, its number of rebounds is iterated.
             if(collision.gameObject.TryGetComponent<CourtDetections>(out CourtDetections courtGroundPart))
@@ -80,13 +80,13 @@ public class Ball : MonoBehaviour
                     Vector3 horizontalCameraForwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
                     bool isReboundOnHittingPlayerSide = Vector3.Dot(horizontalBallToNetVector, horizontalCameraForwardVector) > 0;
 
-                    // If the ball enters in collision with a forbidden part of the other side of the field on the first rebound, then it is fault.
-                    if (detection.IsFault && isReboundOnHittingPlayerSide)
+                    // If the ball enters in collision with a forbidden part of the other side of the field or on the hitting player field after rebounding on the net on the first rebound, then it is fault.
+                    if (detection.IsFault || isReboundOnHittingPlayerSide)
                     {
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)_lastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                         ResetBallFunction();
-                        Debug.Log("Collision with a fault part of the ground, on the other side and on the first rebound");
+                        Debug.Log("Collision with a fault part of the ground and/or on the hitting player side on the first rebound");
                     }
                 }
                 // If the ball enters in collision with the ground a second time, it is point for the hitting player.
@@ -97,7 +97,7 @@ public class Ball : MonoBehaviour
                     Debug.Log("Collision with the ground for the second time");
                 }
             }
-        }
+        }*/
     }
 
     private void OnTriggerEnter(Collider other)
@@ -107,10 +107,10 @@ public class Ball : MonoBehaviour
             _isOnOtherSide = true;
 
         // If the ball enters the ball service detection during the service, then the player didn't serve yet and just threw the ball in the air.
-        if (GameManager.Instance.CurrentState == GameState.SERVICE && other.gameObject.TryGetComponent<BallServiceDetection>(out BallServiceDetection ballServiceDetection))
+        if (GameManager.Instance.GameState == GameState.SERVICE && other.gameObject.TryGetComponent<BallServiceDetection>(out BallServiceDetection ballServiceDetection))
         {
             _rigidBody.velocity = Vector3.zero;
-            ballServiceDetection.Player.CurrentState = PlayerStates.IDLE;
+            ballServiceDetection.Player.PlayerState = PlayerStates.IDLE;
         }
     }
 
