@@ -83,7 +83,5 @@ public class RulesMenu : MonoBehaviour
 	public void ValidateParameters()
 	{
 		GameParameters.Instance.SetGameParameters(_numberOfPlayerBySide, _gameMode, _currentDifficulty);
-		gameObject.SetActive(false);
-		_characterSelectionMenu.SetActive(true);
 	}
 }
