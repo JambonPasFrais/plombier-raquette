@@ -6,6 +6,11 @@ public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private GameObject _mainMenu;
 
+	private void Start()
+	{
+		gameObject.SetActive(true);
+	}
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
