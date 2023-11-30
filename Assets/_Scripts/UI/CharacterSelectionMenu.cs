@@ -18,21 +18,25 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private LayerMask _characterUILayerMask;
 	[SerializeField] private Transform _charactersModelsParent;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
-	private List<CharacterData> _playersCharacter;
+	private List<CharacterData> _playersCharacter = new List<CharacterData>(new CharacterData[4]);
+	private List<CharacterUI> _selectedCharacterUIs = new List<CharacterUI>(new CharacterUI[4]);
 	private int _playerIndex = 0;
 
 	private void Start()
 	{
-		_playersCharacter = new List<CharacterData>(new CharacterData[4]);
+		GameObject go;
 		foreach (var item in _characters)
 		{
-			GameObject go = Instantiate(_characterUIPrefab, _charactersListTransform);
+			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
 		}
 
-		for (int i = 0; i < _charactersModelsParent.childCount; i++)
+		foreach(var item in _characters)
 		{
-			_charactersModel.Add(_charactersModelsParent.GetChild(i).name, _charactersModelsParent.GetChild(i).gameObject);
+			go = Instantiate(item.Model3D, _charactersModelsParent);
+			go.name = item.Name;
+			go.SetActive(false);
+			_charactersModel.Add(item.Name, go);
 		}
 	}
 
@@ -42,24 +46,33 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit, float.PositiveInfinity, _characterUILayerMask) && hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI))
+			GameObject go;
+
+			if (Physics.Raycast(ray, out hit, float.PositiveInfinity, _characterUILayerMask) 
+				&& hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
+				&& !characterUI.IsSelected)
 			{
+				characterUI.SetSelected(true);
 				_selectedCharactersName[_playerIndex].text = characterUI.Character.Name;
 				_selectedCharacterBackground[_playerIndex].color = characterUI.Character.CharacterColor;
 
 				if (_characterModelLocation[_playerIndex].childCount > 0)
 				{
-					for(int i = 0; i < _characterModelLocation[_playerIndex].childCount; i++)
-					{
-						Destroy(_characterModelLocation[_playerIndex].GetChild(i).gameObject);
-					}
+					_selectedCharacterUIs[_playerIndex].SetSelected(false);
+					go = _characterModelLocation[_playerIndex].GetChild(0).gameObject;
+					go.transform.SetParent(_charactersListTransform);
+					go.transform.localPosition = Vector3.zero;
+					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+					go.gameObject.SetActive(false);
+					_playersCharacter[_playerIndex] = null;
 				}
 
-				//Instantiate(characterUI.Character.Model3D, _characterModelLocation[_playerIndex]);
-				_charactersModel.TryGetValue(characterUI.Character.Name, out GameObject go);
+				_charactersModel.TryGetValue(characterUI.Character.Name, out go);
 				go.transform.SetParent(_characterModelLocation[_playerIndex]);
 				go.transform.localPosition = Vector3.zero;
+				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 				go.SetActive(true);
+				_selectedCharacterUIs[_playerIndex] = characterUI;
 				_playersCharacter[_playerIndex] = characterUI.Character;
 				_playerIndex = (_playerIndex + 1) % 4;
 			}
