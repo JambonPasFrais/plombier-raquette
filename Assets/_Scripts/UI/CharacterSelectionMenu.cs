@@ -17,6 +17,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private List<Image> _selectedCharacterBackground = new List<Image>();
 	[SerializeField] private LayerMask _characterUILayerMask;
 	[SerializeField] private Transform _charactersModelsParent;
+	[SerializeField] private Button _playButton;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private List<CharacterData> _playersCharacter = new List<CharacterData>(new CharacterData[4]);
 	private List<CharacterUI> _selectedCharacterUIs = new List<CharacterUI>(new CharacterUI[4]);
@@ -24,6 +25,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private void Start()
 	{
+		VerifyCharacters();
 		GameObject go;
 		foreach (var item in _characters)
 		{
@@ -74,6 +76,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				go.SetActive(true);
 				_selectedCharacterUIs[_playerIndex] = characterUI;
 				_playersCharacter[_playerIndex] = characterUI.Character;
+				VerifyCharacters();
 				_playerIndex = (_playerIndex + 1) % 4;
 			}
 		}
@@ -83,5 +86,16 @@ public class CharacterSelectionMenu : MonoBehaviour
 	{
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		SceneManager.LoadScene(1);
+	}
+
+	private void VerifyCharacters()
+	{
+		foreach(var item in _playersCharacter)
+		{
+			if (item == null)
+				return;
+		}
+
+		_playButton.interactable = true;
 	}
 }
