@@ -514,6 +514,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2130350815 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5459164070273848878, guid: 69ff3d32a02d19e46acfdfc241ca9e00, type: 3}
+  m_PrefabInstance: {fileID: 1561960850272857936}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1561960850272857936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,6 +561,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1786215417}
+    - target: {fileID: 5459164070273848878, guid: 69ff3d32a02d19e46acfdfc241ca9e00, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7162477122285444038, guid: 69ff3d32a02d19e46acfdfc241ca9e00, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -638,6 +653,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1091813752}
+    - target: {fileID: 7742659721862431853, guid: 69ff3d32a02d19e46acfdfc241ca9e00, type: 3}
+      propertyPath: _playButton
+      value: 
+      objectReference: {fileID: 2130350815}
     - target: {fileID: 7912223454767467193, guid: 69ff3d32a02d19e46acfdfc241ca9e00, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
