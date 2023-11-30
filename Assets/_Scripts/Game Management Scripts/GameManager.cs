@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
     public GameObject BallPrefab;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
-    [HideInInspector] public bool IsGameFinished;
-    [HideInInspector] public bool ServeRight;
 
     #endregion
 
@@ -67,8 +65,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         ServiceOnOriginalSide = true;
-        IsGameFinished = false;
-        ServeRight = true;
 
         GameState = GameState.SERVICE;
         foreach(ControllersParent controller in _controllers)
@@ -78,8 +74,8 @@ public class GameManager : MonoBehaviour
 
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
-        GameManager.Instance.SideManager.ChangeSidesInGameSimple(_controllers, ServeRight, ServiceOnOriginalSide);
-        ServiceManager.SetServiceBoxCollider(false);
+        GameManager.Instance.SideManager.ChangeSidesInGameSimple(_controllers, true, ServiceOnOriginalSide);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();
@@ -179,6 +175,11 @@ public class GameManager : MonoBehaviour
         {
             player.ResetAtService();
         }
+    }
+
+    public void EndOfGame()
+    {
+
     }
 
     public void ChangeServer()

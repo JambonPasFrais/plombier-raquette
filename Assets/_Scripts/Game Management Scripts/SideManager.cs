@@ -9,6 +9,8 @@ public class SideManager : MonoBehaviour
 
 	[SerializeField] private Transform _servicePointsFirstSideParent;
 	[SerializeField] private Transform _servicePointsSecondSideParent;
+	[SerializeField] private GameObject _firstSideCollidersParentObject;
+	[SerializeField] private GameObject _secondSideCollidersParentObject;
 	[SerializeField] private Transform _cameraParent;
 	[SerializeField] private List<GameObject> _cameras;
 
@@ -43,14 +45,14 @@ public class SideManager : MonoBehaviour
 	/// </summary>
 	/// <param name="players"></param>
 	/// <param name="serveRight"></param>
-	/// <param name="_originalSides"></param>
-	public void ChangeSidesInGameSimple(List<ControllersParent> players, bool serveRight, bool _originalSides)
+	/// <param name="originalSides"></param>
+	public void ChangeSidesInGameSimple(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
 		string side = "";
 
 		side = serveRight ? "Right" : "Left";
 
-		if (_originalSides)
+		if (originalSides)
 		{
 			_activeCameraTransform = _cameras[0].transform;
             _cameras[0].SetActive(true);
@@ -71,7 +73,8 @@ public class SideManager : MonoBehaviour
 			players[1].transform.rotation = _servicePointsFirstSide[side].rotation;
 		}
 
-		ChangeBotTargetsSide(players, _originalSides);
+		UpdateBotValues(players, originalSides);
+		SetCollidersOwnerPlayers(players, originalSides);
     }
 
     /// <summary>
@@ -99,35 +102,59 @@ public class SideManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Method called for placing the bot target points on the correct side of the field.
+	/// Method called for placing the bot target points on the correct side of the field and reinitializing its 3D position vector.
 	/// Only works for a simple game with a player and a bot.
 	/// </summary>
 	/// <param name="players"></param>
 	/// <param name="isServiceOnOriginalSide"></param>
-	private void ChangeBotTargetsSide(List<ControllersParent> players, bool isServiceOnOriginalSide)
+	private void UpdateBotValues(List<ControllersParent> players, bool isServiceOnOriginalSide)
 	{
 		BotBehavior botBehaviorComponent;
 
-		if(isServiceOnOriginalSide)
+		if (players[0].gameObject.TryGetComponent<BotBehavior>(out botBehaviorComponent))
 		{
-			if(players[0].gameObject.TryGetComponent<BotBehavior>(out botBehaviorComponent))
+			botBehaviorComponent.TargetPosVector3 = players[0].gameObject.transform.position;
+
+            if (isServiceOnOriginalSide)
 			{
 				botBehaviorComponent.SetTargetsSide(FieldSide.SECONDSIDE.ToString());
-            }
+			}
 			else
 			{
-                players[1].gameObject.GetComponent<BotBehavior>().SetTargetsSide(FieldSide.FIRSTSIDE.ToString());
-            }
-        }
-		else
-		{
-            if (players[0].gameObject.TryGetComponent<BotBehavior>(out botBehaviorComponent))
+				botBehaviorComponent.SetTargetsSide(FieldSide.FIRSTSIDE.ToString());
+			}
+		}
+		else if (players[1].gameObject.TryGetComponent<BotBehavior>(out botBehaviorComponent)) 
+        {
+            botBehaviorComponent.TargetPosVector3 = players[1].gameObject.transform.position;
+
+            if (isServiceOnOriginalSide)
             {
                 botBehaviorComponent.SetTargetsSide(FieldSide.FIRSTSIDE.ToString());
+			}
+			else
+			{
+                botBehaviorComponent.SetTargetsSide(FieldSide.SECONDSIDE.ToString());
             }
-            else
+        }
+    }
+
+	private void SetCollidersOwnerPlayers(List<ControllersParent> players, bool originalSides)
+	{
+		if (originalSides)
+		{
+			for (int i = 0; i < _firstSideCollidersParentObject.transform.childCount; i++) 
+			{
+				_firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[0];
+				_secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[1];
+            }
+		}
+		else
+		{
+            for (int i = 0; i < _firstSideCollidersParentObject.transform.childCount; i++)
             {
-                players[1].gameObject.GetComponent<BotBehavior>().SetTargetsSide(FieldSide.SECONDSIDE.ToString());
+                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[1];
+                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[0];
             }
         }
 	}

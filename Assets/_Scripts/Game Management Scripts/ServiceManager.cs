@@ -15,23 +15,24 @@ public class ServiceManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> _lockServiceMovementColliders;
 
-	[SerializeField] private int _lastServiceLateralSide = 0;
+	[SerializeField] private bool _serveRight = false;
 	[SerializeField] private int _nbOfGames = 0;
 
     #endregion
 
-    #region GETTERS
+    #region GETTERS & SETTERS
 
-    public int LastServiceLateralSide { get { return _lastServiceLateralSide; } }
+    public bool ServeRight { get { return _serveRight; } }
+	public int NbOfGames { set { _nbOfGames = value; } }
 
-	#endregion
+    #endregion
 
-	private void Start()
-	{
-		_lastServiceLateralSide = 1;
+    private void Awake()
+    {
+        _serveRight = false;
         _nbOfGames = 0;
-		ChangeSides = false;
-	}
+        ChangeSides = false;
+    }
 
 	/// <summary>
 	/// Places the restraining colliders on the serving player's side of the field, according to the side changes of the tennis rules.
@@ -42,7 +43,7 @@ public class ServiceManager : MonoBehaviour
 		if (newGame)
 		{
 			_nbOfGames = (_nbOfGames + 1) % 2;
-			_lastServiceLateralSide = 0;
+			_serveRight = true;
 
 			DisableLockServiceColliders();
 
@@ -51,7 +52,7 @@ public class ServiceManager : MonoBehaviour
 		}
 		else
 		{
-			_lastServiceLateralSide = (_lastServiceLateralSide + 1) % 2;
+			_serveRight = !_serveRight;
 		}		
 
 		if (!ChangeSides)

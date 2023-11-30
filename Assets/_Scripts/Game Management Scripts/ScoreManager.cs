@@ -52,7 +52,7 @@ public class ScoreManager : MonoBehaviour
 			{
 				_currentGameScore = new Tuple<int, int>(3, 3);
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.LastServiceLateralSide == 0,
+				GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
 			}
 			else
@@ -63,7 +63,7 @@ public class ScoreManager : MonoBehaviour
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
 
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.LastServiceLateralSide == 0,
+                GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
             }
 		}
@@ -88,25 +88,24 @@ public class ScoreManager : MonoBehaviour
 			{
                 GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.LastServiceLateralSide == 0,
+                GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
             }
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 2 == 1)
 			{
                 GameManager.Instance.ChangeServer();
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.LastServiceLateralSide == 0,
+                GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
             }
         }
 
-		if (!GameManager.Instance.IsGameFinished)
-			Debug.Log(GetScore());
+/*		if (!GameManager.Instance.IsGameFinished)*/
+		Debug.Log(GetScore());
 	}
 
 	public void AddGame(Teams winnerTeam)
     {
-		GameManager.Instance.ServeRight = true;
 		GameManager.Instance.ChangeServer();
 
 		_currentGameScore = new Tuple<int, int>(0, 0);
@@ -121,7 +120,7 @@ public class ScoreManager : MonoBehaviour
 		_score[_currentSetIndex] = newScore;
 
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
-        GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.LastServiceLateralSide == 0,
+        GameManager.Instance.SideManager.ChangeSidesInGameSimple(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
 
         if ((_score[_currentSetIndex].Item1 + _score[_currentSetIndex].Item2) % 2 == 1)
@@ -153,6 +152,7 @@ public class ScoreManager : MonoBehaviour
 		_currentSetIndex++;
 
 		GameManager.Instance.ServiceManager.ChangeSides = false;
+		GameManager.Instance.ServiceManager.NbOfGames = 0;
 
 		if (player == 1)
 			_nbOfSets = new Tuple<int, int>(_nbOfSets.Item1 + 1, _nbOfSets.Item2);
@@ -172,7 +172,7 @@ public class ScoreManager : MonoBehaviour
 
 			Debug.Log($"Player1 wins with the score of : {score}");
 
-			GameManager.Instance.IsGameFinished = true;
+			GameManager.Instance.EndOfGame();
 		}
 		else if (_nbOfSets.Item2 == _nbOfSetsToWin)
 		{
@@ -185,9 +185,9 @@ public class ScoreManager : MonoBehaviour
 
 			Debug.Log($"Player2 wins with the score of : {score}");
 
-			GameManager.Instance.IsGameFinished = true;
-		}
-		else
+            GameManager.Instance.EndOfGame();
+        }
+        else
 			_score.Add(new Tuple<int, int>(0, 0));
 	}
 

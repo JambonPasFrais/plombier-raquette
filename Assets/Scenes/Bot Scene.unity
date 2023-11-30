@@ -287,6 +287,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7600912880084244355, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
   m_PrefabInstance: {fileID: 10320970}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &25859450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 263486762674940031, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &56132860
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +390,6 @@ MonoBehaviour:
   BallInitializationTransform: {fileID: 1687099903}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
-  IsGameFinished: 0
   ServeRight: 0
   _net: {fileID: 1335233997}
   _controllers:
@@ -426,6 +430,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _servicePointsFirstSideParent: {fileID: 1024644284}
   _servicePointsSecondSideParent: {fileID: 382264786}
+  _firstSideCollidersParentObject: {fileID: 1818065720}
+  _secondSideCollidersParentObject: {fileID: 25859450}
   _cameraParent: {fileID: 2006872489}
   _cameras: []
 --- !u!114 &175529524
@@ -1257,6 +1263,11 @@ MeshFilter:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6117288123474221374, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
   m_PrefabInstance: {fileID: 1086585901445424558}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1818065720 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8888437862791054369, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+  m_PrefabInstance: {fileID: 10320970}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1822089935
 GameObject:
@@ -13371,7 +13382,7 @@ MonoBehaviour:
   - {fileID: 10320974}
   - {fileID: 10320973}
   - {fileID: 10320972}
-  _ballDetection: {fileID: 5342351297477191419}
+  _ballDetectionArea: {fileID: 5342351297477191419}
   _speed: 7.5
   _minimumHitForce: 300
   _maximumHitForce: 450

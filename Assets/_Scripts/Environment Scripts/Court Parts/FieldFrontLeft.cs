@@ -21,7 +21,7 @@ public class FieldFrontLeft : FieldGroundPart
             {
                 // This is the first rebound of the ball.
                 // If the player hits its own part of the field or serve in the opposite left front part while he should have served in the opposite right front part, it is a fault.
-                if (_ownerPlayer == ball.LastPlayerToApplyForce || (GameManager.Instance.GameState == GameState.SERVICE && GameManager.Instance.ServeRight))
+                if (_ownerPlayer == ball.LastPlayerToApplyForce || (GameManager.Instance.GameState == GameState.SERVICE && GameManager.Instance.ServiceManager.ServeRight))
                 {
                     Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                     GameManager.Instance.ScoreManager.AddPoint(otherTeam);

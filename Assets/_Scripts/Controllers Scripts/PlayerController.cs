@@ -72,7 +72,7 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
-        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this)
+        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
             _hitKeyPressedTime = 0f;
             _isCharging = false;

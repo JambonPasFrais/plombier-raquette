@@ -7,8 +7,6 @@ public class Ball : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
-    [SerializeField] private bool _isOnOtherSide;
-
     [SerializeField] private ShotParameters _actionParameters;
 
     [Header("Components")]
@@ -34,7 +32,6 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         _reboundsCount = 0;
-        _isOnOtherSide = false;
     }
 
     private void Update()
@@ -213,7 +210,6 @@ public class Ball : MonoBehaviour
     public void ResetBallFunction()
     {
         _reboundsCount = 0;
-        _isOnOtherSide = false;
         GameManager.Instance.EndOfPoint();
         _lastPlayerToApplyForce = null;
         _rigidBody.velocity = Vector3.zero;
