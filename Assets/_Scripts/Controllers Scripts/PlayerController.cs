@@ -25,6 +25,8 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
+
+
     private Vector2 _movementVector;
     private float _currentSpeed;
     private float _hitKeyPressedTime;
@@ -51,6 +53,10 @@ public class PlayerController : ControllersParent
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+
         }
     }
 
@@ -231,6 +237,9 @@ public class PlayerController : ControllersParent
     {
 
     }
+    public void Smash()
+    {
 
+    }
     #endregion
 }
