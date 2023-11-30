@@ -7,7 +7,11 @@ public class CharacterUI : MonoBehaviour
 {
     [SerializeField] private Image _charactersFace;
     [SerializeField] private Image _backgroundColor;
+    [SerializeField] private GameObject _isSelectedImage;
     private CharacterData _character;
+    private bool _isSelected;
+
+    public bool IsSelected => _isSelected;
 
     public CharacterData Character => _character;
 
@@ -16,5 +20,11 @@ public class CharacterUI : MonoBehaviour
         _character = character;
         _charactersFace.sprite = character.Picture;
         _backgroundColor.color = character.CharacterColor;
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        _isSelected = isSelected;
+        _isSelectedImage.SetActive(isSelected);
     }
 }
