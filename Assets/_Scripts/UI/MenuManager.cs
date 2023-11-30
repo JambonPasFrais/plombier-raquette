@@ -7,7 +7,12 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _visitedMenus = new List<GameObject>();
 
-    public void GoToNextMenu(GameObject nextMenu)
+	private void Start()
+	{
+		_visitedMenus.Add(transform.GetChild(0).gameObject);
+	}
+
+	public void GoToNextMenu(GameObject nextMenu)
     {
         nextMenu.SetActive(true);
         _visitedMenus.Last().SetActive(false);
