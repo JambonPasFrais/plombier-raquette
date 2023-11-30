@@ -46,7 +46,7 @@ public class SideManager : MonoBehaviour
 	/// <param name="players"></param>
 	/// <param name="serveRight"></param>
 	/// <param name="originalSides"></param>
-	public void ChangeSidesInGameSimple(List<ControllersParent> players, bool serveRight, bool originalSides)
+	public void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
 		string side = "";
 
@@ -83,7 +83,7 @@ public class SideManager : MonoBehaviour
     /// <param name="players"></param>
     /// <param name="serveRight"></param>
     /// <param name="_originalSides"></param>
-    public void ChangeSidesInGameDouble(List<PlayerController> players, bool serveRight, bool _originalSides)
+    public void SetSidesInDoubleMatch(List<PlayerController> players, bool serveRight, bool _originalSides)
 	{
 		string side = "";
 

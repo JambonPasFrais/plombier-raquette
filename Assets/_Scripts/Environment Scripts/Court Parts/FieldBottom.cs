@@ -14,6 +14,7 @@ public class FieldBottom : FieldGroundPart
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
+                GameManager.Instance.EndOfPoint();
                 GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
                 ball.ResetBallFunction();
             }
@@ -23,6 +24,7 @@ public class FieldBottom : FieldGroundPart
                 // If the player hits its own part of the field or serves in the opposite bottom part, it is a fault.
                 if (_ownerPlayer == ball.LastPlayerToApplyForce || GameManager.Instance.GameState == GameState.SERVICE )
                 {
+                    GameManager.Instance.EndOfPoint();
                     Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                     GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                     ball.ResetBallFunction();

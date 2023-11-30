@@ -50,7 +50,7 @@ public class BotBehavior : ControllersParent
 
     private void Update()
     {
-        if (GameManager.Instance.GameState != GameState.ENDPOINT)
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH)
         {
             MoveTowardsBallX();
 
@@ -70,11 +70,15 @@ public class BotBehavior : ControllersParent
         Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
         Vector3 direction = Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.forward) + Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.right);
 
-        if (PlayerState == PlayerStates.SERVE)
+        if (PlayerState != PlayerStates.PLAY)
         {
+            if (PlayerState == PlayerStates.SERVE)
+            {
+                _ballServiceDetectionArea.gameObject.SetActive(false);
+                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
+            }
+
             PlayerState = PlayerStates.PLAY;
-            _ballServiceDetectionArea.gameObject.SetActive(false);
-            GameManager.Instance.ServiceManager.DisableLockServiceColliders();
         }
 
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)

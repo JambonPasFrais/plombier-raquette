@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
 
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
-        GameManager.Instance.SideManager.ChangeSidesInGameSimple(_controllers, true, ServiceOnOriginalSide);
+        GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
             _ballInstance.GetComponent<Ball>().ResetBallFunction();
 
             _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
-            GameState = GameState.SERVICE;
             _ballInstance.transform.position = BallInitializationTransform.position;
             _ballInstance.SetActive(true);
         }
@@ -179,14 +178,14 @@ public class GameManager : MonoBehaviour
 
     public void EndOfGame()
     {
-
+        Debug.Log("End of game !");
     }
 
     public void ChangeServer()
     {
-        int newServer = (_serverIndex + 1) % _controllers.Count;
+        int newServerIndex = (_serverIndex + 1) % _controllers.Count;
         _controllers[_serverIndex].IsServing = false;
-        _controllers[newServer].IsServing = true;
-        _serverIndex = newServer;
+        _controllers[newServerIndex].IsServing = true;
+        _serverIndex = newServerIndex;
     }
 }
