@@ -59,7 +59,7 @@ public class PlayerController : ControllersParent
 
     private void FixedUpdate()
     {
-        if (!_cameraController.GetIsSmashing())
+        if (!_cameraController.IsSmashing)
         {
             // The global player directions depend on the side he is on.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;

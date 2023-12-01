@@ -18,18 +18,23 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _zoomDuration = 0.5f;
     [SerializeField] private Image _smashImage;
     private Camera _firstPersonCameraComponent;
+    public bool IsSmashing => _isSmashing;
+
     public bool _isFirstPersonView;
-    public bool _isSmashing = false;
-    // Start is called before the first frame update
+    [SerializeField] private bool _isSmashing = false;
+
+    private Quaternion _cameraOriginalRot;
+
     void Start()
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
+        _cameraOriginalRot = _firstPersonCamera.transform.rotation;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView)
         {
             ToggleFirstPersonView();
         }
@@ -40,11 +45,8 @@ public class CameraController : MonoBehaviour
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
-            Vector3 rotation = new Vector3(0, mouseX, 0); 
+            Vector3 rotation = new Vector3(-mouseY, mouseX, 0); 
             _firstPersonCamera.transform.Rotate(rotation * _rotationSpeed * Time.deltaTime);
-
-            float verticalRotation = -mouseY * _rotationSpeed * Time.deltaTime;
-            _firstPersonCamera.transform.Rotate(verticalRotation, 0, 0);
 
             float currentXRotation = _firstPersonCamera.transform.eulerAngles.x;
             if (currentXRotation > 90 && currentXRotation < 180)
@@ -67,37 +69,34 @@ public class CameraController : MonoBehaviour
     }
 
 
-    public void ShootSmash()
+    private void ShootSmash()
     {
-        // Instancier la balle au point de départ avec la direction de la caméra à la première personne
         GameObject ball = Instantiate(_ballPrefab, _ballSpawnPoint.position, _firstPersonCamera.transform.rotation);
-        // Appliquer une force à la balle dans la direction de la caméra
         ball.GetComponent<Rigidbody>().velocity = _firstPersonCamera.transform.forward * _ballSpeed;
-
-        // Attendre un court instant avant de revenir à la vue initiale
-        StartCoroutine(ResetToThirdPersonView());
+        ToggleFirstPersonView();
     }
 
-    public void ToggleFirstPersonView()
+    private void ToggleFirstPersonView()
     {
+        _isSmashing = !_isSmashing;
+        _firstPersonCamera.transform.rotation = _cameraOriginalRot;
         _isFirstPersonView = !_isFirstPersonView;
         _mainCamera.SetActive(!_isFirstPersonView);
         _firstPersonCamera.SetActive(_isFirstPersonView);
-        _smashImage.gameObject.SetActive(true);
-        Cursor.visible = false;
+        _smashImage.gameObject.SetActive(_isFirstPersonView);
+        Cursor.visible = !_isFirstPersonView;
         if (_isFirstPersonView)
         {
-            Debug.Log("tu zoom normalement");
             StartCoroutine(ZoomIn());
         }
         else
         {
-            StartCoroutine(ResetToThirdPersonView());
+            _firstPersonCameraComponent.fieldOfView = _normalFOV;
         }
 
     }
 
-    public IEnumerator ZoomIn()
+    private IEnumerator ZoomIn()
     {
         float timer = 0f;
         float initialFOV = _firstPersonCamera.GetComponent<Camera>().fieldOfView;
@@ -112,33 +111,5 @@ public class CameraController : MonoBehaviour
         }
 
         _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
-    }
-
-    public IEnumerator ResetToThirdPersonView()
-    {
-        float timer = 0f;
-        float initialFOV = _mainCamera.GetComponent<Camera>().fieldOfView;
-
-        while (timer < _zoomDuration)
-        {
-            float t = timer / _zoomDuration;
-            _mainCamera.GetComponent<Camera>().fieldOfView = Mathf.Lerp(initialFOV, _normalFOV, t);
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        _mainCamera.GetComponent<Camera>().fieldOfView = _normalFOV;
-        _smashImage.gameObject.SetActive(false);
-        _isFirstPersonView = !_isFirstPersonView;
-        Cursor.visible = true;
-        _firstPersonCamera.SetActive(false);
-        _mainCamera.SetActive(true);
-        _isSmashing = false;
-    }
-
-    public bool GetIsSmashing()
-    {
-        return _isSmashing;
     }
 }
