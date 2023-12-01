@@ -38,6 +38,7 @@ public class GameParameters : MonoBehaviour
     {
         _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
+        _numberOfPlayers = isDouble * 2;
 
         switch (gameMode)
         {
