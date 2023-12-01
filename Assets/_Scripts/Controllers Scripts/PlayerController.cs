@@ -26,7 +26,7 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _maximumHitKeyPressTime;
 
 
-
+    private CameraController _cameraController;
     private Vector2 _movementVector;
     private float _currentSpeed;
     private float _hitKeyPressedTime;
@@ -42,6 +42,7 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
+        _cameraController = GetComponent<CameraController>();
     }
 
     void Update()
@@ -54,22 +55,21 @@ public class PlayerController : ControllersParent
                 _hitKeyPressedTime += Time.deltaTime;
             }
         }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-
-        }
     }
 
     private void FixedUpdate()
     {
-        // The global player directions depend on the side he is on.
-        Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
-        Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
+        if (!_cameraController.GetIsSmashing())
+        {
+            // The global player directions depend on the side he is on.
+            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
 
-        // The player moves according to the movement inputs.
-        /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
-        _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+            // The player moves according to the movement inputs.
+            /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
+            _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        }
     }
 
     #endregion

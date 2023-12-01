@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _zoomDuration = 0.5f;
     private Camera _firstPersonCameraComponent;
     private bool _isFirstPersonView;
+    public bool _isSmashing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class CameraController : MonoBehaviour
 
         if (_isFirstPersonView)
         {
+            _isSmashing = true;
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
@@ -74,7 +76,7 @@ public class CameraController : MonoBehaviour
         StartCoroutine(ResetToThirdPersonView());
     }
 
-    void ToggleFirstPersonView()
+    public void ToggleFirstPersonView()
     {
         _isFirstPersonView = !_isFirstPersonView;
         _mainCamera.SetActive(!_isFirstPersonView);
@@ -91,7 +93,7 @@ public class CameraController : MonoBehaviour
 
     }
 
-    IEnumerator ZoomIn()
+    public IEnumerator ZoomIn()
     {
         float timer = 0f;
         float initialFOV = _firstPersonCamera.GetComponent<Camera>().fieldOfView;
@@ -108,7 +110,7 @@ public class CameraController : MonoBehaviour
         _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
     }
 
-    IEnumerator ResetToThirdPersonView()
+    public IEnumerator ResetToThirdPersonView()
     {
         float timer = 0f;
         float initialFOV = _mainCamera.GetComponent<Camera>().fieldOfView;
@@ -126,6 +128,11 @@ public class CameraController : MonoBehaviour
 
         _firstPersonCamera.SetActive(false);
         _mainCamera.SetActive(true);
+        _isSmashing = false;
     }
 
+    public bool GetIsSmashing()
+    {
+        return _isSmashing;
+    }
 }
