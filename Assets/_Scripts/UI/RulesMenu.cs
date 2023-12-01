@@ -19,8 +19,10 @@ public class RulesMenu : MonoBehaviour
 	[SerializeField] private Button _validationButton;
 	[SerializeField] private Transform _gameTypeButtonsParent;
 	[SerializeField] private Transform _gameModeButtonsParent;
-	[SerializeField] private List<Image> _gameTypeButtons = new List<Image>();
-	[SerializeField] private List<Image> _gameModeButtons = new List<Image>();
+	private List<Image> _gameTypeButtons = new List<Image>();
+	private List<Image> _gameModeButtons = new List<Image>();
+	[SerializeField] private TextMeshProUGUI _playerNumberText;
+	private int _currentNumberOfPlayers;
 	private int _currentDifficulty;
 	private int _gameMode;
 	private int _numberOfPlayerBySide;
@@ -42,6 +44,7 @@ public class RulesMenu : MonoBehaviour
 		VerifyEntries();
 		_currentDifficulty = 1;
 		_COMDifficultyText.text = _difficulties[_currentDifficulty];
+		_currentNumberOfPlayers = 1;
 	}
 
 	public void ModifyCOMDifficulty(int value)
@@ -78,6 +81,12 @@ public class RulesMenu : MonoBehaviour
 			_validationButton.interactable = true;
 		else
 			_validationButton.interactable = false;
+	}
+
+	public void ModifyNumberOfPlayer(int value)
+	{
+		_currentNumberOfPlayers = Mathf.Clamp(_currentNumberOfPlayers + value, 1, 4);
+		_playerNumberText.text = _currentNumberOfPlayers.ToString();
 	}
 
 	public void ValidateParameters()
