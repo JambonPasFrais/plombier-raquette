@@ -5,14 +5,23 @@ using UnityEngine;
 
 public class GameParameters : MonoBehaviour
 {
-	[SerializeField] private int _numberOfPlayers;
-	[SerializeField] private bool _isOnline;
-	[SerializeField] private int _numberOfPlayerBySide;
-	[SerializeField] private int _nbOfSets;
-	[SerializeField] private int _nbOfGames;
-	[SerializeField] private int _COMDifficulty;
-	[SerializeField] private List<CharacterData> _playersCharacters = new List<CharacterData>();
+	private int _numberOfPlayers;
+	private bool _isOnline;
+	private int _numberOfPlayerBySide;
+	private int _nbOfSets;
+	private int _nbOfGames;
+	private int _COMDifficulty;
+	private List<CharacterData> _playersCharacters = new List<CharacterData>();
+    private bool _isTournamentMode;
+    private int _tournamentDifficulty;
+    [SerializeField] private string _tournamentName;
 	private static GameParameters _instance;
+    private List<string> _tournamentNames = new List<string>()
+    {
+        "Mushroom Cup",
+        "Flower Cup",
+        "Star Cup"
+    };
 
     public static GameParameters Instance => _instance;
 
@@ -39,6 +48,7 @@ public class GameParameters : MonoBehaviour
         _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
         _numberOfPlayers = isDouble * 2;
+        _isTournamentMode = false;
 
         switch (gameMode)
         {
@@ -64,5 +74,12 @@ public class GameParameters : MonoBehaviour
     public void SetCharactersPlayers(List<CharacterData> playersCharacters)
     {
         _playersCharacters = playersCharacters;
+    }
+
+    public void SetTournament(int difficulty)
+    {
+        _isTournamentMode = true;
+        _tournamentDifficulty = difficulty;
+        _tournamentName = _tournamentNames[difficulty];
     }
 }

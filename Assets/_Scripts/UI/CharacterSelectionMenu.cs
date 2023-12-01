@@ -19,7 +19,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<Transform> _currentCharacterModelLocation = new List<Transform>();
 	[SerializeField] private List<Transform> _characterModelLocationSimple = new List<Transform>();
 	[SerializeField] private List<Transform> _characterModelLocationDouble = new List<Transform>();
-	 private List<Image> _currentSelectedCharacterBackground = new List<Image>();
+	private List<Image> _currentSelectedCharacterBackground = new List<Image>();
 	[SerializeField] private List<Image> _selectedCharacterBackgroundSimple = new List<Image>();
 	[SerializeField] private List<Image> _selectedCharacterBackgroundDouble = new List<Image>();
 	[SerializeField] private LayerMask _characterUILayerMask;
@@ -141,7 +141,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	{
 		foreach(var item in _charactersModel)
 		{
-			item.Value.transform.SetParent(_charactersListTransform);
+			item.Value.transform.SetParent(_charactersModelsParent);
 			item.Value.transform.localPosition = Vector3.zero;
 			item.Value.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 			item.Value.gameObject.SetActive(false);
@@ -166,5 +166,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			item.SetSelected(false);
 		}
+
+		_playButton.interactable = false;
 	}
 }
