@@ -11,12 +11,16 @@ public class CameraController : MonoBehaviour
     [SerializeField] private PlayerController _player;
     [SerializeField] private Transform _ballSpawnPoint;
     [SerializeField] private float _ballSpeed = 10f;
-
+    [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private float _zoomFOV = 40f;
+    [SerializeField] private float _normalFOV = 60f; 
+    [SerializeField] private float _zoomDuration = 0.5f;
+    private Camera _firstPersonCameraComponent;
     private bool _isFirstPersonView;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -29,33 +33,35 @@ public class CameraController : MonoBehaviour
 
         if (_isFirstPersonView)
         {
-            // Gérer la rotation de la caméra à la première personne avec la souris
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
-            // Ajouter ici la logique pour la rotation de la caméra avec la souris
 
-            // Tirer le smash
+            Vector3 rotation = new Vector3(0, mouseX, 0); 
+            _firstPersonCamera.transform.Rotate(rotation * _rotationSpeed * Time.deltaTime);
+
+            float verticalRotation = -mouseY * _rotationSpeed * Time.deltaTime;
+            _firstPersonCamera.transform.Rotate(verticalRotation, 0, 0);
+
+            float currentXRotation = _firstPersonCamera.transform.eulerAngles.x;
+            if (currentXRotation > 90 && currentXRotation < 180)
+            {
+                currentXRotation = 90;
+            }
+            else if (currentXRotation > 180 && currentXRotation < 270)
+            {
+                currentXRotation = 270;
+            }
+
+            // Appliquer la rotation verticale limitée à la caméra
+            _firstPersonCamera.transform.eulerAngles = new Vector3(currentXRotation, _firstPersonCamera.transform.eulerAngles.y, 0);
+
             if (Input.GetMouseButtonDown(0))
             {
                 ShootSmash();
             }
         }
     }
-    void ToggleFirstPersonView()
-    {
-        _isFirstPersonView = !_isFirstPersonView;
 
-        // Activer ou désactiver les caméras en conséquence
-        _mainCamera.SetActive(!_isFirstPersonView);
-        _firstPersonCamera.SetActive(_isFirstPersonView);
-
-        // Réinitialiser la position et la rotation de la caméra à la première personne
-        //if (_isFirstPersonView)
-        //{
-        //    _firstPersonCamera.transform.position = _player.transform.position;
-        //    _firstPersonCamera.transform.rotation = _player.transform.rotation;
-        //}
-    }
 
     public void ShootSmash()
     {
@@ -67,14 +73,59 @@ public class CameraController : MonoBehaviour
         // Attendre un court instant avant de revenir à la vue initiale
         StartCoroutine(ResetToThirdPersonView());
     }
+
+    void ToggleFirstPersonView()
+    {
+        _isFirstPersonView = !_isFirstPersonView;
+        _mainCamera.SetActive(!_isFirstPersonView);
+        _firstPersonCamera.SetActive(_isFirstPersonView);
+        if (_isFirstPersonView)
+        {
+            Debug.Log("tu zoom normalement");
+            StartCoroutine(ZoomIn());
+        }
+        else
+        {
+            StartCoroutine(ResetToThirdPersonView());
+        }
+
+    }
+
+    IEnumerator ZoomIn()
+    {
+        float timer = 0f;
+        float initialFOV = _firstPersonCamera.GetComponent<Camera>().fieldOfView;
+        Debug.Log(initialFOV);
+        while (timer < _zoomDuration)
+        {
+            float t = timer / _zoomDuration;
+            _firstPersonCamera.GetComponent<Camera>().fieldOfView = Mathf.Lerp(initialFOV, _zoomFOV, t);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
+    }
+
     IEnumerator ResetToThirdPersonView()
     {
-        yield return new WaitForSeconds(0.5f); // Ajustez la durée selon vos besoins
+        float timer = 0f;
+        float initialFOV = _mainCamera.GetComponent<Camera>().fieldOfView;
 
-        // Revenir à la vue à la troisième personne
+        while (timer < _zoomDuration)
+        {
+            float t = timer / _zoomDuration;
+            _mainCamera.GetComponent<Camera>().fieldOfView = Mathf.Lerp(initialFOV, _normalFOV, t);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        _mainCamera.GetComponent<Camera>().fieldOfView = _normalFOV;
+
         _firstPersonCamera.SetActive(false);
         _mainCamera.SetActive(true);
-        
     }
 
 }
