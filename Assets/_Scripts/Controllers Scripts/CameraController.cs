@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -15,8 +16,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _zoomFOV = 40f;
     [SerializeField] private float _normalFOV = 60f; 
     [SerializeField] private float _zoomDuration = 0.5f;
+    [SerializeField] private Image _smashImage;
     private Camera _firstPersonCameraComponent;
-    private bool _isFirstPersonView;
+    public bool _isFirstPersonView;
     public bool _isSmashing = false;
     // Start is called before the first frame update
     void Start()
@@ -34,7 +36,7 @@ public class CameraController : MonoBehaviour
 
         if (_isFirstPersonView)
         {
-            _isSmashing = true;
+
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
@@ -81,6 +83,8 @@ public class CameraController : MonoBehaviour
         _isFirstPersonView = !_isFirstPersonView;
         _mainCamera.SetActive(!_isFirstPersonView);
         _firstPersonCamera.SetActive(_isFirstPersonView);
+        _smashImage.gameObject.SetActive(true);
+        Cursor.visible = false;
         if (_isFirstPersonView)
         {
             Debug.Log("tu zoom normalement");
@@ -125,7 +129,9 @@ public class CameraController : MonoBehaviour
         }
 
         _mainCamera.GetComponent<Camera>().fieldOfView = _normalFOV;
-
+        _smashImage.gameObject.SetActive(false);
+        _isFirstPersonView = !_isFirstPersonView;
+        Cursor.visible = true;
         _firstPersonCamera.SetActive(false);
         _mainCamera.SetActive(true);
         _isSmashing = false;
