@@ -26,7 +26,11 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void Start()
 	{
-		_availableCharacters = _characters;
+		_characters = MenuManager.Characters;
+		_charactersModelsParent = MenuManager.CharactersModelsParent;
+		_charactersModel = MenuManager.CharactersModel;
+		_availableCharacters = new List<CharacterData>(_characters);
+
 		VerifyCharacters();
 		GameObject go;
 
@@ -35,37 +39,6 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
-		}
-
-		if (_charactersModelsParent.childCount == 0)
-		{
-			foreach (var item in _characters)
-			{
-				if (item != _characters.Last())
-				{
-					go = Instantiate(item.Model3D, _charactersModelsParent);
-					go.name = item.Name;
-					go.SetActive(false); 
-					_charactersModel.Add(item.Name, go);
-				}
-				else
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						go = Instantiate(item.Model3D, _charactersModelsParent);
-						go.name = item.Name + i;
-						go.SetActive(false); 
-						_charactersModel.Add(item.Name + i, go);
-					}
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i < _charactersModelsParent.childCount; i++)
-			{
-				_charactersModel.Add(_charactersModelsParent.GetChild(i).name, _charactersModelsParent.GetChild(i).gameObject);
-			}
 		}
 	}
 
@@ -81,13 +54,15 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				&& hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
 				&& !characterUI.IsSelected)
 			{
-				characterUI.SetSelected(true);
+				if (characterUI != _selectableCharacters.Last())
+					characterUI.SetSelected(true);
 				_selectedCharactersName.text = characterUI.Character.Name;
 				_selectedCharacterBackground.color = characterUI.Character.CharacterColor;
 
 				if (_characterModelLocation.childCount > 0)
 				{
 					_selectedCharacterUIs.SetSelected(false);
+
 					go = _characterModelLocation.GetChild(0).gameObject;
 					go.transform.SetParent(_charactersListTransform);
 					go.transform.localPosition = Vector3.zero;
@@ -96,7 +71,12 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 					_playerCharacter = null;
 				}
 
-				_charactersModel.TryGetValue(characterUI.Character.Name, out go);
+				if (characterUI == _selectableCharacters.Last())
+					_charactersModel.TryGetValue(characterUI.Character.Name + "0", out go);
+
+				else
+					_charactersModel.TryGetValue(characterUI.Character.Name, out go);
+
 				go.transform.SetParent(_characterModelLocation);
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
