@@ -165,4 +165,10 @@ public class OptionsMenu : MonoBehaviour
 	}
 
 	#endregion
+
+	public void DisplayControls()
+	{
+		Debug.Log("You want to se the controls ?");
+		Debug.Log("This menu is still in construction...");
+	}
 }

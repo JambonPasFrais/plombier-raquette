@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class GameParameters : MonoBehaviour
 {
-	private int _numberOfPlayers;
+	[SerializeField] private int _numberOfPlayers;
 	private bool _isOnline;
 	private int _numberOfPlayerBySide;
 	private int _nbOfSets;
 	private int _nbOfGames;
 	private int _COMDifficulty;
-	[SerializeField] private List<CharacterData> _playersCharacters = new List<CharacterData>();
+	private List<CharacterData> _playersCharacters = new List<CharacterData>();
     private bool _isTournamentMode;
     private int _tournamentDifficulty;
-    [SerializeField] private string _tournamentName;
+    private string _tournamentName;
 	private static GameParameters _instance;
     private List<string> _tournamentNames = new List<string>()
     {
@@ -24,6 +24,7 @@ public class GameParameters : MonoBehaviour
     };
 
     public static GameParameters Instance => _instance;
+    public static int NumberOfPlayers => _instance._numberOfPlayers;
 
 	private void Awake()
 	{
@@ -33,21 +34,16 @@ public class GameParameters : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 	}
 
-	public void SetNumberOfPlayer(int numberOfPlayers)
-    {
-        _numberOfPlayers = numberOfPlayers;
-    }
-
     public void SetMode(bool isOnline)
     {
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(int isDouble, int gameMode, int COMDifficulty)
+    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, int gameMode, int COMDifficulty)
     {
         _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
-        _numberOfPlayers = isDouble * 2;
+        _numberOfPlayers = nbOfLocalPlayers;
         _isTournamentMode = false;
 
         switch (gameMode)
