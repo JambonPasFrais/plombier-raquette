@@ -15,21 +15,23 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
 	[SerializeField] private Transform _charactersListTransform;
 	private List<TextMeshProUGUI> _currentSelectedCharactersName = new List<TextMeshProUGUI>();
-	[SerializeField] private List<TextMeshProUGUI> _selectedCharactersNameSimple = new List<TextMeshProUGUI>();
+	[SerializeField] private List<TextMeshProUGUI> _selectedCharactersNameSingle = new List<TextMeshProUGUI>();
 	[SerializeField] private List<TextMeshProUGUI> _selectedCharactersNameDouble = new List<TextMeshProUGUI>();
 	private List<Transform> _currentCharacterModelLocation = new List<Transform>();
 	[SerializeField] private List<Transform> _characterModelLocationSimple = new List<Transform>();
 	[SerializeField] private List<Transform> _characterModelLocationDouble = new List<Transform>();
 	private List<Image> _currentSelectedCharacterBackground = new List<Image>();
-	[SerializeField] private List<Image> _selectedCharacterBackgroundSimple = new List<Image>();
+	[SerializeField] private List<Image> _selectedCharacterBackgroundSingle = new List<Image>();
 	[SerializeField] private List<Image> _selectedCharacterBackgroundDouble = new List<Image>();
 	[SerializeField] private LayerMask _characterUILayerMask;
 	[SerializeField] private Transform _charactersModelsParent;
 	[SerializeField] private Button _playButton;
-	[SerializeField] private GameObject _playersShowRoomSimple;
+	[SerializeField] private GameObject _playersShowRoomSingle;
 	[SerializeField] private GameObject _playersShowRoomDouble;
+	[SerializeField] private List<TextMeshProUGUI> _playersInfoSingle = new List<TextMeshProUGUI>();
+	[SerializeField] private List<TextMeshProUGUI> _playersInfoDouble = new List<TextMeshProUGUI>();
 	private List<CharacterData> _availableCharacters;
-	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>(); //
+	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private List<CharacterData> _playersCharacter;
 	private List<CharacterUI> _selectedCharacterUIs;
 	private List<CharacterUI> _selectableCharacters = new List<CharacterUI>();
@@ -45,6 +47,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_availableCharacters = new List<CharacterData>(_characters);
 
 		VerifyCharacters();
+		SetPlayerInfos();
 		GameObject go;
 
 		foreach (var item in _characters)
@@ -147,7 +150,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		if (isDouble)
 		{
 			_playersShowRoomDouble.SetActive(true);
-			_playersShowRoomSimple.SetActive(false);
+			_playersShowRoomSingle.SetActive(false);
 			_nbOfPlayers = 4;
 			_currentCharacterModelLocation = _characterModelLocationDouble;
 			_currentSelectedCharacterBackground = _selectedCharacterBackgroundDouble;
@@ -156,11 +159,11 @@ public class CharacterSelectionMenu : MonoBehaviour
 		else
 		{
 			_playersShowRoomDouble.SetActive(false);
-			_playersShowRoomSimple.SetActive(true);
+			_playersShowRoomSingle.SetActive(true);
 			_nbOfPlayers = 2;
 			_currentCharacterModelLocation = _characterModelLocationSimple;
-			_currentSelectedCharacterBackground = _selectedCharacterBackgroundSimple;
-			_currentSelectedCharactersName = _selectedCharactersNameSimple;
+			_currentSelectedCharacterBackground = _selectedCharacterBackgroundSingle;
+			_currentSelectedCharactersName = _selectedCharactersNameSingle;
 		}
 
 		_playersCharacter = new List<CharacterData>(new CharacterData[_nbOfPlayers]);
@@ -198,5 +201,31 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 
 		_playButton.interactable = false;
+	}
+
+	public void SetPlayerInfos()
+	{
+		if(_nbOfPlayers == 2)
+		{
+			_playersInfoSingle[0].text = "P1";
+
+			if (GameParameters.NumberOfPlayers == 1)
+				_playersInfoSingle[1].text = "COM";
+			else
+				_playersInfoDouble[1].text = "P2";
+		}
+		else
+		{
+			_playersInfoDouble[0].text = "P1";
+
+			for(int i = 1; i < 4; i++)
+			{
+				if (i < GameParameters.NumberOfPlayers)
+					_playersInfoDouble[i].text = "P" + (i + 1).ToString();
+
+				else
+					_playersInfoDouble[i].text = "COM";
+			}
+		}
 	}
 }

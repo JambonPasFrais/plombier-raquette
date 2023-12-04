@@ -146,6 +146,6 @@ public class RulesMenu : MonoBehaviour
 
 	public void ValidateParameters()
 	{
-		GameParameters.Instance.SetGameParameters(_numberOfPlayerBySide, _gameMode, _currentDifficulty);
+		GameParameters.Instance.SetGameParameters(_currentNumberOfPlayers, _numberOfPlayerBySide, _gameMode, _currentDifficulty);
 	}
 }
