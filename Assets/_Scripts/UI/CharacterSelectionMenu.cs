@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private Button _playButton;
 	[SerializeField] private GameObject _playersShowRoomSimple;
 	[SerializeField] private GameObject _playersShowRoomDouble;
+	private List<CharacterData> _availableCharacters;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private List<CharacterData> _playersCharacter;
 	private List<CharacterUI> _selectedCharacterUIs;
@@ -36,6 +38,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private void Start()
 	{
+		_availableCharacters = _characters;
 		VerifyCharacters();
 		GameObject go;
 
@@ -46,12 +49,37 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 
-		foreach (var item in _characters)
+		if (_charactersModelsParent.childCount == 0)
 		{
-			go = Instantiate(item.Model3D, _charactersModelsParent);
-			go.name = item.Name;
-			go.SetActive(false);
-			_charactersModel.Add(item.Name, go);
+			foreach (var item in _characters)
+			{
+				if (item != _characters.Last())
+				{
+					go = Instantiate(item.Model3D, _charactersModelsParent);
+					go.name = item.Name;
+					go.SetActive(false);
+					_charactersModel.Add(item.Name, go);
+				}
+				else
+				{
+					for (int i = 0; i < 4; i++)
+					{
+						go = Instantiate(item.Model3D, _charactersModelsParent);
+						go.name = item.Name + i;
+						go.SetActive(false);
+						_charactersModel.Add(item.Name + i, go);
+					}
+				}
+
+			}
+		}
+
+		else
+		{
+			for (int i = 0; i < _charactersModelsParent.childCount; i++)
+			{
+				_charactersModel.Add(_charactersModelsParent.GetChild(i).name, _charactersModelsParent.GetChild(i).gameObject);
+			}
 		}
 	}
 
@@ -67,22 +95,32 @@ public class CharacterSelectionMenu : MonoBehaviour
 				&& hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
 				&& !characterUI.IsSelected)
 			{
-				characterUI.SetSelected(true);
+				if(characterUI.Character.Name != "Random")
+					characterUI.SetSelected(true);
+
 				_currentSelectedCharactersName[_playerIndex].text = characterUI.Character.Name;
 				_currentSelectedCharacterBackground[_playerIndex].color = characterUI.Character.CharacterColor;
+				_availableCharacters.Remove(characterUI.Character);
 
 				if (_currentCharacterModelLocation[_playerIndex].childCount > 0)
 				{
-					_selectedCharacterUIs[_playerIndex].SetSelected(false);
+					if (characterUI.Character.Name != "Random")
+						_selectedCharacterUIs[_playerIndex].SetSelected(false);
+
 					go = _currentCharacterModelLocation[_playerIndex].GetChild(0).gameObject;
 					go.transform.SetParent(_charactersListTransform);
 					go.transform.localPosition = Vector3.zero;
 					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 					go.gameObject.SetActive(false);
+					_availableCharacters.Add(_playersCharacter[_playerIndex]);
 					_playersCharacter[_playerIndex] = null;
 				}
+				
+				if(characterUI == _selectableCharacters.Last())
+					_charactersModel.TryGetValue(characterUI.Character.Name + _playerIndex, out go);
 
-				_charactersModel.TryGetValue(characterUI.Character.Name, out go);
+				else
+					_charactersModel.TryGetValue(characterUI.Character.Name, out go);
 				go.transform.SetParent(_currentCharacterModelLocation[_playerIndex]);
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
@@ -95,8 +133,30 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 	}
 
+	public CharacterData ReturnRandomCharacter()
+	{
+		CharacterData data = null;
+		int currentIndex;
+
+		System.Random rand = new System.Random();
+
+		currentIndex = rand.Next(_availableCharacters.Count);
+		data = _availableCharacters[currentIndex];
+		_availableCharacters.RemoveAt(currentIndex);
+
+		return data;
+	}
+
 	public void Play()
 	{
+		for (int i = 0; i < _nbOfPlayers; i++)
+		{
+			if (_playersCharacter[i].Name == "Random")
+			{
+				_playersCharacter[i] = ReturnRandomCharacter();
+			}
+		}
+
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		SceneManager.LoadScene(1);
 	}

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class CharacterSelectionSoloMenu : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 	[SerializeField] private LayerMask _characterUILayerMask;
 	[SerializeField] private Transform _charactersModelsParent;
 	[SerializeField] private Button _playButton;
+	private List<CharacterData> _availableCharacters;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private CharacterData _playerCharacter;
 	private CharacterUI _selectedCharacterUIs;
@@ -23,6 +26,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void Start()
 	{
+		_availableCharacters = _characters;
 		VerifyCharacters();
 		GameObject go;
 
@@ -33,12 +37,35 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 
-		foreach (var item in _characters)
+		if (_charactersModelsParent.childCount == 0)
 		{
-			go = Instantiate(item.Model3D, _charactersModelsParent);
-			go.name = item.Name;
-			go.SetActive(false);
-			_charactersModel.Add(item.Name, go);
+			foreach (var item in _characters)
+			{
+				if (item != _characters.Last())
+				{
+					go = Instantiate(item.Model3D, _charactersModelsParent);
+					go.name = item.Name;
+					go.SetActive(false); 
+					_charactersModel.Add(item.Name, go);
+				}
+				else
+				{
+					for(int i = 0; i < 4; i++)
+					{
+						go = Instantiate(item.Model3D, _charactersModelsParent);
+						go.name = item.Name + i;
+						go.SetActive(false); 
+						_charactersModel.Add(item.Name + i, go);
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < _charactersModelsParent.childCount; i++)
+			{
+				_charactersModel.Add(_charactersModelsParent.GetChild(i).name, _charactersModelsParent.GetChild(i).gameObject);
+			}
 		}
 	}
 
@@ -114,6 +141,11 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	public void Play()
 	{
+		System.Random random = new System.Random();
+
+		if (_playerCharacter == _characters.Last())
+			_playerCharacter = _characters[random.Next(_characters.Count)];
+
 		GameParameters.Instance.SetCharactersPlayers(new List<CharacterData>() { _playerCharacter });
 	}
 }
