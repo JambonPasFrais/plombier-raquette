@@ -11,7 +11,7 @@ public class GameParameters : MonoBehaviour
 	private int _nbOfSets;
 	private int _nbOfGames;
 	private int _COMDifficulty;
-	private List<CharacterData> _playersCharacters = new List<CharacterData>();
+	[SerializeField] private List<CharacterData> _playersCharacters = new List<CharacterData>();
     private bool _isTournamentMode;
     private int _tournamentDifficulty;
     [SerializeField] private string _tournamentName;
