@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class BallServiceDetection : MonoBehaviour
 {
-	[SerializeField] private PlayerController _player;
+	[SerializeField] private ControllersParent _player;
 
-	public PlayerController Player => _player;
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.TryGetComponent<Ball>(out Ball ball) && _player.PlayerState == PlayerStates.SERVE)  
+        {
+            ball.ResetBall();
+        }
+    }
 }

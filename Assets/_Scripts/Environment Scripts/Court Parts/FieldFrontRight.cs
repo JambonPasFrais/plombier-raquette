@@ -16,7 +16,7 @@ public class FieldFrontRight : FieldGroundPart
             {
                 GameManager.Instance.EndOfPoint();
                 GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
-                ball.ResetBallFunction();
+                ball.ResetBall();
             }
             else if(ball.ReboundsCount == 1)
             {
@@ -27,7 +27,7 @@ public class FieldFrontRight : FieldGroundPart
                     GameManager.Instance.EndOfPoint();
                     Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                     GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                    ball.ResetBallFunction();
+                    ball.ResetBall();
                 }
             }
         }

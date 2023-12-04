@@ -8,8 +8,6 @@ public class PlayerController : ControllersParent
 {
     #region PRIVATE FIELDS
 
-    [SerializeField] private ActionParameters _actionParameters;
-
     [Header("Ball Physical Behavior Parameters")]
     [SerializeField] private List<NamedActions> _possibleActions;
     [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
@@ -62,7 +60,7 @@ public class PlayerController : ControllersParent
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
 
             Vector3 forwardVector = Vector3.zero;
-            if (!(GameManager.Instance.GameState == GameState.SERVICE && IsServing && PlayerState == PlayerStates.IDLE)) 
+            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
             {
                 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
             }
@@ -84,7 +82,8 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
-        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
+        if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
+            || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
             _hitKeyPressedTime = 0f;
             _isCharging = false;
@@ -101,7 +100,7 @@ public class PlayerController : ControllersParent
         {
             if (PlayerState == PlayerStates.SERVE)
             {
-                _ballServiceDetectionArea.gameObject.SetActive(false);
+                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
                 GameManager.Instance.ServiceManager.DisableLockServiceColliders();
             }
 
@@ -141,7 +140,7 @@ public class PlayerController : ControllersParent
 
     public void ChargeShot(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             _isCharging = true;
         }
@@ -165,7 +164,7 @@ public class PlayerController : ControllersParent
 
     public void Drop(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             Shoot(HitType.Drop);
         }
@@ -181,7 +180,7 @@ public class PlayerController : ControllersParent
 
     public void Lob(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             Shoot(HitType.Lob);
         }
@@ -189,7 +188,7 @@ public class PlayerController : ControllersParent
 
     public void SlowTime(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
         {
             Time.timeScale = _actionParameters.SlowTimeScaleFactor;
             _currentSpeed = _movementSpeed / Time.timeScale;
@@ -203,7 +202,7 @@ public class PlayerController : ControllersParent
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this) 
         {
             float tempForwardMovementFactor = 0f;
             float tempRightMovementFactor = 0f;
@@ -243,11 +242,6 @@ public class PlayerController : ControllersParent
                 transform.position += wantedDirection * distanceToBorderInWantedDirection;
             }
         }
-    }
-
-    public void ServeThrow(InputAction.CallbackContext context)
-    {
-
     }
 
     #endregion

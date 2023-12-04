@@ -57,6 +57,10 @@ public class BallDetection : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Calculates the rising force factor to apply on the ball considering the altitude of the ball compared to the altitude of the player.
+    /// </summary>
+    /// <returns></returns>
     public float GetRisingForceFactor()
     {
         if (_ball.gameObject.transform.position.y >= transform.position.y)

@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Ball : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
-    [SerializeField] private ShotParameters _actionParameters;
+    [SerializeField] private ShotParameters _shotParameters;
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
@@ -38,8 +39,13 @@ public class Ball : MonoBehaviour
     {
         if (transform.position.y < -1)
         {
-            ResetBallFunction();
             GameManager.Instance.EndOfPoint();
+            ResetBall();
+        }
+
+        if (_rigidBody.isKinematic)
+        {
+            transform.position = GameManager.Instance.BallInitializationTransform.position;
         }
     }
 
@@ -57,7 +63,7 @@ public class Ball : MonoBehaviour
 
     public void InitializeActionParameters(ShotParameters actionParameters)
     {
-        _actionParameters = actionParameters;
+        _shotParameters = actionParameters;
     }
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
@@ -86,17 +92,17 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount = 0;
 
-        _rigidBody.AddForce(normalizedDirection * force * _actionParameters.ShotForceFactor);
-        _rigidBody.AddForce(Vector3.up * _actionParameters.RisingForce * _risingForceFactor);
+        _rigidBody.AddForce(normalizedDirection * force * _shotParameters.ShotForceFactor);
+        _rigidBody.AddForce(Vector3.up * _shotParameters.RisingForce * _risingForceFactor);
 
         _currentCurvingEffectCoroutine = StartCoroutine(CurvingEffect(curvingDirection));
 
-        yield return new WaitForSeconds(_actionParameters.TimeBeforeGoingDown);
+        yield return new WaitForSeconds(_shotParameters.TimeBeforeGoingDown);
 
         float countdown = 0;
-        while (countdown < _actionParameters.DecreasingForcePhaseTime)
+        while (countdown < _shotParameters.DecreasingForcePhaseTime)
         {
-            _rigidBody.AddForce(-Vector3.up * _actionParameters.DecreasingForce);
+            _rigidBody.AddForce(-Vector3.up * _shotParameters.DecreasingForce);
 
             yield return new WaitForSeconds(Time.deltaTime);
 
@@ -112,14 +118,14 @@ public class Ball : MonoBehaviour
         {
             if (_reboundsCount == 0)
             {
-                _rigidBody.AddForce(curvingDirection.normalized * _actionParameters.InAirCurvingForce);
+                _rigidBody.AddForce(curvingDirection.normalized * _shotParameters.InAirCurvingForce);
             }
             else
             {
-                _rigidBody.AddForce(curvingDirection.normalized * _actionParameters.AfterReboudCurvingForce);
+                _rigidBody.AddForce(curvingDirection.normalized * _shotParameters.AfterReboudCurvingForce);
                 afterReboundCurvingEffectTime += Time.deltaTime;
 
-                if (afterReboundCurvingEffectTime >= _actionParameters.AfterReboudCurvingEffectDuration)
+                if (afterReboundCurvingEffectTime >= _shotParameters.AfterReboudCurvingEffectDuration)
                 {
                     break;
                 }
@@ -134,16 +140,28 @@ public class Ball : MonoBehaviour
         _reboundsCount++;
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
-        _rigidBody.AddForce(direction.normalized * (_actionParameters.AddedForceInSameDirection / _reboundsCount));
+        _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
     }
 
     #endregion
 
-    public void ResetBallFunction()
+    public void ResetBall()
     {
+        if (_currentMovementCoroutine != null)
+        {
+            StopCoroutine(_currentMovementCoroutine);
+        }
+        if (_currentCurvingEffectCoroutine != null)
+        {
+            StopCoroutine(_currentCurvingEffectCoroutine);
+        }
+
         _reboundsCount = 0;
         _lastPlayerToApplyForce = null;
         _rigidBody.velocity = Vector3.zero;
+        _rigidBody.isKinematic = true;
+
         GameManager.Instance.GameState = GameState.SERVICE;
+        GameManager.Instance.BallServiceInitialization();
     }
 }

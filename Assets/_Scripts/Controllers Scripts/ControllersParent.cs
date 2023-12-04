@@ -13,14 +13,17 @@ public class ControllersParent : MonoBehaviour
 
     #region PRIVATE FIELDS
 
+    [SerializeField] protected ActionParameters _actionParameters;
     [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
 
     #endregion
 
-    #region GETTERS & SETTERS
+    #region GETTERS
 
     public Teams PlayerTeam { get { return _playerTeam; } }
+    public ActionParameters ActionParameters { get { return _actionParameters; } }
+    public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
 
     #endregion
 

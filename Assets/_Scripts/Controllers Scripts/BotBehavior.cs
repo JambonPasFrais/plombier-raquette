@@ -74,7 +74,7 @@ public class BotBehavior : ControllersParent
         {
             if (PlayerState == PlayerStates.SERVE)
             {
-                _ballServiceDetectionArea.gameObject.SetActive(false);
+                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
                 GameManager.Instance.ServiceManager.DisableLockServiceColliders();
             }
 

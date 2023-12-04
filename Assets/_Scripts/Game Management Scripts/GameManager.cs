@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -59,7 +60,6 @@ public class GameManager : MonoBehaviour
         }
 
         _ballInstance = Instantiate(BallPrefab);
-        _ballInstance.SetActive(false);
     }
 
     void Start()
@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
         _controllers[_serverIndex].IsServing = true;
         GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+        _ballInstance.GetComponent<Ball>().ResetBall();
 
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();
@@ -95,20 +96,7 @@ public class GameManager : MonoBehaviour
 
         foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
         {
-            _fieldBorderPointsByPlayerName.Add(borderPointsContainer.PlayerName, borderPointsContainer); 
-        }
-    }
-
-    void Update()
-    {
-        // Ball instantiation.
-        if (Input.GetKeyDown(KeyCode.C) && _controllers[_serverIndex].PlayerState == PlayerStates.IDLE && _controllers[_serverIndex].IsServing)
-        {
-            _ballInstance.GetComponent<Ball>().ResetBallFunction();
-
-            _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
-            _ballInstance.transform.position = BallInitializationTransform.position;
-            _ballInstance.SetActive(true);
+            _fieldBorderPointsByPlayerName.Add(borderPointsContainer.PlayerName, borderPointsContainer);
         }
     }
 
@@ -187,5 +175,29 @@ public class GameManager : MonoBehaviour
         _controllers[_serverIndex].IsServing = false;
         _controllers[newServerIndex].IsServing = true;
         _serverIndex = newServerIndex;
+    }
+
+    public void BallServiceInitialization()
+    {
+        _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
+        _ballInstance.transform.position = BallInitializationTransform.position;
+    }
+
+    public void ServiceThrow(InputAction.CallbackContext context)
+    {
+        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE)
+        {
+            Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * _controllers[_serverIndex].ActionParameters.ServiceThrowForce);
+        }
+    }
+
+    public void DesactivateAllServiceDetectionVolumes()
+    {
+        foreach(ControllersParent controller in _controllers)
+        {
+            controller.BallServiceDetectionArea.gameObject.SetActive(false);
+        }
     }
 }
