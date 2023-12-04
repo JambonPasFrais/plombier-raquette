@@ -20,7 +20,7 @@ public class RulesMenu : MonoBehaviour
 	[SerializeField] private Transform _gameTypeButtonsParent;
 	[SerializeField] private Transform _gameModeButtonsParent;
 	private List<Image> _gameTypeButtonImages = new List<Image>();
-	private List<Image> _gameModeButtons = new List<Image>();
+	private List<Image> _gameModeButtonsImages = new List<Image>();
 	private List<Button> _gameTypeButtons = new List<Button>();
 	[SerializeField] private TextMeshProUGUI _playerNumberText;
 	private int _currentNumberOfPlayers;
@@ -33,7 +33,7 @@ public class RulesMenu : MonoBehaviour
 	{
 		for (int i = 0; i < _gameModeButtonsParent.childCount; i++)
 		{
-			_gameModeButtons.Add(_gameModeButtonsParent.GetChild(i).gameObject.GetComponent<Image>());
+			_gameModeButtonsImages.Add(_gameModeButtonsParent.GetChild(i).gameObject.GetComponent<Image>());
 		}
 		
 		for (int i = 0; i < _gameTypeButtonsParent.childCount; i++)
@@ -60,11 +60,11 @@ public class RulesMenu : MonoBehaviour
 	public void SetGameMode(int modeIndex)
 	{
 		if (_gameMode != -1)
-			_gameModeButtons[_gameMode].color = Color.white;
+			_gameModeButtonsImages[_gameMode].color = Color.white;
 
 		_gameMode = modeIndex;
 
-		_gameModeButtons[_gameMode].color = Color.red;
+		_gameModeButtonsImages[_gameMode].color = Color.red;
 		VerifyEntries();
 	}
 
@@ -111,6 +111,37 @@ public class RulesMenu : MonoBehaviour
 		{
 			_gameTypeButtons[0].interactable = true;
 		}
+	}
+
+	public void ResetMenu()
+	{
+		foreach (var item in _gameTypeButtons)
+		{
+			item.interactable = true;
+		}
+
+		for (int i = 0; i < _gameModeButtonsParent.childCount; i++)
+		{
+			_gameModeButtonsParent.GetChild(i).GetComponent<Button>().interactable = true;
+		}
+
+		foreach (var item in _gameTypeButtonImages)
+		{
+			item.color = Color.white;
+		}
+
+		foreach (var item in _gameModeButtonsImages)
+		{
+			item.color = Color.white;
+		}
+
+		_maxNumberOfPlayer = 4;
+		_gameMode = -1;
+		_numberOfPlayerBySide = -1;
+		_currentDifficulty = 1;
+		_COMDifficultyText.text = _difficulties[_currentDifficulty];
+		_currentNumberOfPlayers = 1;
+		_playerNumberText.text = _currentNumberOfPlayers.ToString();
 	}
 
 	public void ValidateParameters()
