@@ -131,7 +131,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
-		SceneManager.LoadScene(1);
 	}
 
 	private void VerifyCharacters()
@@ -142,6 +141,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				return;
 		}
 
+		if (_playersCharacter[0] != null)
 		_playButton.interactable = true;
 	}
 
