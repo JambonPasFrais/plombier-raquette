@@ -185,9 +185,10 @@ public class GameManager : MonoBehaviour
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
-        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE)
+        Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
+
+        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE && ballRigidBody.isKinematic)
         {
-            Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
             ballRigidBody.isKinematic = false;
             ballRigidBody.AddForce(Vector3.up * _controllers[_serverIndex].ActionParameters.ServiceThrowForce);
         }

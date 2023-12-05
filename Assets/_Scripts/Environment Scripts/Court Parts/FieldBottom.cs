@@ -29,6 +29,10 @@ public class FieldBottom : FieldGroundPart
                     if (ball.LastPlayerToApplyForce.ServicesCount == 0)
                     {
                         ball.LastPlayerToApplyForce.ServicesCount++;
+                        ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
+                        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                            !GameManager.Instance.ServiceManager.ChangeSides);
+                        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
                         ball.ResetBall();
                     }
                     else

@@ -60,25 +60,17 @@ public class ServiceManager : MonoBehaviour
 			_serveRight = !_serveRight;
 		}
 
-		int sideIndex = (_globalGamesCount % 4) / 2;
-		EnableLockServiceColliders(sideIndex);
-/*		if (!ChangeSides)
-		{
-			EnableLockServiceColliders(0);
-		}
-		else
-		{
-			EnableLockServiceColliders(1);
-		}*/
+		EnableLockServiceColliders();
     }
 
 	/// <summary>
 	/// Activates the colliders of a specific side of the field.
 	/// </summary>
 	/// <param name="side"></param>
-	private void EnableLockServiceColliders(int side)
+	public void EnableLockServiceColliders()
 	{
-		_lockServiceMovementColliders[side].SetActive(true);
+        int sideIndex = (_globalGamesCount % 4) / 2;
+        _lockServiceMovementColliders[sideIndex].SetActive(true);
 	}
 
 	/// <summary>
