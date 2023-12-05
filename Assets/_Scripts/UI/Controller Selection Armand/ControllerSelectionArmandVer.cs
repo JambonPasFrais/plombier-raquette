@@ -17,7 +17,7 @@ public class ControllerSelectionArmandVer : MonoBehaviour
 
     private Dictionary<int,PlayerInstance> _playerInstances = new Dictionary<int, PlayerInstance>();
     private int _nbControllerConnected;
-    [SerializeField] private bool _keyboardControllerNeeded;
+    private bool _keyboardControllerNeeded;
     private InputDevice _keyboardDevice;
 
     #region Tests
@@ -104,6 +104,11 @@ public class ControllerSelectionArmandVer : MonoBehaviour
         _playerInstances.Add(device.deviceId, newPlayerInstance);
     }
 
+    private async void DevicePeering(PlayerInstance playerInstance, InputDevice device)
+    {
+        //await playerInstance.Device = device;
+    }
+
     private void DeviceRemoved(InputDevice device)
     {
         if (_playerInstances.ContainsKey(device.deviceId))
@@ -121,7 +126,7 @@ public class ControllerSelectionArmandVer : MonoBehaviour
         {
             if (device is Keyboard || device is Joystick || device is Gamepad)
             {
-                Debug.Log(device.deviceId);
+                Debug.Log(device.enabled);
                 DeviceAdded(device);
             }
         }

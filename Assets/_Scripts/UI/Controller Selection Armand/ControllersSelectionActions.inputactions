@@ -33,7 +33,7 @@
                     "path": "<HID::Core (Plus) Wired Controller>/button2",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -44,7 +44,7 @@
                     "path": "<HID::Core (Plus) Wired Controller>/button3",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -55,7 +55,7 @@
                     "path": "<HID::Core (Plus) Wired Controller>/button4",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -66,7 +66,7 @@
                     "path": "<Joystick>/trigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
+                    "groups": "Keyboard;Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -77,7 +77,7 @@
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -88,7 +88,7 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -99,7 +99,7 @@
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -110,7 +110,7 @@
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Controller",
                     "action": "Bump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -131,13 +131,8 @@
             ]
         },
         {
-            "name": "Gamepad",
-            "bindingGroup": "Gamepad",
-            "devices": []
-        },
-        {
-            "name": "Joystick",
-            "bindingGroup": "Joystick",
+            "name": "Controller",
+            "bindingGroup": "Controller",
             "devices": []
         }
     ]
