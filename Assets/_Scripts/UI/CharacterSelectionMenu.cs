@@ -169,4 +169,40 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		_playButton.interactable = false;
 	}
+	public void HandleCharacterSelectionInput()
+	{
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		GameObject go;
+
+		if (Physics.Raycast(ray, out hit, float.PositiveInfinity, _characterUILayerMask)
+			&& hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
+			&& !characterUI.IsSelected)
+		{
+			characterUI.SetSelected(true);
+			_currentSelectedCharactersName[_playerIndex].text = characterUI.Character.Name;
+			_currentSelectedCharacterBackground[_playerIndex].color = characterUI.Character.CharacterColor;
+
+			if (_currentCharacterModelLocation[_playerIndex].childCount > 0)
+			{
+				_selectedCharacterUIs[_playerIndex].SetSelected(false);
+				go = _currentCharacterModelLocation[_playerIndex].GetChild(0).gameObject;
+				go.transform.SetParent(_charactersListTransform);
+				go.transform.localPosition = Vector3.zero;
+				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				go.gameObject.SetActive(false);
+				_playersCharacter[_playerIndex] = null;
+			}
+
+			_charactersModel.TryGetValue(characterUI.Character.Name, out go);
+			go.transform.SetParent(_currentCharacterModelLocation[_playerIndex]);
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+			go.SetActive(true);
+			_selectedCharacterUIs[_playerIndex] = characterUI;
+			_playersCharacter[_playerIndex] = characterUI.Character;
+			VerifyCharacters();
+			_playerIndex = (_playerIndex + 1) % _nbOfPlayers;
+		}
+	}
 }
