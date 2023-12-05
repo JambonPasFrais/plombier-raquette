@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5628292310031842273}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.042, y: 2.012, z: -7.234}
-  m_LocalScale: {x: 0.17333333, y: 0.17333333, z: 0.17333333}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5628292310031842273}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 919659336681418406, guid: 94e84f4b4acc2d448b931772911767e4, type: 3}
 --- !u!23 &2207617211946310786
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e94de831a0e33fd46bb17ba6bfc84327, type: 2}
+  - {fileID: 2100000, guid: 7556a14bc86a9ba4bbe0e6c824ff090f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,7 +105,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7965401428493319483
 Rigidbody:
@@ -133,7 +133,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &3043545627323914156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b86e002dc382daf45bae2ae1fcfaf03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PointNotFinished: 0
-  _actionParameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
+  _shotParameters: {fileID: 0}
   _rigidBody: {fileID: 7965401428493319483}

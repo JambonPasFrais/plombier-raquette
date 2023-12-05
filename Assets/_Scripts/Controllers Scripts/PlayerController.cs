@@ -8,8 +8,6 @@ public class PlayerController : ControllersParent
 {
     #region PRIVATE FIELDS
 
-    [SerializeField] private ActionParameters _actionParameters;
-
     [Header("Ball Physical Behavior Parameters")]
     [SerializeField] private List<NamedActions> _possibleActions;
     [SerializeField] private List<NamedPhysicMaterials> _possiblePhysicMaterials;
@@ -37,6 +35,7 @@ public class PlayerController : ControllersParent
 
     private void Start()
     {
+        ServicesCount = 0;
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
@@ -56,8 +55,30 @@ public class PlayerController : ControllersParent
 
     private void FixedUpdate()
     {
-        // The player moves according to the movement inputs.
-        _rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        // If the game is in the end of point or the the end of match phase, the player can't move.
+        // If the player is serving and threw the ball in the air, he can't move either.
+        // Otherwise he can move with at least one liberty axis.
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH 
+            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic)) 
+        {
+            // The global player directions depend on the side he is on and its forward movement depends on the game phase.
+            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+
+            Vector3 forwardVector = Vector3.zero;
+            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
+            {
+                forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+            }
+
+            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
+
+            // The player moves according to the movement inputs.
+            _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        }
+        else
+        {
+            _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
+        }
     }
 
     #endregion
@@ -66,7 +87,8 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
-        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.LastPlayerToApplyForce == this)
+        if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
+            || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
             _hitKeyPressedTime = 0f;
             _isCharging = false;
@@ -78,6 +100,20 @@ public class PlayerController : ControllersParent
 
         _hitKeyPressedTime = 0f;
         _isCharging = false;
+
+        if (PlayerState != PlayerStates.PLAY)
+        {
+            if (PlayerState == PlayerStates.SERVE)
+            {
+                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
+                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
+            }
+
+            PlayerState = PlayerStates.PLAY;
+        }
+
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
+            GameManager.Instance.GameState = GameState.PLAYING;
 
         Vector3 horizontalDirection;
 
@@ -109,7 +145,7 @@ public class PlayerController : ControllersParent
 
     public void ChargeShot(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             _isCharging = true;
         }
@@ -133,7 +169,7 @@ public class PlayerController : ControllersParent
 
     public void Drop(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             Shoot(HitType.Drop);
         }
@@ -149,7 +185,7 @@ public class PlayerController : ControllersParent
 
     public void Lob(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             Shoot(HitType.Lob);
         }
@@ -157,7 +193,7 @@ public class PlayerController : ControllersParent
 
     public void SlowTime(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
         {
             Time.timeScale = _actionParameters.SlowTimeScaleFactor;
             _currentSpeed = _movementSpeed / Time.timeScale;
@@ -171,7 +207,7 @@ public class PlayerController : ControllersParent
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this) 
         {
             float tempForwardMovementFactor = 0f;
             float tempRightMovementFactor = 0f;
@@ -211,11 +247,6 @@ public class PlayerController : ControllersParent
                 transform.position += wantedDirection * distanceToBorderInWantedDirection;
             }
         }
-    }
-
-    public void ServeThrow(InputAction.CallbackContext context)
-    {
-
     }
 
     #endregion

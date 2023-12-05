@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -9,20 +10,43 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+    public GameState GameState;
+
+    [Header("Manager Instances")]
+    public SideManager SideManager;
+    public ServiceManager ServiceManager;
+    public ScoreManager ScoreManager;
+
+    [Header("Ball Management")]
     public Transform BallInitializationTransform;
-    public GameObject BallInstance;
+    public GameObject BallPrefab;
+
+    [HideInInspector] public bool ServiceOnOriginalSide;
 
     #endregion
 
     #region PRIVATE FIELDS
 
+    [Header("Environment Objects")]
+    [SerializeField] private GameObject _net;
     [SerializeField] private List<ControllersParent> _controllers;
-    [SerializeField] private PlayerField[] _playerFields;
+    [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
 
     private Dictionary<ControllersParent, Player> _playerControllersAssociated;
     private Dictionary<Player, int> _playersPoints;
     private Dictionary<Player, int> _playersGames;
-    private Dictionary<string, PlayerField> _playerFieldsByPlayerName;
+    private Dictionary<string, FieldBorderPointsContainer> _fieldBorderPointsByPlayerName;
+
+    private GameObject _ballInstance;
+    private int _serverIndex;
+
+    #endregion
+
+    #region GETTERS
+
+    public GameObject BallInstance {  get { return _ballInstance; } }
+    public GameObject Net {  get { return _net; } }
+    public List<ControllersParent> Controllers {  get { return _controllers; } }
 
     #endregion
 
@@ -34,10 +58,26 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        _ballInstance = Instantiate(BallPrefab);
     }
 
     void Start()
     {
+        ServiceOnOriginalSide = true;
+
+        GameState = GameState.SERVICE;
+        foreach(ControllersParent controller in _controllers)
+        {
+            controller.PlayerState = PlayerStates.IDLE;
+        }
+
+        _serverIndex = 0;
+        _controllers[_serverIndex].IsServing = true;
+        GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+        _ballInstance.GetComponent<Ball>().ResetBall();
+
         _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
         _playersPoints = new Dictionary<Player, int>();
         _playersGames = new Dictionary<Player, int>();
@@ -52,111 +92,15 @@ public class GameManager : MonoBehaviour
             i++;
         }
 
-        _playerFieldsByPlayerName = new Dictionary<string, PlayerField>();
+        _fieldBorderPointsByPlayerName = new Dictionary<string, FieldBorderPointsContainer>();
 
-        foreach (PlayerField playerField in _playerFields)
+        foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
         {
-            _playerFieldsByPlayerName.Add(playerField.PlayerName, playerField);
-        }
-
-        ScoreUpdate();
-    }
-
-    void Update()
-    {
-        // Ball instantiation.
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            BallInstance.GetComponent<Ball>().ResetBallFunction();
-
-            BallInstance.transform.position = BallInitializationTransform.position;
-            BallInstance.SetActive(true);
+            _fieldBorderPointsByPlayerName.Add(borderPointsContainer.PlayerName, borderPointsContainer);
         }
     }
 
     #endregion
-
-    public void PointFinished(int reboundCount, ControllersParent lastPlayerToHit)
-    {
-        Player currentPlayer = _playerControllersAssociated[lastPlayerToHit];
-        Player otherPlayer = GetOtherPlayer(lastPlayerToHit);
-
-        BallInstance.GetComponent<Ball>().ResetBallFunction();
-        
-        if (reboundCount == 1)
-        {
-            // Si on est en avantage, on revient à 40.
-            if (_playersPoints[currentPlayer] == 4)
-            {
-                _playersPoints[currentPlayer]--;
-            }
-            // Sinon si l'autre est en avantage ou (qu'il est à 40 mais que nous avons moins de 40), les sets gagnants de l'autre sont incrémentés et on fixe les points des 2 joueurs à 0.
-            else if (_playersPoints[otherPlayer] == 4 || (_playersPoints[otherPlayer] == 3 && _playersPoints[currentPlayer] < 3))
-            {
-                _playersPoints[currentPlayer] = 0;
-                _playersPoints[otherPlayer] = 0;
-
-                _playersGames[otherPlayer]++;
-                EndOfGameVerification(otherPlayer);
-            }
-            // Sinon on incrémente les points de l'autre joueur.
-            else
-            {
-                _playersPoints[otherPlayer]++;
-            }
-        }
-        else if (reboundCount == 2)
-        {
-            // Si l'autre a l'avantage, il revient à 40.
-            if (_playersPoints[otherPlayer] == 4)
-            {
-                _playersPoints[otherPlayer]--;
-            }
-            // Sinon si on est en avantage ou (à 40 et que l'autre a moins de 40), on incrémente le set et on fixe les points des 2 joueurs à 0.
-            else if (_playersPoints[currentPlayer] == 4 || (_playersPoints[currentPlayer] == 3 && _playersPoints[otherPlayer] < 3))
-            {
-                _playersPoints[currentPlayer] = 0;
-                _playersPoints[otherPlayer] = 0;
-
-                _playersGames[currentPlayer]++;
-                EndOfGameVerification(currentPlayer);
-            }
-            // Sinon on incrémente les points de ce joueur.
-            else
-            {
-                _playersPoints[currentPlayer]++;
-            }
-        }
-
-        ScoreUpdate();
-    }
-
-    private void ScoreUpdate()
-    {
-        string scoreLog = "";
-
-        foreach(KeyValuePair<ControllersParent, Player> kvp in _playerControllersAssociated)
-        {
-            Player player = kvp.Value;
-            scoreLog += $"{player.Name} (Games : {_playersGames[player]} ; Points : {_playersPoints[player]}) - ";
-        }
-
-        Debug.Log(scoreLog);
-    }
-
-    private void EndOfGameVerification(Player gameWinner)
-    {
-        if (_playersGames[gameWinner] == 2)
-        {
-            EndOfGame(gameWinner);
-        }
-    }
-
-    private void EndOfGame(Player finalWinner)
-    {
-        ScoreUpdate();
-        Debug.Log($"End of the game - The winner is : {finalWinner.Name}");
-    }
 
     private Player GetOtherPlayer(ControllersParent currentPlayer)
     {
@@ -188,25 +132,72 @@ public class GameManager : MonoBehaviour
     {
         string playerName = GetPlayerName(playerController);
         Vector3 playerPosition = playerController.gameObject.transform.position;
-        PlayerField playerField = _playerFieldsByPlayerName[playerName];
+        FieldBorderPointsContainer borderPointsContainer = _fieldBorderPointsByPlayerName[playerName];
 
         if (movementDirection == Vector3.forward) 
         {
-            return Mathf.Abs(playerField.FrontPointTransform.position.z - playerPosition.z);
+            return Mathf.Abs(borderPointsContainer.FrontPointTransform.position.z - playerPosition.z);
         }
         else if(movementDirection == -Vector3.forward)
         {
-            return Mathf.Abs(playerField.BackPointTransform.position.z - playerPosition.z);
+            return Mathf.Abs(borderPointsContainer.BackPointTransform.position.z - playerPosition.z);
         }
         else if(movementDirection == Vector3.right)
         {
-            return Mathf.Abs(playerField.RightPointTransform.position.x - playerPosition.x);
+            return Mathf.Abs(borderPointsContainer.RightPointTransform.position.x - playerPosition.x);
         }
         else if(movementDirection == -Vector3.right)
         {
-            return Mathf.Abs(playerField.LeftPointTransform.position.x - playerPosition.x);
+            return Mathf.Abs(borderPointsContainer.LeftPointTransform.position.x - playerPosition.x);
         }
 
         return 0f;
+    }
+
+    public void EndOfPoint()
+    {
+        GameState = GameState.ENDPOINT;
+
+        foreach (var player in _controllers)
+        {
+            player.ResetAtService();
+        }
+    }
+
+    public void EndOfGame()
+    {
+        Debug.Log("End of game !");
+    }
+
+    public void ChangeServer()
+    {
+        int newServerIndex = (_serverIndex + 1) % _controllers.Count;
+        _controllers[_serverIndex].IsServing = false;
+        _controllers[newServerIndex].IsServing = true;
+        _serverIndex = newServerIndex;
+    }
+
+    public void BallServiceInitialization()
+    {
+        _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
+        _ballInstance.transform.position = BallInitializationTransform.position;
+    }
+
+    public void ServiceThrow(InputAction.CallbackContext context)
+    {
+        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE)
+        {
+            Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * _controllers[_serverIndex].ActionParameters.ServiceThrowForce);
+        }
+    }
+
+    public void DesactivateAllServiceDetectionVolumes()
+    {
+        foreach(ControllersParent controller in _controllers)
+        {
+            controller.BallServiceDetectionArea.gameObject.SetActive(false);
+        }
     }
 }
