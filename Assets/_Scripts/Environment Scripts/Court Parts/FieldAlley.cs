@@ -21,10 +21,21 @@ public class FieldAlley : FieldGroundPart
             // If the player hits an alley on the first rebound, it is fault.
             else if (ball.ReboundsCount == 1)
             {
-                GameManager.Instance.EndOfPoint();
-                Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-                GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                ball.ResetBall();
+                // If it was the first service, the player can proceed to his second service.
+                // Otherwise it is counted as a fault.
+                if (ball.LastPlayerToApplyForce.ServicesCount == 0)
+                {
+                    ball.LastPlayerToApplyForce.ServicesCount++;
+                    ball.ResetBall();
+                }
+                else
+                {
+                    ball.LastPlayerToApplyForce.ServicesCount = 0;
+                    GameManager.Instance.EndOfPoint();
+                    Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                    GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                    ball.ResetBall();
+                }
             }
         }
     }

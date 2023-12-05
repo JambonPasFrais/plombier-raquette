@@ -8,6 +8,7 @@ public class ControllersParent : MonoBehaviour
 
     public bool IsServing;
     public PlayerStates PlayerState;
+    public int ServicesCount;
 
     #endregion
 
@@ -30,6 +31,7 @@ public class ControllersParent : MonoBehaviour
     public void ResetAtService()
     {
         PlayerState = PlayerStates.IDLE;
+        ServicesCount = 0;
 
         if (_ballServiceDetectionArea != null)
             _ballServiceDetectionArea.gameObject.SetActive(true);

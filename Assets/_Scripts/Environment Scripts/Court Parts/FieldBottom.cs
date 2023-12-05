@@ -24,10 +24,21 @@ public class FieldBottom : FieldGroundPart
                 // If the player hits its own part of the field or serves in the opposite bottom part, it is a fault.
                 if (_ownerPlayer == ball.LastPlayerToApplyForce || GameManager.Instance.GameState == GameState.SERVICE )
                 {
-                    GameManager.Instance.EndOfPoint();
-                    Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-                    GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                    ball.ResetBall();
+                    // If it was the first service, the player can proceed to his second service.
+                    // Otherwise it is counted as a fault.
+                    if (ball.LastPlayerToApplyForce.ServicesCount == 0)
+                    {
+                        ball.LastPlayerToApplyForce.ServicesCount++;
+                        ball.ResetBall();
+                    }
+                    else
+                    {
+                        ball.LastPlayerToApplyForce.ServicesCount = 0;
+                        GameManager.Instance.EndOfPoint();
+                        Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                        GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                        ball.ResetBall();
+                    }
                 }
             }
         }

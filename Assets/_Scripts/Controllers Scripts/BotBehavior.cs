@@ -44,6 +44,7 @@ public class BotBehavior : ControllersParent
 
     private void Start()
     {
+        ServicesCount = 0;
         _targetPosVector3 = transform.position;
         _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
     }

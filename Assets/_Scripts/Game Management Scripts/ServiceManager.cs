@@ -18,12 +18,15 @@ public class ServiceManager : MonoBehaviour
 	[SerializeField] private bool _serveRight = false;
 	[SerializeField] private int _nbOfGames = 0;
 
+	private int _globalGamesCount;
+
     #endregion
 
     #region GETTERS & SETTERS
 
     public bool ServeRight { get { return _serveRight; } }
 	public int NbOfGames { set { _nbOfGames = value; } }
+	public int GlobalGamesCount { set { _globalGamesCount = value; } }
 
     #endregion
 
@@ -31,6 +34,7 @@ public class ServiceManager : MonoBehaviour
     {
         _serveRight = false;
         _nbOfGames = 0;
+		_globalGamesCount = 0;
         ChangeSides = false;
     }
 
@@ -42,7 +46,8 @@ public class ServiceManager : MonoBehaviour
 	{
 		if (newGame)
 		{
-			_nbOfGames = (_nbOfGames + 1) % 2;
+			_globalGamesCount++;
+            _nbOfGames = (_nbOfGames + 1) % 2;
 			_serveRight = true;
 
 			DisableLockServiceColliders();
@@ -53,17 +58,19 @@ public class ServiceManager : MonoBehaviour
 		else
 		{
 			_serveRight = !_serveRight;
-		}		
+		}
 
-		if (!ChangeSides)
+		int sideIndex = (_globalGamesCount % 4) / 2;
+		EnableLockServiceColliders(sideIndex);
+/*		if (!ChangeSides)
 		{
 			EnableLockServiceColliders(0);
 		}
 		else
 		{
 			EnableLockServiceColliders(1);
-		}
-	}
+		}*/
+    }
 
 	/// <summary>
 	/// Activates the colliders of a specific side of the field.

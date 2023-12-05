@@ -153,6 +153,7 @@ public class ScoreManager : MonoBehaviour
 
 		GameManager.Instance.ServiceManager.ChangeSides = false;
 		GameManager.Instance.ServiceManager.NbOfGames = 0;
+		GameManager.Instance.ServiceManager.GlobalGamesCount = 0;
 
 		if (player == 1)
 			_nbOfSets = new Tuple<int, int>(_nbOfSets.Item1 + 1, _nbOfSets.Item2);
