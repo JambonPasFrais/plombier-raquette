@@ -18,17 +18,16 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button _startButton;
     [SerializeField] private GameObject MainMenu;
     [SerializeField] private GameObject CharacterSelection;
-    //[SerializeField] private GameObject RoomSelectionPanel;
-    //[SerializeField] private GameObject RoomCreationPanel;
     [SerializeField] private GameObject RoomPanel;
     [SerializeField] private GameObject PlayersContainer;
     [SerializeField] private GameObject PlayerObject;
     [SerializeField] private GameObject OtherPlayerObject;
     [SerializeField] private List<CharacterData> CharDataList;
-    [SerializeField] private Dictionary<string,CharacterData> CharDataDic = new Dictionary<string, CharacterData>();
+    private Dictionary<string, CharacterData> CharDataDic = new Dictionary<string, CharacterData>();
 
     private MyPlayerCard _localPlayerCard;
-
+    private Dictionary<string, bool> _inRoomPlayersReadyState = new Dictionary<string, bool>() ;
+    private int _readyPlayersCount;
 
 
     private byte _maxPlayersPerRoom = 2;
@@ -36,7 +35,9 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     bool _isConnecting;
     bool _Connected = false;
 
+    
     public static OnlineManager Instance;
+    public Button ReadyButton;
 
     public byte MaxPlayersPerRoom { get => _maxPlayersPerRoom; set => _maxPlayersPerRoom = value; }
 
@@ -49,7 +50,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             Instance = this;
         }
 
-        
+
         PhotonNetwork.AutomaticallySyncScene = true;
     }
     private void Start()
@@ -58,6 +59,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
             CharDataDic.Add(cd.Name, cd);
         }
+        _startButton.interactable = false;
     }
     private void Update()
     {
@@ -112,7 +114,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
             GetOtherPlayersInRoomInformation();
         }
-        
+
         GameObject myPlayerPreview = Instantiate(PlayerObject, PlayersContainer.transform);
         _localPlayerCard = myPlayerPreview.GetComponent<MyPlayerCard>();
         _localPlayerCard.Initialize(PhotonNetwork.LocalPlayer.NickName, GameParameters.Instance.GetCharactersPlayers()); ;
@@ -130,14 +132,9 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("Game");
     }
-
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    public void ReadyButtonClicked()
     {
-        base.OnPlayerEnteredRoom(newPlayer);
-        if (PhotonNetwork.IsMasterClient)
-        {
-            
-        }
+        photonView.RPC("PlayerClickedOnReadyButton", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer, _localPlayerCard.IsReady);
     }
     public void OnOnlineButtonClicked()
     {
@@ -150,34 +147,95 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     }
     public void OnBackButtonClicked()
     {
-       PhotonNetwork.Disconnect();
+        PhotonNetwork.Disconnect();
     }
+    public void OnLeaveButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
+        for (int i = 0; i < PlayersContainer.transform.childCount; i++)
+        {
+            Destroy(PlayersContainer.transform.GetChild(i).gameObject);
+        }
+        ChangeActivePanel(CharacterSelection.name);
+    }
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    {
+        for (int i = 0; i < PlayersContainer.transform.childCount; i++)
+        {
+            PlayerCard player = PlayersContainer.transform.GetChild(i).gameObject.GetComponent<PlayerCard>();
 
+            if (player.PlayerName == otherPlayer.NickName)
+            {
+                Destroy(player.gameObject);
+                break;
+            }
+        }
+    }
 
     public void ChangeActivePanel(string menuName)
     {
         MainMenu.SetActive(menuName.Equals(MainMenu.name));
         CharacterSelection.SetActive(menuName.Equals(CharacterSelection.name));
         RoomPanel.SetActive(menuName.Equals(RoomPanel.name));
-        //RoomSelectionPanel.SetActive(menuName.Equals(RoomSelectionPanel.name));
-        //RoomCreationPanel.SetActive(menuName.Equals(RoomCreationPanel.name));
     }
     private void GetOtherPlayersInRoomInformation()
     {
         photonView.RPC("InstantiateOtherPlayerCard", RpcTarget.Others, GameParameters.Instance.GetCharactersPlayers().Name, PhotonNetwork.LocalPlayer.NickName);
     }
+
     [PunRPC]
-     private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
+    private void PlayerClickedOnReadyButton(Photon.Realtime.Player player, bool isReady)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _inRoomPlayersReadyState[player.NickName] = isReady;
+
+            if (_inRoomPlayersReadyState[player.NickName])
+            {
+                _readyPlayersCount++;
+            }
+            else
+            {
+                _readyPlayersCount--;
+            }
+
+            if (_readyPlayersCount == _maxPlayersPerRoom)
+            {
+                _startButton.interactable = true;
+            }
+            else
+            {
+                _startButton.interactable = false;
+            }
+        }
+
+        //if (PhotonNetwork.LocalPlayer != player)
+        //{
+        //    for (int i = 1; i < PlayerPreviewsContainer.transform.childCount; i++)
+        //    {
+        //        OtherPlayerPreview otherPlayerPreview = PlayerPreviewsContainer.transform.GetChild(i).gameObject.GetComponent<OtherPlayerPreview>();
+
+        //        if (otherPlayerPreview.PlayerName == player.NickName)
+        //        {
+        //            otherPlayerPreview.ReadyStateChanged();
+        //            break;
+        //        }
+        //    }
+        //}
+    }
+
+    [PunRPC]
+    private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
     {
         GameObject otherPlayerPreview = Instantiate(OtherPlayerObject, PlayersContainer.transform);
         otherPlayerPreview.GetComponent<PlayerCard>().Initialize(nickname, CharDataDic[otherPlayerCharacterData]);
         string characterData = GameParameters.Instance.GetCharactersPlayers().Name;
         photonView.RPC("InstantiatePresentPlayers", RpcTarget.Others, characterData, nickname, PhotonNetwork.LocalPlayer.NickName);
-        
-    } 
-    
+
+    }
+
     [PunRPC]
-     private void InstantiatePresentPlayers(string otherPlayerCharacterData, string nickname, string senderNickname)
+    private void InstantiatePresentPlayers(string otherPlayerCharacterData, string nickname, string senderNickname)
     {
         if (PhotonNetwork.LocalPlayer.NickName == nickname)
         {

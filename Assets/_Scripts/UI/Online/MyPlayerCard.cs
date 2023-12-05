@@ -16,9 +16,11 @@ public class MyPlayerCard : PlayerCard
     {
         _name.text = playerName;
         _characterUIPrefab.GetComponent<CharacterUI>().SetVisual(selectedCharacter);
-        //SetButtonToNotReady();
+        _readyButton = OnlineManager.Instance.ReadyButton;
+        _rdyButtonText = OnlineManager.Instance.ReadyButton.GetComponentInChildren<TextMeshProUGUI>();
+        SetButtonToNotReady();
         _isReady = false;
-        //_readyButton.onClick.AddListener(OnReadyButtonClicked);
+        _readyButton.onClick.AddListener(OnReadyButtonClicked);
     }
 
     private void OnReadyButtonClicked()
@@ -26,7 +28,7 @@ public class MyPlayerCard : PlayerCard
         if (_isReady)
         {
             _isReady = false;
-            //SetButtonToNotReady();
+            SetButtonToNotReady();
         }
         else
         {
@@ -34,18 +36,18 @@ public class MyPlayerCard : PlayerCard
             SetButtonToReady();
         }
 
-        //OnlineManager.Instance.ReadyButtonClicked();
+        OnlineManager.Instance.ReadyButtonClicked();
     }
 
     private void SetButtonToReady()
     {
         _rdyButtonText.text = "cancel";
-        _rdyButtonImage.sprite = _cancelRdySprite;
+        //_rdyButtonImage.sprite = _cancelRdySprite;
     }
 
-    //private void SetButtonToNotReady()
-    //{
-    //    _rdyButtonText.text = "ready";
-    //    _rdyButtonImage.sprite = _clickRdySprite;
-    //}
+    private void SetButtonToNotReady()
+    {
+        _rdyButtonText.text = "ready";
+        //_rdyButtonImage.sprite = _clickRdySprite;
+    }
 }
