@@ -11,17 +11,18 @@ public class MenuManager : MonoBehaviour
 	private static MenuManager _instance;
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
 	[SerializeField] private Transform _charactersModelsParent;
-    [SerializeField] private List<GameObject> _visitedMenus = new List<GameObject>();
-    [SerializeField] private EventSystem _eventSystem;
+	[SerializeField] private List<GameObject> _visitedMenus = new List<GameObject>();
+	[SerializeField] private EventSystem _eventSystem;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 
+	public static MenuManager Instance => _instance;
 	public static List<CharacterData> Characters => _instance._characters;
 	public static Dictionary<string, GameObject> CharactersModel => _instance._charactersModel;
 	public static Transform CharactersModelsParent => _instance._charactersModelsParent;
 
 	private void Awake()
 	{
-		if(_instance == null)
+		if (_instance == null)
 			_instance = this;
 
 		InitCharactersModel();
@@ -76,6 +77,29 @@ public class MenuManager : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public CharacterData ReturnRandomCharacter(List<CharacterData> availableCharacters)
+	{
+		CharacterData data;
+		int currentIndex;
+
+		System.Random rand = new System.Random();
+
+		currentIndex = rand.Next(availableCharacters.Count);
+		data = availableCharacters[currentIndex];
+		availableCharacters.RemoveAt(currentIndex);
+
+		return data;
+	}
+
+	public void GoBackToMainMenu()
+	{
+		_visitedMenus[0].SetActive(true);
+		GameObject mainMenu = _visitedMenus[0];
+
+		_visitedMenus.Clear();
+		_visitedMenus.Add(mainMenu);
 	}
         
     private void SetDefaultSelected(GameObject menu)
