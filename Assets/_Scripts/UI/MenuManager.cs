@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class MenuManager : MonoBehaviour
 {
@@ -30,10 +29,6 @@ public class MenuManager : MonoBehaviour
 	private void Start()
 	{
 		_visitedMenus.Add(transform.GetChild(0).gameObject);
-	}
-    private void Start()
-    {
-        _visitedMenus.Add(transform.GetChild(0).gameObject);
         SetDefaultSelected(_visitedMenus.Last());
     }
 
