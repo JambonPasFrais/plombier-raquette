@@ -2018,26 +2018,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e93701e4a6bcb464e8f9fef2d052c81e, type: 2}
   - {fileID: 11400000, guid: 5a143107a4855774195bdbd31eeb15f0, type: 2}
   _charactersListTransform: {fileID: 5267314174626317824}
-  _selectedCharactersName:
-  - {fileID: 895575534916142406}
-  - {fileID: 1887007398692427167}
-  - {fileID: 850178595337472324}
-  - {fileID: 9014652438546468265}
-  _characterModelLocation:
-  - {fileID: 2878795350773259830}
-  - {fileID: 3266408144319194097}
-  - {fileID: 1824982484492311363}
-  - {fileID: 6806815881421197776}
-  _selectedCharacterBackground:
-  - {fileID: 4595304408390068980}
-  - {fileID: 4178344086014049456}
-  - {fileID: 5754279319214374791}
-  - {fileID: 3821323583780179466}
+  _selectedCharactersNameSimple: []
+  _selectedCharactersNameDouble: []
+  _characterModelLocationSimple: []
+  _characterModelLocationDouble: []
+  _selectedCharacterBackgroundSimple: []
+  _selectedCharacterBackgroundDouble: []
   _characterUILayerMask:
     serializedVersion: 2
     m_Bits: 128
   _charactersModelsParent: {fileID: 8519359923253256698}
   _playButton: {fileID: 3518498764356898220}
+  _playersShowRoomSimple: {fileID: 0}
+  _playersShowRoomDouble: {fileID: 0}
 --- !u!1 &718014482762355938
 GameObject:
   m_ObjectHideFlags: 0
@@ -12776,6 +12769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainMenu: {fileID: 3123013210403380424}
+  _menusParent: {fileID: 0}
 --- !u!1 &6349797749924003396
 GameObject:
   m_ObjectHideFlags: 0
@@ -12872,7 +12866,7 @@ RectTransform:
   - {fileID: 4841540741828955419}
   - {fileID: 1803014533997139566}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -12924,7 +12918,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3663725487981695187
 MonoBehaviour:
   m_ObjectHideFlags: 0

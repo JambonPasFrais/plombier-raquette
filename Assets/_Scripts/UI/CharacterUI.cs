@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class CharacterUI : MonoBehaviour
 {
     [SerializeField] private Image _charactersFace;
     [SerializeField] private Image _backgroundColor;
     [SerializeField] private GameObject _isSelectedImage;
+
+    private UnityAction _onButtonClick;
     private CharacterData _character;
     private bool _isSelected;
 
@@ -26,5 +29,9 @@ public class CharacterUI : MonoBehaviour
     {
         _isSelected = isSelected;
         _isSelectedImage.SetActive(isSelected);
+    }
+    public void ButtonClick()
+    {
+        _onButtonClick?.Invoke();
     }
 }
