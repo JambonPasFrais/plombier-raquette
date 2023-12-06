@@ -54,6 +54,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
+			go.GetComponent<CharacterUI>().characterSelectionMenu = this;
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 	}
@@ -202,15 +203,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		_playButton.interactable = false;
 	}
-	public void HandleCharacterSelectionInput()
+	public void HandleCharacterSelectionInput(CharacterUI characterUI)
 	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
-		GameObject go;
-
-		if (Physics.Raycast(ray, out hit, float.PositiveInfinity, _characterUILayerMask)
-			&& hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
-			&& !characterUI.IsSelected)
+		if (!characterUI.IsSelected)
 		{
 			characterUI.SetSelected(true);
 			_currentSelectedCharactersName[_playerIndex].text = characterUI.Character.Name;
@@ -219,25 +214,34 @@ public class CharacterSelectionMenu : MonoBehaviour
 			if (_currentCharacterModelLocation[_playerIndex].childCount > 0)
 			{
 				_selectedCharacterUIs[_playerIndex].SetSelected(false);
-				go = _currentCharacterModelLocation[_playerIndex].GetChild(0).gameObject;
-				go.transform.SetParent(_charactersListTransform);
-				go.transform.localPosition = Vector3.zero;
-				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-				go.gameObject.SetActive(false);
+
+				GameObject previousCharacter = _currentCharacterModelLocation[_playerIndex].GetChild(0).gameObject;
+				previousCharacter.transform.SetParent(_charactersListTransform);
+				previousCharacter.transform.localPosition = Vector3.zero;
+				previousCharacter.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				previousCharacter.SetActive(false);
 				_playersCharacter[_playerIndex] = null;
 			}
 
-			_charactersModel.TryGetValue(characterUI.Character.Name, out go);
-			go.transform.SetParent(_currentCharacterModelLocation[_playerIndex]);
-			go.transform.localPosition = Vector3.zero;
-			go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-			go.SetActive(true);
-			_selectedCharacterUIs[_playerIndex] = characterUI;
-			_playersCharacter[_playerIndex] = characterUI.Character;
-			VerifyCharacters();
-			_playerIndex = (_playerIndex + 1) % _nbOfPlayers;
+			GameObject characterModel;
+			if (_charactersModel.TryGetValue(characterUI.Character.Name, out characterModel))
+			{
+				characterModel.transform.SetParent(_currentCharacterModelLocation[_playerIndex]);
+				characterModel.transform.localPosition = Vector3.zero;
+				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				characterModel.SetActive(true);
+				_selectedCharacterUIs[_playerIndex] = characterUI;
+				_playersCharacter[_playerIndex] = characterUI.Character;
+				VerifyCharacters();
+				_playerIndex = (_playerIndex + 1) % _nbOfPlayers;
+			}
+			else
+			{
+				Debug.LogError("Character model not found for: " + characterUI.Character.Name);
+			}
 		}
 	}
+
 
 	public void SetPlayerInfos()
 	{

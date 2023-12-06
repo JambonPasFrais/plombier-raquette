@@ -9,8 +9,7 @@ public class CharacterUI : MonoBehaviour
     [SerializeField] private Image _charactersFace;
     [SerializeField] private Image _backgroundColor;
     [SerializeField] private GameObject _isSelectedImage;
-
-    private UnityAction _onButtonClick;
+    public CharacterSelectionMenu characterSelectionMenu;
     private CharacterData _character;
     private bool _isSelected;
 
@@ -27,11 +26,11 @@ public class CharacterUI : MonoBehaviour
 
     public void SetSelected(bool isSelected)
     {
-        _isSelected = isSelected;
+        _isSelected = isSelected; 
         _isSelectedImage.SetActive(isSelected);
     }
-    public void ButtonClick()
+    public void select()
     {
-        _onButtonClick?.Invoke();
+        characterSelectionMenu.HandleCharacterSelectionInput(this);
     }
 }
