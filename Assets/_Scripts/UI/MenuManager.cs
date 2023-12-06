@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
 	private static MenuManager _instance;
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
 	[SerializeField] private Transform _charactersModelsParent;
-	[SerializeField] private List<GameObject> _visitedMenus = new List<GameObject>();
+	private List<GameObject> _visitedMenus = new List<GameObject>();
 	[SerializeField] private EventSystem _eventSystem;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 

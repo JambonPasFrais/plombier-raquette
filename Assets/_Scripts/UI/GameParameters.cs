@@ -14,7 +14,7 @@ public class GameParameters : MonoBehaviour
 	private List<CharacterData> _playersCharacters = new List<CharacterData>();
     private bool _isTournamentMode;
     private int _tournamentDifficulty;
-    private string _tournamentName;
+    private string _currentTournamentName;
 	private static GameParameters _instance;
     private List<string> _tournamentNames = new List<string>()
     {
@@ -80,6 +80,11 @@ public class GameParameters : MonoBehaviour
     {
         _isTournamentMode = true;
         _tournamentDifficulty = difficulty;
-        _tournamentName = _tournamentNames[difficulty];
+        _currentTournamentName = _tournamentNames[difficulty];
+    }
+
+    public int ReturnCupIndex()
+    {
+        return _tournamentNames.IndexOf(_currentTournamentName);
     }
 }
