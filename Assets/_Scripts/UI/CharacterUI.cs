@@ -30,9 +30,10 @@ public class CharacterUI : MonoBehaviour
         _character = character;
         _charactersFace.sprite = character.Picture;
         _backgroundColor.color = character.CharacterColor;
-    }
+		gameObject.name = _character.Name;
+	}
 
-    public void SetSelected(bool isSelected)
+	public void SetSelected(bool isSelected)
     {
         _isSelected = isSelected; 
         _isSelectedImage.SetActive(isSelected);
