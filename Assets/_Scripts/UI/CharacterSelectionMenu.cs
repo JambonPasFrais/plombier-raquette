@@ -106,27 +106,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 	}
 
-	public CharacterData ReturnRandomCharacter()
-	{
-		CharacterData data = null;
-		int currentIndex;
-
-		System.Random rand = new System.Random();
-
-		currentIndex = rand.Next(_availableCharacters.Count);
-		data = _availableCharacters[currentIndex];
-		_availableCharacters.RemoveAt(currentIndex);
-
-		return data;
-	}
-
 	public void Play()
 	{
 		for (int i = 0; i < _nbOfPlayers; i++)
 		{
 			if (_playersCharacter[i].Name == "Random")
 			{
-				_playersCharacter[i] = ReturnRandomCharacter();
+				_playersCharacter[i] = MenuManager.Instance.ReturnRandomCharacter(_availableCharacters);
 			}
 		}
 
