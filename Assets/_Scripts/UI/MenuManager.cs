@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MenuManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MenuManager : MonoBehaviour
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
 	[SerializeField] private Transform _charactersModelsParent;
     [SerializeField] private List<GameObject> _visitedMenus = new List<GameObject>();
+    [SerializeField] private EventSystem _eventSystem;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 
 	public static List<CharacterData> Characters => _instance._characters;
@@ -34,7 +36,10 @@ public class MenuManager : MonoBehaviour
         _visitedMenus.Last().SetActive(false);
         _visitedMenus.Add(nextMenu);
     }
-
+    public void SetFirstSelectedButton(GameObject Button)
+    {
+      _eventSystem.SetSelectedGameObject(Button);
+    }
     public void GoToPreviousMenu()
     {
         _visitedMenus.Last().SetActive(false);
