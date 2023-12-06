@@ -13365,15 +13365,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsServing: 0
   PlayerState: 0
+  ServicesCount: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 571791135}
+  _maximumDistanceToNet: 0
+  _forceMinimumClampFactor: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: 368022c5343cfe749b19ad63ae0274af, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
   _targets:
   - {fileID: 1961376066}
   - {fileID: 330511883}

@@ -9418,7 +9418,7 @@ Transform:
   - {fileID: 7295647867813171620}
   - {fileID: 7864075272887158302}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4901136132972770209
 Rigidbody:
@@ -9530,9 +9530,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsServing: 0
   PlayerState: 0
+  ServicesCount: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _playerTeam: 0
   _ballServiceDetectionArea: {fileID: 3437315211321540031}
+  _maximumDistanceToNet: 11.89
+  _forceMinimumClampFactor: 0.5
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -9546,7 +9549,7 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: 368022c5343cfe749b19ad63ae0274af, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
   - Name: Drop
     PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
   _rigidBody: {fileID: 4901136132972770209}

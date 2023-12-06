@@ -18,6 +18,10 @@ public class ControllersParent : MonoBehaviour
     [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
 
+    [Header("Force Clamping")]
+    [SerializeField] protected float _maximumDistanceToNet;
+    [SerializeField] protected float _forceMinimumClampFactor;
+
     #endregion
 
     #region GETTERS
@@ -27,6 +31,14 @@ public class ControllersParent : MonoBehaviour
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
 
     #endregion
+
+    protected float CalculateActualForce(float hitForce)
+    {
+        float actualDistanceToNet = Vector3.Project(GameManager.Instance.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
+        float clampedDistanceToNet = Mathf.Clamp(actualDistanceToNet, 0f, _maximumDistanceToNet);
+        float forceFactor = (clampedDistanceToNet / _maximumDistanceToNet) * (1 - _forceMinimumClampFactor) + _forceMinimumClampFactor;
+        return forceFactor * hitForce;
+    }
 
     public void ResetAtService()
     {

@@ -26,7 +26,6 @@ public class PlayerController : ControllersParent
     private Vector2 _movementVector;
     private float _currentSpeed;
     private float _hitKeyPressedTime;
-    private float _hitForce;
     private bool _isCharging;
 
     #endregion
@@ -87,6 +86,8 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
+        // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
+        // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
             || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
@@ -95,14 +96,19 @@ public class PlayerController : ControllersParent
             return;
         }
 
-        float hitKeyPressTime = Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
-        _hitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
+        // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
+        float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
+        float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
+        float hitForce = CalculateActualForce(wantedHitForce);
 
+        // Hit charging variables are reset.
         _hitKeyPressedTime = 0f;
         _isCharging = false;
 
+        // The player enters in the PLAY state.
         if (PlayerState != PlayerStates.PLAY)
         {
+            // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
             if (PlayerState == PlayerStates.SERVE)
             {
                 GameManager.Instance.DesactivateAllServiceDetectionVolumes();
@@ -112,6 +118,7 @@ public class PlayerController : ControllersParent
             PlayerState = PlayerStates.PLAY;
         }
 
+        // The game enters in PLAY phase when the ball is hit by the other player after the service.
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
             GameManager.Instance.GameState = GameState.PLAYING;
 
@@ -135,7 +142,8 @@ public class PlayerController : ControllersParent
         _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
-        _ballDetectionArea.Ball.ApplyForce(_hitForce, _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+        // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
+        _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
     }
 
     public void Move(InputAction.CallbackContext context)
