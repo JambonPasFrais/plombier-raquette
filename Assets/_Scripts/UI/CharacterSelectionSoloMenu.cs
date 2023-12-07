@@ -38,7 +38,8 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
-			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
+            go.GetComponent<CharacterUI>().setCharacterSelectionSoloMenu(this);
+            _selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 	}
 
@@ -90,7 +91,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void VerifyCharacters()
 	{
-		if(_playerCharacter)
+		if (_playerCharacter)
 			_playButton.interactable = true;
 
 		else
@@ -127,5 +128,44 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			_playerCharacter = _characters[random.Next(_characters.Count)];
 
 		GameParameters.Instance.SetCharactersPlayers(new List<CharacterData>() { _playerCharacter });
+	}
+
+	public void HandleCharacterSelectionSoloMenu(CharacterUI characterUI)
+	{
+		if (!characterUI.IsSelected)
+		{
+            if (characterUI != _selectableCharacters.Last())
+				characterUI.SetSelected(true);
+			_selectedCharactersName.text = characterUI.Character.Name;
+			_selectedCharacterBackground.color = characterUI.Character.CharacterColor;
+
+			if (_characterModelLocation.childCount > 0)
+			{
+				_selectedCharacterUIs.SetSelected(false);
+
+				GameObject previousCharacter = _characterModelLocation.GetChild(0).gameObject;
+				previousCharacter.transform.SetParent(_charactersListTransform);
+				previousCharacter.transform.localPosition = Vector3.zero;
+				previousCharacter.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				previousCharacter.SetActive(false);
+				_playerCharacter = null;
+			}
+
+			GameObject characterModel;
+            if (_charactersModel.TryGetValue(characterUI.Character.Name, out characterModel))
+            {
+                characterModel.transform.SetParent(_characterModelLocation);
+                characterModel.transform.localPosition = Vector3.zero;
+                characterModel.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                characterModel.SetActive(true);
+                _selectedCharacterUIs = characterUI;
+                _playerCharacter = characterUI.Character;
+                VerifyCharacters();
+            }
+            else
+			{
+				Debug.LogError("Character model not found for: " + characterUI.Character.Name);
+			}
+		}
 	}
 }

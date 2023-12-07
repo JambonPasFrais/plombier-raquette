@@ -9,15 +9,22 @@ public class CharacterUI : MonoBehaviour
     [SerializeField] private Image _charactersFace;
     [SerializeField] private Image _backgroundColor;
     [SerializeField] private GameObject _isSelectedImage;
-
-    private UnityAction _onButtonClick;
+    private CharacterSelectionMenu _characterSelectionMenu;
+    private CharacterSelectionSoloMenu _characterSelectionSoloMenu;
     private CharacterData _character;
     private bool _isSelected;
 
     public bool IsSelected => _isSelected;
 
     public CharacterData Character => _character;
-
+    public void setCharacterSelectionMenu(CharacterSelectionMenu characterSelectionMenu)
+    {
+        _characterSelectionMenu = characterSelectionMenu;
+    }    
+    public void setCharacterSelectionSoloMenu(CharacterSelectionSoloMenu characterSelectionSoloMenu)
+    {
+        _characterSelectionSoloMenu = characterSelectionSoloMenu;
+    }
     public void SetVisual(CharacterData character)
     {
         _character = character;
@@ -27,11 +34,18 @@ public class CharacterUI : MonoBehaviour
 
     public void SetSelected(bool isSelected)
     {
-        _isSelected = isSelected;
+        _isSelected = isSelected; 
         _isSelectedImage.SetActive(isSelected);
     }
-    public void ButtonClick()
+    public void select()
     {
-        _onButtonClick?.Invoke();
+        if(_characterSelectionMenu != null)
+        {
+            _characterSelectionMenu.HandleCharacterSelectionInput(this);
+        }
+        else if (_characterSelectionSoloMenu != null)
+        {
+            _characterSelectionSoloMenu.HandleCharacterSelectionSoloMenu(this);
+        }
     }
 }
