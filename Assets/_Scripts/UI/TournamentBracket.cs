@@ -152,19 +152,19 @@ public class TournamentBracket : MonoBehaviour
 			StartCoroutine(WaitBeforeShowWinner());
 	}
 
-	public void Forfait()
+	private void ResetBracket()
 	{
 		_selectedCharacters.Clear();
 		_firstRoundPlayers.Clear();
 		_secondRoundPlayers.Clear();
 		_thirdRoundPlayers.Clear();
-		foreach(var item in _characterFirstRoundLocations)
+		foreach (var item in _characterFirstRoundLocations)
 		{
-			if(item.childCount > 0)
+			if (item.childCount > 0)
 				Destroy(item.GetChild(0).gameObject);
 		}
-		
-		foreach(var item in _characterSecondRoundLocations)
+
+		foreach (var item in _characterSecondRoundLocations)
 		{
 			if (item.childCount > 0)
 				Destroy(item.GetChild(0).gameObject);
@@ -176,15 +176,23 @@ public class TournamentBracket : MonoBehaviour
 				Destroy(item.GetChild(0).gameObject);
 		}
 
+		if(_winnerLocation.childCount > 0)
+			Destroy(_winnerLocation.GetChild(0).gameObject);
+
 		_currentRound = 0;
 		gameObject.SetActive(false);
+	}
+
+	public void Forfait()
+	{
+		ResetBracket();
 		MenuManager.Instance.GoBackToMainMenu();
 	}
 
 	private IEnumerator WaitBeforeShowWinner()
 	{
 		yield return new WaitForSeconds(1);
-		gameObject.SetActive(false);
+		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
 		_tournamentEndMenu.SetWinnerMenu(_playerCharacter.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);
 	}
@@ -192,7 +200,7 @@ public class TournamentBracket : MonoBehaviour
 	private IEnumerator WaitBeforeShowingLoserMenu()
 	{
 		yield return new WaitForSeconds(1);
-		gameObject.SetActive(false);
+		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
 		_tournamentEndMenu.SetLoserMenu(_playerCharacter.GetComponent<CharacterUI>().Character.Model3D);
 	}

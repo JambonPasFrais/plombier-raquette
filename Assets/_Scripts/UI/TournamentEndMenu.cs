@@ -12,10 +12,12 @@ public class TournamentEndMenu : MonoBehaviour
     [SerializeField] private Transform _loserPlayerLocation;
     [SerializeField] private Transform _confettisLocation;
     [SerializeField] private GameObject _conffetisParticleEffects;
-	[SerializeField] private bool _canReturn = false;
+	[SerializeField] private GameObject _continueText;
+	private bool _canReturn = false;
 
 	public void SetWinnerMenu(GameObject winnerPrefab, Sprite cupSprite)
     {
+		_continueText.SetActive(false);
 		_canReturn = false;
 		_winnerDisplay.SetActive(true);
 		_loserDisplay.SetActive(false);
@@ -33,6 +35,7 @@ public class TournamentEndMenu : MonoBehaviour
 
 	public void SetLoserMenu(GameObject loserPrefab)
 	{
+		_continueText.SetActive(false);
 		_canReturn = false;
 		_loserDisplay.SetActive(true);
 		_winnerDisplay.SetActive(false);
@@ -47,6 +50,14 @@ public class TournamentEndMenu : MonoBehaviour
 	{
 		if(Input.GetMouseButtonDown(0) && _canReturn)
 		{
+			if (_winnerPlayerLocation.childCount != 0)
+			{
+				Destroy(_winnerPlayerLocation.GetChild(0).gameObject);
+				Destroy(_confettisLocation.GetChild(0).gameObject);
+			}
+			else
+				Destroy(_loserPlayerLocation.GetChild(0).gameObject);
+
 			gameObject.SetActive(false);
 			MenuManager.Instance.GoBackToMainMenu();
 		}
@@ -56,5 +67,6 @@ public class TournamentEndMenu : MonoBehaviour
 	{
 		yield return new WaitForSeconds(3);
 		_canReturn = true;
+		_continueText.SetActive(true);
 	}
 }

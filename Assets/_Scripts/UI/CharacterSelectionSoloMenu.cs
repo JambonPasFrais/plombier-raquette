@@ -126,7 +126,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		System.Random random = new System.Random();
 
 		if (_playerCharacter == _characters.Last())
-			_playerCharacter = _characters[random.Next(_characters.Count)];
+			_playerCharacter = _characters[random.Next(_characters.Count - 1)];
 
 		GameParameters.Instance.SetCharactersPlayers(new List<CharacterData>() { _playerCharacter });
 	}
