@@ -8,6 +8,7 @@ public class ServiceManager : MonoBehaviour
     #region PUBLIC FIELDS
 
     public bool ChangeSides;
+    public int NbOfGames = 0;
 
     #endregion
 
@@ -16,7 +17,6 @@ public class ServiceManager : MonoBehaviour
     [SerializeField] private List<GameObject> _lockServiceMovementColliders;
 
 	[SerializeField] private bool _serveRight = false;
-	[SerializeField] private int _nbOfGames = 0;
 
 	private int _globalGamesCount;
 
@@ -25,7 +25,6 @@ public class ServiceManager : MonoBehaviour
     #region GETTERS & SETTERS
 
     public bool ServeRight { get { return _serveRight; } }
-	public int NbOfGames { set { _nbOfGames = value; } }
 	public int GlobalGamesCount { set { _globalGamesCount = value; } }
 
     #endregion
@@ -33,7 +32,7 @@ public class ServiceManager : MonoBehaviour
     private void Awake()
     {
         _serveRight = false;
-        _nbOfGames = 0;
+        NbOfGames = 0;
 		_globalGamesCount = 0;
         ChangeSides = false;
     }
@@ -47,12 +46,12 @@ public class ServiceManager : MonoBehaviour
 		if (newGame)
 		{
 			_globalGamesCount++;
-            _nbOfGames = (_nbOfGames + 1) % 2;
+            NbOfGames = (NbOfGames + 1) % 2;
 			_serveRight = true;
 
 			DisableLockServiceColliders();
 
-            if (_nbOfGames == 1)
+            if (NbOfGames == 1)
 				ChangeSides = !ChangeSides;
 		}
 		else

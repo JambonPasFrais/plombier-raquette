@@ -100,7 +100,6 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-/*		if (!GameManager.Instance.IsGameFinished)*/
 		Debug.Log(GetScore());
 	}
 
@@ -123,7 +122,13 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
 
-        if ((_score[_currentSetIndex].Item1 + _score[_currentSetIndex].Item2) % 2 == 1)
+		// If the players changed sides, the field border points ownership needs to be changed.
+		if (GameManager.Instance.ServiceManager.NbOfGames == 1)
+		{
+			GameManager.Instance.ChangeFieldBorderPointsOwnership();
+		}
+
+		if ((_score[_currentSetIndex].Item1 + _score[_currentSetIndex].Item2) % 2 == 1)
 		{
             GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
         }

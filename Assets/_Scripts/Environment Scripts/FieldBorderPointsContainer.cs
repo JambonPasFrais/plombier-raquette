@@ -7,7 +7,7 @@ public class FieldBorderPointsContainer : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
-    [SerializeField] private string _playerName;
+    public Teams Team;
 
     [Header("Player Field Limitation Points")]
     [SerializeField] private Transform _frontPointTransform;
@@ -19,7 +19,6 @@ public class FieldBorderPointsContainer : MonoBehaviour
 
     #region GETTERS
 
-    public string PlayerName { get { return _playerName; } }
     public Transform FrontPointTransform { get { return _frontPointTransform; } }
     public Transform BackPointTransform { get { return _backPointTransform; } }
     public Transform RightPointTransform { get { return _rightPointTransform; } }

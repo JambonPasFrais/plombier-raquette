@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -32,10 +34,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
 
-    private Dictionary<ControllersParent, Player> _playerControllersAssociated;
-    private Dictionary<Player, int> _playersPoints;
-    private Dictionary<Player, int> _playersGames;
-    private Dictionary<string, FieldBorderPointsContainer> _fieldBorderPointsByPlayerName;
+    private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
+    private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
 
     private GameObject _ballInstance;
     private int _serverIndex;
@@ -78,33 +78,29 @@ public class GameManager : MonoBehaviour
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _ballInstance.GetComponent<Ball>().ResetBall();
 
-        _playerControllersAssociated = new Dictionary<ControllersParent, Player>();
-        _playersPoints = new Dictionary<Player, int>();
-        _playersGames = new Dictionary<Player, int>();
+        _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
 
         int i = 0;
         foreach (ControllersParent controller in _controllers)
         {
-            Player newPlayer = new Player($"Player {i + 1}");
-            _playerControllersAssociated.Add(controller, newPlayer);
-            _playersPoints.Add(newPlayer, 0);
-            _playersGames.Add(newPlayer, 0);
+            Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
+            _teamControllersAssociated.Add(controller, team);
             i++;
         }
 
-        _fieldBorderPointsByPlayerName = new Dictionary<string, FieldBorderPointsContainer>();
+        _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
 
         foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
         {
-            _fieldBorderPointsByPlayerName.Add(borderPointsContainer.PlayerName, borderPointsContainer);
+            _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
         }
     }
 
     #endregion
 
-    private Player GetOtherPlayer(ControllersParent currentPlayer)
+/*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
     {
-        foreach (KeyValuePair<ControllersParent, Player> kvp in _playerControllersAssociated) 
+        foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
         {
             if (kvp.Key != currentPlayer)
             {
@@ -113,40 +109,66 @@ public class GameManager : MonoBehaviour
         }
 
         return null;
-    }
+    }*/
 
-    public string GetPlayerName(ControllersParent currentPlayer)
+    public Teams? GetPlayerTeam(ControllersParent currentPlayer)
     {
-        foreach (KeyValuePair<ControllersParent, Player> kvp in _playerControllersAssociated)
+        foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated)
         {
             if (kvp.Key == currentPlayer)
             {
-                return kvp.Value.Name;
+                return kvp.Value;
             }
         }
 
         return null;
     }
 
-    public float GetDistanceToBorderByDirection(ControllersParent playerController, Vector3 movementDirection)
+    /// <summary>
+    /// Updates the field points ownership when the players change sides.
+    /// </summary>
+    public void ChangeFieldBorderPointsOwnership()
     {
-        string playerName = GetPlayerName(playerController);
-        Vector3 playerPosition = playerController.gameObject.transform.position;
-        FieldBorderPointsContainer borderPointsContainer = _fieldBorderPointsByPlayerName[playerName];
+        foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
+        {
+            if (borderPointsContainer.Team == _teamControllersAssociated[_controllers[0]])
+            {
+                borderPointsContainer.Team = _teamControllersAssociated[_controllers[1]];
+            }
+            else
+            {
+                borderPointsContainer.Team = _teamControllersAssociated[_controllers[0]];
+            }
 
-        if (movementDirection == Vector3.forward) 
+            _fieldBorderPointsByTeam[borderPointsContainer.Team] = borderPointsContainer;
+        }
+    }
+
+    /// <summary>
+    /// Calculates the distance between the player and the field limit point in the wanted direction.
+    /// </summary>
+    /// <param name="playerController"></param>
+    /// <param name="movementDirection"></param>
+    /// <returns></returns>
+    public float GetDistanceToBorderByDirection(ControllersParent playerController, Vector3 movementDirection, Vector3 currentForwardVector, Vector3 currentRightVector)
+    {
+        Teams playerTeam = (Teams)GetPlayerTeam(playerController);
+        Vector3 playerPosition = playerController.gameObject.transform.position;
+        FieldBorderPointsContainer borderPointsContainer = _fieldBorderPointsByTeam[playerTeam];
+
+        if (movementDirection == currentForwardVector) 
         {
             return Mathf.Abs(borderPointsContainer.FrontPointTransform.position.z - playerPosition.z);
         }
-        else if(movementDirection == -Vector3.forward)
+        else if(movementDirection == -currentForwardVector)
         {
             return Mathf.Abs(borderPointsContainer.BackPointTransform.position.z - playerPosition.z);
         }
-        else if(movementDirection == Vector3.right)
+        else if(movementDirection == currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.RightPointTransform.position.x - playerPosition.x);
         }
-        else if(movementDirection == -Vector3.right)
+        else if(movementDirection == -currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.LeftPointTransform.position.x - playerPosition.x);
         }

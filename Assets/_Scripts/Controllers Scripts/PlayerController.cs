@@ -243,8 +243,11 @@ public class PlayerController : ControllersParent
                 rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
             }
 
-            Vector3 wantedDirection = forwardMovementFactor * Vector3.forward + rightMovementFactor * Vector3.right;
-            float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection);
+            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
+            Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
+            Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
+
+            float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
 
             if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
             {
