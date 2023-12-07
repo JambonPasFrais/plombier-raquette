@@ -25,8 +25,6 @@ public class PlayerController : ControllersParent
 
     private Vector2 _movementVector;
     private float _currentSpeed;
-    private float _hitKeyPressedTime;
-    private bool _isCharging;
 
     #endregion
 
@@ -49,6 +47,8 @@ public class PlayerController : ControllersParent
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
+
+            Debug.Log($"hit key press time while charging : {_hitKeyPressedTime}");
         }
     }
 
@@ -100,6 +100,7 @@ public class PlayerController : ControllersParent
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
         float hitForce = CalculateActualForce(wantedHitForce);
+        Debug.Log($"Hit key press time : {hitKeyPressTime} - Wanted force : {wantedHitForce} - Actual force before multiplying by shot force factor : {hitForce}");
 
         // Hit charging variables are reset.
         _hitKeyPressedTime = 0f;

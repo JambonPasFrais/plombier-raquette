@@ -30,6 +30,7 @@ public class FieldFrontLeft : FieldGroundPart
                     {
                         ball.LastPlayerToApplyForce.ServicesCount++;
                         ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
+                        ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
                         GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight, 
                             !GameManager.Instance.ServiceManager.ChangeSides);
                         GameManager.Instance.ServiceManager.EnableLockServiceColliders();

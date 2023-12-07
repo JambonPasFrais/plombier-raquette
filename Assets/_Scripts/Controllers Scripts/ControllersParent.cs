@@ -22,6 +22,9 @@ public class ControllersParent : MonoBehaviour
     [SerializeField] protected float _maximumDistanceToNet;
     [SerializeField] protected float _forceMinimumClampFactor;
 
+    protected float _hitKeyPressedTime;
+    protected bool _isCharging;
+
     #endregion
 
     #region GETTERS
@@ -44,8 +47,15 @@ public class ControllersParent : MonoBehaviour
     {
         PlayerState = PlayerStates.IDLE;
         ServicesCount = 0;
+        ResetLoadedShotVariables();
 
         if (_ballServiceDetectionArea != null)
             _ballServiceDetectionArea.gameObject.SetActive(true);
+    }
+
+    public void ResetLoadedShotVariables()
+    {
+        _hitKeyPressedTime = 0;
+        _isCharging = false;
     }
 }
