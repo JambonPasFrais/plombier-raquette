@@ -2268,7 +2268,8 @@ MonoBehaviour:
   _gamepadPrefab: {fileID: 428623817413851365, guid: 208606549b1e40646ab4d501b4274a07, type: 3}
   _keyboardPrefab: {fileID: 428623817413851365, guid: 65fe8c4798afcb74793100ae9da4f1f2, type: 3}
   _joystickPrefab: {fileID: 428623817413851365, guid: 829c7aabba00e484196c78f873348370, type: 3}
-  _controllerContainer: {fileID: 1503986566}
+  _controllerSelectionContainer: {fileID: 1503986566}
+  _characterSelectionContainer: {fileID: 239956969512624163}
 --- !u!1 &1091813751
 GameObject:
   m_ObjectHideFlags: 0
@@ -3122,7 +3123,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1086557411}
         m_TargetAssemblyTypeName: ControllerManager, Assembly-CSharp
-        m_MethodName: ControllerCantBeAdded
+        m_MethodName: OnValidateControllerSelection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7311,6 +7312,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7be31872b9827ab4d9329257ee9e72de, type: 2}
   _charactersModelsParent: {fileID: 5743142112829123866}
   _visitedMenus: []
+  _eventSystem: {fileID: 0}
 --- !u!1 &1016660536940872733
 GameObject:
   m_ObjectHideFlags: 0

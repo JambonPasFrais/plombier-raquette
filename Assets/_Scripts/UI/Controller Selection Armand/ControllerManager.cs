@@ -18,7 +18,8 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private GameObject _keyboardPrefab;
     [SerializeField] private GameObject _joystickPrefab;
     
-    [SerializeField] private Transform _controllerContainer;
+    [SerializeField] private Transform _controllerSelectionContainer;
+    [SerializeField] private Transform _characterSelectionContainer;
 
     private int _playerCount;
     private Dictionary<int, GameObject> _controllers;
@@ -62,6 +63,18 @@ public class ControllerManager : MonoBehaviour
         
         _controllers.Clear();
     }
+
+    public void OnValidateControllerSelection()
+    {
+        ControllerCantBeAdded();
+        foreach (var controller in _controllers)
+        {
+            controller.Value.GetComponent<Controller>().CharacterSelectionMode();
+            controller.Value.transform.SetParent(_characterSelectionContainer);
+            controller.Value.transform.position = Vector3.zero;
+            controller.Value.transform.localScale = Vector3.one;
+        }
+    }
     #endregion
 
     #region Subscribe function
@@ -95,12 +108,12 @@ public class ControllerManager : MonoBehaviour
         }
 
         Controller controllerInstance = _controllers[inputDevice.deviceId].GetComponent<Controller>();
-        controllerInstance.IsSelectingCharacter = false;
+        controllerInstance.ControllerSelectionMode();
         
         //UI Stuff
         // Move to specified container (TRANSFORM PARENT) + reset scale if canvas is in world space
         Transform createdControllerTransform = _controllers[inputDevice.deviceId].transform;
-        createdControllerTransform.SetParent(_controllerContainer);
+        createdControllerTransform.SetParent(_controllerSelectionContainer);
         //createdControllerTransform.localScale = Vector3.one;
         //createdControllerTransform.position = Vector3.zero;
     }
