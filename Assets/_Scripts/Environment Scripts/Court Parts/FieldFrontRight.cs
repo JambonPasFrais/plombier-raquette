@@ -26,9 +26,14 @@ public class FieldFrontRight : FieldGroundPart
                 {
                     // If it was the first service, the player can proceed to his second service.
                     // Otherwise it is counted as a fault.
-                    if (ball.LastPlayerToApplyForce.ServicesCount == 0)
+                    if (ball.LastPlayerToApplyForce.ServicesCount == 0 && GameManager.Instance.GameState == GameState.SERVICE)
                     {
                         ball.LastPlayerToApplyForce.ServicesCount++;
+                        ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
+                        ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
+                        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                            !GameManager.Instance.ServiceManager.ChangeSides);
+                        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
                         ball.ResetBall();
                     }
                     else

@@ -139,10 +139,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 9127353872525647490}
-    - target: {fileID: 1724584641191711566, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1773003915773665770, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -151,10 +147,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 9127353872525647490}
-    - target: {fileID: 2398211469732853235, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3105107556669345995, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -163,14 +155,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 534994376}
-    - target: {fileID: 4530452988496042864, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5769274153994770781, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6158525152370027648, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -215,14 +199,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6452562265072210526, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6684013132065918185, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7183868423397239381, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -235,10 +211,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 534994376}
-    - target: {fileID: 8793296744508789716, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8826042505208906036, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -410,11 +382,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChangeSides: 0
+  NbOfGames: 0
   _lockServiceMovementColliders:
   - {fileID: 1243780555}
   - {fileID: 1080589701}
   _serveRight: 0
-  _nbOfGames: 0
 --- !u!114 &175529523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13365,15 +13337,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsServing: 0
   PlayerState: 0
+  ServicesCount: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 571791135}
+  _maximumDistanceToNet: 0
+  _forceMinimumClampFactor: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: 368022c5343cfe749b19ad63ae0274af, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
   _targets:
   - {fileID: 1961376066}
   - {fileID: 330511883}
