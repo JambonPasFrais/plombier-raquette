@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-//using static UnityEditor.Progress;
 
 public class CharacterSelectionSoloMenu : MonoBehaviour
 {
@@ -68,6 +67,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 					go.transform.SetParent(_charactersListTransform);
 					go.transform.localPosition = Vector3.zero;
 					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+					go.transform.localScale = Vector3.one;
 					go.gameObject.SetActive(false);
 					_playerCharacter = null;
 				}
@@ -81,6 +81,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				go.transform.SetParent(_characterModelLocation);
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				go.transform.localScale = new Vector3(20, 20, 20);
 				go.SetActive(true);
 				_selectedCharacterUIs = characterUI;
 				_playerCharacter = characterUI.Character;

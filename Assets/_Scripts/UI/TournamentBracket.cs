@@ -24,6 +24,7 @@ public class TournamentBracket : MonoBehaviour
 	private List<CharacterData> _availableCharacters;
 	private int _nbOfPlayers = 8;
 	private int _currentRound = 0;
+	private GameObject _playerCharacter;
 
 	[Header("Players at Rounds")]
 	[SerializeField] private List<GameObject> _firstRoundPlayers = new List<GameObject>();
@@ -92,6 +93,8 @@ public class TournamentBracket : MonoBehaviour
 			go.GetComponent<CharacterUI>().SetVisual(_selectedCharacters[i]);
 			_firstRoundPlayers.Add(go);
 		}
+
+		_playerCharacter = _firstRoundPlayers[0];
 	}
 
 	private void PlayFirstRound()
@@ -109,6 +112,9 @@ public class TournamentBracket : MonoBehaviour
 
 		var tempList = _firstRoundPlayers.Except(_secondRoundPlayers).ToList();
 		_firstRoundPlayers = new List<GameObject>(tempList);
+
+		if (!_secondRoundPlayers.Contains(_playerCharacter))
+			StartCoroutine(WaitBeforeShowingLoserMenu());
 	}
 
 	private void PlaySecondRound()
@@ -126,6 +132,9 @@ public class TournamentBracket : MonoBehaviour
 
 		var tempList = _secondRoundPlayers.Except(_thirdRoundPlayers).ToList();
 		_secondRoundPlayers = new List<GameObject>(tempList);
+
+		if (!_thirdRoundPlayers.Contains(_playerCharacter))
+			StartCoroutine(WaitBeforeShowingLoserMenu());
 	}
 
 	private void PlayThirdRound()
@@ -136,7 +145,11 @@ public class TournamentBracket : MonoBehaviour
 		_tournamentWinner = winner;
 		winner.transform.SetParent(_winnerLocation);
 		winner.transform.localPosition = Vector3.zero;
-		StartCoroutine(WaitBeforeShowWinner());
+
+		if (_tournamentWinner != _playerCharacter)
+			StartCoroutine(WaitBeforeShowingLoserMenu());
+		else
+			StartCoroutine(WaitBeforeShowWinner());
 	}
 
 	public void Forfait()
@@ -172,6 +185,15 @@ public class TournamentBracket : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1);
 		gameObject.SetActive(false);
-		_tournamentEndMenu.SetWinnerMenu(_tournamentWinner.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);
+		_tournamentEndMenu.gameObject.SetActive(true);
+		_tournamentEndMenu.SetWinnerMenu(_playerCharacter.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);
+	}
+
+	private IEnumerator WaitBeforeShowingLoserMenu()
+	{
+		yield return new WaitForSeconds(1);
+		gameObject.SetActive(false);
+		_tournamentEndMenu.gameObject.SetActive(true);
+		_tournamentEndMenu.SetLoserMenu(_playerCharacter.GetComponent<CharacterUI>().Character.Model3D);
 	}
 }

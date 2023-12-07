@@ -85,6 +85,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 					go.transform.SetParent(_charactersListTransform);
 					go.transform.localPosition = Vector3.zero;
 					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+					go.transform.localScale = Vector3.one;
 					go.gameObject.SetActive(false);
 					_availableCharacters.Add(_playersCharacter[_playerIndex]);
 					_playersCharacter[_playerIndex] = null;
@@ -98,6 +99,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				go.transform.SetParent(_currentCharacterModelLocation[_playerIndex]);
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				go.transform.localScale = new Vector3(20, 20, 20);
 				go.SetActive(true);
 				_selectedCharacterUIs[_playerIndex] = characterUI;
 				_playersCharacter[_playerIndex] = characterUI.Character;
