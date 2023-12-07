@@ -118,7 +118,7 @@ public class PlayerController : ControllersParent
             PlayerState = PlayerStates.PLAY;
         }
 
-        // The game enters in PLAY phase when the ball is hit by the other player after the service.
+        // The game enters in playing phase when the ball is hit by the other player after the service.
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
             GameManager.Instance.GameState = GameState.PLAYING;
 
