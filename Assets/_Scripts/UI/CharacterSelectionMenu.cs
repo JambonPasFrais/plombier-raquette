@@ -54,7 +54,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
-			go.GetComponent<CharacterUI>().characterSelectionMenu = this;
+			go.GetComponent<CharacterUI>().setCharacterSelectionMenu(this);
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 	}
