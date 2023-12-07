@@ -10,11 +10,13 @@ public class TournamentBracket : MonoBehaviour
 	[SerializeField] private GameObject _characterTournamentUIPrefab;
 	[SerializeField] private Image _cupImage;
 	[SerializeField] private List<Sprite> _tournamentCupsSprite = new List<Sprite>();
+	[SerializeField] private TournamentEndMenu _tournamentEndMenu;
 
 	[Header("Locations")]
 	[SerializeField] private Transform _charactersDisplayFirstRoundParent;
 	[SerializeField] private Transform _charactersDisplaySecondRoundParent;
 	[SerializeField] private Transform _charactersDisplayThirdRoundParent;
+	[SerializeField] private Transform _winnerLocation;
 	[SerializeField] private List<Transform> _characterFirstRoundLocations = new List<Transform>();
 	[SerializeField] private List<Transform> _characterSecondRoundLocations = new List<Transform>();
 	[SerializeField] private List<Transform> _characterThirdRoundLocations = new List<Transform>();
@@ -27,8 +29,9 @@ public class TournamentBracket : MonoBehaviour
 	[SerializeField] private List<GameObject> _firstRoundPlayers = new List<GameObject>();
 	[SerializeField] private List<GameObject> _secondRoundPlayers = new List<GameObject>();
 	[SerializeField] private List<GameObject> _thirdRoundPlayers = new List<GameObject>();
+	[SerializeField] private GameObject _tournamentWinner;
 
-	private void Start()
+	private void Awake()
 	{
 		_currentRound = 0;
 
@@ -127,7 +130,13 @@ public class TournamentBracket : MonoBehaviour
 
 	private void PlayThirdRound()
 	{
-
+		System.Random random = new System.Random();
+		GameObject winner;
+		winner = _thirdRoundPlayers[random.Next(2)];
+		_tournamentWinner = winner;
+		winner.transform.SetParent(_winnerLocation);
+		winner.transform.localPosition = Vector3.zero;
+		StartCoroutine(WaitBeforeShowWinner());
 	}
 
 	public void Forfait()
@@ -157,5 +166,12 @@ public class TournamentBracket : MonoBehaviour
 		_currentRound = 0;
 		gameObject.SetActive(false);
 		MenuManager.Instance.GoBackToMainMenu();
+	}
+
+	private IEnumerator WaitBeforeShowWinner()
+	{
+		yield return new WaitForSeconds(1);
+		gameObject.SetActive(false);
+		_tournamentEndMenu.SetWinnerMenu(_tournamentWinner.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);
 	}
 }
