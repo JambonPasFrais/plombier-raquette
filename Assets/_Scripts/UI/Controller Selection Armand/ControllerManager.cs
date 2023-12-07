@@ -3,60 +3,106 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class ControllerManager : MonoBehaviour
 {
     // Reference to the InputAction for joining a player
-    public InputAction joinPlayerAction;
-    [SerializeField] private GameObject _controllerPrefab;
+    
+    [Header("Parameters")]
+    [SerializeField] private InputAction _joinPlayerAction;
+    [SerializeField] private int _maxPlayerCount;
+    
+    [Header("Instances")]
+    [SerializeField] private GameObject _gamepadPrefab;
+    [SerializeField] private GameObject _keyboardPrefab;
+    [SerializeField] private GameObject _joystickPrefab;
+    
     [SerializeField] private Transform _controllerContainer;
 
+    private int _playerCount;
     private Dictionary<int, GameObject> _controllers;
 
+    #region Unity Functions
     private void OnEnable()
     {
         // Enable the input action
-        joinPlayerAction.Enable();
+        _joinPlayerAction.Enable();
     }
 
     private void OnDisable()
     {
         // Disable the input action
-        joinPlayerAction.Disable();
+        _joinPlayerAction.Disable();
     }
 
     private void Awake()
     {
-        // Register a callback for the input action
         _controllers = new Dictionary<int, GameObject>();
     }
+    #endregion
 
+    #region Listeners
     public void ControllerCanBeAdded()
     {
-        joinPlayerAction.performed += PlayerTriesToJoin;
+        _joinPlayerAction.performed += PlayerTriesToJoin;
     }
     
     public void ControllerCantBeAdded()
     {
-        joinPlayerAction.performed -= PlayerTriesToJoin;
+        _joinPlayerAction.performed -= PlayerTriesToJoin;
     }
 
+    public void OnResetControllers()
+    {
+        foreach (var pair in _controllers)
+        {
+            Destroy(pair.Value);
+        }
+        
+        _controllers.Clear();
+    }
+    #endregion
 
+    #region Subscribe function
     private void PlayerTriesToJoin(InputAction.CallbackContext context)
     {
+        // every player joined full
+        if (_controllers.Count >= _maxPlayerCount)
+            return;
+        
         // if already exists, dont recreate it
         if (_controllers.ContainsKey(context.control.device.deviceId))
             return;
 
-        //Instantiate and add to a dict
-        _controllers.Add(context.control.device.deviceId,
-            PlayerInput.Instantiate(_controllerPrefab, -1, null, -1, context.control.device).gameObject);
+        // Player Input Creation
+        InputDevice inputDevice = context.control.device;
+
+        switch (inputDevice)
+        {
+            case Joystick:
+                _controllers.Add(inputDevice.deviceId,
+                    PlayerInput.Instantiate(_joystickPrefab, -1, null, -1, inputDevice).gameObject);
+                break;
+            case Gamepad:
+                _controllers.Add(inputDevice.deviceId,
+                    PlayerInput.Instantiate(_gamepadPrefab, -1, null, -1, inputDevice).gameObject);
+                break;
+            case Keyboard:
+                _controllers.Add(inputDevice.deviceId,
+                    PlayerInput.Instantiate(_keyboardPrefab, -1, null, -1, inputDevice).gameObject);
+                break;
+        }
+
+        Controller controllerInstance = _controllers[inputDevice.deviceId].GetComponent<Controller>();
+        controllerInstance.IsSelectingCharacter = false;
         
-        // Move to specified container (TRANSFORM PARENT) + reset scale (we move it from world position to canvas
-        Transform createdControllerTransform = _controllers[context.control.device.deviceId].transform;
+        //UI Stuff
+        // Move to specified container (TRANSFORM PARENT) + reset scale if canvas is in world space
+        Transform createdControllerTransform = _controllers[inputDevice.deviceId].transform;
         createdControllerTransform.SetParent(_controllerContainer);
         //createdControllerTransform.localScale = Vector3.one;
         //createdControllerTransform.position = Vector3.zero;
-
     }
+    #endregion
 }

@@ -81,6 +81,40 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6919ab93-0498-4189-8e39-7f435b4cee1a
     m_ActionName: Actions/Punch[/Keyboard/anyKey,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5501654821748223831}
+        m_TargetAssemblyTypeName: Controller, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ebf9165c-8d39-4ed0-bada-15b9dc7c81f2
+    m_ActionName: Actions/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/Core
+      (Plus) Wired Controller/stick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5501654821748223831}
+        m_TargetAssemblyTypeName: Controller, Assembly-CSharp
+        m_MethodName: OnSelect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6ea57873-0906-47c0-b5a4-aedbb5b79671
+    m_ActionName: Actions/Select[/Keyboard/enter,/XInputControllerWindows/buttonEast,/Core
+      (Plus) Wired Controller/button3]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Actions
@@ -98,6 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d5fb7f251f7c94e83a4753d9f14195, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 5
+  IsSelectingCharacter: 0
 --- !u!222 &2800776408258316209
 CanvasRenderer:
   m_ObjectHideFlags: 0
