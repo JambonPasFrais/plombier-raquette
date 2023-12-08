@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.MLAgents;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class ControllersParent : MonoBehaviour
+public class ControllersParent : Agent
 {
     #region PUBLIC FIELDS
 
