@@ -84,7 +84,9 @@ public class ControllerManager : MonoBehaviour
 
     public void OnValidateControllerSelection()
     {
+        Debug.Log(_controllers);
         ControllerCantBeAdded();
+        Debug.Log(_controllers);
         SwitchCtrlersToCharSelectMode();
     }
     #endregion
@@ -109,10 +111,11 @@ public class ControllerManager : MonoBehaviour
     
     private void SwitchCtrlersToCharSelectMode()
     {
+        // Enters with no "input at all"
         foreach (var controller in _controllers)
         {
             controller.Value.GetComponent<Controller>().CharacterSelectionMode();
-            controller.Value.transform.SetParent(_characterSelectionContainer);
+            controller.Value.transform.SetParent(_characterSelectionContainer); // when exits that line, has a new input base on the "input order"
             controller.Value.transform.position = Vector3.zero;
             controller.Value.transform.localScale = Vector3.one;
         }
@@ -137,6 +140,7 @@ public class ControllerManager : MonoBehaviour
     private void ControllerCantBeAdded()
     {
         _joinPlayerAction.performed -= PlayerTriesToJoin;
+        Debug.Log(_controllers);
     }
 
     private IEnumerator DeleteControllerCoroutine(int deviceId)
