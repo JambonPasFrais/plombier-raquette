@@ -33,11 +33,14 @@ public class GameParameters : MonoBehaviour
 
 	private void Awake()
 	{
-        if(_instance == null)
+        if (_instance == null)
+        {
             _instance = this;
-
-		DontDestroyOnLoad(gameObject);
-        CurrentTournamentInfos.Reset();
+			DontDestroyOnLoad(gameObject);
+			CurrentTournamentInfos.Reset();
+		}
+		else
+            Destroy(gameObject);
 	}
 
     public void SetMode(bool isOnline)

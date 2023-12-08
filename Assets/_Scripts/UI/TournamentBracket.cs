@@ -108,7 +108,7 @@ public class TournamentBracket : MonoBehaviour
 		}
 
 		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, null, null);
-		//SceneManager.LoadScene(0);
+		SceneManager.LoadScene(0);
 		System.Random random = new System.Random();
 		GameObject winner;
 
