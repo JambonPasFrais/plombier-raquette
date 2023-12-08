@@ -14,7 +14,7 @@ public class GameParameters : MonoBehaviour
 	private List<CharacterData> _playersCharacters = new List<CharacterData>();
     private bool _isTournamentMode;
     private int _tournamentDifficulty;
-    private string _tournamentName;
+    private string _currentTournamentName;
 	private static GameParameters _instance;
     private List<string> _tournamentNames = new List<string>()
     {
@@ -22,16 +22,25 @@ public class GameParameters : MonoBehaviour
         "Flower Cup",
         "Star Cup"
     };
+    [SerializeField] private TournamentInfos _tournamentInfos;
 
     public static GameParameters Instance => _instance;
     public static int NumberOfPlayers => _instance._numberOfPlayers;
+    public static TournamentInfos CurrentTournamentInfos
+	{
+        get { return _instance._tournamentInfos; }
+    }
 
 	private void Awake()
 	{
-        if(_instance == null)
+        if (_instance == null)
+        {
             _instance = this;
-
-		DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(gameObject);
+			CurrentTournamentInfos.Reset();
+		}
+		else
+            Destroy(gameObject);
 	}
 
     public void SetMode(bool isOnline)
@@ -71,6 +80,7 @@ public class GameParameters : MonoBehaviour
     {
         _playersCharacters = playersCharacters;
     }
+
     public CharacterData GetCharactersPlayers()
     {
         return _playersCharacters[0];
@@ -80,6 +90,11 @@ public class GameParameters : MonoBehaviour
     {
         _isTournamentMode = true;
         _tournamentDifficulty = difficulty;
-        _tournamentName = _tournamentNames[difficulty];
+        _currentTournamentName = _tournamentNames[difficulty];
+    }
+
+    public int ReturnCupIndex()
+    {
+        return _tournamentNames.IndexOf(_currentTournamentName);
     }
 }

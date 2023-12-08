@@ -44,6 +44,8 @@ public class AudioManager : MonoBehaviour
 
 			InitSoundsAndDict();
 		}
+		else
+			Destroy(gameObject);
 	}
 
 	private void Start()
