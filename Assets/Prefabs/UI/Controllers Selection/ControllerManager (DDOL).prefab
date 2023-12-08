@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2980775141109284816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4253818265338514160}
+  - component: {fileID: 3345858834921888544}
+  m_Layer: 0
+  m_Name: ControllerManager (DDOL)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4253818265338514160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980775141109284816}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3345858834921888544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980775141109284816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd4c2033571f304dae95ec9a688cc98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _joinPlayerAction:
+    m_Name: Join Player
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fd91f1ba-e0fa-4e38-9cd4-0693cdec1457
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c5c47de7-90ca-499f-9623-2210ca905965
+      m_Path: <Keyboard>/anyKey
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Player
+      m_Flags: 0
+    - m_Name: 
+      m_Id: d05e53aa-2a8a-472f-8086-9b477f31ebd3
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Player
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 48684053-f611-4cbd-a286-f9832566e61a
+      m_Path: <HID::Core (Plus) Wired Controller>/button2
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join Player
+      m_Flags: 0
+    m_Flags: 0
+  _maxPlayerCount: 4
+  _gamepadPrefab: {fileID: 428623817413851365, guid: 208606549b1e40646ab4d501b4274a07, type: 3}
+  _keyboardPrefab: {fileID: 428623817413851365, guid: 65fe8c4798afcb74793100ae9da4f1f2, type: 3}
+  _joystickPrefab: {fileID: 428623817413851365, guid: 829c7aabba00e484196c78f873348370, type: 3}
+  _controllerSelectionContainer: {fileID: 0}
+  _characterSelectionContainer: {fileID: 0}

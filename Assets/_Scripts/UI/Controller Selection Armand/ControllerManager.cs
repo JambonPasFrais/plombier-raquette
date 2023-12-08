@@ -24,6 +24,7 @@ public class ControllerManager : MonoBehaviour
     private int _playerCount;
     private Dictionary<int, GameObject> _controllers;
     private static ControllerManager _instance;
+    private Coroutine _currentDeleteCtrlCoroutine;
     
     #region Unity Functions
     private void OnEnable()
@@ -53,7 +54,6 @@ public class ControllerManager : MonoBehaviour
     #endregion
 
     #region Listeners
-
     public void OnControllerSelectionLoad()
     {
         Init();
@@ -89,6 +89,16 @@ public class ControllerManager : MonoBehaviour
     }
     #endregion
 
+    #region CALLED EXTERNALLY
+
+    public void DeletePlayerFromControllerSelection(PlayerInput playerInput)
+    {
+        //Use coroutine in order to delay the delete and await the end of the deviceLost event
+        _currentDeleteCtrlCoroutine = StartCoroutine(DeleteControllerCoroutine(playerInput.devices[0].deviceId));
+    }
+    
+    #endregion
+    
     #region Unclassable functions
 
     private void Init()
@@ -128,13 +138,20 @@ public class ControllerManager : MonoBehaviour
     {
         _joinPlayerAction.performed -= PlayerTriesToJoin;
     }
+
+    private IEnumerator DeleteControllerCoroutine(int deviceId)
+    {
+        yield return new WaitForSeconds(.1f);
+        Destroy(_controllers[deviceId]);
+        _controllers.Remove(deviceId);
+    }
     
     #endregion
     
     #region Subscribe function
     private void PlayerTriesToJoin(InputAction.CallbackContext context)
     {
-        // every player joined full
+        // every player joined 
         if (_controllers.Count >= _maxPlayerCount)
             return;
         

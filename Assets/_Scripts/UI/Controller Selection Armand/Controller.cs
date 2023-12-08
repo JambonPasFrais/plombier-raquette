@@ -6,18 +6,27 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+[RequireComponent(typeof(PlayerInput))]
 public class Controller : MonoBehaviour
 {
     [Header("Instances")]
     [SerializeField] private GameObject _controllerMenuIcon;
     [SerializeField] private GameObject _characterSelectionIcon;
-    
+    [SerializeField] private PlayerInput _playerInput;
+
     [Header("Game Feel")]
     [SerializeField] private float _speed;
     
     
     private Vector2 _movementDir;
     [HideInInspector] public bool IsSelectingCharacter;
+
+    #region UNITY FUNCTIONS
+    private void Update()
+    {
+        transform.Translate(_movementDir * Time.deltaTime * _speed);
+    }
+    #endregion
 
     #region PLAYER INPUT COMPONENT FUNCTIONS
     public void OnPunch(InputAction.CallbackContext context)
@@ -53,6 +62,16 @@ public class Controller : MonoBehaviour
     }
     #endregion
 
+    #region EVENT LISTENERS
+    
+    public void OnDeviceLost(PlayerInput playerInput)
+    {
+        ControllerManager.Instance.DeletePlayerFromControllerSelection(playerInput);
+    }
+    
+    #endregion
+    
+    #region CALLED EXTERNALLY
     public void ControllerSelectionMode()
     {
         IsSelectingCharacter = false;
@@ -68,9 +87,5 @@ public class Controller : MonoBehaviour
         _controllerMenuIcon.SetActive(false);
         _characterSelectionIcon.SetActive(true);
     }
-    
-    private void Update()
-    {
-        transform.Translate(_movementDir * Time.deltaTime * _speed);
-    }
+    #endregion
 }
