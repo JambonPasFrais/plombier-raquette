@@ -61,9 +61,9 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void InitializeActionParameters(ShotParameters actionParameters)
+    public void InitializeActionParameters(ShotParameters shotParameters)
     {
-        _shotParameters = actionParameters;
+        _shotParameters = shotParameters;
     }
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)

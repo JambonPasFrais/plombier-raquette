@@ -75,7 +75,7 @@ public class SideManager : MonoBehaviour
 
 		UpdateBotValues(players, originalSides);
 		SetCollidersOwnerPlayers(players, originalSides);
-    }
+	}
 
     /// <summary>
     /// Alternates the player's fields and set the players, the cameras and the bot targets to the correct positions in a 2v2 match.

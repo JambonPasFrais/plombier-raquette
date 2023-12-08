@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-//using static UnityEditor.Progress;
 
 public class CharacterSelectionSoloMenu : MonoBehaviour
 {
@@ -38,7 +37,8 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
-			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
+            go.GetComponent<CharacterUI>().setCharacterSelectionSoloMenu(this);
+            _selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 	}
 
@@ -67,6 +67,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 					go.transform.SetParent(_charactersListTransform);
 					go.transform.localPosition = Vector3.zero;
 					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+					go.transform.localScale = Vector3.one;
 					go.gameObject.SetActive(false);
 					_playerCharacter = null;
 				}
@@ -80,6 +81,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				go.transform.SetParent(_characterModelLocation);
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				go.transform.localScale = new Vector3(20, 20, 20);
 				go.SetActive(true);
 				_selectedCharacterUIs = characterUI;
 				_playerCharacter = characterUI.Character;
@@ -90,7 +92,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void VerifyCharacters()
 	{
-		if(_playerCharacter)
+		if (_playerCharacter)
 			_playButton.interactable = true;
 
 		else
@@ -124,8 +126,47 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		System.Random random = new System.Random();
 
 		if (_playerCharacter == _characters.Last())
-			_playerCharacter = _characters[random.Next(_characters.Count)];
+			_playerCharacter = _characters[random.Next(_characters.Count - 1)];
 
 		GameParameters.Instance.SetCharactersPlayers(new List<CharacterData>() { _playerCharacter });
+	}
+
+	public void HandleCharacterSelectionSoloMenu(CharacterUI characterUI)
+	{
+		if (!characterUI.IsSelected)
+		{
+            if (characterUI != _selectableCharacters.Last())
+				characterUI.SetSelected(true);
+			_selectedCharactersName.text = characterUI.Character.Name;
+			_selectedCharacterBackground.color = characterUI.Character.CharacterColor;
+
+			if (_characterModelLocation.childCount > 0)
+			{
+				_selectedCharacterUIs.SetSelected(false);
+
+				GameObject previousCharacter = _characterModelLocation.GetChild(0).gameObject;
+				previousCharacter.transform.SetParent(_charactersListTransform);
+				previousCharacter.transform.localPosition = Vector3.zero;
+				previousCharacter.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				previousCharacter.SetActive(false);
+				_playerCharacter = null;
+			}
+
+			GameObject characterModel;
+            if (_charactersModel.TryGetValue(characterUI.Character.Name, out characterModel))
+            {
+                characterModel.transform.SetParent(_characterModelLocation);
+                characterModel.transform.localPosition = Vector3.zero;
+                characterModel.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                characterModel.SetActive(true);
+                _selectedCharacterUIs = characterUI;
+                _playerCharacter = characterUI.Character;
+                VerifyCharacters();
+            }
+            else
+			{
+				Debug.LogError("Character model not found for: " + characterUI.Character.Name);
+			}
+		}
 	}
 }

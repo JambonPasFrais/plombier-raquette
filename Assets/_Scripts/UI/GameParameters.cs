@@ -71,6 +71,7 @@ public class GameParameters : MonoBehaviour
     {
         _playersCharacters = playersCharacters;
     }
+
     public CharacterData GetCharactersPlayers()
     {
         return _playersCharacters[0];
