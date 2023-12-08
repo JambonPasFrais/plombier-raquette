@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
 	private List<GameObject> _visitedMenus = new List<GameObject>();
 	[SerializeField] private EventSystem _eventSystem;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
+	[SerializeField] private GameObject _tournamentBracketMenu;
 
 	public static MenuManager Instance => _instance;
 	public static List<CharacterData> Characters => _instance._characters;
@@ -30,7 +31,23 @@ public class MenuManager : MonoBehaviour
 	
     private void Start()
     {
-        _visitedMenus.Add(transform.GetChild(0).gameObject);
+		if (GameParameters.CurrentTournamentInfos.CurrentRound == 0)
+		{
+			transform.GetChild(0).gameObject.SetActive(true);
+
+			for (int i = 1; i < transform.childCount; i++)
+			{
+				transform.GetChild(i).gameObject.SetActive(false);
+			}
+		}
+
+		else
+		{
+			_tournamentBracketMenu.SetActive(true);
+			_tournamentBracketMenu.GetComponent<TournamentBracket>().SetCurrentBracket(GameParameters.CurrentTournamentInfos);
+		}
+
+		_visitedMenus.Add(transform.GetChild(0).gameObject);
         SetDefaultSelected(_visitedMenus.Last());
     }
 

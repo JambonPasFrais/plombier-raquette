@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[Serializable, CreateAssetMenu(fileName = "TournamnentInfos", menuName = "ScriptableObjects/Tournament/TournamentInfos")]
+[Serializable, CreateAssetMenu(fileName = "TournamentInfos", menuName = "ScriptableObjects/Tournament/TournamentInfos")]
 public class TournamentInfos : ScriptableObject
 {
-    public Dictionary<int, List<CharacterData>> RoundPlayers =new Dictionary<int, List<CharacterData>>();
-    public List<CharacterData> FirstRoundPlayers;
-    public List<CharacterData> SecondRoundPlayers;
-    public List<CharacterData> ThirdRoundPlayers;
+    public Dictionary<int, List<CharacterData>> RoundPlayers = new Dictionary<int, List<CharacterData>>();
+    public List<CharacterData> FirstRoundPlayers = new List<CharacterData>();
+    public List<CharacterData> SecondRoundPlayers = new List<CharacterData>();
+    public List<CharacterData> ThirdRoundPlayers = new List<CharacterData>();
+    public CharacterData Winner;
+    public int CurrentRound = 0;
     
-    public void SetRoundPlayers(List<CharacterData> firstRound, List<CharacterData> secondRound, List<CharacterData> thirdRound)
+    public void SetRoundPlayers(List<CharacterData> firstRound, List<CharacterData> secondRound, List<CharacterData> thirdRound, CharacterData winner)
     {
         RoundPlayers.Clear();
 
@@ -21,23 +23,31 @@ public class TournamentInfos : ScriptableObject
             switch (i)
             {
                 case 0:
-                    RoundPlayers.Add(i, firstRound);
-                    FirstRoundPlayers = new List<CharacterData>(RoundPlayers.GetValueOrDefault(i));
-                    break;
-                case 1:
                     if (secondRound != null)
                     {
-                        RoundPlayers.Add(i, secondRound);
-                        SecondRoundPlayers = new List<CharacterData>(RoundPlayers.GetValueOrDefault(i));
+						RoundPlayers.Add(0, firstRound);
+						RoundPlayers.Add(1, secondRound);
+                        FirstRoundPlayers = new List<CharacterData>(firstRound);
+                        SecondRoundPlayers = new List<CharacterData>(secondRound);
+                        CurrentRound = 1;
                     }
                     break;
-				case 2:
+				case 1:
                     if (thirdRound != null)
                     {
-                        RoundPlayers.Add(i, thirdRound);
-                        ThirdRoundPlayers = new List<CharacterData>(RoundPlayers.GetValueOrDefault(i));
+                        RoundPlayers.Add(2, thirdRound);
+                        ThirdRoundPlayers = new List<CharacterData>(thirdRound);
+                        CurrentRound = 2;
                     }
                     break;
+                case 2:
+					if (winner != null)
+					{
+						RoundPlayers.Add(3, new List<CharacterData>() { winner });
+                        Winner = winner;
+                        CurrentRound = 3;
+					}
+					break;
 			}
         }
     }
@@ -49,6 +59,7 @@ public class TournamentInfos : ScriptableObject
 
 	public void Reset()
 	{
+        CurrentRound = 0;
 		RoundPlayers.Clear();
         FirstRoundPlayers.Clear();
         SecondRoundPlayers.Clear();
