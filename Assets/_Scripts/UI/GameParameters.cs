@@ -22,9 +22,14 @@ public class GameParameters : MonoBehaviour
         "Flower Cup",
         "Star Cup"
     };
+    [SerializeField] private TournamentInfos _tournamentInfos;
 
     public static GameParameters Instance => _instance;
     public static int NumberOfPlayers => _instance._numberOfPlayers;
+    public static TournamentInfos CurrentTournamentInfos
+	{
+        get { return _instance._tournamentInfos; }
+    }
 
 	private void Awake()
 	{
@@ -32,6 +37,7 @@ public class GameParameters : MonoBehaviour
             _instance = this;
 
 		DontDestroyOnLoad(gameObject);
+        CurrentTournamentInfos.Reset();
 	}
 
     public void SetMode(bool isOnline)

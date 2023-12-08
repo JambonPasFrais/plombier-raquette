@@ -133,7 +133,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	public void HandleCharacterSelectionSoloMenu(CharacterUI characterUI)
 	{
-		if (!characterUI.IsSelected)
+		/*if (!characterUI.IsSelected)
 		{
             if (characterUI != _selectableCharacters.Last())
 				characterUI.SetSelected(true);
@@ -167,6 +167,6 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			{
 				Debug.LogError("Character model not found for: " + characterUI.Character.Name);
 			}
-		}
+		}*/
 	}
 }

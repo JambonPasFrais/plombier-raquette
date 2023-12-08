@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class TournamentBracket : MonoBehaviour
 {
@@ -99,19 +101,30 @@ public class TournamentBracket : MonoBehaviour
 
 	private void PlayFirstRound()
 	{
+		List<CharacterData> _firstRoundDatas = new List<CharacterData>();
+		foreach (var item in _firstRoundPlayers)
+		{
+			_firstRoundDatas.Add(item.GetComponent<CharacterUI>().Character);
+		}
+
+		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, null, null);
+		//SceneManager.LoadScene(0);
 		System.Random random = new System.Random();
 		GameObject winner;
 
-		for (int i = 0; i < _nbOfPlayers; i = i + 2)
+		_secondRoundPlayers.Add(_firstRoundPlayers[0]);
+		_firstRoundPlayers[0].transform.SetParent(_characterSecondRoundLocations[0]);
+		_firstRoundPlayers[0].transform.localPosition = Vector3.zero;
+		_firstRoundPlayers[0] = null;
+
+		for (int i = 2; i < _nbOfPlayers; i = i + 2)
 		{
 			winner = _firstRoundPlayers[i + random.Next(2)];
 			_secondRoundPlayers.Add(winner);
 			winner.transform.SetParent(_characterSecondRoundLocations[i / 2]);
 			winner.transform.localPosition = Vector3.zero;
+			_firstRoundPlayers[_firstRoundPlayers.IndexOf(winner)] = null;
 		}
-
-		var tempList = _firstRoundPlayers.Except(_secondRoundPlayers).ToList();
-		_firstRoundPlayers = new List<GameObject>(tempList);
 
 		if (!_secondRoundPlayers.Contains(_playerCharacter))
 			StartCoroutine(WaitBeforeShowingLoserMenu());
@@ -119,19 +132,38 @@ public class TournamentBracket : MonoBehaviour
 
 	private void PlaySecondRound()
 	{
+		List<CharacterData> _firstRoundDatas = new List<CharacterData>();
+		List<CharacterData> _secondRoundDatas = new List<CharacterData>();
+		foreach (var item in _firstRoundPlayers)
+		{
+			if(item != null)
+				_firstRoundDatas.Add(item.GetComponent<CharacterUI>().Character);
+			else
+				_firstRoundDatas.Add(null);
+		}
+		foreach (var item in _secondRoundPlayers)
+		{
+			_secondRoundDatas.Add(item.GetComponent<CharacterUI>().Character);
+		}
+
+		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, null);
+
 		System.Random random = new System.Random();
 		GameObject winner;
 
-		for (int i = 0; i < _secondRoundPlayers.Count(); i = i + 2)
+		_thirdRoundPlayers.Add(_secondRoundPlayers[0]);
+		_secondRoundPlayers[0].transform.SetParent(_characterThirdRoundLocations[0]);
+		_secondRoundPlayers[0].transform.localPosition = Vector3.zero;
+		_secondRoundPlayers[0] = null;
+
+		for (int i = 2; i < _secondRoundPlayers.Count(); i = i + 2)
 		{
 			winner = _secondRoundPlayers[i + random.Next(2)];
 			_thirdRoundPlayers.Add(winner);
 			winner.transform.SetParent(_characterThirdRoundLocations[i / 2]);
 			winner.transform.localPosition = Vector3.zero;
+			_secondRoundPlayers[_secondRoundPlayers.IndexOf(winner)] = null;
 		}
-
-		var tempList = _secondRoundPlayers.Except(_thirdRoundPlayers).ToList();
-		_secondRoundPlayers = new List<GameObject>(tempList);
 
 		if (!_thirdRoundPlayers.Contains(_playerCharacter))
 			StartCoroutine(WaitBeforeShowingLoserMenu());
@@ -139,12 +171,39 @@ public class TournamentBracket : MonoBehaviour
 
 	private void PlayThirdRound()
 	{
+		List<CharacterData> _firstRoundDatas = new List<CharacterData>();
+		List<CharacterData> _secondRoundDatas = new List<CharacterData>();
+		List<CharacterData> _thirdRoundDatas = new List<CharacterData>();
+
+		for (int i = 0; i < _firstRoundPlayers.Count(); i++)
+		{
+			if (_firstRoundPlayers[i] != null)
+				_firstRoundDatas.Add(_firstRoundPlayers[i].GetComponent<CharacterUI>().Character);
+			else
+				_firstRoundDatas.Add(null);
+		}
+		for (int i = 0; i < _secondRoundPlayers.Count(); i++)
+		{
+			if (_secondRoundPlayers[i] != null)
+				_secondRoundDatas.Add(_secondRoundPlayers[i].GetComponent<CharacterUI>().Character);
+			else
+				_secondRoundDatas.Add(null);
+		}
+		foreach (var item in _thirdRoundPlayers)
+		{
+			_thirdRoundDatas.Add(item.GetComponent<CharacterUI>().Character);
+		}
+
+		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas);
+
 		System.Random random = new System.Random();
 		GameObject winner;
-		winner = _thirdRoundPlayers[random.Next(2)];
+		//winner = _thirdRoundPlayers[random.Next(2)];
+		winner = _thirdRoundPlayers[0];
 		_tournamentWinner = winner;
 		winner.transform.SetParent(_winnerLocation);
 		winner.transform.localPosition = Vector3.zero;
+		_thirdRoundPlayers[_thirdRoundPlayers.IndexOf(winner)] = null;
 
 		if (_tournamentWinner != _playerCharacter)
 			StartCoroutine(WaitBeforeShowingLoserMenu());
