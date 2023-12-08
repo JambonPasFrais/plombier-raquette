@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -206,6 +207,19 @@ public class GameManager : MonoBehaviour
     }
 
     public void ServiceThrow(InputAction.CallbackContext context)
+    {
+        if(_controllers[_serverIndex] is AgentController)
+        {
+            AgentController agent = (AgentController)_controllers[_serverIndex];
+            agent.ActionIndex = 1;
+        }
+        else
+        {
+            ThrowBall();
+        }
+    }
+
+    public void ThrowBall()
     {
         Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
 

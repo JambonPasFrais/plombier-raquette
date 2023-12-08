@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.MLAgents;
 using UnityEngine;
 
-public class ControllersParent : MonoBehaviour
+public class ControllersParent : Agent
 {
     #region PUBLIC FIELDS
 
@@ -35,7 +36,7 @@ public class ControllersParent : MonoBehaviour
 
     #endregion
 
-    protected float CalculateActualForce(float hitForce)
+    public float CalculateActualForce(float hitForce)
     {
         float actualDistanceToNet = Vector3.Project(GameManager.Instance.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
         float clampedDistanceToNet = Mathf.Clamp(actualDistanceToNet, 0f, _maximumDistanceToNet);

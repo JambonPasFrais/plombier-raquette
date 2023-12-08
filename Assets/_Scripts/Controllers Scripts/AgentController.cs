@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
+using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : ControllersParent
+public class AgentController : ControllersParent
 {
     #region PRIVATE FIELDS
 
@@ -24,19 +26,22 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _maximumHitKeyPressTime;
 
     private Vector2 _movementVector;
+    private int _actionIndex;
     private float _currentSpeed;
 
     #endregion
 
+    public int ActionIndex { set { _actionIndex = value; } }
+
     #region UNITY METHODS
 
-    private void Start()
+/*    private void Start()
     {
         ServicesCount = 0;
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
-    }
+    }*/
 
     void Update()
     {
@@ -52,17 +57,20 @@ public class PlayerController : ControllersParent
 
     private void FixedUpdate()
     {
-        // If the game is in the end of point or the the end of match phase, the player can't move.
+        // The action index is set to 0 at the physical updating frequency.
+        _actionIndex = 0;
+
+        /*// If the game is in the end of point or the the end of match phase, the player can't move.
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
-        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH 
-            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic)) 
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
+            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic))
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
 
             Vector3 forwardVector = Vector3.zero;
-            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
+            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY)
             {
                 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
             }
@@ -75,7 +83,7 @@ public class PlayerController : ControllersParent
         else
         {
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
-        }
+        }*/
     }
 
     #endregion
@@ -86,7 +94,7 @@ public class PlayerController : ControllersParent
     {
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
-        if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
+        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic
             || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
             _hitKeyPressedTime = 0f;
@@ -117,7 +125,7 @@ public class PlayerController : ControllersParent
         }
 
         // The game enters in playing phase when the ball is hit by the other player after the service.
-        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
             GameManager.Instance.GameState = GameState.PLAYING;
 
         Vector3 horizontalDirection;
@@ -161,100 +169,233 @@ public class PlayerController : ControllersParent
     {
         if (context.performed && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift))
         {
-            Shoot(HitType.Flat);
+            _actionIndex = 4;
         }
+    }
+
+    private void Flat()
+    {
+        Shoot(HitType.Flat);
     }
 
     public void TopSpin(InputAction.CallbackContext context)
     {
-        if (context.performed && !Input.GetKey(KeyCode.LeftControl)) 
+        if (context.performed && !Input.GetKey(KeyCode.LeftControl))
         {
-            Shoot(HitType.TopSpin);
+            _actionIndex = 5;
         }
+    }
+
+    private void TopSpin()
+    {
+        Shoot(HitType.TopSpin);
     }
 
     public void Drop(InputAction.CallbackContext context)
     {
         if (context.performed && PlayerState != PlayerStates.SERVE)
         {
-            Shoot(HitType.Drop);
+            _actionIndex = 7;
         }
+    }
+
+    private void Drop()
+    {
+        Shoot(HitType.Drop);
     }
 
     public void Slice(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Shoot(HitType.Slice);
+            _actionIndex = 6;
         }
+    }
+
+    private void Slice()
+    {
+        Shoot(HitType.Slice);
     }
 
     public void Lob(InputAction.CallbackContext context)
     {
         if (context.performed && PlayerState != PlayerStates.SERVE)
         {
-            Shoot(HitType.Lob);
+            _actionIndex = 8;
         }
+    }
+
+    private void Lob()
+    {
+        Shoot(HitType.Lob);
     }
 
     public void SlowTime(InputAction.CallbackContext context)
     {
         if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
         {
-            Time.timeScale = _actionParameters.SlowTimeScaleFactor;
-            _currentSpeed = _movementSpeed / Time.timeScale;
+            _actionIndex = 2;
         }
         else if (context.canceled)
         {
             Time.timeScale = 1f;
             _currentSpeed = _movementSpeed;
+            _actionIndex = 0;
         }
+    }
+
+    public void SlowTime()
+    {
+        Time.timeScale = _actionParameters.SlowTimeScaleFactor;
+        _currentSpeed = _movementSpeed / Time.timeScale;
     }
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this) 
+        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
         {
-            float tempForwardMovementFactor = 0f;
-            float tempRightMovementFactor = 0f;
-            int forwardMovementFactor = 0;
-            int rightMovementFactor = 0;
+            _actionIndex = 3;
+        }
+    }
 
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) 
+    public void TechnicalShot()
+    {
+        float tempForwardMovementFactor = 0f;
+        float tempRightMovementFactor = 0f;
+        int forwardMovementFactor = 0;
+        int rightMovementFactor = 0;
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        {
+            tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
+        }
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
+        }
+
+        if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor))
+        {
+            forwardMovementFactor = 0;
+            rightMovementFactor = (int)tempRightMovementFactor;
+        }
+        else
+        {
+            forwardMovementFactor = Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor) ? (int)tempForwardMovementFactor : 0;
+            rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
+        }
+
+        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
+        Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
+        Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
+
+        float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
+
+        if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
+        {
+            transform.position += wantedDirection * _actionParameters.TechnicalShotMovementLength;
+        }
+        else
+        {
+            transform.position += wantedDirection * distanceToBorderInWantedDirection;
+        }
+    }
+
+    #endregion
+
+    #region AGENT TRAINING METHODS
+
+    public override void OnEpisodeBegin()
+    {
+        ServicesCount = 0;
+        _hitKeyPressedTime = 0f;
+        _isCharging = false;
+        _currentSpeed = _movementSpeed;
+        _actionIndex = 0;
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        base.CollectObservations(sensor);
+    }
+
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+
+        continuousActions[0] = _movementVector.x;
+        continuousActions[1] = _movementVector.y;
+        discreteActions[0] = _actionIndex;
+    }
+
+    public override void OnActionReceived(ActionBuffers actions)
+    {
+        // If the game is in the end of point or the the end of match phase, the player can't move.
+        // If the player is serving and threw the ball in the air, he can't move either.
+        // Otherwise he can move with at least one liberty axis.
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
+            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic))
+        {
+            // The global player directions depend on the side he is on and its forward movement depends on the game phase.
+            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+
+            Vector3 forwardVector = Vector3.zero;
+            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY)
             {
-                tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
+                forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
             }
 
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-            {
-                tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
-            }
+            Vector3 movementDirection = rightVector.normalized * actions.ContinuousActions[0] + forwardVector.normalized * actions.ContinuousActions[1];
 
-            if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor)) 
-            {
-                forwardMovementFactor = 0;
-                rightMovementFactor = (int)tempRightMovementFactor;
-            }
-            else
-            {
-                forwardMovementFactor = Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor) ? (int)tempForwardMovementFactor : 0;
-                rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
-            }
+            // The player moves according to the movement inputs.
+            _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        }
+        else
+        {
+            _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
+        }
 
-            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
-            Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
-            Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
-
-            float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
-
-            if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
-            {
-                transform.position += wantedDirection * _actionParameters.TechnicalShotMovementLength;
-            }
-            else
-            {
-                transform.position += wantedDirection * distanceToBorderInWantedDirection;
-            }
+        switch (actions.DiscreteActions[0])
+        {
+            case 0:
+                // Doing nothing.
+                break;
+            case 1:
+                // Throw the ball in the air during the service.
+                GameManager.Instance.ThrowBall();
+                break;
+            case 2:
+                // Slowing time.
+                SlowTime();
+                break;
+            case 3:
+                // Realising the technical shot.
+                TechnicalShot();
+                break;
+            case 4:
+                // Flat shot.
+                Flat();
+                break;
+            case 5:
+                // Top spin shot.
+                TopSpin();
+                break;
+            case 6:
+                // Slice shot.
+                Slice();
+                break;
+            case 7:
+                // Drop shot.
+                Drop();
+                break;
+            case 8:
+                // Lob shot.
+                Lob();
+                break;
+            default:
+                break;
         }
     }
 
