@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2249,7 +2249,7 @@ MonoBehaviour:
       m_Flags: 0
     - m_Name: 
       m_Id: d05e53aa-2a8a-472f-8086-9b477f31ebd3
-      m_Path: <Gamepad>/buttonEast
+      m_Path: <Gamepad>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -2264,7 +2264,7 @@ MonoBehaviour:
       m_Action: Join Player
       m_Flags: 0
     m_Flags: 0
-  _maxPlayerCount: 2
+  _maxPlayerCount: 4
   _gamepadPrefab: {fileID: 428623817413851365, guid: 208606549b1e40646ab4d501b4274a07, type: 3}
   _keyboardPrefab: {fileID: 428623817413851365, guid: 65fe8c4798afcb74793100ae9da4f1f2, type: 3}
   _joystickPrefab: {fileID: 428623817413851365, guid: 829c7aabba00e484196c78f873348370, type: 3}
@@ -3124,6 +3124,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1086557411}
         m_TargetAssemblyTypeName: ControllerManager, Assembly-CSharp
         m_MethodName: OnValidateControllerSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1385888028301192418}
+        m_TargetAssemblyTypeName: CharacterSelectionMenu, Assembly-CSharp
+        m_MethodName: SetPlayerInfos
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5755,21 +5767,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1385888028301192418}
-        m_TargetAssemblyTypeName: CharacterSelectionMenu, Assembly-CSharp
-        m_MethodName: SetPlayerInfos
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1086557411}
         m_TargetAssemblyTypeName: ControllerManager, Assembly-CSharp
-        m_MethodName: ControllerCanBeAdded
+        m_MethodName: OnControllerSelectionLoad
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17227,7 +17227,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1086557411}
         m_TargetAssemblyTypeName: ControllerManager, Assembly-CSharp
-        m_MethodName: ControllerCanBeAdded
+        m_MethodName: OnBackToControllerSelection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18654,7 +18654,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1086557411}
         m_TargetAssemblyTypeName: ControllerManager, Assembly-CSharp
-        m_MethodName: ControllerCantBeAdded
+        m_MethodName: OnExitControllerSelection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

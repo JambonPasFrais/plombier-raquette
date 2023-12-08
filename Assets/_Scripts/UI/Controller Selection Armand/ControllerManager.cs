@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class ControllerManager : MonoBehaviour
 {
-    // Reference to the InputAction for joining a player
+    public static ControllerManager Instance => _instance;
     
     [Header("Parameters")]
     [SerializeField] private InputAction _joinPlayerAction;
@@ -23,7 +23,8 @@ public class ControllerManager : MonoBehaviour
 
     private int _playerCount;
     private Dictionary<int, GameObject> _controllers;
-
+    private static ControllerManager _instance;
+    
     #region Unity Functions
     private void OnEnable()
     {
@@ -39,19 +40,36 @@ public class ControllerManager : MonoBehaviour
 
     private void Awake()
     {
-        _controllers = new Dictionary<int, GameObject>();
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     #endregion
 
     #region Listeners
-    public void ControllerCanBeAdded()
+
+    public void OnControllerSelectionLoad()
     {
-        _joinPlayerAction.performed += PlayerTriesToJoin;
+        Init();
+        ControllerCanBeAdded();
+    }
+
+    public void OnBackToControllerSelection()
+    {
+        ControllerCanBeAdded();
+        SwitchCtrlersToCtrlSelectMode();
     }
     
-    public void ControllerCantBeAdded()
+    public void OnExitControllerSelection()
     {
-        _joinPlayerAction.performed -= PlayerTriesToJoin;
+        ControllerCantBeAdded();
+        OnResetControllers();
     }
 
     public void OnResetControllers()
@@ -67,6 +85,20 @@ public class ControllerManager : MonoBehaviour
     public void OnValidateControllerSelection()
     {
         ControllerCantBeAdded();
+        SwitchCtrlersToCharSelectMode();
+    }
+    #endregion
+
+    #region Unclassable functions
+
+    private void Init()
+    {
+        _maxPlayerCount = GameParameters.NumberOfPlayers;
+        _controllers = new Dictionary<int, GameObject>();
+    }
+    
+    private void SwitchCtrlersToCharSelectMode()
+    {
         foreach (var controller in _controllers)
         {
             controller.Value.GetComponent<Controller>().CharacterSelectionMode();
@@ -75,8 +107,30 @@ public class ControllerManager : MonoBehaviour
             controller.Value.transform.localScale = Vector3.one;
         }
     }
-    #endregion
 
+    private void SwitchCtrlersToCtrlSelectMode()
+    {
+        foreach (var controller in _controllers)
+        {
+            controller.Value.GetComponent<Controller>().ControllerSelectionMode();
+            controller.Value.transform.SetParent(_controllerSelectionContainer);
+            //controller.Value.transform.position = Vector3.zero;
+            //controller.Value.transform.localScale = Vector3.one;
+        }
+    }
+    
+    private void ControllerCanBeAdded()
+    {
+        _joinPlayerAction.performed += PlayerTriesToJoin;
+    }
+    
+    private void ControllerCantBeAdded()
+    {
+        _joinPlayerAction.performed -= PlayerTriesToJoin;
+    }
+    
+    #endregion
+    
     #region Subscribe function
     private void PlayerTriesToJoin(InputAction.CallbackContext context)
     {
