@@ -159,7 +159,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public void OnStartButtonClicked()
     {
-        PhotonNetwork.LoadLevel("Game");
+        PhotonNetwork.LoadLevel("OnlineScene");
     }
 
     public void OnReadyButtonClicked()
