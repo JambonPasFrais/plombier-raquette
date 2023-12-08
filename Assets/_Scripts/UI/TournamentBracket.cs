@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using static UnityEditor.Progress;
-
+using UnityEngine.UI;	
 public class TournamentBracket : MonoBehaviour
 {
 	[SerializeField] private List<CharacterData> _selectedCharacters = new List<CharacterData>();
