@@ -22,7 +22,7 @@ public class Controller : MonoBehaviour
     
     
     private Vector2 _movementDir;
-    [HideInInspector] public bool IsSelectingCharacter;
+    private bool _isSelectingCharacter;
     private bool _characterSelected;
 
     #region UNITY FUNCTIONS
@@ -43,7 +43,7 @@ public class Controller : MonoBehaviour
     {
         Debug.Log(PlayerInput.playerIndex);
         
-        if (IsSelectingCharacter)
+        if (_isSelectingCharacter)
             return;
         
         transform.DOComplete();
@@ -52,7 +52,7 @@ public class Controller : MonoBehaviour
 
     public void TryMove(Vector2 readValue)
     {
-        if (!IsSelectingCharacter)
+        if (!_isSelectingCharacter)
             return;
 
         _movementDir = readValue;
@@ -60,7 +60,7 @@ public class Controller : MonoBehaviour
 
     public void TrySelect()
     {
-        if (!IsSelectingCharacter)
+        if (!_isSelectingCharacter)
             return;
         
         if (_characterSelected)
@@ -76,7 +76,7 @@ public class Controller : MonoBehaviour
 
     public void TryDeselect()
     {
-        if (!IsSelectingCharacter)
+        if (!_isSelectingCharacter)
             return;
         
         if (!_characterSelected)
@@ -91,15 +91,18 @@ public class Controller : MonoBehaviour
     
     public void ControllerSelectionMode()
     {
-        IsSelectingCharacter = false;
+        _isSelectingCharacter = false;
         
         _controllerMenuIcon.SetActive(true);
         _characterSelectionIcon.SetActive(false);
+        
+        transform.position = Vector3.zero;
+        transform.localScale = Vector3.one;
     }
 
     public void CharacterSelectionMode()
     {
-        IsSelectingCharacter = true;
+        _isSelectingCharacter = true;
         
         _controllerMenuIcon.SetActive(false);
         _characterSelectionIcon.SetActive(true);

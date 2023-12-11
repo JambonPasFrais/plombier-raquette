@@ -120,13 +120,10 @@ public class ControllerManager : MonoBehaviour
     
     private void SwitchCtrlersToCharSelectMode()
     {
-        // Enters with no "input at all"
         foreach (var controller in _controllers)
         {
+            controller.Value.Controller.gameObject.transform.SetParent(_characterSelectionContainer);
             controller.Value.Controller.CharacterSelectionMode();
-            controller.Value.Controller.gameObject.transform.SetParent(_characterSelectionContainer); // when exits that line, has a new input base on the "input order"
-            //controller.Value.Controller.gameObject.transform.position = Vector3.zero;
-            //controller.Value.Controller.gameObject.transform.localScale = Vector3.one;
         }
     }
 
@@ -134,10 +131,8 @@ public class ControllerManager : MonoBehaviour
     {
         foreach (var controller in _controllers)
         {
+            controller.Value.Controller.gameObject.transform.SetParent(_controllerSelectionContainer);
             controller.Value.Controller.ControllerSelectionMode();
-            controller.Value.gameObject.transform.SetParent(_controllerSelectionContainer);
-            controller.Value.gameObject.transform.position = Vector3.zero;
-            controller.Value.gameObject.transform.localScale = Vector3.one;
         }
     }
     

@@ -259,7 +259,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 			GameObject go;
 			
-			// If player already selected a character before
+			/*// If player already selected a character before
 			if (_currentCharacterModelLocation[playerIndex].childCount > 0)
 			{
 				_selectedCharacterUIs[playerIndex].SetSelected(false);
@@ -269,7 +269,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 				go.gameObject.SetActive(false);
 				_playersCharacter[playerIndex] = null;
-			}
+			}*/
 
 			if (_charactersModel.TryGetValue(characterUI.Character.Name, out var characterModel))
 			{
@@ -290,6 +290,17 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	public bool HandleCharacterDeselectionInput(int playerIndex)
 	{
+		if (_currentCharacterModelLocation[playerIndex].childCount > 0)
+		{
+			_selectedCharacterUIs[playerIndex].SetSelected(false);
+			GameObject go = _currentCharacterModelLocation[playerIndex].GetChild(0).gameObject;
+			go.transform.SetParent(_charactersListTransform);
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+			go.gameObject.SetActive(false);
+			_playersCharacter[playerIndex] = null;
+			return true;
+		}
 		return false;
 	}
 
