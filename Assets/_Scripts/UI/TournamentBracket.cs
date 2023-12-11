@@ -25,13 +25,14 @@ public class TournamentBracket : MonoBehaviour
 	private List<CharacterData> _availableCharacters;
 	private int _nbOfPlayers = 8;
 	[SerializeField] private int _currentRound = 0;
-	private GameObject _playerCharacter;
 
 	[Header("Players at Rounds")]
 	[SerializeField] private List<GameObject> _firstRoundPlayers = new List<GameObject>();
 	[SerializeField] private List<GameObject> _secondRoundPlayers = new List<GameObject>();
 	[SerializeField] private List<GameObject> _thirdRoundPlayers = new List<GameObject>();
 	[SerializeField] private GameObject _tournamentWinner;
+
+	private GameObject _playersCharacter;
 
 	private void Awake()
 	{
@@ -72,6 +73,7 @@ public class TournamentBracket : MonoBehaviour
 	public void SetCharacters()
 	{
 		_cupImage.sprite = _tournamentCupsSprite[GameParameters.Instance.ReturnCupIndex()];
+		GameParameters.CurrentTournamentInfos.CupSprite = _tournamentCupsSprite[GameParameters.Instance.ReturnCupIndex()];
 
 		_selectedCharacters.Add(GameParameters.Instance.GetCharactersPlayers());
 		_availableCharacters = new List<CharacterData>(MenuManager.Characters);
@@ -93,11 +95,12 @@ public class TournamentBracket : MonoBehaviour
 			_firstRoundPlayers.Add(go);
 		}
 
-		_playerCharacter = _firstRoundPlayers[0];
+		GameParameters.CurrentTournamentInfos.PlayersCharacter = _firstRoundPlayers[0].GetComponent<CharacterUI>().Character;
 	}
 
 	public void SetCurrentBracket(TournamentInfos currentTournament)
 	{
+		_cupImage.sprite = GameParameters.CurrentTournamentInfos.CupSprite;
 		_currentRound = currentTournament.CurrentRound;
 		List<CharacterData> datas = new List<CharacterData>();
 		currentTournament.RoundPlayers.TryGetValue(0, out datas);
@@ -111,6 +114,8 @@ public class TournamentBracket : MonoBehaviour
 				go = Instantiate(_characterTournamentUIPrefab, _characterFirstRoundLocations[i]);
 				go.GetComponent<CharacterUI>().SetVisual(datas[i]);
 				_firstRoundPlayers.Add(go);
+				if (datas[i] == currentTournament.PlayersCharacter)
+					_playersCharacter = go;
 			}
 			else
 				_firstRoundPlayers.Add(null);
@@ -124,10 +129,15 @@ public class TournamentBracket : MonoBehaviour
 				go = Instantiate(_characterTournamentUIPrefab, _characterSecondRoundLocations[i]);
 				go.GetComponent<CharacterUI>().SetVisual(datas[i]);
 				_secondRoundPlayers.Add(go);
+				if (datas[i] == currentTournament.PlayersCharacter)
+					_playersCharacter = go;
 			}
 			else
 				_secondRoundPlayers.Add(null);
 		}
+
+		if(!datas.Contains(currentTournament.PlayersCharacter) && currentTournament.CurrentRound == 1)
+			StartCoroutine(WaitBeforeShowingLoserMenu(_playersCharacter));
 
 		if (currentTournament.CurrentRound > 1)
 		{
@@ -139,17 +149,27 @@ public class TournamentBracket : MonoBehaviour
 					go = Instantiate(_characterTournamentUIPrefab, _characterThirdRoundLocations[i]);
 					go.GetComponent<CharacterUI>().SetVisual(datas[i]);
 					_thirdRoundPlayers.Add(go);
+					if (datas[i] == currentTournament.PlayersCharacter)
+						_playersCharacter = go;
 				}
 				else
 					_thirdRoundPlayers.Add(null);
 			}
 
-			if(currentTournament.CurrentRound > 2)
+			if (!datas.Contains(currentTournament.PlayersCharacter) && currentTournament.CurrentRound == 2)
+				StartCoroutine(WaitBeforeShowingLoserMenu(_playersCharacter));
+
+			if (currentTournament.CurrentRound > 2)
 			{
-				currentTournament.RoundPlayers.TryGetValue(2, out datas);
+				currentTournament.RoundPlayers.TryGetValue(3, out datas);
 				go = Instantiate(_characterTournamentUIPrefab, _winnerLocation);
 				go.GetComponent<CharacterUI>().SetVisual(datas[0]);
 				_tournamentWinner = go;
+
+				if (datas[0] != currentTournament.PlayersCharacter)
+					StartCoroutine(WaitBeforeShowingLoserMenu(_thirdRoundPlayers[0]));
+				else
+					StartCoroutine(WaitBeforeShowWinner(_tournamentWinner));
 			}
 		}
 	}
@@ -159,12 +179,12 @@ public class TournamentBracket : MonoBehaviour
 		System.Random random = new System.Random();
 		GameObject winner;
 
-		_secondRoundPlayers.Add(_firstRoundPlayers[0]);
+		/*_secondRoundPlayers.Add(_firstRoundPlayers[0]);
 		_firstRoundPlayers[0].transform.SetParent(_characterSecondRoundLocations[0]);
 		_firstRoundPlayers[0].transform.localPosition = Vector3.zero;
-		_firstRoundPlayers[0] = null;
+		_firstRoundPlayers[0] = null;*/
 
-		for (int i = 2; i < _nbOfPlayers; i = i + 2)
+		for (int i = 0; i < _nbOfPlayers; i = i + 2)
 		{
 			winner = _firstRoundPlayers[i + random.Next(2)];
 			_secondRoundPlayers.Add(winner);
@@ -172,9 +192,6 @@ public class TournamentBracket : MonoBehaviour
 			winner.transform.localPosition = Vector3.zero;
 			_firstRoundPlayers[_firstRoundPlayers.IndexOf(winner)] = null;
 		}
-
-		if (!_secondRoundPlayers.Contains(_playerCharacter))
-			StartCoroutine(WaitBeforeShowingLoserMenu());
 
 		List<CharacterData> _firstRoundDatas = new List<CharacterData>();
 		List<CharacterData> _secondRoundDatas = new List<CharacterData>();
@@ -200,12 +217,12 @@ public class TournamentBracket : MonoBehaviour
 		System.Random random = new System.Random();
 		GameObject winner;
 
-		_thirdRoundPlayers.Add(_secondRoundPlayers[0]);
+		/*_thirdRoundPlayers.Add(_secondRoundPlayers[0]);
 		_secondRoundPlayers[0].transform.SetParent(_characterThirdRoundLocations[0]);
 		_secondRoundPlayers[0].transform.localPosition = Vector3.zero;
-		_secondRoundPlayers[0] = null;
+		_secondRoundPlayers[0] = null;*/
 
-		for (int i = 2; i < _secondRoundPlayers.Count(); i = i + 2)
+		for (int i = 0; i < _secondRoundPlayers.Count(); i = i + 2)
 		{
 			winner = _secondRoundPlayers[i + random.Next(2)];
 			_thirdRoundPlayers.Add(winner);
@@ -213,9 +230,6 @@ public class TournamentBracket : MonoBehaviour
 			winner.transform.localPosition = Vector3.zero;
 			_secondRoundPlayers[_secondRoundPlayers.IndexOf(winner)] = null;
 		}
-
-		if (!_thirdRoundPlayers.Contains(_playerCharacter))
-			StartCoroutine(WaitBeforeShowingLoserMenu());
 
 		List<CharacterData> _firstRoundDatas = new List<CharacterData>();
 		List<CharacterData> _secondRoundDatas = new List<CharacterData>();
@@ -243,26 +257,50 @@ public class TournamentBracket : MonoBehaviour
 		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, null);
 
 		SceneManager.LoadScene(0);
-
 	}
 
 	private void PlayThirdRound()
 	{
 		System.Random random = new System.Random();
 		GameObject winner;
-		//winner = _thirdRoundPlayers[random.Next(2)];
-		winner = _thirdRoundPlayers[0];
+		winner = _thirdRoundPlayers[random.Next(2)];
+		//winner = _thirdRoundPlayers[0];
 		_tournamentWinner = winner;
 		winner.transform.SetParent(_winnerLocation);
 		winner.transform.localPosition = Vector3.zero;
 		_thirdRoundPlayers[_thirdRoundPlayers.IndexOf(winner)] = null;
 
-		if (_tournamentWinner != _playerCharacter)
-			StartCoroutine(WaitBeforeShowingLoserMenu());
-		else
-			StartCoroutine(WaitBeforeShowWinner());
+		List<CharacterData> _firstRoundDatas = new List<CharacterData>();
+		List<CharacterData> _secondRoundDatas = new List<CharacterData>();
+		List<CharacterData> _thirdRoundDatas = new List<CharacterData>();
 
-		// Ici afficher le bracket final puis afficher le menu de victoire ou de défaite
+		for (int i = 0; i < _firstRoundPlayers.Count(); i++)
+		{
+			if (_firstRoundPlayers[i] != null)
+				_firstRoundDatas.Add(_firstRoundPlayers[i].GetComponent<CharacterUI>().Character);
+			else
+				_firstRoundDatas.Add(null);
+		}
+		for (int i = 0; i < _secondRoundPlayers.Count(); i++)
+		{
+			if (_secondRoundPlayers[i] != null)
+				_secondRoundDatas.Add(_secondRoundPlayers[i].GetComponent<CharacterUI>().Character);
+			else
+				_secondRoundDatas.Add(null);
+		}
+		for (int i = 0; i < _thirdRoundPlayers.Count(); i++)
+		{
+			if (_thirdRoundPlayers[i] != null)
+				_thirdRoundDatas.Add(_thirdRoundPlayers[i].GetComponent<CharacterUI>().Character);
+			else
+				_thirdRoundDatas.Add(null);
+		}
+
+		CharacterData winnerData = winner.GetComponent<CharacterUI>().Character;
+
+		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
+
+		SceneManager.LoadScene(0);
 	}
 
 	private void ResetBracket()
@@ -303,19 +341,19 @@ public class TournamentBracket : MonoBehaviour
 		MenuManager.Instance.GoBackToMainMenu();
 	}
 
-	private IEnumerator WaitBeforeShowWinner()
+	private IEnumerator WaitBeforeShowWinner(GameObject playerCharacter)
 	{
 		yield return new WaitForSeconds(1);
-		/*ResetBracket();
+		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
-		_tournamentEndMenu.SetWinnerMenu(_playerCharacter.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);*/
+		_tournamentEndMenu.SetWinnerMenu(playerCharacter.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);
 	}
 
-	private IEnumerator WaitBeforeShowingLoserMenu()
+	private IEnumerator WaitBeforeShowingLoserMenu(GameObject playerCharacter)
 	{
 		yield return new WaitForSeconds(1);
-		/*ResetBracket();
+		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
-		_tournamentEndMenu.SetLoserMenu(_playerCharacter.GetComponent<CharacterUI>().Character.Model3D);*/
+		_tournamentEndMenu.SetLoserMenu(playerCharacter.GetComponent<CharacterUI>().Character.Model3D);
 	}
 }

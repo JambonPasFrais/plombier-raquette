@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable, CreateAssetMenu(fileName = "TournamentInfos", menuName = "ScriptableObjects/Tournament/TournamentInfos")]
 public class TournamentInfos : ScriptableObject
@@ -13,8 +14,10 @@ public class TournamentInfos : ScriptableObject
     public List<CharacterData> ThirdRoundPlayers = new List<CharacterData>();
     public CharacterData Winner;
     public int CurrentRound = 0;
-    
-    public void SetRoundPlayers(List<CharacterData> firstRound, List<CharacterData> secondRound, List<CharacterData> thirdRound, CharacterData winner)
+    public Sprite CupSprite;
+    public CharacterData PlayersCharacter;
+
+	public void SetRoundPlayers(List<CharacterData> firstRound, List<CharacterData> secondRound, List<CharacterData> thirdRound, CharacterData winner)
     {
         RoundPlayers.Clear();
 
@@ -64,5 +67,8 @@ public class TournamentInfos : ScriptableObject
         FirstRoundPlayers.Clear();
         SecondRoundPlayers.Clear();
         ThirdRoundPlayers.Clear();
+        PlayersCharacter = null;
+        CupSprite = null;
+        Winner = null;
 	}
 }

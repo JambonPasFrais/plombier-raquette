@@ -26,10 +26,7 @@ public class GameParameters : MonoBehaviour
 
     public static GameParameters Instance => _instance;
     public static int NumberOfPlayers => _instance._numberOfPlayers;
-    public static TournamentInfos CurrentTournamentInfos
-	{
-        get { return _instance._tournamentInfos; }
-    }
+    public static TournamentInfos CurrentTournamentInfos => _instance._tournamentInfos;
 
 	private void Awake()
 	{
