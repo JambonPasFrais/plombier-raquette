@@ -23,6 +23,8 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
+
+    private CameraController _cameraController;
     private Vector2 _movementVector;
     private float _currentSpeed;
 
@@ -36,6 +38,7 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
+        _cameraController = GetComponent<CameraController>();
     }
 
     void Update()
@@ -62,7 +65,7 @@ public class PlayerController : ControllersParent
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
-
+        
             Vector3 forwardVector = Vector3.zero;
             if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
             {
@@ -77,6 +80,17 @@ public class PlayerController : ControllersParent
         else
         {
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
+        }
+        if (!_cameraController.IsSmashing)
+        {
+            // The global player directions depend on the side he is on.
+            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
+
+            // The player moves according to the movement inputs.
+            /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
+            _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
         }
     }
 
@@ -261,5 +275,13 @@ public class PlayerController : ControllersParent
         }
     }
 
+    public void ServeThrow(InputAction.CallbackContext context)
+    {
+
+    }
+    public void Smash()
+    {
+
+    }
     #endregion
 }
