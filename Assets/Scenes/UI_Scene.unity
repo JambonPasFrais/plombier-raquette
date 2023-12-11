@@ -2451,7 +2451,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2005588464}
         m_TargetAssemblyTypeName: TournamentBracket, Assembly-CSharp
-        m_MethodName: PlayCurrentRound
+        m_MethodName: PlayMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8566,6 +8566,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 839de38217077f54ca5254523b2bcccb, type: 3}
   - {fileID: 21300000, guid: 736f06eced8e64d40a3bb45ad0452268, type: 3}
   _tournamentEndMenu: {fileID: 1360152773}
+  _playMatchButton: {fileID: 575968164}
   _charactersDisplayFirstRoundParent: {fileID: 1762844582}
   _charactersDisplaySecondRoundParent: {fileID: 1001482015}
   _charactersDisplayThirdRoundParent: {fileID: 1254426330}
@@ -8573,10 +8574,11 @@ MonoBehaviour:
   _characterFirstRoundLocations: []
   _characterSecondRoundLocations: []
   _characterThirdRoundLocations: []
+  _currentRound: 0
   _firstRoundPlayers: []
   _secondRoundPlayers: []
   _thirdRoundPlayers: []
-  _tournamentWinner: {fileID: 365919620}
+  _tournamentWinner: {fileID: 0}
 --- !u!1 &2020833520
 GameObject:
   m_ObjectHideFlags: 0

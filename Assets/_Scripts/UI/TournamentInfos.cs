@@ -21,38 +21,40 @@ public class TournamentInfos : ScriptableObject
     {
         RoundPlayers.Clear();
 
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i <= CurrentRound; i++)
         {
             switch (i)
             {
                 case 0:
+					RoundPlayers.Add(0, firstRound);
+					FirstRoundPlayers = new List<CharacterData>(firstRound);
+					break;
+                case 1:
                     if (secondRound != null)
                     {
-						RoundPlayers.Add(0, firstRound);
-						RoundPlayers.Add(1, secondRound);
-                        FirstRoundPlayers = new List<CharacterData>(firstRound);
+                        RoundPlayers.Add(1, secondRound);
                         SecondRoundPlayers = new List<CharacterData>(secondRound);
-                        CurrentRound = 1;
                     }
-                    break;
-				case 1:
-                    if (thirdRound != null)
+					break;
+				case 2:
+                    if (thirdRound.Count != 0)
                     {
                         RoundPlayers.Add(2, thirdRound);
                         ThirdRoundPlayers = new List<CharacterData>(thirdRound);
-                        CurrentRound = 2;
                     }
                     break;
-                case 2:
+                case 3:
 					if (winner != null)
 					{
 						RoundPlayers.Add(3, new List<CharacterData>() { winner });
                         Winner = winner;
-                        CurrentRound = 3;
+                        CurrentRound++;
 					}
 					break;
 			}
         }
+
+        CurrentRound++;
     }
 
     public List<CharacterData> GetPlayersAtRound(int round)
