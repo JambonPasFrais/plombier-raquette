@@ -7,16 +7,14 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PlayerInput))]
 public class Controller : MonoBehaviour
 {
     [Header("Instances")]
     [SerializeField] private GameObject _controllerMenuIcon;
     [SerializeField] private GameObject _characterSelectionIcon;
     [SerializeField] private Image _imgCharSelectionIcon;
-    [SerializeField] private PlayerInput _playerInput;
 
-    //[Header("Parameters")] private int _playerIndex;
+    [HideInInspector] public PlayerInput PlayerInput;
 
     [Header("Game Feel")]
     [SerializeField] private float _speed;
@@ -33,30 +31,27 @@ public class Controller : MonoBehaviour
     }
     #endregion
 
-    #region PLAYER INPUT COMPONENT FUNCTIONS
-    public void OnPunch(InputAction.CallbackContext context)
+    #region PLAYER INPUT COMPONENT FUNCTIONS (called externally)
+    public void TryPunch()
     {
-        //Debug.Log(_playerInput.playerIndex);
+        Debug.Log(PlayerInput.playerIndex);
         
         if (IsSelectingCharacter)
             return;
         
-        if (context.performed)
-        {
-            transform.DOComplete();
-            transform.DOPunchScale(Vector3.one * .1f, .2f);
-        }
+        transform.DOComplete();
+        transform.DOPunchScale(Vector3.one * .1f, .2f);
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    public void TryMove(Vector2 readValue)
     {
         if (!IsSelectingCharacter)
             return;
-        
-        _movementDir = context.ReadValue<Vector2>();
+
+        _movementDir = readValue;
     }
 
-    public void OnSelect(InputAction.CallbackContext context)
+    public void TrySelect()
     {
         if (!IsSelectingCharacter)
             return;
@@ -64,18 +59,15 @@ public class Controller : MonoBehaviour
         if (_characterSelected)
             return;
         
-        if (context.performed)
+        Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
+        if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, PlayerInput.playerIndex))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
-            if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, _playerInput.playerIndex))
-            {
-                _characterSelected = true;
-                _imgCharSelectionIcon.color /= 2;
-            }
+            _characterSelected = true;
+            _imgCharSelectionIcon.color /= 2;
         }
     }
 
-    public void OnDeselect(InputAction.CallbackContext context)
+    public void TryDeselect()
     {
         if (!IsSelectingCharacter)
             return;
@@ -83,26 +75,14 @@ public class Controller : MonoBehaviour
         if (!_characterSelected)
             return;
 
-        if (context.performed)
+        if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))
         {
-            if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(_playerInput.playerIndex))
-            {
-                _characterSelected = false;
-                _imgCharSelectionIcon.color = Color.white;
-            }
+            _characterSelected = false;
+            _imgCharSelectionIcon.color = Color.white;
         }
     }
     #endregion
 
-    #region EVENT LISTENERS
-    
-    public void OnDeviceLost(PlayerInput playerInput)
-    {
-        ControllerManager.Instance.DeletePlayerFromControllerSelection(playerInput);
-    }
-    
-    #endregion
-    
     #region CALLED EXTERNALLY
     public void ControllerSelectionMode()
     {

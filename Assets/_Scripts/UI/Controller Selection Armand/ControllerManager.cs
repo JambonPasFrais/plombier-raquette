@@ -14,9 +14,10 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private int _maxPlayerCount;
     
     [Header("Instances")]
-    [SerializeField] private GameObject _gamepadPrefab;
-    [SerializeField] private GameObject _keyboardPrefab;
-    [SerializeField] private GameObject _joystickPrefab;
+    [SerializeField] private Controller _gamepadPrefab;
+    [SerializeField] private Controller _keyboardPrefab;
+    [SerializeField] private Controller _joystickPrefab;
+    [SerializeField] private GameObject _playerInputHandlerPrefab;
     
     [SerializeField] private Transform _controllerSelectionContainer;
     [SerializeField] private Transform _characterSelectionContainer;
@@ -121,7 +122,7 @@ public class ControllerManager : MonoBehaviour
         // Enters with no "input at all"
         foreach (var controller in _controllers)
         {
-            controller.Value.GetComponent<Controller>().CharacterSelectionMode();
+            controller.Value.GetComponent<PlayerInputHandler>().Controller.CharacterSelectionMode();
             controller.Value.transform.SetParent(_characterSelectionContainer); // when exits that line, has a new input base on the "input order"
             controller.Value.transform.position = Vector3.zero;
             controller.Value.transform.localScale = Vector3.one;
@@ -132,7 +133,7 @@ public class ControllerManager : MonoBehaviour
     {
         foreach (var controller in _controllers)
         {
-            controller.Value.GetComponent<Controller>().ControllerSelectionMode();
+            controller.Value.GetComponent<PlayerInputHandler>().Controller.ControllerSelectionMode();
             controller.Value.transform.SetParent(_controllerSelectionContainer);
             //controller.Value.transform.position = Vector3.zero;
             //controller.Value.transform.localScale = Vector3.one;
@@ -169,34 +170,43 @@ public class ControllerManager : MonoBehaviour
         if (_controllers.ContainsKey(context.control.device.deviceId))
             return;
 
-        // Player Input Creation
+        // Player Input Handler Creation
         InputDevice inputDevice = context.control.device;
 
+        PlayerInput playerInput = PlayerInput.Instantiate(_playerInputHandlerPrefab,
+            -1,
+            null,
+            -1,
+            inputDevice);
+
+        GameObject playerInputHandlerGo = playerInput.gameObject;
+        playerInputHandlerGo.transform.SetParent(gameObject.transform);
+
+        // Init Controller.cs file
+        PlayerInputHandler playerInputHandler = playerInputHandlerGo.GetComponent<PlayerInputHandler>();
+        
         switch (inputDevice)
         {
             case Joystick:
-                _controllers.Add(inputDevice.deviceId,
-                    PlayerInput.Instantiate(_joystickPrefab, -1, null, -1, inputDevice).gameObject);
+                playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionContainer);
                 break;
             case Gamepad:
-                _controllers.Add(inputDevice.deviceId,
-                    PlayerInput.Instantiate(_gamepadPrefab, -1, null, -1, inputDevice).gameObject);
+                playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionContainer);
                 break;
             case Keyboard:
-                _controllers.Add(inputDevice.deviceId,
-                    PlayerInput.Instantiate(_keyboardPrefab, -1, null, -1, inputDevice).gameObject);
+                playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionContainer);
                 break;
         }
 
-        Controller controllerInstance = _controllers[inputDevice.deviceId].GetComponent<Controller>();
-        controllerInstance.ControllerSelectionMode();
+        playerInputHandler.Controller.ControllerSelectionMode();
+        playerInputHandler.Controller.PlayerInput = playerInput;
         
-        //UI Stuff
-        // Move to specified container (TRANSFORM PARENT) + reset scale if canvas is in world space
-        Transform createdControllerTransform = _controllers[inputDevice.deviceId].transform;
-        createdControllerTransform.SetParent(_controllerSelectionContainer);
-        //createdControllerTransform.localScale = Vector3.one;
-        //createdControllerTransform.position = Vector3.zero;
+        //UI Stuff of the controller prefab
+        playerInputHandler.Controller.gameObject.transform.localScale = Vector3.one;
+        playerInputHandler.Controller.gameObject.transform.position = Vector3.zero;
+        
+        // Save of the playerInputHandler base on his device id
+        _controllers.Add(inputDevice.deviceId, playerInputHandlerGo);
     }
     #endregion
 }
