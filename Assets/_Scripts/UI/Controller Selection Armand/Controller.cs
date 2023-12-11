@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerInput))]
 public class Controller : MonoBehaviour
@@ -12,7 +13,10 @@ public class Controller : MonoBehaviour
     [Header("Instances")]
     [SerializeField] private GameObject _controllerMenuIcon;
     [SerializeField] private GameObject _characterSelectionIcon;
+    [SerializeField] private Image _imgCharSelectionIcon;
     [SerializeField] private PlayerInput _playerInput;
+
+    //[Header("Parameters")] private int _playerIndex;
 
     [Header("Game Feel")]
     [SerializeField] private float _speed;
@@ -20,6 +24,7 @@ public class Controller : MonoBehaviour
     
     private Vector2 _movementDir;
     [HideInInspector] public bool IsSelectingCharacter;
+    private bool _characterSelected;
 
     #region UNITY FUNCTIONS
     private void Update()
@@ -31,6 +36,8 @@ public class Controller : MonoBehaviour
     #region PLAYER INPUT COMPONENT FUNCTIONS
     public void OnPunch(InputAction.CallbackContext context)
     {
+        //Debug.Log(_playerInput.playerIndex);
+        
         if (IsSelectingCharacter)
             return;
         
@@ -54,10 +61,35 @@ public class Controller : MonoBehaviour
         if (!IsSelectingCharacter)
             return;
         
+        if (_characterSelected)
+            return;
+        
         if (context.performed)
         {
-            //Select character (ray cast to character)
-            Debug.Log("Selection");
+            Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
+            if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, _playerInput.playerIndex))
+            {
+                _characterSelected = true;
+                _imgCharSelectionIcon.color /= 2;
+            }
+        }
+    }
+
+    public void OnDeselect(InputAction.CallbackContext context)
+    {
+        if (!IsSelectingCharacter)
+            return;
+        
+        if (!_characterSelected)
+            return;
+
+        if (context.performed)
+        {
+            if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(_playerInput.playerIndex))
+            {
+                _characterSelected = false;
+                _imgCharSelectionIcon.color = Color.white;
+            }
         }
     }
     #endregion

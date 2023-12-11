@@ -21,10 +21,19 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private Transform _controllerSelectionContainer;
     [SerializeField] private Transform _characterSelectionContainer;
 
+    [SerializeField] private CharacterSelectionMenu _characterSelectionMenu;
+    
     private int _playerCount;
-    private Dictionary<int, GameObject> _controllers;
+    private Dictionary<int, GameObject> _controllers = new Dictionary<int, GameObject>();
     private static ControllerManager _instance;
     private Coroutine _currentDeleteCtrlCoroutine;
+    
+    #region Getters
+
+    public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
+    public Dictionary<int, GameObject> Controllers => _controllers;
+    
+    #endregion
     
     #region Unity Functions
     private void OnEnable()
@@ -84,9 +93,7 @@ public class ControllerManager : MonoBehaviour
 
     public void OnValidateControllerSelection()
     {
-        Debug.Log(_controllers);
         ControllerCantBeAdded();
-        Debug.Log(_controllers);
         SwitchCtrlersToCharSelectMode();
     }
     #endregion
@@ -140,7 +147,6 @@ public class ControllerManager : MonoBehaviour
     private void ControllerCantBeAdded()
     {
         _joinPlayerAction.performed -= PlayerTriesToJoin;
-        Debug.Log(_controllers);
     }
 
     private IEnumerator DeleteControllerCoroutine(int deviceId)

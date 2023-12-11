@@ -40,6 +40,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private void Start()
 	{
+		Debug.Log(ControllerManager.Instance.Controllers);
+		
 		_characters = MenuManager.Characters;
 		_charactersModelsParent = MenuManager.CharactersModelsParent;
 		_charactersModel = MenuManager.CharactersModel;
@@ -52,10 +54,20 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		foreach (var item in _characters)
 		{
+			Debug.Log(ControllerManager.Instance.Controllers);
+
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
+			Debug.Log(ControllerManager.Instance.Controllers);
+
 			go.GetComponent<CharacterUI>().SetVisual(item);
+			Debug.Log(ControllerManager.Instance.Controllers);
+
 			go.GetComponent<CharacterUI>().setCharacterSelectionMenu(this);
+			Debug.Log(ControllerManager.Instance.Controllers);
+
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
+			Debug.Log(ControllerManager.Instance.Controllers);
+
 		}
 	}
 
@@ -143,7 +155,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 
 		if (_playersCharacter[0] != null)
-		_playButton.interactable = true;
+			_playButton.interactable = true;
 	}
 
 	public void SetNumberOfShowrooms(bool isDouble)
@@ -203,6 +215,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		_playButton.interactable = false;
 	}
+	
 	public void HandleCharacterSelectionInput(CharacterUI characterUI)
 	{
 		if (!characterUI.IsSelected)
@@ -242,6 +255,51 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 	}
 
+	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
+	{
+		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
+		    && hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
+		    && !characterUI.IsSelected)
+		{
+			characterUI.SetSelected(true);
+			_currentSelectedCharactersName[playerIndex].text = characterUI.Character.Name;
+			_currentSelectedCharacterBackground[playerIndex].color = characterUI.Character.CharacterColor;
+
+			GameObject go;
+			
+			// If player already selected a character before
+			if (_currentCharacterModelLocation[playerIndex].childCount > 0)
+			{
+				_selectedCharacterUIs[playerIndex].SetSelected(false);
+				go = _currentCharacterModelLocation[playerIndex].GetChild(0).gameObject;
+				go.transform.SetParent(_charactersListTransform);
+				go.transform.localPosition = Vector3.zero;
+				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				go.gameObject.SetActive(false);
+				_playersCharacter[playerIndex] = null;
+			}
+
+			if (_charactersModel.TryGetValue(characterUI.Character.Name, out var characterModel))
+			{
+				characterModel.transform.SetParent(_currentCharacterModelLocation[playerIndex]);
+				characterModel.transform.localPosition = Vector3.zero;
+				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				characterModel.SetActive(true);
+				_selectedCharacterUIs[playerIndex] = characterUI;
+				_playersCharacter[playerIndex] = characterUI.Character;
+				VerifyCharacters();
+				return true;
+			}
+			
+			Debug.LogError("Character model not found for: " + characterUI.Character.Name);
+		}
+		return false;
+	}
+
+	public bool HandleCharacterDeselectionInput(int playerIndex)
+	{
+		return false;
+	}
 
 	public void SetPlayerInfos()
 	{

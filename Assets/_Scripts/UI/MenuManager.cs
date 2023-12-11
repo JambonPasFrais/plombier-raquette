@@ -35,8 +35,10 @@ public class MenuManager : MonoBehaviour
 
     public void GoToNextMenu(GameObject nextMenu)
     {
+	    Debug.Log(ControllerManager.Instance.Controllers.Values);
+	    
         nextMenu.SetActive(true);
-        _visitedMenus.Last().SetActive(false);
+        _visitedMenus.Last().SetActive(false);// Inactive menu break the controllers of the controllerManager
         _visitedMenus.Add(nextMenu);
         SetDefaultSelected(nextMenu);
     }
