@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.MLAgents;
 
 public class FieldFrontLeft : FieldGroundPart
 {
@@ -17,6 +18,12 @@ public class FieldFrontLeft : FieldGroundPart
                 GameManager.Instance.EndOfPoint();
                 GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
                 ball.ResetBall();
+
+                // If the scoring player is the agent, it gains reward points.
+                if(ball.LastPlayerToApplyForce is AgentController)
+                {
+                    ((AgentController)ball.LastPlayerToApplyForce).ScoredPoint();
+                }
             }
             else if (ball.ReboundsCount == 1)
             {
@@ -35,6 +42,12 @@ public class FieldFrontLeft : FieldGroundPart
                             !GameManager.Instance.ServiceManager.ChangeSides);
                         GameManager.Instance.ServiceManager.EnableLockServiceColliders();
                         ball.ResetBall();
+
+                        // If the wrong first service has been realised by the agent, it loses reward points.
+                        if (ball.LastPlayerToApplyForce is AgentController)
+                        {
+                            ((AgentController)ball.LastPlayerToApplyForce).WrongFirstService();
+                        }
                     }
                     else
                     {
@@ -42,6 +55,12 @@ public class FieldFrontLeft : FieldGroundPart
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                         ball.ResetBall();
+
+                        // If the player that lost the point is the agent, it loses reward points.
+                        if (ball.LastPlayerToApplyForce is AgentController)
+                        {
+                            ((AgentController)ball.LastPlayerToApplyForce).LostPoint();
+                        }
                     }
                 }
             }

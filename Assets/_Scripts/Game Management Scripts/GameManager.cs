@@ -111,19 +111,6 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-/*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
-    {
-        foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
-        {
-            if (kvp.Key != currentPlayer)
-            {
-                return kvp.Value;
-            }
-        }
-
-        return null;
-    }*/
-
     public Teams? GetPlayerTeam(ControllersParent currentPlayer)
     {
         foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated)
