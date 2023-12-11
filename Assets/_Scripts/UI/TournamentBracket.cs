@@ -92,7 +92,43 @@ public class TournamentBracket : MonoBehaviour
 
 		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
 
-		SceneManager.LoadScene(0);
+		SceneManager.LoadScene(1);
+	}
+
+	public void GetMatchResults()
+	{
+		int winnerIndex = 0;
+
+		if (GameParameters.CurrentTournamentInfos.HasPlayerWon == Teams.TEAM2)
+			winnerIndex = 1;
+
+		if(GameParameters.CurrentTournamentInfos.CurrentRound == 1)
+		{
+			_secondRoundPlayers.Add(_firstRoundPlayers[winnerIndex]);
+			_firstRoundPlayers[winnerIndex].transform.SetParent(_characterSecondRoundLocations[winnerIndex / 2]);
+			_firstRoundPlayers[winnerIndex].transform.localPosition = Vector3.zero;
+			_firstRoundPlayers[winnerIndex] = null;
+		}
+		else if(GameParameters.CurrentTournamentInfos.CurrentRound == 2)
+		{
+			_thirdRoundPlayers.Add(_secondRoundPlayers[winnerIndex]);
+			_secondRoundPlayers[winnerIndex].transform.SetParent(_characterThirdRoundLocations[winnerIndex / 2]);
+			_secondRoundPlayers[winnerIndex].transform.localPosition = Vector3.zero;
+			_secondRoundPlayers[winnerIndex] = null;
+		}
+
+		else
+		{
+			_tournamentWinner = _thirdRoundPlayers[winnerIndex];
+			_tournamentWinner.transform.SetParent(_winnerLocation);
+			_tournamentWinner.transform.localPosition = Vector3.zero;
+			_thirdRoundPlayers[winnerIndex] = null;
+		}
+
+		GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.DEFAULT;
+
+		if (GameParameters.CurrentTournamentInfos.CurrentRound < 4)
+			PlayCurrentRound();
 	}
 
 	public void PlayCurrentRound()
@@ -223,8 +259,8 @@ public class TournamentBracket : MonoBehaviour
 			}
 		}
 
-		if (currentTournament.CurrentRound < 4)
-			PlayCurrentRound();
+		if (GameParameters.CurrentTournamentInfos.HasPlayerWon != Teams.DEFAULT)
+			GetMatchResults();
 	}
 
 	private void PlayFirstRound()
@@ -232,12 +268,7 @@ public class TournamentBracket : MonoBehaviour
 		System.Random random = new System.Random();
 		GameObject winner;
 
-		/*_secondRoundPlayers.Add(_firstRoundPlayers[0]);
-		_firstRoundPlayers[0].transform.SetParent(_characterSecondRoundLocations[0]);
-		_firstRoundPlayers[0].transform.localPosition = Vector3.zero;
-		_firstRoundPlayers[0] = null;*/
-
-		for (int i = 0; i < _nbOfPlayers; i = i + 2)
+		for (int i = 2; i < _nbOfPlayers; i = i + 2)
 		{
 			winner = _firstRoundPlayers[i + random.Next(2)];
 			_secondRoundPlayers.Add(winner);
@@ -255,12 +286,7 @@ public class TournamentBracket : MonoBehaviour
 		System.Random random = new System.Random();
 		GameObject winner;
 
-		/*_thirdRoundPlayers.Add(_secondRoundPlayers[0]);
-		_secondRoundPlayers[0].transform.SetParent(_characterThirdRoundLocations[0]);
-		_secondRoundPlayers[0].transform.localPosition = Vector3.zero;
-		_secondRoundPlayers[0] = null;*/
-
-		for (int i = 0; i < _secondRoundPlayers.Count(); i = i + 2)
+		for (int i = 2; i < _secondRoundPlayers.Count(); i = i + 2)
 		{
 			winner = _secondRoundPlayers[i + random.Next(2)];
 			_thirdRoundPlayers.Add(winner);
@@ -275,14 +301,6 @@ public class TournamentBracket : MonoBehaviour
 
 	private void PlayThirdRound()
 	{
-		System.Random random = new System.Random();
-		GameObject winner;
-		winner = _thirdRoundPlayers[random.Next(2)];
-		//winner = _thirdRoundPlayers[0];
-		_tournamentWinner = winner;
-		winner.transform.SetParent(_winnerLocation);
-		winner.transform.localPosition = Vector3.zero;
-		_thirdRoundPlayers[_thirdRoundPlayers.IndexOf(winner)] = null;
 
 		if (_tournamentWinner != _playersCharacter)
 			StartCoroutine(WaitBeforeShowingLoserMenu());
