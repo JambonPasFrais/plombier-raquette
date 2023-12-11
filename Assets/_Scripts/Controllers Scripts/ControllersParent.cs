@@ -18,6 +18,7 @@ public class ControllersParent : Agent
     [SerializeField] protected ActionParameters _actionParameters;
     [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
+    [SerializeField] protected Transform _serviceBallInitializationPoint;
 
     [Header("Force Clamping")]
     [SerializeField] protected float _maximumDistanceToNet;
@@ -33,6 +34,7 @@ public class ControllersParent : Agent
     public Teams PlayerTeam { get { return _playerTeam; } }
     public ActionParameters ActionParameters { get { return _actionParameters; } }
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
+    public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
 
     #endregion
 

@@ -35,14 +35,6 @@ public class AgentController : ControllersParent
 
     #region UNITY METHODS
 
-/*    private void Start()
-    {
-        ServicesCount = 0;
-        _hitKeyPressedTime = 0f;
-        _isCharging = false;
-        _currentSpeed = _movementSpeed;
-    }*/
-
     void Update()
     {
         // The player is pressing the hit key.
@@ -53,37 +45,6 @@ public class AgentController : ControllersParent
                 _hitKeyPressedTime += Time.deltaTime;
             }
         }
-    }
-
-    private void FixedUpdate()
-    {
-        // The action index is set to 0 at the physical updating frequency.
-        _actionIndex = 0;
-
-        /*// If the game is in the end of point or the the end of match phase, the player can't move.
-        // If the player is serving and threw the ball in the air, he can't move either.
-        // Otherwise he can move with at least one liberty axis.
-        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
-            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic))
-        {
-            // The global player directions depend on the side he is on and its forward movement depends on the game phase.
-            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
-
-            Vector3 forwardVector = Vector3.zero;
-            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY)
-            {
-                forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
-            }
-
-            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
-
-            // The player moves according to the movement inputs.
-            _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
-        }
-        else
-        {
-            _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
-        }*/
     }
 
     #endregion
@@ -365,34 +326,50 @@ public class AgentController : ControllersParent
             case 1:
                 // Throw the ball in the air during the service.
                 GameManager.Instance.ThrowBall();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 2:
                 // Slowing time.
                 SlowTime();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 3:
                 // Realising the technical shot.
                 TechnicalShot();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 4:
                 // Flat shot.
                 Flat();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 5:
                 // Top spin shot.
                 TopSpin();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 6:
                 // Slice shot.
                 Slice();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 7:
                 // Drop shot.
                 Drop();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             case 8:
                 // Lob shot.
                 Lob();
+                // The action index is set to 0 after each action.
+                _actionIndex = 0;
                 break;
             default:
                 break;

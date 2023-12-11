@@ -45,7 +45,7 @@ public class Ball : MonoBehaviour
 
         if (_rigidBody.isKinematic)
         {
-            transform.position = GameManager.Instance.BallInitializationTransform.position;
+            transform.position = GameManager.Instance.ServiceBallInitializationPoint.position;
         }
     }
 

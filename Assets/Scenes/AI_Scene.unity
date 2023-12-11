@@ -142,7 +142,7 @@ PrefabInstance:
     - target: {fileID: 1773003915773665770, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
-      objectReference: {fileID: 534994376}
+      objectReference: {fileID: 0}
     - target: {fileID: 1805646794831550741, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -154,7 +154,7 @@ PrefabInstance:
     - target: {fileID: 3187024997350471719, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
-      objectReference: {fileID: 534994376}
+      objectReference: {fileID: 0}
     - target: {fileID: 6158525152370027648, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -206,15 +206,15 @@ PrefabInstance:
     - target: {fileID: 8215627872845771109, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
-      objectReference: {fileID: 534994376}
+      objectReference: {fileID: 0}
     - target: {fileID: 8566750339095923896, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
-      objectReference: {fileID: 534994376}
+      objectReference: {fileID: 0}
     - target: {fileID: 8826042505208906036, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
-      objectReference: {fileID: 534994376}
+      objectReference: {fileID: 0}
     - target: {fileID: 9113566642155893178, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_Name
       value: NewCourt
@@ -292,7 +292,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1086585901445424559}
+  - {fileID: 1932400804229235261}
   - {fileID: 6916557748594714510}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -359,12 +359,11 @@ MonoBehaviour:
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
-  BallInitializationTransform: {fileID: 1687099903}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1335233997}
   _controllers:
-  - {fileID: 534994376}
+  - {fileID: 9201031080469909216}
   - {fileID: 9127353872525647490}
   _borderPointsContainers:
   - {fileID: 159828289}
@@ -544,17 +543,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8298962468987895066, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
   m_PrefabInstance: {fileID: 10320970}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &534994376 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2015187621588100880, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-  m_PrefabInstance: {fileID: 1086585901445424558}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &571791133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,11 +1218,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549048598}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1687099903 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6117288123474221374, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-  m_PrefabInstance: {fileID: 1086585901445424558}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1818065720 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8888437862791054369, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -4502,76 +4485,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.011431636, y: 0.008761862, z: 0.0009432584}
     m_Extent: {x: 0.010056794, y: 0.0025361646, z: 0.0024979662}
   m_DirtyAABB: 0
---- !u!1001 &1086585901445424558
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 56132861}
-    m_Modifications:
-    - target: {fileID: 1088061933505749176, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 175529521}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_RootOrder
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7513561124101130894, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-      propertyPath: m_Name
-      value: LuigiWithRacket
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
---- !u!4 &1086585901445424559 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1932400804854287694, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-  m_PrefabInstance: {fileID: 1086585901445424558}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1088061933954510795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4599,8 +4512,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: Move
         m_Mode: 0
         m_Arguments:
@@ -4615,8 +4528,8 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: Drop
         m_Mode: 0
         m_Arguments:
@@ -4631,8 +4544,8 @@ MonoBehaviour:
     m_ActionName: Player/Drop[/Keyboard/upArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: TopSpin
         m_Mode: 0
         m_Arguments:
@@ -4647,8 +4560,8 @@ MonoBehaviour:
     m_ActionName: Player/TopSpin[/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: Flat
         m_Mode: 0
         m_Arguments:
@@ -4663,8 +4576,8 @@ MonoBehaviour:
     m_ActionName: Player/Flat[/Keyboard/leftArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: Slice
         m_Mode: 0
         m_Arguments:
@@ -4679,8 +4592,8 @@ MonoBehaviour:
     m_ActionName: Player/Slice[/Keyboard/downArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: Lob
         m_Mode: 0
         m_Arguments:
@@ -4695,8 +4608,8 @@ MonoBehaviour:
     m_ActionName: Player/Lob[/Keyboard/upArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: ChargeShot
         m_Mode: 0
         m_Arguments:
@@ -4767,8 +4680,8 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: SlowTime
         m_Mode: 0
         m_Arguments:
@@ -4783,8 +4696,8 @@ MonoBehaviour:
     m_ActionName: Player/SlowTime[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015187622556756067}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 9201031080469909216}
+        m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
         m_MethodName: TechnicalShot
         m_Mode: 0
         m_Arguments:
@@ -6964,7 +6877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7513561123744646653}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -6.7599998}
+  m_LocalPosition: {x: 0, y: 0.25, z: -0.46000004}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7017,8 +6930,8 @@ Transform:
   - {fileID: 9159256251399778093}
   - {fileID: 7295647867380735703}
   - {fileID: 7864075273796897133}
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 56132861}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1955676376454892092
 GameObject:
@@ -7103,53 +7016,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2015187622556756067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513561123744646653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  IsServing: 0
-  PlayerState: 0
-  ServicesCount: 0
-  _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 0
-  _ballServiceDetectionArea: {fileID: 3437315211677823692}
-  _maximumDistanceToNet: 11.89
-  _forceMinimumClampFactor: 0.5
-  _possibleActions:
-  - Name: Flat
-    Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
-  - Name: Drop
-    Parameters: {fileID: 11400000, guid: 23af39eca14e7924098b20ab9c72af9d, type: 2}
-  - Name: Lob
-    Parameters: {fileID: 11400000, guid: 46636fc35f197b14483a26c7adac65b6, type: 2}
-  - Name: TopSpin
-    Parameters: {fileID: 11400000, guid: 6cd7c960d6aeade4c859d35350826a53, type: 2}
-  - Name: Slice
-    Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
-  _possiblePhysicMaterials:
-  - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
-  - Name: Drop
-    PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
-  _rigidBody: {fileID: 4901136132062575826}
-  _ballDetectionArea: {fileID: 1027590232632129332}
-  _movementSpeed: 7.5
-  _minimumShotForce: 325
-  _maximumShotForce: 450
-  _minimumHitKeyPressTimeToIncrementForce: 0.1
-  _maximumHitKeyPressTime: 1.5
 --- !u!1 &2025351468776284051
 GameObject:
   m_ObjectHideFlags: 0
@@ -10947,7 +10813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47952626242d1274d8864634af896855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 2015187622556756067}
+  _player: {fileID: 9201031080469909216}
 --- !u!1 &3441998964880795588
 GameObject:
   m_ObjectHideFlags: 0
@@ -15324,36 +15190,6 @@ Transform:
   m_Father: {fileID: 1822089936}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5322774295617121153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513561123744646653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BrainParameters:
-    VectorObservationSize: 1
-    NumStackedVectorObservations: 1
-    m_ActionSpec:
-      m_NumContinuousActions: 0
-      BranchSizes: 01000000
-    VectorActionSize: 01000000
-    VectorActionDescriptions: []
-    VectorActionSpaceType: 0
-    hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
-  m_InferenceDevice: 0
-  m_BehaviorType: 0
-  m_BehaviorName: My Behavior
-  TeamId: 0
-  m_UseChildSensors: 1
-  m_UseChildActuators: 1
-  m_ObservableAttributeHandling: 0
 --- !u!4 &5330168014689960335
 Transform:
   m_ObjectHideFlags: 0
@@ -19955,9 +19791,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5306641991875547198}
-  - {fileID: 1172288679809017330}
   - {fileID: 571791134}
   - {fileID: 5805807286750633319}
+  - {fileID: 1172288679809017330}
   - {fileID: 1112847464240904049}
   - {fileID: 1822089936}
   m_Father: {fileID: 56132861}
@@ -21650,9 +21486,10 @@ GameObject:
   - component: {fileID: 7993486290723961308}
   - component: {fileID: 1552047591638831336}
   - component: {fileID: 9201031080469909214}
-  - component: {fileID: 2015187622556756067}
   - component: {fileID: 1088061933954510795}
-  - component: {fileID: 5322774295617121153}
+  - component: {fileID: 9201031080469909216}
+  - component: {fileID: 9201031080469909215}
+  - component: {fileID: 9201031080469909217}
   m_Layer: 3
   m_Name: Agent
   m_TagString: Untagged
@@ -25358,6 +25195,7 @@ MonoBehaviour:
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 571791135}
+  _serviceBallInitializationPoint: {fileID: 1112847464240904049}
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _possibleActions:
@@ -25382,6 +25220,9 @@ MonoBehaviour:
   _speed: 7.5
   _minimumHitForce: 300
   _maximumHitForce: 450
+  _timeBeforeThrowingBallDuringService: 1
+  _timeBeforeShootingBallDuringService: 0.5
+  _serviceForce: 400
 --- !u!114 &9127353872525647491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25547,3 +25388,95 @@ CapsuleCollider:
   m_Height: 5.6520023
   m_Direction: 0
   m_Center: {x: 4.797739, y: 9.920233, z: -0.4550866}
+--- !u!114 &9201031080469909215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513561123744646653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 0
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 2
+      BranchSizes: 09000000
+    VectorActionSize: 
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 1
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
+--- !u!114 &9201031080469909216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513561123744646653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17748805e5fa997448ffaa3ca795be17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  IsServing: 0
+  PlayerState: 0
+  ServicesCount: 0
+  _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
+  _playerTeam: 0
+  _ballServiceDetectionArea: {fileID: 3437315211677823692}
+  _serviceBallInitializationPoint: {fileID: 6117288122840651341}
+  _maximumDistanceToNet: 11.89
+  _forceMinimumClampFactor: 0.5
+  _possibleActions:
+  - Name: Flat
+    Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
+  - Name: Drop
+    Parameters: {fileID: 11400000, guid: 23af39eca14e7924098b20ab9c72af9d, type: 2}
+  - Name: Lob
+    Parameters: {fileID: 11400000, guid: 46636fc35f197b14483a26c7adac65b6, type: 2}
+  - Name: TopSpin
+    Parameters: {fileID: 11400000, guid: 6cd7c960d6aeade4c859d35350826a53, type: 2}
+  - Name: Slice
+    Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
+  _possiblePhysicMaterials:
+  - Name: Normal
+    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+  - Name: Drop
+    PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
+  _rigidBody: {fileID: 4901136132062575826}
+  _ballDetectionArea: {fileID: 1027590232632129332}
+  _movementSpeed: 7.5
+  _minimumShotForce: 325
+  _maximumShotForce: 450
+  _minimumHitKeyPressTimeToIncrementForce: 0.1
+  _maximumHitKeyPressTime: 1.5
+--- !u!114 &9201031080469909217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7513561123744646653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1

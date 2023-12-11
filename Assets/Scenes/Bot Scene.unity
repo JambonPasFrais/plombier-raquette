@@ -359,7 +359,6 @@ MonoBehaviour:
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
-  BallInitializationTransform: {fileID: 1687099903}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1335233997}
@@ -1230,11 +1229,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549048598}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1687099903 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6117288123474221374, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-  m_PrefabInstance: {fileID: 1086585901445424558}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1818065720 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8888437862791054369, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -9418,6 +9412,7 @@ GameObject:
   - component: {fileID: 390182140442714212}
   - component: {fileID: 9127353872525647489}
   - component: {fileID: 8335083375512950770}
+  - component: {fileID: 9127353872525647491}
   m_Layer: 3
   m_Name: Bot Luigi With Racket
   m_TagString: Untagged
@@ -13335,12 +13330,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc96aadbd1c0ef643817a97982189f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 571791135}
+  _serviceBallInitializationPoint: {fileID: 1112847464240904049}
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _possibleActions:
@@ -13365,6 +13365,39 @@ MonoBehaviour:
   _speed: 7.5
   _minimumHitForce: 300
   _maximumHitForce: 450
+  _timeBeforeThrowingBallDuringService: 1
+  _timeBeforeShootingBallDuringService: 0.5
+  _serviceForce: 400
+--- !u!114 &9127353872525647491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007223981508146278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &9130742584333113956
 GameObject:
   m_ObjectHideFlags: 0
