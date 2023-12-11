@@ -28,12 +28,29 @@ public class AgentController : ControllersParent
     private Vector2 _movementVector;
     private int _actionIndex;
     private float _currentSpeed;
+    private ControllersParent _otherPlayer;
+    private FieldBorderPointsContainer _borderPointsContainer;
 
     #endregion
 
     public int ActionIndex { set { _actionIndex = value; } }
 
     #region UNITY METHODS
+
+    private void Awake()
+    {
+        _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
+        UpdateBorderPointsContainer();
+    }
+
+    private void Start()
+    {
+        ServicesCount = 0;
+        _hitKeyPressedTime = 0f;
+        _isCharging = false;
+        _currentSpeed = _movementSpeed;
+        _actionIndex = 0;
+    }
 
     void Update()
     {
@@ -45,9 +62,23 @@ public class AgentController : ControllersParent
                 _hitKeyPressedTime += Time.deltaTime;
             }
         }
+
+        UpdateBorderPointsContainer();
     }
 
     #endregion
+
+    private void UpdateBorderPointsContainer()
+    {
+        foreach (FieldBorderPointsContainer borderPointContainer in GameManager.Instance.BorderPointsContainers)
+        {
+            if (borderPointContainer.Team == _playerTeam)
+            {
+                _borderPointsContainer = borderPointContainer;
+                return;
+            }
+        }
+    }
 
     #region ACTION METHODS
 
@@ -265,11 +296,30 @@ public class AgentController : ControllersParent
 
     #endregion
 
+    #region ENUMERATION TO INDEX CONVERSION METHODS
+
+    private int GetIndexOfEnumerationValue(object enumerationValue)
+    {
+        Type enumerationType = enumerationValue.GetType();
+        Array enumerationValues = Enum.GetValues(enumerationType);
+
+        for (int i = 0; i < enumerationValues.Length; i++) 
+        {
+            if (enumerationValues.GetValue(i) == enumerationValue) 
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    #endregion
+
     #region AGENT TRAINING METHODS
 
     public override void OnEpisodeBegin()
     {
-        ServicesCount = 0;
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
@@ -278,7 +328,19 @@ public class AgentController : ControllersParent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        base.CollectObservations(sensor);
+        // The other player's position is observed.
+        sensor.AddObservation(_otherPlayer.transform.position);
+        // The ball position is observed.
+        sensor.AddObservation(GameManager.Instance.BallInstance.transform.position);
+        // The player state is observed.
+        sensor.AddObservation(GetIndexOfEnumerationValue(PlayerState));
+        // The game state is observed.
+        sensor.AddObservation(GetIndexOfEnumerationValue(GameManager.Instance.GameState));
+        // The field limits are observed.
+        sensor.AddObservation(_borderPointsContainer.FrontPointTransform.position);
+        sensor.AddObservation(_borderPointsContainer.BackPointTransform.position);
+        sensor.AddObservation(_borderPointsContainer.RightPointTransform.position);
+        sensor.AddObservation(_borderPointsContainer.LeftPointTransform.position);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -374,6 +436,27 @@ public class AgentController : ControllersParent
             default:
                 break;
         }
+    }
+
+    #endregion
+
+    #region POSITIVE & NEGATIVE REWARDS SYSTEM
+
+    public void ScoredPoint()
+    {
+        AddReward(1f);
+        EndEpisode();
+    }
+
+    public void LostPoint()
+    {
+        AddReward(-2f);
+        EndEpisode();
+    }
+
+    public void WrongFirstService()
+    {
+        AddReward(-0.5f);
     }
 
     #endregion

@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     public GameObject Net {  get { return _net; } }
     public List<ControllersParent> Controllers {  get { return _controllers; } }
     public Transform ServiceBallInitializationPoint {  get { return _serviceBallInitializationPoint; } }
+    public FieldBorderPointsContainer[] BorderPointsContainers {  get { return _borderPointsContainers; } }
 
     #endregion
 
@@ -99,19 +100,6 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
-
-/*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
-    {
-        foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
-        {
-            if (kvp.Key != currentPlayer)
-            {
-                return kvp.Value;
-            }
-        }
-
-        return null;
-    }*/
 
     public Teams? GetPlayerTeam(ControllersParent currentPlayer)
     {
