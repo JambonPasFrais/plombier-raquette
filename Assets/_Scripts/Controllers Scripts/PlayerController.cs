@@ -20,7 +20,6 @@ public class PlayerController : ControllersParent
     
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
-
     [SerializeField] private float _chargingMoveSpeed;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;

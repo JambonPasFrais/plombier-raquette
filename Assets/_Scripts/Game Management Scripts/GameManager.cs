@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
     [SerializeField] private float _leftFaultLineXFromFirstSide;
+    [SerializeField] private GameObject _playerPrefab;
 
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
@@ -80,7 +83,17 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
-
+        
+        if (PhotonNetwork.IsConnected)
+        {
+            InstantiatePlayer();
+            
+            if (PhotonNetwork.IsMasterClient == false)
+            {
+                photonView.RPC("SendConnectedToMaster", RpcTarget.MasterClient);
+            }
+        }
+        
         _ballInstance = Instantiate(BallPrefab);
     }
 
@@ -145,6 +158,43 @@ public class GameManager : MonoBehaviour
             {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
             {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
         };
+    }
+    
+    private void Update()
+    {
+        if (PhotonNetwork.IsConnected && GameState == GameState.BEFOREGAME && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            ServiceOnOriginalSide = true;
+
+            GameState = GameState.SERVICE;
+            foreach (ControllersParent controller in _controllers)
+            {
+                controller.PlayerState = PlayerStates.IDLE;
+            }
+
+            _serverIndex = 0;
+            _controllers[_serverIndex].IsServing = true;
+            GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
+            GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+            _ballInstance.GetComponent<Ball>().ResetBall();
+
+            _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
+
+            int i = 0;
+            foreach (ControllersParent controller in _controllers)
+            {
+                Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
+                _teamControllersAssociated.Add(controller, team);
+                i++;
+            }
+
+            _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
+
+            foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
+            {
+                _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
+            }
+        }
     }
 
     #endregion
@@ -221,15 +271,15 @@ public class GameManager : MonoBehaviour
         {
             return Mathf.Abs(borderPointsContainer.FrontPointTransform.position.z - playerPosition.z);
         }
-        if(movementDirection == -currentForwardVector)
+        else if(movementDirection == -currentForwardVector)
         {
             return Mathf.Abs(borderPointsContainer.BackPointTransform.position.z - playerPosition.z);
         }
-        if(movementDirection == currentRightVector)
+        else if(movementDirection == currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.RightPointTransform.position.x - playerPosition.x);
         }
-        if(movementDirection == -currentRightVector)
+        else if(movementDirection == -currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.LeftPointTransform.position.x - playerPosition.x);
         }
@@ -276,5 +326,30 @@ public class GameManager : MonoBehaviour
         {
             controller.BallServiceDetectionArea.gameObject.SetActive(false);
         }
+    }
+    
+    private void InstantiatePlayer()
+    {
+        GameObject go = PhotonNetwork.Instantiate(this._playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+        _controllers.Add(go.GetComponent<PlayerController>());
+        BallInitializationTransform = go.GetComponentInChildren<BallInitialisationPoint>().transform;
+    }
+    
+    private void FindController()
+    {
+        ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
+        foreach (ControllersParent controller in controllers)
+        {
+            if (!_controllers.Contains(controller))
+            {
+                _controllers.Add(controller);
+            }
+        }
+    }
+    
+    [PunRPC]
+    private void SendConnectedToMaster()
+    {
+        FindController();
     }
 }
