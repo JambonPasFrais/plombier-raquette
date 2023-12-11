@@ -25,14 +25,14 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private CharacterSelectionMenu _characterSelectionMenu;
     
     private int _playerCount;
-    private Dictionary<int, GameObject> _controllers = new Dictionary<int, GameObject>();
+    private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
     private Coroutine _currentDeleteCtrlCoroutine;
     
     #region Getters
 
     public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
-    public Dictionary<int, GameObject> Controllers => _controllers;
+    public Dictionary<int, PlayerInputHandler> Controllers => _controllers;
     
     #endregion
     
@@ -86,7 +86,8 @@ public class ControllerManager : MonoBehaviour
     {
         foreach (var pair in _controllers)
         {
-            Destroy(pair.Value);
+            Destroy(pair.Value.Controller.gameObject);
+            Destroy(pair.Value.gameObject);
         }
         
         _controllers.Clear();
@@ -114,7 +115,7 @@ public class ControllerManager : MonoBehaviour
     private void Init()
     {
         _maxPlayerCount = GameParameters.NumberOfPlayers;
-        _controllers = new Dictionary<int, GameObject>();
+        _controllers = new Dictionary<int, PlayerInputHandler>();
     }
     
     private void SwitchCtrlersToCharSelectMode()
@@ -122,10 +123,10 @@ public class ControllerManager : MonoBehaviour
         // Enters with no "input at all"
         foreach (var controller in _controllers)
         {
-            controller.Value.GetComponent<PlayerInputHandler>().Controller.CharacterSelectionMode();
-            controller.Value.transform.SetParent(_characterSelectionContainer); // when exits that line, has a new input base on the "input order"
-            controller.Value.transform.position = Vector3.zero;
-            controller.Value.transform.localScale = Vector3.one;
+            controller.Value.Controller.CharacterSelectionMode();
+            controller.Value.Controller.gameObject.transform.SetParent(_characterSelectionContainer); // when exits that line, has a new input base on the "input order"
+            //controller.Value.Controller.gameObject.transform.position = Vector3.zero;
+            //controller.Value.Controller.gameObject.transform.localScale = Vector3.one;
         }
     }
 
@@ -133,10 +134,10 @@ public class ControllerManager : MonoBehaviour
     {
         foreach (var controller in _controllers)
         {
-            controller.Value.GetComponent<PlayerInputHandler>().Controller.ControllerSelectionMode();
-            controller.Value.transform.SetParent(_controllerSelectionContainer);
-            //controller.Value.transform.position = Vector3.zero;
-            //controller.Value.transform.localScale = Vector3.one;
+            controller.Value.Controller.ControllerSelectionMode();
+            controller.Value.gameObject.transform.SetParent(_controllerSelectionContainer);
+            controller.Value.gameObject.transform.position = Vector3.zero;
+            controller.Value.gameObject.transform.localScale = Vector3.one;
         }
     }
     
@@ -153,7 +154,8 @@ public class ControllerManager : MonoBehaviour
     private IEnumerator DeleteControllerCoroutine(int deviceId)
     {
         yield return new WaitForSeconds(.1f);
-        Destroy(_controllers[deviceId]);
+        Destroy(_controllers[deviceId].Controller.gameObject);
+        Destroy(_controllers[deviceId].gameObject);
         _controllers.Remove(deviceId);
     }
     
@@ -206,7 +208,7 @@ public class ControllerManager : MonoBehaviour
         playerInputHandler.Controller.gameObject.transform.position = Vector3.zero;
         
         // Save of the playerInputHandler base on his device id
-        _controllers.Add(inputDevice.deviceId, playerInputHandlerGo);
+        _controllers.Add(inputDevice.deviceId, playerInputHandler);
     }
     #endregion
 }

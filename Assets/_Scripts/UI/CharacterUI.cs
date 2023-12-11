@@ -39,6 +39,7 @@ public class CharacterUI : MonoBehaviour
     }
     public void select()
     {
+        /*
         if(_characterSelectionMenu != null)
         {
             _characterSelectionMenu.HandleCharacterSelectionInput(this);
@@ -46,6 +47,7 @@ public class CharacterUI : MonoBehaviour
         else if (_characterSelectionSoloMenu != null)
         {
             _characterSelectionSoloMenu.HandleCharacterSelectionSoloMenu(this);
-        }
+        }*/
+        Debug.Log("temporary debug");
     }
 }

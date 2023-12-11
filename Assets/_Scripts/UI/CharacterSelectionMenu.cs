@@ -40,7 +40,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private void Start()
 	{
-		Debug.Log(ControllerManager.Instance.Controllers);
 		
 		_characters = MenuManager.Characters;
 		_charactersModelsParent = MenuManager.CharactersModelsParent;
@@ -54,20 +53,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		foreach (var item in _characters)
 		{
-			Debug.Log(ControllerManager.Instance.Controllers);
-
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
-			Debug.Log(ControllerManager.Instance.Controllers);
 
 			go.GetComponent<CharacterUI>().SetVisual(item);
-			Debug.Log(ControllerManager.Instance.Controllers);
 
 			go.GetComponent<CharacterUI>().setCharacterSelectionMenu(this);
-			Debug.Log(ControllerManager.Instance.Controllers);
 
 			_selectableCharacters.Add(go.GetComponent<CharacterUI>());
-			Debug.Log(ControllerManager.Instance.Controllers);
-
 		}
 	}
 

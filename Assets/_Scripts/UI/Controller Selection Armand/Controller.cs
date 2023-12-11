@@ -13,6 +13,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject _controllerMenuIcon;
     [SerializeField] private GameObject _characterSelectionIcon;
     [SerializeField] private Image _imgCharSelectionIcon;
+    [SerializeField] private RectTransform _rectTransform;
 
     [HideInInspector] public PlayerInput PlayerInput;
 
@@ -25,13 +26,19 @@ public class Controller : MonoBehaviour
     private bool _characterSelected;
 
     #region UNITY FUNCTIONS
+
+    private void Start()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
+
     private void Update()
     {
         transform.Translate(_movementDir * Time.deltaTime * _speed);
     }
     #endregion
-
-    #region PLAYER INPUT COMPONENT FUNCTIONS (called externally)
+    
+    #region CALLED EXTERNALLY
     public void TryPunch()
     {
         Debug.Log(PlayerInput.playerIndex);
@@ -81,9 +88,7 @@ public class Controller : MonoBehaviour
             _imgCharSelectionIcon.color = Color.white;
         }
     }
-    #endregion
-
-    #region CALLED EXTERNALLY
+    
     public void ControllerSelectionMode()
     {
         IsSelectingCharacter = false;
@@ -98,6 +103,10 @@ public class Controller : MonoBehaviour
         
         _controllerMenuIcon.SetActive(false);
         _characterSelectionIcon.SetActive(true);
+
+        _rectTransform.sizeDelta = new Vector2(80f, 80f);
+        transform.position = Vector3.zero;
+        transform.localScale = Vector3.one;
     }
     #endregion
 }
