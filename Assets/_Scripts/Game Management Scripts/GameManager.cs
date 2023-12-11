@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
 
-    private GameObject _ballInstance;
+    [SerializeField] private GameObject _ballInstance;
     private int _serverIndex;
 
     #endregion

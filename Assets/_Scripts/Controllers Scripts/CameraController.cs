@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _normalFOV = 60f; 
     [SerializeField] private float _zoomDuration = 0.5f;
     [SerializeField] private Image _smashImage;
+    [SerializeField] private GameManager _gameManager;
     private Camera _firstPersonCameraComponent;
     public bool IsSmashing => _isSmashing;
 
@@ -29,6 +30,7 @@ public class CameraController : MonoBehaviour
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
         _cameraOriginalRot = _firstPersonCamera.transform.rotation;
+        _ballPrefab = _gameManager.BallInstance;
     }
 
 
@@ -41,7 +43,7 @@ public class CameraController : MonoBehaviour
 
         if (_isFirstPersonView)
         {
-
+            _ballPrefab.transform.position = _ballSpawnPoint.position;
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
@@ -63,7 +65,8 @@ public class CameraController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                ShootSmash();
+                _ballPrefab.GetComponent<Ball>().ShootSmash(_firstPersonCamera,_ballSpeed,this.GetComponent<PlayerController>());
+                ToggleFirstPersonView();
             }
         }
     }
@@ -71,9 +74,9 @@ public class CameraController : MonoBehaviour
 
     private void ShootSmash()
     {
-        GameObject ball = Instantiate(_ballPrefab, _ballSpawnPoint.position, _firstPersonCamera.transform.rotation);
-        ball.GetComponent<Rigidbody>().velocity = _firstPersonCamera.transform.forward * _ballSpeed;
-        ToggleFirstPersonView();
+
+        _ballPrefab.GetComponent<Rigidbody>().velocity = _firstPersonCamera.transform.forward * _ballSpeed;
+
     }
 
     private void ToggleFirstPersonView()

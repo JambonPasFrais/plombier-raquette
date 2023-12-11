@@ -164,4 +164,9 @@ public class Ball : MonoBehaviour
         GameManager.Instance.GameState = GameState.SERVICE;
         GameManager.Instance.BallServiceInitialization();
     }
+    public void ShootSmash(GameObject camera, float ballSpeed, ControllersParent controllersParent)
+    {
+        _lastPlayerToApplyForce = controllersParent;
+        _rigidBody.AddForce(camera.transform.forward * ballSpeed);
+    }
 }
