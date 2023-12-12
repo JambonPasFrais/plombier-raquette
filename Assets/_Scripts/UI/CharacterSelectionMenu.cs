@@ -50,7 +50,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		// ??
 		VerifyCharacters();
-		OnMenuLoaded();
+		//OnMenuLoaded();
 		
 		// Create the characters Game objects
 		GameObject go;
