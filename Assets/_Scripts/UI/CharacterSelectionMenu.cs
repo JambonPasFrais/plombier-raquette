@@ -11,6 +11,7 @@ using UnityEngine.UI;
 
 public class CharacterSelectionMenu : MonoBehaviour
 {
+	[Header("Instances")] [SerializeField] private GameObject _aceItWindow;
 	[SerializeField] private GameObject _characterUIPrefab;
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
 	[SerializeField] private Transform _charactersListTransform;
@@ -32,7 +33,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private List<TextMeshProUGUI> _playersInfoDouble = new List<TextMeshProUGUI>();
 	private List<CharacterData> _availableCharacters;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
-	private List<CharacterData> _playersCharacter;
+	private List<CharacterData> _playersCharacter; // Every character that are selected
 	private List<CharacterUI> _selectedCharacterUIs;
 	private List<CharacterUI> _selectableCharacters = new List<CharacterUI>();
 	private int _keyboardPlayerIndex;
@@ -42,17 +43,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private void Start()
 	{
 		// Init
+		_aceItWindow.SetActive(false);
 		_characters = MenuManager.Characters;
 		_charactersModelsParent = MenuManager.CharactersModelsParent;
 		_charactersModel = MenuManager.CharactersModel;
 
-		_availableCharacters = new List<CharacterData>(_characters);
+		SetPlayButtonInteractability();
 
-		// ??
-		VerifyCharacters();
-		//OnMenuLoaded();
-		
-		// Create the characters Game objects
+		// Create the character's GameObjects
 		GameObject go;
 
 		foreach (var item in _characters)
@@ -122,8 +120,19 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Button "play"
 	public void Play()
 	{
+		TransformRandomSelectionInCharacter();
+		SetCharacterForBots();
+		_aceItWindow.SetActive(true);
+	}
+
+	// Button "ACE IT"
+	public void OnConfirmPlay()
+	{
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		Debug.Log("Go to play");
+		_aceItWindow.SetActive(false);
+		
+		//TODO : launch local scene
 	}
 	
 	// Button "validation" from the rules menu
@@ -156,17 +165,19 @@ public class CharacterSelectionMenu : MonoBehaviour
 	public void OnMenuLoaded()
 	{
 		SetPlayerInfos();
-		SetRandomCharactersForBots();
+		_availableCharacters = new List<CharacterData>(_characters);
 	}
 
 	// Any button that disables the menu
 	public void OnMenuDisabled()
 	{
 		MenuUiReset();
+		ControllerManager.Instance.ResetControllers();
 	}
 
 	#endregion
 
+	// Used to set "ui" information above player's character
 	private void SetPlayerInfos()
 	{
 		if(_totalNbPlayers == 2)
@@ -192,47 +203,76 @@ public class CharacterSelectionMenu : MonoBehaviour
 			}
 		}
 	}
-	
-	private void SetRandomCharactersForBots()
+
+	// Used at the end of the selection when about to start the game, it transforms the "random character" into a character
+	private void TransformRandomSelectionInCharacter()
 	{
-		for (int i = 0; i < _totalNbPlayers; i++)
+		for (int i = 0; i < _playersCharacter.Count; i++)
 		{
-			if (_playersCharacter[i].Name == "Random")
+			if (_playersCharacter[i] != null && _playersCharacter[i].Name == "Random")
 			{
-				_playersCharacter[i] = ReturnRandomCharacter();
+				SetRandomCharacterForSpecifiedPlayer(i);
 			}
 		}
 	}
 	
-	// Returns a random character from the availableCharacters List
+	// Used at the of the selection, it transforms each bot random character into a character
+	private void SetCharacterForBots()
+	{
+
+		for (int i = _totalNbPlayers - 1; i > GameParameters.LocalNbPlayers - 1; i--)
+		{
+			SetRandomCharacterForSpecifiedPlayer(i);
+		}
+	}
+
+	private void SetRandomCharacterForSpecifiedPlayer(int playerIndex)
+	{
+		CharacterData cd = ReturnRandomCharacter();
+		_currentSelectedCharactersName[playerIndex].text = cd.Name;
+		_currentSelectedCharacterBackground[playerIndex].color = cd.CharacterColor;
+
+		if (!_charactersModel.TryGetValue(cd.Name, out GameObject go))
+			return;
+			
+		go.transform.SetParent(_currentCharacterModelLocation[playerIndex]);
+		go.transform.localPosition = Vector3.zero;
+		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+		go.SetActive(true);
+			
+		_playersCharacter[playerIndex] = cd;
+	}
+	
+	// Returns a random character from the availableCharacters List and deletes it from the list
 	private CharacterData ReturnRandomCharacter()
 	{
-		CharacterData data = null;
-		int currentIndex;
-
 		System.Random rand = new System.Random();
 
-		currentIndex = rand.Next(_availableCharacters.Count);
-		data = _availableCharacters[currentIndex];
+		int currentIndex = rand.Next(_availableCharacters.Count);
+		CharacterData data = _availableCharacters[currentIndex];
 		_availableCharacters.RemoveAt(currentIndex);
 
 		return data;
 	}
-
-	// ??
-	private void VerifyCharacters()
+	
+	private void SetPlayButtonInteractability()
 	{
-		foreach (var item in _playersCharacter)
-		{
-			if (item == null)
-				return;
-		}
+		_playButton.interactable = IsEveryCharSelectedByLocals();
+	}
 
-		if (_playersCharacter[0] != null)
-			_playButton.interactable = true;
+	// Check if every local player selected his 
+	private bool IsEveryCharSelectedByLocals()
+	{
+		for (int i = 0; i < GameParameters.LocalNbPlayers; i++)
+		{
+			if (_playersCharacter[i] == null)
+				return false;
+		}
+		
+		return true;
 	}
 	
-	// ??
+	// Resets every UI and intern variables
 	private void MenuUiReset()
 	{
 		foreach(var item in _charactersModel)
@@ -314,14 +354,12 @@ public class CharacterSelectionMenu : MonoBehaviour
 	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
 	{
 		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
-		    && hit.collider.TryGetComponent<CharacterUI>(out CharacterUI characterUI)
+		    && hit.collider.TryGetComponent(out CharacterUI characterUI)
 		    && !characterUI.IsSelected)
 		{
 			characterUI.SetSelected(true);
 			_currentSelectedCharactersName[playerIndex].text = characterUI.Character.Name;
 			_currentSelectedCharacterBackground[playerIndex].color = characterUI.Character.CharacterColor;
-
-			GameObject go;
 
 			if (_charactersModel.TryGetValue(characterUI.Character.Name, out var characterModel))
 			{
@@ -331,7 +369,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				characterModel.SetActive(true);
 				_selectedCharacterUIs[playerIndex] = characterUI;
 				_playersCharacter[playerIndex] = characterUI.Character;
-				VerifyCharacters();
+				SetPlayButtonInteractability();
 				return true;
 			}
 			
