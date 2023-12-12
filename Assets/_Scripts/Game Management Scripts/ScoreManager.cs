@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -179,6 +180,12 @@ public class ScoreManager : MonoBehaviour
 			Debug.Log($"Player1 wins with the score of : {score}");
 
 			GameManager.Instance.EndOfGame();
+			
+			if (GameParameters.IsTournamentMode)
+			{
+				GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
+				SceneManager.LoadScene(0);
+			}
 		}
 		else if (_nbOfSets.Item2 == _nbOfSetsToWin)
 		{
@@ -191,9 +198,15 @@ public class ScoreManager : MonoBehaviour
 
 			Debug.Log($"Player2 wins with the score of : {score}");
 
-            GameManager.Instance.EndOfGame();
-        }
-        else
+			if (GameParameters.IsTournamentMode)
+			{
+				GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
+				SceneManager.LoadScene(0);
+			}
+
+			GameManager.Instance.EndOfGame();
+		}
+		else
 			_score.Add(new Tuple<int, int>(0, 0));
 	}
 

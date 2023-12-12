@@ -12,7 +12,7 @@ public class GameParameters : MonoBehaviour
 	private int _nbOfGames;
 	private int _COMDifficulty;
 	private List<CharacterData> _playersCharacters = new List<CharacterData>();
-    private bool _isTournamentMode;
+    [SerializeField] private bool _isTournamentMode;
     private int _tournamentDifficulty;
     private string _currentTournamentName;
 	private static GameParameters _instance;
@@ -26,9 +26,11 @@ public class GameParameters : MonoBehaviour
 
     public static GameParameters Instance => _instance;
     public static int NumberOfPlayers => _instance._numberOfPlayers;
-    public static TournamentInfos CurrentTournamentInfos
-	{
-        get { return _instance._tournamentInfos; }
+    public static TournamentInfos CurrentTournamentInfos => _instance._tournamentInfos;
+    public static bool IsTournamentMode
+    {
+        get { return _instance._isTournamentMode; }
+        set { _instance._isTournamentMode = value; }
     }
 
 	private void Awake()
