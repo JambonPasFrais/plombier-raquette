@@ -52,9 +52,9 @@ public class ScoreManager : MonoBehaviour
 			else if (winnerPoints == 3 && loserPoints == 4)
 			{
 				_currentGameScore = new Tuple<int, int>(3, 3);
-				/*GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 				GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-					!GameManager.Instance.ServiceManager.ChangeSides);*/
+					!GameManager.Instance.ServiceManager.ChangeSides);
 			}
 			else
 			{
@@ -63,9 +63,9 @@ public class ScoreManager : MonoBehaviour
 				else
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
 
-                /*GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+                GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-                    !GameManager.Instance.ServiceManager.ChangeSides);*/
+                    !GameManager.Instance.ServiceManager.ChangeSides);
             }
 		}
 		else
@@ -87,17 +87,17 @@ public class ScoreManager : MonoBehaviour
 			}
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 6 == 0)
 			{
-                /*GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
+                GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-                    !GameManager.Instance.ServiceManager.ChangeSides);*/
+                    !GameManager.Instance.ServiceManager.ChangeSides);
             }
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 2 == 1)
 			{
-                /*GameManager.Instance.ChangeServer();
+                GameManager.Instance.ChangeServer();
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-                    !GameManager.Instance.ServiceManager.ChangeSides);*/
+                    !GameManager.Instance.ServiceManager.ChangeSides);
             }
         }
 
@@ -106,7 +106,7 @@ public class ScoreManager : MonoBehaviour
 
 	public void AddGame(Teams winnerTeam)
     {
-		//GameManager.Instance.ChangeServer();
+		GameManager.Instance.ChangeServer();
 
 		_currentGameScore = new Tuple<int, int>(0, 0);
 
@@ -119,19 +119,19 @@ public class ScoreManager : MonoBehaviour
 
 		_score[_currentSetIndex] = newScore;
 
-        /*GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
         GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-            !GameManager.Instance.ServiceManager.ChangeSides);*/
+            !GameManager.Instance.ServiceManager.ChangeSides);
 
 		// If the players changed sides, the field border points ownership needs to be changed.
-		/*if (GameManager.Instance.ServiceManager.NbOfGames == 1)
+		if (GameManager.Instance.ServiceManager.NbOfGames == 1)
 		{
 			GameManager.Instance.ChangeFieldBorderPointsOwnership();
-		}*/
+		}
 
 		if ((_score[_currentSetIndex].Item1 + _score[_currentSetIndex].Item2) % 2 == 1)
 		{
-            //GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
+            GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
         }
 
         if (((_score[_currentSetIndex].Item1 == _nbOfGamesToWin && _score[_currentSetIndex].Item1 >= _score[_currentSetIndex].Item2 + 2) ||
@@ -157,9 +157,9 @@ public class ScoreManager : MonoBehaviour
     {
 		_currentSetIndex++;
 
-		/*GameManager.Instance.ServiceManager.ChangeSides = false;
+		GameManager.Instance.ServiceManager.ChangeSides = false;
 		GameManager.Instance.ServiceManager.NbOfGames = 0;
-		GameManager.Instance.ServiceManager.GlobalGamesCount = 0;*/
+		GameManager.Instance.ServiceManager.GlobalGamesCount = 0;
 
 		if (player == 1)
 			_nbOfSets = new Tuple<int, int>(_nbOfSets.Item1 + 1, _nbOfSets.Item2);
@@ -179,9 +179,13 @@ public class ScoreManager : MonoBehaviour
 
 			Debug.Log($"Player1 wins with the score of : {score}");
 
-			//GameManager.Instance.EndOfGame();
-			GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
-			SceneManager.LoadScene(0);
+			GameManager.Instance.EndOfGame();
+			
+			if (GameParameters.IsTournamentMode)
+			{
+				GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
+				SceneManager.LoadScene(0);
+			}
 		}
 		else if (_nbOfSets.Item2 == _nbOfSetsToWin)
 		{
@@ -193,10 +197,14 @@ public class ScoreManager : MonoBehaviour
 			}
 
 			Debug.Log($"Player2 wins with the score of : {score}");
-			GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
-			SceneManager.LoadScene(0);
 
-			//GameManager.Instance.EndOfGame();
+			if (GameParameters.IsTournamentMode)
+			{
+				GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
+				SceneManager.LoadScene(0);
+			}
+
+			GameManager.Instance.EndOfGame();
 		}
 		else
 			_score.Add(new Tuple<int, int>(0, 0));
@@ -206,10 +214,10 @@ public class ScoreManager : MonoBehaviour
 	{
 		string score = "";
 
-		/*for (int i = 0; i < _currentSetIndex + 1; i++)
+		for (int i = 0; i < _currentSetIndex + 1; i++)
 		{
 			score += $"{_score[i].Item1}/{_score[i].Item2} ";
-		}*/
+		}
 
 		if (!_isTieBreak)
 			score += $"{_possiblePoints[_currentGameScore.Item1]} - {_possiblePoints[_currentGameScore.Item2]} ";

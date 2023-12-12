@@ -314,6 +314,7 @@ public class TournamentBracket : MonoBehaviour
 		_firstRoundPlayers.Clear();
 		_secondRoundPlayers.Clear();
 		_thirdRoundPlayers.Clear();
+		GameParameters.IsTournamentMode = false;
 		foreach (var item in _characterFirstRoundLocations)
 		{
 			if (item.childCount > 0)

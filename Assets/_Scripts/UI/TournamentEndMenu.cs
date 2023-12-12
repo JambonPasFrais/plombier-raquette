@@ -21,7 +21,8 @@ public class TournamentEndMenu : MonoBehaviour
 		_canReturn = false;
 		_winnerDisplay.SetActive(true);
 		_loserDisplay.SetActive(false);
-        _currentCup.sprite = cupSprite;
+		GameParameters.IsTournamentMode = false;
+		_currentCup.sprite = cupSprite;
         GameObject go = Instantiate(winnerPrefab, _winnerPlayerLocation.transform);
         go.transform.localPosition = Vector3.zero;
 		go.transform.localScale = new Vector3(20, 20, 20);
@@ -39,6 +40,7 @@ public class TournamentEndMenu : MonoBehaviour
 		_canReturn = false;
 		_loserDisplay.SetActive(true);
 		_winnerDisplay.SetActive(false);
+		GameParameters.IsTournamentMode = false;
 		GameObject go = Instantiate(loserPrefab, _loserPlayerLocation.transform);
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localScale = new Vector3(20, 20, 20);
