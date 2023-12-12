@@ -219,7 +219,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Used at the of the selection, it transforms each bot random character into a character
 	private void SetCharacterForBots()
 	{
-
 		for (int i = _totalNbPlayers - 1; i > GameParameters.LocalNbPlayers - 1; i--)
 		{
 			SetRandomCharacterForSpecifiedPlayer(i);
@@ -228,6 +227,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private void SetRandomCharacterForSpecifiedPlayer(int playerIndex)
 	{
+		// players who selected "Random" have a question mark model so we remove it first
+		RemoveCharacterFromPlayerSelectionUi(playerIndex);
+		
 		CharacterData cd = ReturnRandomCharacter();
 		_currentSelectedCharactersName[playerIndex].text = cd.Name;
 		_currentSelectedCharacterBackground[playerIndex].color = cd.CharacterColor;
@@ -253,6 +255,22 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_availableCharacters.RemoveAt(currentIndex);
 
 		return data;
+	}
+
+	// This function removes any model, color or asset, previously selected on a player selection UI
+	private bool RemoveCharacterFromPlayerSelectionUi(int playerIndex)
+	{
+		if (_currentCharacterModelLocation[playerIndex].childCount <= 0)
+			return false;
+		
+		_selectedCharacterUIs[playerIndex].SetSelected(false);
+		GameObject oldGo = _currentCharacterModelLocation[playerIndex].GetChild(0).gameObject;
+		oldGo.transform.SetParent(_charactersListTransform);
+		oldGo.transform.localPosition = Vector3.zero;
+		oldGo.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+		oldGo.gameObject.SetActive(false);
+		_playersCharacter[playerIndex] = null;
+		return true;
 	}
 	
 	private void SetPlayButtonInteractability()
@@ -361,11 +379,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_currentSelectedCharactersName[playerIndex].text = characterUI.Character.Name;
 			_currentSelectedCharacterBackground[playerIndex].color = characterUI.Character.CharacterColor;
 
-			if (_charactersModel.TryGetValue(characterUI.Character.Name, out var characterModel))
+			string charNameToLookFor = characterUI.Character.Name == "Random" ? characterUI.Character.Name+playerIndex : characterUI.Character.Name;
+
+			if (_charactersModel.TryGetValue(charNameToLookFor, out var characterModel))
 			{
 				characterModel.transform.SetParent(_currentCharacterModelLocation[playerIndex]);
 				characterModel.transform.localPosition = Vector3.zero;
-				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
 				characterModel.SetActive(true);
 				_selectedCharacterUIs[playerIndex] = characterUI;
 				_playersCharacter[playerIndex] = characterUI.Character;
@@ -380,18 +400,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	public bool HandleCharacterDeselectionInput(int playerIndex)
 	{
-		if (_currentCharacterModelLocation[playerIndex].childCount > 0)
-		{
-			_selectedCharacterUIs[playerIndex].SetSelected(false);
-			GameObject go = _currentCharacterModelLocation[playerIndex].GetChild(0).gameObject;
-			go.transform.SetParent(_charactersListTransform);
-			go.transform.localPosition = Vector3.zero;
-			go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-			go.gameObject.SetActive(false);
-			_playersCharacter[playerIndex] = null;
-			return true;
-		}
-		return false;
+		return RemoveCharacterFromPlayerSelectionUi(playerIndex);
 	}
 	#endregion
 }
