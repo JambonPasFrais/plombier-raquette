@@ -71,7 +71,7 @@ public class BotBehavior : ControllersParent
             }
             else if (_ballDetectionArea.IsBallInHitZone && _ballDetectionArea.Ball.LastPlayerToApplyForce != this && _botServiceCoroutine == null)
             {
-                _botServiceCoroutine = StartCoroutine(BotService());
+                CallingBotServiceMethod();
             }
         }
     }
@@ -95,6 +95,12 @@ public class BotBehavior : ControllersParent
         }
 
         return correctTarget.position;
+    }
+
+    public void CallingBotServiceMethod()
+    {
+        PlayerState = PlayerStates.SERVE;
+        _botServiceCoroutine = StartCoroutine(BotService());
     }
 
     private IEnumerator BotService()
@@ -140,7 +146,7 @@ public class BotBehavior : ControllersParent
             }
         }
 
-        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
+        if (_ballInstance.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
             GameManager.Instance.GameState = GameState.PLAYING;
 
         _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
