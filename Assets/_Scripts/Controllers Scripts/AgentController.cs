@@ -41,12 +41,15 @@ public class AgentController : ControllersParent
 
     private void Awake()
     {
-        _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
-        UpdateBorderPointsContainer();
+/*        _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
+        UpdateBorderPointsContainer();*/
     }
 
     private void Start()
     {
+        _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
+        UpdateBorderPointsContainer();
+
         _noMovementTime = 0;
         ServicesCount = 0;
         _hitKeyPressedTime = 0f;
@@ -417,7 +420,10 @@ public class AgentController : ControllersParent
                 break;
             case 1:
                 // Throw the ball in the air during the service.
-                GameManager.Instance.ThrowBall();
+                if (PlayerState == PlayerStates.SERVE && IsServing)
+                {
+                    GameManager.Instance.ThrowBall();
+                }
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
