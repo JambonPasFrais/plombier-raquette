@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,7 +72,7 @@ public class SideManager : MonoBehaviour
 	/// <param name="originalSides"></param>
 	private void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
-		string side = "";
+        string side = "";
 
 		side = serveRight ? "Right" : "Left";
 
@@ -213,4 +214,36 @@ public class SideManager : MonoBehaviour
             }
         }
 	}
+
+	public void SetSideOnline(bool serveRight, bool originalSides)
+	{
+        GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.All, true, originalSides);
+    }
+	[PunRPC]
+    public void SetSidesInOnlineMatch(bool serveRight, bool originalSides)
+    {
+        string side = "";
+
+        side = serveRight ? "Right" : "Left";
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _activeCameraTransform = _cameras[0].transform;
+            _cameras[0].SetActive(true);
+            _cameras[1].SetActive(false);
+            GameManager.Instance.Controllers[0].transform.position = _servicePointsFirstSide[side].position;
+            GameManager.Instance.Controllers[0].transform.rotation = _servicePointsFirstSide[side].rotation;
+          
+        }
+        else
+        {
+            _activeCameraTransform = _cameras[1].transform;
+            _cameras[0].SetActive(false);
+            _cameras[1].SetActive(true);
+            GameManager.Instance.Controllers[0].transform.position = _servicePointsSecondSide[side].position;
+            GameManager.Instance.Controllers[0].transform.rotation = _servicePointsSecondSide[side].rotation;
+
+        }
+        //SetCollidersOwnerPlayers(players, originalSides);
+    }
 }

@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Photon.Realtime;
-using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
@@ -196,7 +195,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    
     #endregion
 
 /*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
@@ -345,6 +344,8 @@ public class GameManager : MonoBehaviour
                 _controllers.Add(controller);
             }
         }
+        if (PhotonNetwork.IsMasterClient && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount && GameState == GameState.BEFOREGAME)
+            StartGame();
     }
     
     [PunRPC]
