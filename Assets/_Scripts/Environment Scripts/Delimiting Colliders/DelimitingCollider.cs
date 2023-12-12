@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DelimitingCollider : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.TryGetComponent<AgentController>(out AgentController agent))
+        if (collision.gameObject.TryGetComponent<AgentController>(out AgentController agent))
         {
             agent.TouchedForbiddenCollider();
         }

@@ -246,7 +246,7 @@ public class AgentController : ControllersParent
         }
     }
 
-    public void SlowTime(InputAction.CallbackContext context)
+/*    public void SlowTime(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -267,7 +267,7 @@ public class AgentController : ControllersParent
             Time.timeScale = _actionParameters.SlowTimeScaleFactor;
             _currentSpeed = _movementSpeed / Time.timeScale;
         }
-    }
+    }*/
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
@@ -421,43 +421,43 @@ public class AgentController : ControllersParent
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
-            case 2:
+/*            case 2:
                 // Slowing time.
                 SlowTime();
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
-                break;
-            case 3:
+                break;*/
+            case 2:
                 // Realising the technical shot.
                 TechnicalShot();
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
-            case 4:
+            case 3:
                 // Flat shot.
                 Flat();
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
-            case 5:
+            case 4:
                 // Top spin shot.
                 TopSpin();
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
-            case 6:
+            case 5:
                 // Slice shot.
                 Slice();
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
-            case 7:
+            case 6:
                 // Drop shot.
                 Drop();
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
                 break;
-            case 8:
+            case 7:
                 // Lob shot.
                 Lob();
                 // The action index is set to 0 after each action.

@@ -78,6 +78,14 @@ public class Ball : MonoBehaviour
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
+        // If the ball touches the service collider before it serves, the bot can re serve.
+        // Happens during AI training for some reason.
+        if(_rigidBody.isKinematic && playerToApplyForce is BotBehavior)
+        {
+            BotBehavior bot = (BotBehavior)playerToApplyForce;
+            bot.CallingBotServiceMethod();
+        }
+
         _rigidBody.velocity = Vector3.zero;
         
         if (_currentMovementCoroutine != null)
