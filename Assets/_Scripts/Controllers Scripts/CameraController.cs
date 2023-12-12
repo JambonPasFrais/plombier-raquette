@@ -17,12 +17,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _normalFOV = 60f; 
     [SerializeField] private float _zoomDuration = 0.5f;
     [SerializeField] private Image _smashImage;
-    [SerializeField] private GameManager _gameManager;
     private Camera _firstPersonCameraComponent;
-    public bool IsSmashing => _isSmashing;
 
     public bool _isFirstPersonView;
-    [SerializeField] private bool _isSmashing = false;
 
     private Quaternion _cameraOriginalRot;
 
@@ -30,19 +27,24 @@ public class CameraController : MonoBehaviour
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
         _cameraOriginalRot = _firstPersonCamera.transform.rotation;
-        _ballPrefab = _gameManager.BallInstance;
+        _ballPrefab = GameManager.Instance.BallInstance;
     }
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView)
+        if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView&&GameManager.Instance.GameState==GameState.PLAYING)
         {
             ToggleFirstPersonView();
+            _ballPrefab.transform.rotation = Quaternion.identity;
         }
 
         if (_isFirstPersonView)
         {
+            if (!_ballPrefab.GetComponent<Rigidbody>().isKinematic)
+            {
+                _ballPrefab.GetComponent<Rigidbody>().isKinematic = !_ballPrefab.GetComponent<Rigidbody>().isKinematic;
+            }
             _ballPrefab.transform.position = _ballSpawnPoint.position;
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
@@ -65,6 +67,7 @@ public class CameraController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
+                _ballPrefab.GetComponent<Rigidbody>().isKinematic =false;
                 _ballPrefab.GetComponent<Ball>().ShootSmash(_firstPersonCamera,_ballSpeed,this.GetComponent<PlayerController>());
                 ToggleFirstPersonView();
             }
@@ -81,7 +84,7 @@ public class CameraController : MonoBehaviour
 
     private void ToggleFirstPersonView()
     {
-        _isSmashing = !_isSmashing;
+        GetComponent<PlayerController>().SetSmash();
         _firstPersonCamera.transform.rotation = _cameraOriginalRot;
         _isFirstPersonView = !_isFirstPersonView;
         _mainCamera.SetActive(!_isFirstPersonView);

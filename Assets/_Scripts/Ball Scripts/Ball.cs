@@ -15,10 +15,10 @@ public class Ball : MonoBehaviour
 
     private ControllersParent _lastPlayerToApplyForce;
     private float _risingForceFactor;
-    private int _reboundsCount;
+    [SerializeField] private int _reboundsCount;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
-
+    private bool _canSmash = false;
     #endregion
 
     #region ACCESSORS
@@ -47,6 +47,10 @@ public class Ball : MonoBehaviour
         {
             transform.position = GameManager.Instance.BallInitializationTransform.position;
         }
+        if (_canSmash)
+        {
+            CheckSmash();
+        }
     }
 
     #endregion
@@ -69,7 +73,7 @@ public class Ball : MonoBehaviour
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
-        
+
         if (_currentMovementCoroutine != null)
         {
             StopCoroutine(_currentMovementCoroutine);
@@ -79,7 +83,7 @@ public class Ball : MonoBehaviour
         {
             StopCoroutine(_currentCurvingEffectCoroutine);
         }
-        
+
         _risingForceFactor = risingForceFactor;
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
 
@@ -167,6 +171,37 @@ public class Ball : MonoBehaviour
     public void ShootSmash(GameObject camera, float ballSpeed, ControllersParent controllersParent)
     {
         _lastPlayerToApplyForce = controllersParent;
-        _rigidBody.AddForce(camera.transform.forward * ballSpeed);
+        _rigidBody.AddForce(camera.transform.forward * ballSpeed, ForceMode.VelocityChange);
+    }
+    public void SetCanSmash(bool canSmash)
+    {
+        _canSmash = canSmash;
+    }
+    private void CheckSmash()
+    {
+        // Lance un rayon vers le bas depuis la position de la balle
+        Ray ray = new Ray(transform.position, Vector3.down);
+
+        // Déclarez une variable pour stocker les informations de l'objet touché
+        RaycastHit hit;
+
+        // Définissez la distance maximale pour le rayon (ajustez-la en fonction de votre scène)
+        float maxRaycastDistance = 10f;
+
+        // Effectuez le raycast
+        if (Physics.Raycast(ray, out hit, maxRaycastDistance))
+        {
+            Debug.Log(hit);
+            // Vérifiez si l'objet touché a le composant PlayerController
+            PlayerController playerController = hit.collider.GetComponent<PlayerController>();
+
+            if (playerController != null)
+            {
+                // Le rayon a touché un objet avec le composant PlayerController
+                Debug.Log("Can shoot");
+            }
+        }
+        Debug.DrawRay(ray.origin, ray.direction * maxRaycastDistance, Color.red);
     }
 }
+

@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SmashTrigger : MonoBehaviour
+{
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Ball>())
+        {
+            Debug.Log("entered Smash Area");
+            Ball ball = other.GetComponent<Ball>();
+            ball.SetCanSmash(true);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Ball>())
+        {
+            Debug.Log("entered Smash Area");
+            Ball ball = other.GetComponent<Ball>();
+            ball.SetCanSmash(false);
+        }
+    }
+}
