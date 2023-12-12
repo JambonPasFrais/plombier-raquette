@@ -10,10 +10,12 @@ public class OptionsMenu : MonoBehaviour
 {
 	#region PRIVATE FIELDS
 
-	[Header("Instance")]
+	[Header("Display Istances")]
 	[SerializeField] private TMP_Dropdown _resolutionDropdown;
 	[SerializeField] private TMP_Dropdown _fpsDropdown;
 	[SerializeField] private TMP_Dropdown _qualityDropdown;
+
+	[Header("Audio INstances")]
 	[SerializeField] private Slider _globalVolumeSlider;
 	[SerializeField] private TextMeshProUGUI _globalVolumeText;
 	[SerializeField] private Slider _sfxVolumeSlider;
@@ -21,6 +23,11 @@ public class OptionsMenu : MonoBehaviour
 	[SerializeField] private Slider _musicVolumeSlider;
 	[SerializeField] private TextMeshProUGUI _musicVolumeText;
 	[SerializeField] private AudioMixer _audioMixer;
+
+	[Header("Option Menus")]
+	[SerializeField] private GameObject _displayOptions;
+	[SerializeField] private GameObject _audioOptions;
+	[SerializeField] private GameObject _controlsOptions;
 
 	[Header("Parameters")]
 	[SerializeField] private List<int> _maxFps = new List<int>
@@ -166,9 +173,28 @@ public class OptionsMenu : MonoBehaviour
 
 	#endregion
 
-	public void DisplayControls()
+	#region MENU DISPLAYING
+
+	public void ShowControlsParameters()
 	{
-		Debug.Log("You want to se the controls ?");
-		Debug.Log("This menu is still in construction...");
+		_controlsOptions.SetActive(true);
+		_audioOptions.SetActive(false);
+		_displayOptions.SetActive(false);
 	}
+
+	public void ShowDisplayParameters()
+	{
+		_controlsOptions.SetActive(false);
+		_audioOptions.SetActive(false);
+		_displayOptions.SetActive(true);
+	}
+	
+	public void ShowAudioParameters()
+	{
+		_controlsOptions.SetActive(false);
+		_audioOptions.SetActive(true);
+		_displayOptions.SetActive(false);
+	}
+
+	#endregion
 }
