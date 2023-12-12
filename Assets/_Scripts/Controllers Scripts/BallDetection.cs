@@ -71,4 +71,13 @@ public class BallDetection : MonoBehaviour
 
         return _risingForceNormalFactor + (_risingForceMaximumFactor - _risingForceNormalFactor) * ((transform.position.y - _ball.gameObject.transform.position.y) / (_boxCollider.bounds.size.y / 2f));
     }
+
+    /// <summary>
+    /// Set the ball variable at service beginning for the bot.
+    /// </summary>
+    public void SetBallAtService()
+    {
+        _ball = GameManager.Instance.BallInstance.GetComponent<Ball>();
+        _isBallInHitZone = true;
+    }
 }

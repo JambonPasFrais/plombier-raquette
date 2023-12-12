@@ -100,7 +100,10 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-		GetScore();
+		if(_nbOfSets.Item1 != _nbOfSetsToWin && _nbOfSets.Item2 != _nbOfSetsToWin)
+		{
+            GetScore();
+        }
     }
 
 	public void AddGame(Teams winnerTeam)
@@ -214,5 +217,21 @@ public class ScoreManager : MonoBehaviour
 		_scoreText.text = score;
 
 		return score;
+	}
+
+	public void ResetScore()
+	{
+		_score = new List<Tuple<int, int>>()
+		{
+			new Tuple<int,int>(0,0),
+		};
+		_currentGameScore = new Tuple<int, int>(0, 0);
+		
+		_currentSetIndex = 0;
+		_nbOfSets = new Tuple<int, int>(0, 0);
+		
+		_isTieBreak = false;
+
+        _scoreText.text = "";
 	}
 }

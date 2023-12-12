@@ -100,11 +100,14 @@ public class BotBehavior : ControllersParent
     public void CallingBotServiceMethod()
     {
         PlayerState = PlayerStates.SERVE;
+        GameManager.Instance.GameState = GameState.SERVICE;
         _botServiceCoroutine = StartCoroutine(BotService());
     }
 
     private IEnumerator BotService()
     {
+        _ballDetectionArea.SetBallAtService();
+
         yield return new WaitForSeconds(_timeBeforeThrowingBallDuringService);
 
         GameManager.Instance.ThrowBall();
