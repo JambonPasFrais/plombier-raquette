@@ -71,19 +71,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        ServiceOnOriginalSide = true;
-
-        GameState = GameState.SERVICE;
-        foreach(ControllersParent controller in _controllers)
-        {
-            controller.PlayerState = PlayerStates.IDLE;
-        }
-
-        _serverIndex = 0;
-        _controllers[_serverIndex].IsServing = true;
-        GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
-        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-        _ballInstance.GetComponent<Ball>().ResetBall();
+        InitializeGameVariables();
 
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
 
@@ -110,6 +98,26 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    private void InitializeGameVariables()
+    {
+        ServiceOnOriginalSide = true;
+
+        GameState = GameState.SERVICE;
+
+        foreach (ControllersParent controller in _controllers)
+        {
+            controller.PlayerState = PlayerStates.IDLE;
+        }
+
+        _serverIndex = 0;
+        _controllers[_serverIndex].IsServing = true;
+
+        GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+
+        _ballInstance.GetComponent<Ball>().ResetBall();
+    }
 
     public Teams? GetPlayerTeam(ControllersParent currentPlayer)
     {
@@ -199,6 +207,21 @@ public class GameManager : MonoBehaviour
     public void EndOfGame()
     {
         Debug.Log("End of game !");
+        StartCoroutine(RestartGame());
+    }
+
+    private IEnumerator RestartGame()
+    {
+        yield return new WaitForSeconds(2f);
+
+        foreach (var player in _controllers)
+        {
+            player.ResetAtService();
+        }
+
+        InitializeGameVariables();
+
+        GameManager.Instance.ScoreManager.ResetScore();
     }
 
     public void ChangeServer()
