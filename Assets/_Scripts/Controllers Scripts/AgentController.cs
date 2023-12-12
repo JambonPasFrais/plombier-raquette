@@ -31,6 +31,8 @@ public class AgentController : ControllersParent
     private ControllersParent _otherPlayer;
     private FieldBorderPointsContainer _borderPointsContainer;
 
+    private float _noMovementTime;
+
     #endregion
 
     public int ActionIndex { set { _actionIndex = value; } }
@@ -45,6 +47,7 @@ public class AgentController : ControllersParent
 
     private void Start()
     {
+        _noMovementTime = 0;
         ServicesCount = 0;
         _hitKeyPressedTime = 0f;
         _isCharging = false;
@@ -64,6 +67,21 @@ public class AgentController : ControllersParent
         }
 
         UpdateBorderPointsContainer();
+
+        // Adding negative reward each frame if the agent doesn't move during at least 5 seconds.
+/*        if (_rigidBody.velocity.magnitude == 0)
+        {
+            if (_noMovementTime >= 5f)
+            {
+                AddReward(-0.1f);
+            }
+
+            _noMovementTime += Time.deltaTime;
+        }
+        else
+        {
+            _noMovementTime = 0f;
+        }*/
     }
 
     #endregion
@@ -185,7 +203,7 @@ public class AgentController : ControllersParent
 
     public void Drop(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE)
+        if (context.performed)
         {
             _actionIndex = 7;
         }
@@ -193,7 +211,10 @@ public class AgentController : ControllersParent
 
     private void Drop()
     {
-        Shoot(HitType.Drop);
+        if(PlayerState != PlayerStates.SERVE)
+        {
+            Shoot(HitType.Drop);
+        }
     }
 
     public void Slice(InputAction.CallbackContext context)
@@ -211,7 +232,7 @@ public class AgentController : ControllersParent
 
     public void Lob(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE)
+        if (context.performed)
         {
             _actionIndex = 8;
         }
@@ -219,12 +240,15 @@ public class AgentController : ControllersParent
 
     private void Lob()
     {
-        Shoot(HitType.Lob);
+        if(PlayerState != PlayerStates.SERVE)
+        {
+            Shoot(HitType.Lob);
+        }
     }
 
     public void SlowTime(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        if (context.performed)
         {
             _actionIndex = 2;
         }
@@ -238,13 +262,16 @@ public class AgentController : ControllersParent
 
     public void SlowTime()
     {
-        Time.timeScale = _actionParameters.SlowTimeScaleFactor;
-        _currentSpeed = _movementSpeed / Time.timeScale;
+        if (PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        {
+            Time.timeScale = _actionParameters.SlowTimeScaleFactor;
+            _currentSpeed = _movementSpeed / Time.timeScale;
+        }
     }
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        if (context.performed)
         {
             _actionIndex = 3;
         }
@@ -252,45 +279,48 @@ public class AgentController : ControllersParent
 
     public void TechnicalShot()
     {
-        float tempForwardMovementFactor = 0f;
-        float tempRightMovementFactor = 0f;
-        int forwardMovementFactor = 0;
-        int rightMovementFactor = 0;
-
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        if(PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
         {
-            tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
-        }
+            float tempForwardMovementFactor = 0f;
+            float tempRightMovementFactor = 0f;
+            int forwardMovementFactor = 0;
+            int rightMovementFactor = 0;
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
-        }
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            {
+                tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
+            }
 
-        if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor))
-        {
-            forwardMovementFactor = 0;
-            rightMovementFactor = (int)tempRightMovementFactor;
-        }
-        else
-        {
-            forwardMovementFactor = Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor) ? (int)tempForwardMovementFactor : 0;
-            rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
-        }
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
+            }
 
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
-        Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
-        Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
+            if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor))
+            {
+                forwardMovementFactor = 0;
+                rightMovementFactor = (int)tempRightMovementFactor;
+            }
+            else
+            {
+                forwardMovementFactor = Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor) ? (int)tempForwardMovementFactor : 0;
+                rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
+            }
 
-        float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
+            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
+            Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
+            Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
 
-        if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
-        {
-            transform.position += wantedDirection * _actionParameters.TechnicalShotMovementLength;
-        }
-        else
-        {
-            transform.position += wantedDirection * distanceToBorderInWantedDirection;
+            float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
+
+            if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
+            {
+                transform.position += wantedDirection * _actionParameters.TechnicalShotMovementLength;
+            }
+            else
+            {
+                transform.position += wantedDirection * distanceToBorderInWantedDirection;
+            }
         }
     }
 
@@ -440,12 +470,20 @@ public class AgentController : ControllersParent
 
     #endregion
 
+    private void ReplacingPlayers()
+    {
+        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+            !GameManager.Instance.ServiceManager.ChangeSides);
+        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
+    }
+
     #region POSITIVE & NEGATIVE REWARDS SYSTEM
 
-    public void ScoredPoint()
+    #region NEGATIVE REWARDS
+
+    public void WrongFirstService()
     {
-        AddReward(1f);
-        EndEpisode();
+        AddReward(-0.5f);
     }
 
     public void LostPoint()
@@ -454,10 +492,24 @@ public class AgentController : ControllersParent
         EndEpisode();
     }
 
-    public void WrongFirstService()
+    public void TouchedForbiddenCollider()
     {
-        AddReward(-0.5f);
+        AddReward(-5f);
+        ReplacingPlayers();
+        EndEpisode();
     }
+
+    #endregion
+
+    #region POSITIVE REWARDS
+
+    public void ScoredPoint()
+    {
+        AddReward(1f);
+        EndEpisode();
+    }
+
+    #endregion
 
     #endregion
 }
