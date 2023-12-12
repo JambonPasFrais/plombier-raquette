@@ -11,7 +11,7 @@ public class ControllerManager : MonoBehaviour
     
     [Header("Parameters")]
     [SerializeField] private InputAction _joinPlayerAction;
-    [SerializeField] private int _maxPlayerCount;
+    
     
     [Header("Instances")]
     [SerializeField] private Controller _gamepadPrefab;
@@ -24,7 +24,7 @@ public class ControllerManager : MonoBehaviour
 
     [SerializeField] private CharacterSelectionMenu _characterSelectionMenu;
     
-    private int _playerCount;
+    private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
     private Coroutine _currentDeleteCtrlCoroutine;
