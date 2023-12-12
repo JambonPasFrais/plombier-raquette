@@ -35,20 +35,24 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<CharacterData> _playersCharacter;
 	private List<CharacterUI> _selectedCharacterUIs;
 	private List<CharacterUI> _selectableCharacters = new List<CharacterUI>();
-	private int _playerIndex = 0;
+	private int _keyboardPlayerIndex;
 	private int _totalNbPlayers;
 
+	#region Unity Functions
 	private void Start()
 	{
-		
+		// Init
 		_characters = MenuManager.Characters;
 		_charactersModelsParent = MenuManager.CharactersModelsParent;
 		_charactersModel = MenuManager.CharactersModel;
 
 		_availableCharacters = new List<CharacterData>(_characters);
 
+		// ??
 		VerifyCharacters();
-		SetPlayerInfos();
+		OnMenuLoaded();
+		
+		// Create the characters Game objects
 		GameObject go;
 
 		foreach (var item in _characters)
@@ -63,8 +67,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 	}
 
-	// ??
-	private void Update()
+	// Potentially Useless
+	/*private void Update()
 	{
 		/*if (Input.GetMouseButtonDown(0))
 		{
@@ -109,51 +113,20 @@ public class CharacterSelectionMenu : MonoBehaviour
 				VerifyCharacters();
 				_playerIndex = (_playerIndex + 1) % _totalNbPlayers;
 			}
-		}*/
-	}
+		}
+	}*/
+	#endregion
 
-	// ??
-	public CharacterData ReturnRandomCharacter()
-	{
-		CharacterData data = null;
-		int currentIndex;
-
-		System.Random rand = new System.Random();
-
-		currentIndex = rand.Next(_availableCharacters.Count);
-		data = _availableCharacters[currentIndex];
-		_availableCharacters.RemoveAt(currentIndex);
-
-		return data;
-	}
-
-	// simplify : use random char selection at the beginning
+	#region Listeners
+	
+	// Button "play"
 	public void Play()
 	{
-		for (int i = 0; i < _totalNbPlayers; i++)
-		{
-			if (_playersCharacter[i].Name == "Random")
-			{
-				_playersCharacter[i] = ReturnRandomCharacter();
-			}
-		}
-
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
+		Debug.Log("Go to play");
 	}
-
-	// ??
-	private void VerifyCharacters()
-	{
-		foreach (var item in _playersCharacter)
-		{
-			if (item == null)
-				return;
-		}
-
-		if (_playersCharacter[0] != null)
-			_playButton.interactable = true;
-	}
-
+	
+	// Button "validation" from the rules menu
 	public void SetNumberOfShowrooms(bool isDouble)
 	{
 		if (isDouble)
@@ -178,8 +151,89 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_playersCharacter = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
 		_selectedCharacterUIs = new List<CharacterUI>(new CharacterUI[_totalNbPlayers]);
 	}
+	
+	// Any button that loads the menu
+	public void OnMenuLoaded()
+	{
+		SetPlayerInfos();
+		SetRandomCharactersForBots();
+	}
 
-	public void ResetMenu()
+	// Any button that disables the menu
+	public void OnMenuDisabled()
+	{
+		MenuUiReset();
+	}
+
+	#endregion
+
+	private void SetPlayerInfos()
+	{
+		if(_totalNbPlayers == 2)
+		{
+			_playersInfoSingle[0].text = "P1";
+
+			if (GameParameters.LocalNbPlayers == 1)
+				_playersInfoSingle[1].text = "COM";
+			else
+				_playersInfoSingle[1].text = "P2";
+		}
+		else
+		{
+			_playersInfoDouble[0].text = "P1";
+
+			for(int i = 1; i < 4; i++)
+			{
+				if (i < GameParameters.LocalNbPlayers)
+					_playersInfoDouble[i].text = "P" + (i + 1).ToString();
+
+				else
+					_playersInfoDouble[i].text = "COM";
+			}
+		}
+	}
+	
+	private void SetRandomCharactersForBots()
+	{
+		for (int i = 0; i < _totalNbPlayers; i++)
+		{
+			if (_playersCharacter[i].Name == "Random")
+			{
+				_playersCharacter[i] = ReturnRandomCharacter();
+			}
+		}
+	}
+	
+	// Returns a random character from the availableCharacters List
+	private CharacterData ReturnRandomCharacter()
+	{
+		CharacterData data = null;
+		int currentIndex;
+
+		System.Random rand = new System.Random();
+
+		currentIndex = rand.Next(_availableCharacters.Count);
+		data = _availableCharacters[currentIndex];
+		_availableCharacters.RemoveAt(currentIndex);
+
+		return data;
+	}
+
+	// ??
+	private void VerifyCharacters()
+	{
+		foreach (var item in _playersCharacter)
+		{
+			if (item == null)
+				return;
+		}
+
+		if (_playersCharacter[0] != null)
+			_playButton.interactable = true;
+	}
+	
+	// ??
+	private void MenuUiReset()
 	{
 		foreach(var item in _charactersModel)
 		{
@@ -212,45 +266,51 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_playButton.interactable = false;
 	}
 	
+	// Potentially useless
+	/*
 	public void HandleCharacterSelectionInput(CharacterUI characterUI)
 	{
+		if (_keyboardPlayerIndex == -1)
+			return;
+		
 		if (!characterUI.IsSelected)
 		{
 			characterUI.SetSelected(true);
-			_currentSelectedCharactersName[_playerIndex].text = characterUI.Character.Name;
-			_currentSelectedCharacterBackground[_playerIndex].color = characterUI.Character.CharacterColor;
+			_currentSelectedCharactersName[_keyboardPlayerIndex].text = characterUI.Character.Name;
+			_currentSelectedCharacterBackground[_keyboardPlayerIndex].color = characterUI.Character.CharacterColor;
 
-			if (_currentCharacterModelLocation[_playerIndex].childCount > 0)
+			if (_currentCharacterModelLocation[_keyboardPlayerIndex].childCount > 0)
 			{
-				_selectedCharacterUIs[_playerIndex].SetSelected(false);
+				_selectedCharacterUIs[_keyboardPlayerIndex].SetSelected(false);
 
-				GameObject previousCharacter = _currentCharacterModelLocation[_playerIndex].GetChild(0).gameObject;
+				GameObject previousCharacter = _currentCharacterModelLocation[_keyboardPlayerIndex].GetChild(0).gameObject;
 				previousCharacter.transform.SetParent(_charactersListTransform);
 				previousCharacter.transform.localPosition = Vector3.zero;
 				previousCharacter.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 				previousCharacter.SetActive(false);
-				_playersCharacter[_playerIndex] = null;
+				_playersCharacter[_keyboardPlayerIndex] = null;
 			}
 
 			GameObject characterModel;
 			if (_charactersModel.TryGetValue(characterUI.Character.Name, out characterModel))
 			{
-				characterModel.transform.SetParent(_currentCharacterModelLocation[_playerIndex]);
+				characterModel.transform.SetParent(_currentCharacterModelLocation[_keyboardPlayerIndex]);
 				characterModel.transform.localPosition = Vector3.zero;
 				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 				characterModel.SetActive(true);
-				_selectedCharacterUIs[_playerIndex] = characterUI;
-				_playersCharacter[_playerIndex] = characterUI.Character;
+				_selectedCharacterUIs[_keyboardPlayerIndex] = characterUI;
+				_playersCharacter[_keyboardPlayerIndex] = characterUI.Character;
 				VerifyCharacters();
-				_playerIndex = (_playerIndex + 1) % _totalNbPlayers;
+				_keyboardPlayerIndex = (_keyboardPlayerIndex + 1) % _totalNbPlayers;
 			}
 			else
 			{
 				Debug.LogError("Character model not found for: " + characterUI.Character.Name);
 			}
 		}
-	}
+	}*/
 
+	#region Called Externally
 	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
 	{
 		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
@@ -295,30 +355,5 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 		return false;
 	}
-
-	public void SetPlayerInfos()
-	{
-		if(_totalNbPlayers == 2)
-		{
-			_playersInfoSingle[0].text = "P1";
-
-			if (GameParameters.LocalNbPlayers == 1)
-				_playersInfoSingle[1].text = "COM";
-			else
-				_playersInfoSingle[1].text = "P2";
-		}
-		else
-		{
-			_playersInfoDouble[0].text = "P1";
-
-			for(int i = 1; i < 4; i++)
-			{
-				if (i < GameParameters.LocalNbPlayers)
-					_playersInfoDouble[i].text = "P" + (i + 1).ToString();
-
-				else
-					_playersInfoDouble[i].text = "COM";
-			}
-		}
-	}
+	#endregion
 }
