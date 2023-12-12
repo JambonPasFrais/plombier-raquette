@@ -36,7 +36,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<CharacterUI> _selectedCharacterUIs;
 	private List<CharacterUI> _selectableCharacters = new List<CharacterUI>();
 	private int _playerIndex = 0;
-	private int _nbOfPlayers;
+	private int _totalNbPlayers;
 
 	private void Start()
 	{
@@ -63,9 +63,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 	}
 
+	// ??
 	private void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		/*if (Input.GetMouseButtonDown(0))
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
@@ -106,11 +107,12 @@ public class CharacterSelectionMenu : MonoBehaviour
 				_selectedCharacterUIs[_playerIndex] = characterUI;
 				_playersCharacter[_playerIndex] = characterUI.Character;
 				VerifyCharacters();
-				_playerIndex = (_playerIndex + 1) % _nbOfPlayers;
+				_playerIndex = (_playerIndex + 1) % _totalNbPlayers;
 			}
-		}
+		}*/
 	}
 
+	// ??
 	public CharacterData ReturnRandomCharacter()
 	{
 		CharacterData data = null;
@@ -125,9 +127,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 		return data;
 	}
 
+	// simplify : use random char selection at the beginning
 	public void Play()
 	{
-		for (int i = 0; i < _nbOfPlayers; i++)
+		for (int i = 0; i < _totalNbPlayers; i++)
 		{
 			if (_playersCharacter[i].Name == "Random")
 			{
@@ -138,6 +141,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 	}
 
+	// ??
 	private void VerifyCharacters()
 	{
 		foreach (var item in _playersCharacter)
@@ -156,7 +160,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			_playersShowRoomDouble.SetActive(true);
 			_playersShowRoomSingle.SetActive(false);
-			_nbOfPlayers = 4;
+			_totalNbPlayers = 4;
 			_currentCharacterModelLocation = _characterModelLocationDouble;
 			_currentSelectedCharacterBackground = _selectedCharacterBackgroundDouble;
 			_currentSelectedCharactersName = _selectedCharactersNameDouble;
@@ -165,14 +169,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			_playersShowRoomDouble.SetActive(false);
 			_playersShowRoomSingle.SetActive(true);
-			_nbOfPlayers = 2;
+			_totalNbPlayers = 2;
 			_currentCharacterModelLocation = _characterModelLocationSimple;
 			_currentSelectedCharacterBackground = _selectedCharacterBackgroundSingle;
 			_currentSelectedCharactersName = _selectedCharactersNameSingle;
 		}
 
-		_playersCharacter = new List<CharacterData>(new CharacterData[_nbOfPlayers]);
-		_selectedCharacterUIs = new List<CharacterUI>(new CharacterUI[_nbOfPlayers]);
+		_playersCharacter = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
+		_selectedCharacterUIs = new List<CharacterUI>(new CharacterUI[_totalNbPlayers]);
 	}
 
 	public void ResetMenu()
@@ -238,7 +242,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 				_selectedCharacterUIs[_playerIndex] = characterUI;
 				_playersCharacter[_playerIndex] = characterUI.Character;
 				VerifyCharacters();
-				_playerIndex = (_playerIndex + 1) % _nbOfPlayers;
+				_playerIndex = (_playerIndex + 1) % _totalNbPlayers;
 			}
 			else
 			{
@@ -258,18 +262,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_currentSelectedCharacterBackground[playerIndex].color = characterUI.Character.CharacterColor;
 
 			GameObject go;
-			
-			/*// If player already selected a character before
-			if (_currentCharacterModelLocation[playerIndex].childCount > 0)
-			{
-				_selectedCharacterUIs[playerIndex].SetSelected(false);
-				go = _currentCharacterModelLocation[playerIndex].GetChild(0).gameObject;
-				go.transform.SetParent(_charactersListTransform);
-				go.transform.localPosition = Vector3.zero;
-				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-				go.gameObject.SetActive(false);
-				_playersCharacter[playerIndex] = null;
-			}*/
 
 			if (_charactersModel.TryGetValue(characterUI.Character.Name, out var characterModel))
 			{
@@ -306,14 +298,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	public void SetPlayerInfos()
 	{
-		if(_nbOfPlayers == 2)
+		if(_totalNbPlayers == 2)
 		{
 			_playersInfoSingle[0].text = "P1";
 
-			if (GameParameters.NumberOfPlayers == 1)
+			if (GameParameters.LocalNbPlayers == 1)
 				_playersInfoSingle[1].text = "COM";
 			else
-				_playersInfoDouble[1].text = "P2";
+				_playersInfoSingle[1].text = "P2";
 		}
 		else
 		{
@@ -321,7 +313,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 			for(int i = 1; i < 4; i++)
 			{
-				if (i < GameParameters.NumberOfPlayers)
+				if (i < GameParameters.LocalNbPlayers)
 					_playersInfoDouble[i].text = "P" + (i + 1).ToString();
 
 				else

@@ -11,24 +11,20 @@ public class ControllerManager : MonoBehaviour
     
     [Header("Parameters")]
     [SerializeField] private InputAction _joinPlayerAction;
-    
-    
+
     [Header("Instances")]
     [SerializeField] private Controller _gamepadPrefab;
     [SerializeField] private Controller _keyboardPrefab;
     [SerializeField] private Controller _joystickPrefab;
     [SerializeField] private GameObject _playerInputHandlerPrefab;
-    
-    [SerializeField] private Transform _controllerSelectionContainer;
-    [SerializeField] private Transform _characterSelectionContainer;
 
-    [SerializeField] private CharacterSelectionMenu _characterSelectionMenu;
-    
     private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
+    private CharacterSelectionMenu _characterSelectionMenu;
+    private ControllerSelectionMenu _controllerSelectionMenu;
     private Coroutine _currentDeleteCtrlCoroutine;
-    
+
     #region Getters
 
     public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
@@ -63,26 +59,51 @@ public class ControllerManager : MonoBehaviour
     }
     #endregion
 
-    #region Listeners
-    public void OnControllerSelectionLoad()
-    {
-        Init();
-        ControllerCanBeAdded();
-    }
+    #region CALLED EXTERNALLY
 
-    public void OnBackToControllerSelection()
+    public void DeletePlayerFromControllerSelection(PlayerInput playerInput)
     {
-        ControllerCanBeAdded();
-        SwitchCtrlersToCtrlSelectMode();
+        //Use coroutine in order to delay the delete and await the end of the deviceLost event
+        _currentDeleteCtrlCoroutine = StartCoroutine(DeleteControllerCoroutine(playerInput.devices[0].deviceId));
     }
     
-    public void OnExitControllerSelection()
+    public void Init(CharacterSelectionMenu characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
-        ControllerCantBeAdded();
-        OnResetControllers();
+        _maxPlayerCount = GameParameters.LocalNbPlayers;
+        _characterSelectionMenu = characterSelectionMenuRef;
+        _controllerSelectionMenu = controllerSelectionMenu;
+        _controllers = new Dictionary<int, PlayerInputHandler>();
+    }
+    
+    public void SwitchCtrlersToCharSelectMode(Transform charSelectionContainer)
+    {
+        foreach (var controller in _controllers)
+        {
+            controller.Value.Controller.gameObject.transform.SetParent(charSelectionContainer);
+            controller.Value.Controller.CharacterSelectionMode();
+        }
     }
 
-    public void OnResetControllers()
+    public void SwitchCtrlersToCtrlSelectMode(Transform cltrSelectionContainer)
+    {
+        foreach (var controller in _controllers)
+        {
+            controller.Value.Controller.gameObject.transform.SetParent(cltrSelectionContainer);
+            controller.Value.Controller.ControllerSelectionMode();
+        }
+    }
+    
+    public void ControllerCanBeAdded()
+    {
+        _joinPlayerAction.performed += PlayerTriesToJoin;
+    }
+    
+    public void ControllerCantBeAdded()
+    {
+        _joinPlayerAction.performed -= PlayerTriesToJoin;
+    }
+
+    public void ResetControllers()
     {
         foreach (var pair in _controllers)
         {
@@ -92,59 +113,10 @@ public class ControllerManager : MonoBehaviour
         
         _controllers.Clear();
     }
-
-    public void OnValidateControllerSelection()
-    {
-        ControllerCantBeAdded();
-        SwitchCtrlersToCharSelectMode();
-    }
-    #endregion
-
-    #region CALLED EXTERNALLY
-
-    public void DeletePlayerFromControllerSelection(PlayerInput playerInput)
-    {
-        //Use coroutine in order to delay the delete and await the end of the deviceLost event
-        _currentDeleteCtrlCoroutine = StartCoroutine(DeleteControllerCoroutine(playerInput.devices[0].deviceId));
-    }
     
     #endregion
     
     #region Unclassable functions
-
-    private void Init()
-    {
-        _maxPlayerCount = GameParameters.NumberOfPlayers;
-        _controllers = new Dictionary<int, PlayerInputHandler>();
-    }
-    
-    private void SwitchCtrlersToCharSelectMode()
-    {
-        foreach (var controller in _controllers)
-        {
-            controller.Value.Controller.gameObject.transform.SetParent(_characterSelectionContainer);
-            controller.Value.Controller.CharacterSelectionMode();
-        }
-    }
-
-    private void SwitchCtrlersToCtrlSelectMode()
-    {
-        foreach (var controller in _controllers)
-        {
-            controller.Value.Controller.gameObject.transform.SetParent(_controllerSelectionContainer);
-            controller.Value.Controller.ControllerSelectionMode();
-        }
-    }
-    
-    private void ControllerCanBeAdded()
-    {
-        _joinPlayerAction.performed += PlayerTriesToJoin;
-    }
-    
-    private void ControllerCantBeAdded()
-    {
-        _joinPlayerAction.performed -= PlayerTriesToJoin;
-    }
 
     private IEnumerator DeleteControllerCoroutine(int deviceId)
     {
@@ -152,6 +124,8 @@ public class ControllerManager : MonoBehaviour
         Destroy(_controllers[deviceId].Controller.gameObject);
         Destroy(_controllers[deviceId].gameObject);
         _controllers.Remove(deviceId);
+        
+        _controllerSelectionMenu.MakeValidationButtonNotInteractable();
     }
     
     #endregion
@@ -185,13 +159,13 @@ public class ControllerManager : MonoBehaviour
         switch (inputDevice)
         {
             case Joystick:
-                playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionContainer);
+                playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
                 break;
             case Gamepad:
-                playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionContainer);
+                playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
                 break;
             case Keyboard:
-                playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionContainer);
+                playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
                 break;
         }
 
@@ -204,6 +178,10 @@ public class ControllerManager : MonoBehaviour
         
         // Save of the playerInputHandler base on his device id
         _controllers.Add(inputDevice.deviceId, playerInputHandler);
+        
+        if (_controllers.Count >= _maxPlayerCount)
+            _controllerSelectionMenu.MakeValidationButtonInteractable();
+
     }
     #endregion
 }

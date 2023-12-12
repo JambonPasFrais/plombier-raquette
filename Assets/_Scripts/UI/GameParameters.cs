@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameParameters : MonoBehaviour
 {
-	[SerializeField] private int _numberOfPlayers;
+	[SerializeField] private int _localNbPlayers;
 	private bool _isOnline;
 	private int _numberOfPlayerBySide;
 	private int _nbOfSets;
@@ -24,7 +25,7 @@ public class GameParameters : MonoBehaviour
     };
 
     public static GameParameters Instance => _instance;
-    public static int NumberOfPlayers => _instance._numberOfPlayers;
+    public static int LocalNbPlayers => _instance._localNbPlayers;
 
 	private void Awake()
 	{
@@ -43,7 +44,7 @@ public class GameParameters : MonoBehaviour
     {
         _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
-        _numberOfPlayers = nbOfLocalPlayers;
+        _localNbPlayers = nbOfLocalPlayers;
         _isTournamentMode = false;
 
         switch (gameMode)
