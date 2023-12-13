@@ -1131,7 +1131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 434912104}
   m_Layer: 5
-  m_Name: PlayersShowRoomsSimple
+  m_Name: SingleMatchWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6815,7 +6815,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3416022434989579696}
   m_Layer: 5
-  m_Name: PlayersShowRoomsDouble
+  m_Name: DoubleMatchWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8542,9 +8542,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aceItWindow: {fileID: 883470827}
+  _matchSingleWindow: {fileID: 434912103}
+  _matchDoubleWindow: {fileID: 684062047897570510}
   _characterUIPrefab: {fileID: 2994260158086343618, guid: 51f47967f66d70d4493d49dd1d748caa, type: 3}
-  _characters: []
-  _charactersListTransform: {fileID: 8111026571399842528}
+  _characterUiContainer: {fileID: 8111026571399842528}
+  _characterUILayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   _selectedCharactersNameSingle:
   - {fileID: 2121232750}
   - {fileID: 301166216}
@@ -8553,29 +8557,6 @@ MonoBehaviour:
   - {fileID: 2568910924281354623}
   - {fileID: 3622324605169599908}
   - {fileID: 4941327598976909641}
-  _characterModelLocationSimple:
-  - {fileID: 1240345772}
-  - {fileID: 1817345216}
-  _characterModelLocationDouble:
-  - {fileID: 2196328329954677462}
-  - {fileID: 1503631639331680017}
-  - {fileID: 2367422267363219363}
-  - {fileID: 7493936033485593904}
-  _selectedCharacterBackgroundSingle:
-  - {fileID: 1139014736}
-  - {fileID: 1621820545}
-  _selectedCharacterBackgroundDouble:
-  - {fileID: 453923376743966228}
-  - {fileID: 32950345903190096}
-  - {fileID: 8525924776195634023}
-  - {fileID: 901129396213760746}
-  _characterUILayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  _charactersModelsParent: {fileID: 5743142112829123866}
-  _playButton: {fileID: 674785785611108684}
-  _playersShowRoomSingle: {fileID: 434912103}
-  _playersShowRoomDouble: {fileID: 684062047897570510}
   _playersInfoSingle:
   - {fileID: 2105691758}
   - {fileID: 244741372}
@@ -8584,6 +8565,24 @@ MonoBehaviour:
   - {fileID: 5947613033094375695}
   - {fileID: 2722997058975112180}
   - {fileID: 5558728042918413577}
+  _characterModelContainerSingle:
+  - {fileID: 1240345772}
+  - {fileID: 1817345216}
+  _characterModelContainerDouble:
+  - {fileID: 2196328329954677462}
+  - {fileID: 1503631639331680017}
+  - {fileID: 2367422267363219363}
+  - {fileID: 7493936033485593904}
+  _charactersModelsContainer: {fileID: 5743142112829123866}
+  _selectedCharacterBackgroundSingle:
+  - {fileID: 1139014736}
+  - {fileID: 1621820545}
+  _selectedCharacterBackgroundDouble:
+  - {fileID: 453923376743966228}
+  - {fileID: 32950345903190096}
+  - {fileID: 8525924776195634023}
+  - {fileID: 901129396213760746}
+  _playButton: {fileID: 674785785611108684}
 --- !u!224 &1387296846367193007
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12065,7 +12064,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &3600254754582546976
 CanvasRenderer:
   m_ObjectHideFlags: 0
