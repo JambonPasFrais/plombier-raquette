@@ -509,9 +509,15 @@ public class AgentController : ControllersParent
 
     #region POSITIVE REWARDS
 
+    public void HasHitBall()
+    {
+        AddReward(0.5f);
+        EndEpisode();
+    }
+
     public void ScoredPoint()
     {
-        AddReward(1f);
+        AddReward(4f);
         EndEpisode();
     }
 
