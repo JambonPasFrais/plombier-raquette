@@ -182,7 +182,7 @@ public class AgentController : ControllersParent
     {
         if (context.performed && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift))
         {
-            _actionIndex = 4;
+            _actionIndex = 3;
         }
     }
 
@@ -195,7 +195,7 @@ public class AgentController : ControllersParent
     {
         if (context.performed && !Input.GetKey(KeyCode.LeftControl))
         {
-            _actionIndex = 5;
+            _actionIndex = 4;
         }
     }
 
@@ -208,7 +208,7 @@ public class AgentController : ControllersParent
     {
         if (context.performed)
         {
-            _actionIndex = 7;
+            _actionIndex = 6;
         }
     }
 
@@ -224,7 +224,7 @@ public class AgentController : ControllersParent
     {
         if (context.performed)
         {
-            _actionIndex = 6;
+            _actionIndex = 5;
         }
     }
 
@@ -237,7 +237,7 @@ public class AgentController : ControllersParent
     {
         if (context.performed)
         {
-            _actionIndex = 8;
+            _actionIndex = 7;
         }
     }
 
@@ -276,7 +276,7 @@ public class AgentController : ControllersParent
     {
         if (context.performed)
         {
-            _actionIndex = 3;
+            _actionIndex = 2;
         }
     }
 
