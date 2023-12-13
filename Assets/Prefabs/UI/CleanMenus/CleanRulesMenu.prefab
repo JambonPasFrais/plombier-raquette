@@ -77,7 +77,8 @@ MonoBehaviour:
   - _name: Grand Chelem
     _nbOfSets: 3
     _nbOfGames: 6
-  _playerNumberText: {fileID: 0}
+  _playerNumberText: {fileID: 6358027637681299481}
+  _explanationText: {fileID: 3069813228340779596}
 --- !u!1 &835572746762857242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,7 +1135,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 0}
+  m_SizeDelta: {x: 700, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3808114291071502380
 CanvasRenderer:
@@ -1164,7 +1165,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Players : '
+  m_text: 'Number of Players : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5f4ef3e9c43fb1c469cb93cc3efe3b96, type: 2}
   m_sharedMaterial: {fileID: 9009333789912078947, guid: 5f4ef3e9c43fb1c469cb93cc3efe3b96, type: 2}
