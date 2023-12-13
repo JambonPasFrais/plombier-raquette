@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Photon.Realtime;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Ball Management")]
     public GameObject BallPrefab;
+    public GameObject OnlineBallPrefab;
 
     [SerializeField] private GameObject _smashTargetGo;
 
@@ -90,7 +92,6 @@ public class GameManager : MonoBehaviour
             if (PhotonNetwork.IsMasterClient == false)
             {
                 photonView.RPC("SendConnectedToMaster", RpcTarget.MasterClient);
-                FindController();
             }
         }
         
@@ -339,7 +340,6 @@ public class GameManager : MonoBehaviour
         ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
         foreach (ControllersParent controller in controllers)
         {
-            Debug.Log(controller.gameObject.name);
             if (!_controllers.Contains(controller))
             {
                 _controllers.Add(controller);
@@ -371,8 +371,8 @@ public class GameManager : MonoBehaviour
         GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
-
-        _ballInstance.GetComponent<Ball>().ResetBall();
+        if (PhotonNetwork.IsMasterClient)
+            _ballInstance.GetComponent<Ball>().ResetBall();
         int i = 0;
         foreach (ControllersParent controller in _controllers)
         {
