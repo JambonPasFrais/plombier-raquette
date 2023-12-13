@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
             if (PhotonNetwork.IsMasterClient == false)
             {
                 photonView.RPC("SendConnectedToMaster", RpcTarget.MasterClient);
+                FindController();
             }
         }
         
@@ -176,7 +177,6 @@ public class GameManager : MonoBehaviour
             GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
             GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
             _ballInstance.GetComponent<Ball>().ResetBall();
-
             _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
 
             int i = 0;
@@ -266,19 +266,19 @@ public class GameManager : MonoBehaviour
         Vector3 playerPosition = playerController.gameObject.transform.position;
         FieldBorderPointsContainer borderPointsContainer = _fieldBorderPointsByTeam[playerTeam];
 
-        if (movementDirection == currentForwardVector) 
+        if (movementDirection == currentForwardVector)
         {
             return Mathf.Abs(borderPointsContainer.FrontPointTransform.position.z - playerPosition.z);
         }
-        else if(movementDirection == -currentForwardVector)
+        else if (movementDirection == -currentForwardVector)
         {
             return Mathf.Abs(borderPointsContainer.BackPointTransform.position.z - playerPosition.z);
         }
-        else if(movementDirection == currentRightVector)
+        else if (movementDirection == currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.RightPointTransform.position.x - playerPosition.x);
         }
-        else if(movementDirection == -currentRightVector)
+        else if (movementDirection == -currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.LeftPointTransform.position.x - playerPosition.x);
         }
@@ -321,7 +321,7 @@ public class GameManager : MonoBehaviour
 
     public void DesactivateAllServiceDetectionVolumes()
     {
-        foreach(ControllersParent controller in _controllers)
+        foreach (ControllersParent controller in _controllers)
         {
             controller.BallServiceDetectionArea.gameObject.SetActive(false);
         }
@@ -339,18 +339,71 @@ public class GameManager : MonoBehaviour
         ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
         foreach (ControllersParent controller in controllers)
         {
+            Debug.Log(controller.gameObject.name);
             if (!_controllers.Contains(controller))
             {
                 _controllers.Add(controller);
             }
         }
         if (PhotonNetwork.IsMasterClient && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount && GameState == GameState.BEFOREGAME)
-            StartGame();
+        {
+            photonView.RPC("SendControllerToClient", RpcTarget.Others);
+        }
+        if (PhotonNetwork.IsMasterClient == false)
+        {
+            _controllers.Reverse();
+            photonView.RPC("StartGame", RpcTarget.All);
+        }
+    }
+
+    private void StartOnlineGame()
+    {
+        ServiceOnOriginalSide = true;
+
+        GameState = GameState.SERVICE;
+        foreach (ControllersParent controller in _controllers)
+        {
+            controller.PlayerState = PlayerStates.IDLE;
+        }
+
+        _serverIndex = 0;
+        _controllers[_serverIndex].IsServing = true;
+        GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+        _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
+
+        _ballInstance.GetComponent<Ball>().ResetBall();
+        int i = 0;
+        foreach (ControllersParent controller in _controllers)
+        {
+            Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
+            _teamControllersAssociated.Add(controller, team);
+            i++;
+        }
+
+        _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
+
+        foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
+        {
+            _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
+        }
     }
     
     [PunRPC]
     private void SendConnectedToMaster()
     {
         FindController();
+    }
+    
+    [PunRPC]
+    private void SendControllerToClient()
+    {
+        FindController();
+    } 
+    
+    [PunRPC]
+    private void StartGame()
+    {
+        StartOnlineGame();
     }
 }
