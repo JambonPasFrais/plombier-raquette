@@ -179,7 +179,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 			charUI.SetVisual(item);
 
-			charUI.setCharacterSelectionMenu(this);
+			charUI.SetCharacterSelectionMenu(this);
 
 			_charactersUI.Add(charUI);
 		}
