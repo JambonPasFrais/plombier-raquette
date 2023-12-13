@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public List<ControllersParent> Controllers {  get { return _controllers; } }
     public Transform ServiceBallInitializationPoint {  get { return _serviceBallInitializationPoint; } }
     public FieldBorderPointsContainer[] BorderPointsContainers {  get { return _borderPointsContainers; } }
+    public int ServerIndex { get { return _serverIndex; } }
 
     #endregion
 

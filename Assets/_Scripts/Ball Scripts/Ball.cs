@@ -19,6 +19,8 @@ public class Ball : MonoBehaviour
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
 
+    private float _staticTime;
+
     #endregion
 
     #region ACCESSORS
@@ -33,6 +35,7 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         _reboundsCount = 0;
+        _staticTime = 0f;
     }
 
     private void Update()
@@ -46,6 +49,33 @@ public class Ball : MonoBehaviour
         if (_rigidBody.isKinematic)
         {
             transform.position = GameManager.Instance.ServiceBallInitializationPoint.position;
+        }
+
+        // If the ball is static during at least 5 seconds, the ball and the players position and state are reset for the service.
+        if (_rigidBody.velocity.magnitude == 0f)
+        {
+            if (_staticTime >= 5f)
+            {
+                GameManager.Instance.EndOfPoint();
+                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                    !GameManager.Instance.ServiceManager.ChangeSides);
+                GameManager.Instance.ServiceManager.EnableLockServiceColliders();
+                ResetBall();
+                ControllersParent controller;
+                if ((controller = GameManager.Instance.Controllers[GameManager.Instance.ServerIndex]) is BotBehavior)
+                {
+                    ((BotBehavior)controller).CallingBotServiceMethod();
+                }
+                _staticTime = 0f;
+            }
+            else
+            {
+                _staticTime += Time.deltaTime;
+            }
+        }
+        else if (_staticTime > 0f)
+        {
+            _staticTime = 0f;
         }
     }
 
