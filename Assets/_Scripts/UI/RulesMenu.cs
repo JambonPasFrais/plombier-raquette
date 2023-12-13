@@ -35,7 +35,28 @@ public class RulesMenu : MonoBehaviour
 	private int _maxNumberOfPlayer;
 	private int _currentNumberOfPlayers;
 	[SerializeField] private TextMeshProUGUI _playerNumberText;
+	[SerializeField] private TextMeshProUGUI _gameTypeText;
+	[SerializeField] private TextMeshProUGUI _gameModeText;
+	[SerializeField] private TextMeshProUGUI _comDifficultyText;
 	[SerializeField] private TextMeshProUGUI _explanationText;
+	private int _currentGameType;
+	private int _currentGameMode;
+	private int _currentCOMDifficulty;
+	private List<string> _gameTypes = new List<string>()
+	{
+		"Single",
+		"Double"
+	};
+	[SerializeField] private List<GameMode> _gameModes = new List<GameMode>();
+	[SerializeField]
+	private List<string> _comDifficulties = new List<string>
+	{
+		"Easy",
+		"Medium",
+		"Hard",
+		"Expert",
+		"Invincible"
+	};
 
 	private void Start()
 	{
@@ -60,6 +81,12 @@ public class RulesMenu : MonoBehaviour
 		_maxNumberOfPlayer = 4;
 		_currentNumberOfPlayers = 1;
 		_playerNumberText.text = _currentNumberOfPlayers.ToString();
+		_currentGameType = 0;
+		_gameTypeText.text = _gameTypes[_currentGameType];
+		_currentGameMode = 1;
+		_gameModeText.text = _gameModes[_currentGameMode].Name;
+		_currentCOMDifficulty = 1;
+		_comDifficultyText.text = _comDifficulties[_currentCOMDifficulty];
 	}
 
 	public void ModifyNumberOfPlayer(int value)
@@ -67,6 +94,28 @@ public class RulesMenu : MonoBehaviour
 		_currentNumberOfPlayers = Mathf.Clamp(_currentNumberOfPlayers + value, 1, _maxNumberOfPlayer);
 		_playerNumberText.text = _currentNumberOfPlayers.ToString();
 		_explanationText.text = $"Play match with {_currentNumberOfPlayers} local players";
+	}
+
+	public void ModifyGameType(int value)
+	{
+		_currentGameType = Mathf.Clamp(_currentGameType + value, 0, 1);
+		_gameTypeText.text = _gameTypes[_currentGameType];
+		_explanationText.text = $"Play in a {_gameTypes[_currentGameType]} match";
+	}
+
+	public void ModifyGameMode(int value)
+	{
+		_currentGameMode = Mathf.Clamp(_currentGameMode + value, 0, _gameModes.Count - 1);
+		GameMode gm = _gameModes[_currentGameMode];
+		_gameModeText.text = gm.Name;
+		_explanationText.text = $"Play a match in {gm.NbOfSets} sets and {gm.NbOfGames} games";
+	}
+
+	public void ModifyCOMDifficulty(int value)
+	{
+		_currentCOMDifficulty = Mathf.Clamp(_currentCOMDifficulty + value, 0, _comDifficulties.Count - 1);
+		_comDifficultyText.text = _comDifficulties[_currentCOMDifficulty];
+		_explanationText.text = $"Play a match with COM at {_comDifficulties[_currentCOMDifficulty]} difficulty";
 	}
 
 	/*public void ModifyCOMDifficulty(int value)
