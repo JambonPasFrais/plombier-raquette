@@ -37,7 +37,7 @@ public class ControllerSelectionMenu : MonoBehaviour
 
     public void OnResetControllers()
     {
-        ControllerManager.Instance.ResetControllers();
+        ControllerManager.Instance.DestroyControllers();
         MakeValidationButtonNotInteractable();
     }
 

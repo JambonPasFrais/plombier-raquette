@@ -103,7 +103,7 @@ public class ControllerManager : MonoBehaviour
         _joinPlayerAction.performed -= PlayerTriesToJoin;
     }
 
-    public void ResetControllers()
+    public void DestroyControllers()
     {
         foreach (var pair in _controllers)
         {
@@ -112,6 +112,14 @@ public class ControllerManager : MonoBehaviour
         }
         
         _controllers.Clear();
+    }
+
+    public void ResetControllers()
+    {
+        foreach (var controller in _controllers)
+        {
+            controller.Value.Controller.ResetView();
+        }
     }
     
     #endregion

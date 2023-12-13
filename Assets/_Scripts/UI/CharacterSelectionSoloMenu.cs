@@ -38,7 +38,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
-            go.GetComponent<CharacterUI>().setCharacterSelectionSoloMenu(this);
+            go.GetComponent<CharacterUI>().SetCharacterSelectionSoloMenu(this);
             _selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 	}

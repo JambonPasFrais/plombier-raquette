@@ -20,7 +20,6 @@ public class Controller : MonoBehaviour
     [Header("Game Feel")]
     [SerializeField] private float _speed;
     
-    
     private Vector2 _movementDir;
     private bool _isSelectingCharacter;
     private bool _characterSelected;
@@ -53,6 +52,9 @@ public class Controller : MonoBehaviour
     public void TryMove(Vector2 readValue)
     {
         if (!_isSelectingCharacter)
+            return;
+        
+        if (_characterSelected)
             return;
 
         _movementDir = readValue;
@@ -110,6 +112,12 @@ public class Controller : MonoBehaviour
         _rectTransform.sizeDelta = new Vector2(80f, 80f);
         transform.position = Vector3.zero;
         transform.localScale = Vector3.one;
+    }
+
+    public void ResetView()
+    {
+        _characterSelected = false;
+        _imgCharSelectionIcon.color = Color.white;
     }
     #endregion
 }
