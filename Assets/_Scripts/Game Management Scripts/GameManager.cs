@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using Photon.Realtime;
+using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Ball Management")]
     public Transform BallInitializationTransform;
     public GameObject BallPrefab;
+    public GameObject OnlineBallPrefab;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
 
@@ -67,10 +69,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsMasterClient == false)
             {
                 photonView.RPC("SendConnectedToMaster", RpcTarget.MasterClient);
-                FindController();
             }
             if (PhotonNetwork.IsMasterClient)
-                _ballInstance = PhotonNetwork.Instantiate(BallPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+                _ballInstance = PhotonNetwork.Instantiate(OnlineBallPrefab.name, new Vector3(0, 256, 0), Quaternion.identity);
         }
         else
         {
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        
+
 
         if (PhotonNetwork.IsConnected == false)
         {
@@ -253,7 +254,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
         foreach (ControllersParent controller in controllers)
         {
-            Debug.Log(controller.gameObject.name);
             if (!_controllers.Contains(controller))
             {
                 _controllers.Add(controller);
@@ -285,8 +285,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
-
-        _ballInstance.GetComponent<Ball>().ResetBall();
+        if (PhotonNetwork.IsMasterClient)
+            _ballInstance.GetComponent<Ball>().ResetBall();
         int i = 0;
         foreach (ControllersParent controller in _controllers)
         {
@@ -311,7 +311,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void SendControllerToClient()
     {
         FindController();
-    } 
+    }
     [PunRPC]
     private void StartGame()
     {

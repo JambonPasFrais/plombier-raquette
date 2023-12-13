@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using UnityEditor;
@@ -162,6 +163,7 @@ public class Ball : MonoBehaviour
         _rigidBody.isKinematic = true;
 
         GameManager.Instance.GameState = GameState.SERVICE;
+        if(PhotonNetwork.IsMasterClient)
         GameManager.Instance.BallServiceInitialization();
     }
 }
