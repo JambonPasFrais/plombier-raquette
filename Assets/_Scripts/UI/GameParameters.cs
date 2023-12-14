@@ -8,10 +8,9 @@ public class GameParameters : MonoBehaviour
 {
 	[SerializeField] private int _localNbPlayers;
 	private bool _isOnline;
-	private int _numberOfPlayerBySide;
-	private int _nbOfSets;
-	private int _nbOfGames;
-	private int _COMDifficulty;
+	[SerializeField] private int _numberOfPlayerBySide;
+	[SerializeField] private GameMode _currentGameMode;
+	[SerializeField] private int _COMDifficulty;
 	private List<CharacterData> _playersCharacters = new List<CharacterData>();
     [SerializeField] private bool _isTournamentMode;
     private int _tournamentDifficulty;
@@ -51,32 +50,13 @@ public class GameParameters : MonoBehaviour
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, int gameMode, int COMDifficulty)
+    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, GameMode gameMode, int COMDifficulty)
     {
         _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
         _localNbPlayers = nbOfLocalPlayers;
         _isTournamentMode = false;
-
-        switch (gameMode)
-        {
-            case 0:
-                _nbOfSets = 1;
-                _nbOfGames = 1;
-                break;
-			case 1:
-				_nbOfSets = 1;
-				_nbOfGames = 6;
-				break;
-            case 2:
-				_nbOfSets = 2;
-				_nbOfGames = 6;
-				break;
-            case 3:
-				_nbOfSets = 3;
-				_nbOfGames = 6;
-				break;
-		}
+        _currentGameMode = gameMode;
     }
 
     public void SetCharactersPlayers(List<CharacterData> playersCharacters)
