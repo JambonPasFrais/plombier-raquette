@@ -103,8 +103,10 @@ public class OptionsMenu : MonoBehaviour
 			cpt++;
 		}
 
+		options.Reverse();
+
 		_resolutionDropdown.AddOptions(options);
-		_resolutionDropdown.value = currentResolutionIndex;
+		_resolutionDropdown.value = options.Count - currentResolutionIndex - 1;
 		_resolutionDropdown.RefreshShownValue();
 	}
 
@@ -123,7 +125,7 @@ public class OptionsMenu : MonoBehaviour
 		}
 
 		_fpsDropdown.AddOptions(_maxFpsDropdownOptions);
-		_fpsDropdown.value = _maxFpsDropdownOptions.Count - 1;
+		_fpsDropdown.value = 0;
 		_fpsDropdown.RefreshShownValue();
 	}
 
@@ -132,7 +134,7 @@ public class OptionsMenu : MonoBehaviour
 		QualitySettings.GetQualitySettings();
 		_qualityDropdown.ClearOptions();
 		_qualityDropdown.AddOptions(_qualities);
-		_qualityDropdown.value = QualitySettings.GetQualityLevel();
+		_qualityDropdown.value = 0;
 		_qualityDropdown.RefreshShownValue();
 	}
 
