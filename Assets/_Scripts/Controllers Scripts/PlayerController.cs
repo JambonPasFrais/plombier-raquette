@@ -38,7 +38,7 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
-        _cameraController = GetComponent<CameraController>();
+        /*_cameraController = GetComponent<CameraController>();*/
     }
 
     void Update()
@@ -50,8 +50,6 @@ public class PlayerController : ControllersParent
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
-
-            Debug.Log($"hit key press time while charging : {_hitKeyPressedTime}");
         }
     }
 
@@ -81,7 +79,8 @@ public class PlayerController : ControllersParent
         {
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
         }
-        if (!_cameraController.IsSmashing)
+
+/*        if (!_cameraController.IsSmashing)
         {
             // The global player directions depend on the side he is on.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
@@ -89,9 +88,9 @@ public class PlayerController : ControllersParent
             Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
 
             // The player moves according to the movement inputs.
-            /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
+            *//*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*//*
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
-        }
+        }*/
     }
 
     #endregion
@@ -275,10 +274,17 @@ public class PlayerController : ControllersParent
         }
     }
 
-    public void ServeThrow(InputAction.CallbackContext context)
+    public void ServiceThrow(InputAction.CallbackContext context)
     {
+        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
 
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        {
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+        }
     }
+
     public void Smash()
     {
 

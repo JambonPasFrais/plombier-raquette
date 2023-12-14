@@ -9418,7 +9418,7 @@ Transform:
   - {fileID: 7295647867813171620}
   - {fileID: 7864075272887158302}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4901136132972770209
 Rigidbody:
@@ -9698,8 +9698,8 @@ MonoBehaviour:
     m_ActionName: Player/ChargeShot[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 2015187621588100880}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: ServiceThrow
         m_Mode: 0
         m_Arguments:

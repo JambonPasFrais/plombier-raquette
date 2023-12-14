@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     public GameObject BallInstance {  get { return _ballInstance; } }
     public GameObject Net {  get { return _net; } }
     public List<ControllersParent> Controllers {  get { return _controllers; } }
+    public int ServerIndex { get { return _serverIndex; } }
 
     #endregion
 
@@ -203,17 +204,6 @@ public class GameManager : MonoBehaviour
     {
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
         _ballInstance.transform.position = BallInitializationTransform.position;
-    }
-
-    public void ServiceThrow(InputAction.CallbackContext context)
-    {
-        Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
-
-        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * _controllers[_serverIndex].ActionParameters.ServiceThrowForce);
-        }
     }
 
     public void DesactivateAllServiceDetectionVolumes()
