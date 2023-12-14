@@ -34,6 +34,10 @@ public class PlayerController : ControllersParent
     private ShootDirectionController _shootDirectionController;
     private Vector3 _shotDirection;
 
+    public List<NamedActions> PossibleActions { get => _possibleActions; }
+
+
+
     #endregion
 
     #region GETTERS
@@ -101,7 +105,7 @@ public class PlayerController : ControllersParent
                 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
             }
 
-            Vector3 movementDirection = transform.right.normalized * _movementVector.x + transform.forward.normalized * _movementVector.y;
+            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
 
             // The player moves according to the movement inputs.
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
@@ -118,6 +122,7 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
+        
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
@@ -201,6 +206,7 @@ public class PlayerController : ControllersParent
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
         // Initialization of the other ball physic parameters.
+        GameManager.Instance.SetBallInfos(hitType.ToString(), this);
         _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
         // Applying a specific force in a specific direction and with a specific rising force factor.

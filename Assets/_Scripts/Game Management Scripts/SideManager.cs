@@ -219,6 +219,7 @@ public class SideManager : MonoBehaviour
     {
         GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.All, true, originalSides);
     }
+
     [PunRPC]
     public void SetSidesInOnlineMatch(bool serveRight, bool originalSides)
     {
@@ -228,9 +229,10 @@ public class SideManager : MonoBehaviour
 
         if (originalSides)
         {
-            _activeCameraTransform = _cameras[0].transform;
+            
             if (PhotonNetwork.IsMasterClient)
             {
+                _activeCameraTransform = _cameras[0].transform;
                 _cameras[0].SetActive(true);
                 _cameras[1].SetActive(false);
                 players[0].transform.position = _servicePointsFirstSide[side].position;
@@ -238,6 +240,7 @@ public class SideManager : MonoBehaviour
             }
             else if(PhotonNetwork.IsMasterClient == false)
             {
+                _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
                 _cameras[1].SetActive(true);
                 players[1].transform.position = _servicePointsSecondSide[side].position;
@@ -246,9 +249,10 @@ public class SideManager : MonoBehaviour
         }
         else
         {
-          _activeCameraTransform = _cameras[0].transform;
+         
             if (PhotonNetwork.IsMasterClient)
             {
+                _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
                 _cameras[1].SetActive(true);
                 players[0].transform.position = _servicePointsSecondSide[side].position;
@@ -256,6 +260,7 @@ public class SideManager : MonoBehaviour
             }
             else if(PhotonNetwork.IsMasterClient == false)
             {
+                _activeCameraTransform = _cameras[0].transform;
                 _cameras[0].SetActive(true);
                 _cameras[1].SetActive(false);
                 players[1].transform.position = _servicePointsFirstSide[side].position;

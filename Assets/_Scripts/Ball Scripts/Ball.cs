@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviourPunCallbacks
 {
     #region PRIVATE FIELDS
 
@@ -91,6 +91,10 @@ public class Ball : MonoBehaviour
     public void InitializeActionParameters(ShotParameters shotParameters)
     {
         _shotParameters = shotParameters;
+    }
+    public void InitializeLastPlayerToApplyForce(ControllersParent playerToApplyForce)
+    {
+        _lastPlayerToApplyForce = playerToApplyForce;
     }
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
