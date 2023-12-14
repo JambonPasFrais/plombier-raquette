@@ -818,7 +818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.033725165, b: 0.3018868, a: 1}
+  m_Color: {r: 0.011764706, g: 0.20784314, b: 0.5176471, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -894,7 +894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.119636536, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.13725491, b: 0.49803922, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1273,8 +1273,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3167462536652692375}
         m_TargetAssemblyTypeName: RulesMenu, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: ModifyGameMode
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1541,8 +1541,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3167462536652692375}
         m_TargetAssemblyTypeName: RulesMenu, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: ModifyCOMDifficulty
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1846,8 +1846,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3167462536652692375}
         m_TargetAssemblyTypeName: RulesMenu, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: ModifyCOMDifficulty
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3714,8 +3714,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3167462536652692375}
         m_TargetAssemblyTypeName: RulesMenu, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: ModifyGameMode
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
