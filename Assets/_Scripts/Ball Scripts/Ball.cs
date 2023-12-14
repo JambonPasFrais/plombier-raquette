@@ -13,26 +13,32 @@ public class Ball : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
 
-    private ControllersParent _lastPlayerToApplyForce;
+    [SerializeField]private ControllersParent _lastPlayerToApplyForce;
     private float _risingForceFactor;
     [SerializeField] private int _reboundsCount;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
-    private bool _canSmash = false;
+    [SerializeField]private bool _canSmash = false;
+    [SerializeField] private GameObject _ciblePrefab;
+    [SerializeField] private GameObject _targetInstance;
     #endregion
 
     #region ACCESSORS
-
+    public bool canSmash { get { return _canSmash; } }
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
 
     #endregion
-
+    private Vector3 _initialPosition;
+    private Vector3 _velocity;
+    private float _gravity = 9.81f;
+    private LayerMask _groundLayer;
     #region UNITY METHODS
 
     private void Start()
     {
         _reboundsCount = 0;
+        _groundLayer = LayerMask.GetMask("ground");
     }
 
     private void Update()
@@ -170,38 +176,69 @@ public class Ball : MonoBehaviour
     }
     public void ShootSmash(GameObject camera, float ballSpeed, ControllersParent controllersParent)
     {
-        _lastPlayerToApplyForce = controllersParent;
-        _rigidBody.AddForce(camera.transform.forward * ballSpeed, ForceMode.VelocityChange);
+        if (_lastPlayerToApplyForce != controllersParent)
+        {
+            _lastPlayerToApplyForce = controllersParent;
+            _rigidBody.AddForce(camera.transform.forward * ballSpeed, ForceMode.VelocityChange);
+        }
     }
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
+        //Destroy(_cibleInstance);
+        //_cibleInstance = null;
     }
     private void CheckSmash()
     {
-        // Lance un rayon vers le bas depuis la position de la balle
-        Ray ray = new Ray(transform.position, Vector3.down);
+        float simulationTime = 5f; // Temps de simulation en secondes (ajustez selon vos besoins).
+        float timeStep = 0.1f; // Intervalle de temps entre chaque étape de simulation.
 
-        // Déclarez une variable pour stocker les informations de l'objet touché
-        RaycastHit hit;
+        Vector3 simulatedPosition = transform.position;
+        Vector3 simulatedVelocity = _rigidBody.velocity;
 
-        // Définissez la distance maximale pour le rayon (ajustez-la en fonction de votre scène)
-        float maxRaycastDistance = 10f;
-
-        // Effectuez le raycast
-        if (Physics.Raycast(ray, out hit, maxRaycastDistance))
+        for (float t = 0; t < simulationTime; t += timeStep)
         {
-            Debug.Log(hit);
-            // Vérifiez si l'objet touché a le composant PlayerController
-            PlayerController playerController = hit.collider.GetComponent<PlayerController>();
+            // Calculez la nouvelle position simulée en utilisant les équations de mouvement.
+            simulatedPosition += simulatedVelocity * timeStep;
+            simulatedVelocity.y += _gravity * timeStep; // Ajoutez la gravité.
 
-            if (playerController != null)
+            // Vérifiez s'il y a une collision avec le sol (ou un autre objet).
+            if (CheckCollisionWithGround(simulatedPosition))
             {
-                // Le rayon a touché un objet avec le composant PlayerController
-                Debug.Log("Can shoot");
+                Debug.Log("Collision avec le sol à la position simulée : " + simulatedPosition+"position balle"+transform.position);
+                break;
             }
         }
-        Debug.DrawRay(ray.origin, ray.direction * maxRaycastDistance, Color.red);
+    }
+
+    private bool CheckCollisionWithGround(Vector3 position)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(position, -Vector3.up, out hit, Mathf.Infinity, _groundLayer))
+        {
+            Debug.Log("Collision avec le sol à la position simulée : " + position+hit);
+
+            // Instancier la cible à la position de la collision
+            if (_targetInstance == null)
+            {
+                _targetInstance = Instantiate(_ciblePrefab, hit.point, Quaternion.identity);
+                // Ajoutez d'autres configurations si nécessaires
+            }
+
+            // Détruire la cible lorsque _canSmash devient vrai ou lors de la réinitialisation
+            if (_canSmash || _rigidBody.isKinematic)
+            {
+                Destroy(_targetInstance);
+                _targetInstance = null;
+            }
+
+            // Mettez à jour _canSmash à true à votre convenance
+            // _canSmash = true;
+
+            return true;
+        }
+
+        return false;
     }
 }
 

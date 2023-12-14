@@ -17,6 +17,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _normalFOV = 60f; 
     [SerializeField] private float _zoomDuration = 0.5f;
     [SerializeField] private Image _smashImage;
+
+    [SerializeField] private bool _canSmash;
+    [SerializeField] private float _distanceToBall = 5f;
     private Camera _firstPersonCameraComponent;
 
     public bool _isFirstPersonView;
@@ -33,10 +36,20 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView&&GameManager.Instance.GameState==GameState.PLAYING)
+        _canSmash = _ballPrefab.GetComponent<Ball>().canSmash;
+
+        if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView&&GameManager.Instance.GameState==GameState.PLAYING&&_canSmash)
         {
-            ToggleFirstPersonView();
-            _ballPrefab.transform.rotation = Quaternion.identity;
+            Debug.Log("essaie de smash");
+            Vector3 positionObject = transform.position;
+            Vector3 ballPosition = _ballPrefab.transform.position;
+            float distance = Vector3.Distance(positionObject, ballPosition);
+            if (distance < _distanceToBall)
+            {
+                ToggleFirstPersonView();
+                _ballPrefab.transform.rotation = Quaternion.identity;
+            }
+
         }
 
         if (_isFirstPersonView)
