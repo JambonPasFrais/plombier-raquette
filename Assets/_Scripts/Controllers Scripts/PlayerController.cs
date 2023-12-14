@@ -133,7 +133,7 @@ public class PlayerController : ControllersParent
             _currentSpeed = _movementSpeed;
             return;
         }
-
+        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
@@ -284,18 +284,6 @@ public class PlayerController : ControllersParent
         {
             Time.timeScale = 1f;
             _currentSpeed = _movementSpeed;
-        }
-    }
-
-    public void ServiceThrow(InputAction.CallbackContext context)
-    {
-        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
-
-        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            GameManager.Instance.Serve();
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
         }
     }
 
