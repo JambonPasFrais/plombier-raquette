@@ -224,7 +224,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void BallServiceInitialization()
     {
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
-        _ballInstance.transform.position = BallInitializationTransform.position;
+        _ballInstance.transform.position = _controllers[_serverIndex].GetComponent<BallInitialisationPoint>().gameObject.transform.position;
     }
 
     public void ServiceThrow(InputAction.CallbackContext context)
@@ -267,6 +267,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if (PhotonNetwork.IsMasterClient == false)
         {
+            _ballInstance = FindObjectOfType<Ball>().gameObject;
             _controllers.Reverse();
             photonView.RPC("StartGame", RpcTarget.All);
         }
