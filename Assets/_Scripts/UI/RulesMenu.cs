@@ -36,15 +36,7 @@ public class RulesMenu : MonoBehaviour
 
 	private void Start()
 	{
-		_maxNumberOfPlayer = 2;
-		_currentNumberOfPlayers = 1;
-		_playerNumberText.text = _currentNumberOfPlayers.ToString();
-		_currentGameType = 0;
-		_gameTypeText.text = _gameTypes[_currentGameType];
-		_currentGameMode = 1;
-		_gameModeText.text = _gameModes[_currentGameMode].Name;
-		_currentCOMDifficulty = 1;
-		_comDifficultyText.text = _comDifficulties[_currentCOMDifficulty];
+		ResetMenu();
 	}
 
 	public void ModifyNumberOfPlayer(int value)
@@ -58,6 +50,12 @@ public class RulesMenu : MonoBehaviour
 
 		_playerNumberText.text = _currentNumberOfPlayers.ToString();
 		_explanationText.text = $"Play match with {_currentNumberOfPlayers} local players";
+
+		if (_currentNumberOfPlayers > 2)
+		{
+			_currentGameType = 1;
+			_gameTypeText.text = _gameTypes[_currentGameType];
+		}
 	}
 
 	public void ModifyGameType(int value)
@@ -68,16 +66,9 @@ public class RulesMenu : MonoBehaviour
 
 		if (_currentGameType == 0)
 		{
-			_maxNumberOfPlayer = 2;
-
-			if (_currentNumberOfPlayers > _maxNumberOfPlayer)
-			{
-				_currentNumberOfPlayers = _maxNumberOfPlayer;
-				_playerNumberText.text = _currentNumberOfPlayers.ToString();
-			}
+			_currentNumberOfPlayers = 2;
+			_playerNumberText.text = _currentNumberOfPlayers.ToString();
 		}
-		else
-			_maxNumberOfPlayer = 4;
 	}
 
 	public void ModifyGameMode(int value)
@@ -107,47 +98,21 @@ public class RulesMenu : MonoBehaviour
 		_explanationText.text = $"Play a match with COM at {_comDifficulties[_currentCOMDifficulty]} difficulty";
 	}
 
-	/*private void VerifyEntries()
-	{
-		if (_numberOfPlayerBySide != -1 && _gameMode != -1)
-			_validationButton.interactable = true;
-		else
-			_validationButton.interactable = false;
-	}
-
 	public void ResetMenu()
 	{
-		foreach (var item in _gameTypeButtons)
-		{
-			item.interactable = true;
-		}
-
-		for (int i = 0; i < _gameModeButtonsParent.childCount; i++)
-		{
-			_gameModeButtonsParent.GetChild(i).GetComponent<Button>().interactable = true;
-		}
-
-		foreach (var item in _gameTypeButtonImages)
-		{
-			item.color = Color.white;
-		}
-
-		foreach (var item in _gameModeButtonsImages)
-		{
-			item.color = Color.white;
-		}
-
 		_maxNumberOfPlayer = 4;
-		_gameMode = -1;
-		_numberOfPlayerBySide = -1;
-		_currentDifficulty = 1;
-		_COMDifficultyText.text = _difficulties[_currentDifficulty];
 		_currentNumberOfPlayers = 1;
 		_playerNumberText.text = _currentNumberOfPlayers.ToString();
+		_currentGameType = 0;
+		_gameTypeText.text = _gameTypes[_currentGameType];
+		_currentGameMode = 1;
+		_gameModeText.text = _gameModes[_currentGameMode].Name;
+		_currentCOMDifficulty = 1;
+		_comDifficultyText.text = _comDifficulties[_currentCOMDifficulty];
 	}
 
-	public void ValidateParameters()
+	public void ValidateRules()
 	{
-		GameParameters.Instance.SetGameParameters(_currentNumberOfPlayers, _numberOfPlayerBySide, _gameMode, _currentDifficulty);
-	}*/
+		GameParameters.Instance.SetGameParameters(_currentNumberOfPlayers, _currentGameType, _gameModes[_currentGameMode], _currentCOMDifficulty);
+	}
 }
