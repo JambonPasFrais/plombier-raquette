@@ -36,20 +36,10 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        _canSmash = _ballPrefab.GetComponent<Ball>().canSmash;
-
         if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView&&GameManager.Instance.GameState==GameState.PLAYING&&_canSmash)
         {
-            Debug.Log("essaie de smash");
-            Vector3 positionObject = transform.position;
-            Vector3 ballPosition = _ballPrefab.transform.position;
-            float distance = Vector3.Distance(positionObject, ballPosition);
-            if (distance < _distanceToBall)
-            {
-                ToggleFirstPersonView();
-                _ballPrefab.transform.rotation = Quaternion.identity;
-            }
-
+            ToggleFirstPersonView();
+            _ballPrefab.transform.rotation = Quaternion.identity;
         }
 
         if (_isFirstPersonView)
@@ -75,7 +65,6 @@ public class CameraController : MonoBehaviour
                 currentXRotation = 270;
             }
 
-            // Appliquer la rotation verticale limitée à la caméra
             _firstPersonCamera.transform.eulerAngles = new Vector3(currentXRotation, _firstPersonCamera.transform.eulerAngles.y, 0);
 
             if (Input.GetMouseButtonDown(0))
@@ -86,15 +75,6 @@ public class CameraController : MonoBehaviour
             }
         }
     }
-
-
-    private void ShootSmash()
-    {
-
-        _ballPrefab.GetComponent<Rigidbody>().velocity = _firstPersonCamera.transform.forward * _ballSpeed;
-
-    }
-
     private void ToggleFirstPersonView()
     {
         GetComponent<PlayerController>().SetSmash();
@@ -130,5 +110,9 @@ public class CameraController : MonoBehaviour
         }
 
         _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
+    }
+    public void setCanSmash(bool canSmash)
+    {
+        _canSmash = canSmash;
     }
 }

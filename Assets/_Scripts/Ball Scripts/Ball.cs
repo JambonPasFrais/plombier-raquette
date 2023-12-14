@@ -13,12 +13,12 @@ public class Ball : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
 
-    [SerializeField]private ControllersParent _lastPlayerToApplyForce;
+    [SerializeField] private ControllersParent _lastPlayerToApplyForce;
     private float _risingForceFactor;
     [SerializeField] private int _reboundsCount;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
-    [SerializeField]private bool _canSmash = false;
+    [SerializeField] private bool _canSmash = false;
     [SerializeField] private GameObject _ciblePrefab;
     [SerializeField] private GameObject _targetInstance;
     #endregion
@@ -29,16 +29,17 @@ public class Ball : MonoBehaviour
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
 
     #endregion
-    private Vector3 _initialPosition;
-    private Vector3 _velocity;
-    private float _gravity = 9.81f;
-    private LayerMask _groundLayer;
+    private LayerMask _groundLayerTeam1;
+    private LayerMask _groundLayerTeam2;
+    private float _offsetFromGround = 5f;
+    private Vector3 _normalizedDirection;
     #region UNITY METHODS
 
     private void Start()
     {
         _reboundsCount = 0;
-        _groundLayer = LayerMask.GetMask("ground");
+        _groundLayerTeam1 = LayerMask.GetMask("groundTeam1");
+        _groundLayerTeam2 = LayerMask.GetMask("groundTeam2");
     }
 
     private void Update()
@@ -55,7 +56,7 @@ public class Ball : MonoBehaviour
         }
         if (_canSmash)
         {
-            CheckSmash();
+            DrawTarget();
         }
     }
 
@@ -92,10 +93,13 @@ public class Ball : MonoBehaviour
 
         _risingForceFactor = risingForceFactor;
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
+        _normalizedDirection = new Vector3(normalizedHorizontalDirection.x, 0f, normalizedHorizontalDirection.z).normalized;
 
         _currentMovementCoroutine = StartCoroutine(BallMovement(force, normalizedHorizontalDirection, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
+
+
     }
 
     private IEnumerator BallMovement(float force, Vector3 normalizedDirection, Vector3 curvingDirection)
@@ -185,60 +189,85 @@ public class Ball : MonoBehaviour
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
-        //Destroy(_cibleInstance);
-        //_cibleInstance = null;
+        DestroyTarget();
     }
-    private void CheckSmash()
+    private void DrawTarget()
     {
-        float simulationTime = 5f; // Temps de simulation en secondes (ajustez selon vos besoins).
-        float timeStep = 0.1f; // Intervalle de temps entre chaque étape de simulation.
-
-        Vector3 simulatedPosition = transform.position;
-        Vector3 simulatedVelocity = _rigidBody.velocity;
-
-        for (float t = 0; t < simulationTime; t += timeStep)
+        if (LastPlayerToApplyForce != null)
         {
-            // Calculez la nouvelle position simulée en utilisant les équations de mouvement.
-            simulatedPosition += simulatedVelocity * timeStep;
-            simulatedVelocity.y += _gravity * timeStep; // Ajoutez la gravité.
+            float raycastLength = 10f;
+            Ray ray = new Ray(transform.position, Vector3.down);
 
-            // Vérifiez s'il y a une collision avec le sol (ou un autre objet).
-            if (CheckCollisionWithGround(simulatedPosition))
+            RaycastHit hit;
+
+            if (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2)
             {
-                Debug.Log("Collision avec le sol à la position simulée : " + simulatedPosition+"position balle"+transform.position);
-                break;
+                if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam1))
+                {
+                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround)+ new Vector3(0, 0.1f, 0);
+
+                    if (_targetInstance == null)
+                    {
+                        InstantiateTarget(targetPosition);
+                    }
+                    else
+                    {
+                        MoveTarget(targetPosition);
+                    }
+                }
+                else
+                {
+                    DestroyTarget();
+                }
+            }
+            if (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1)
+            {
+                if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam2))
+                {
+                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround);
+
+                    if (_targetInstance == null)
+                    {
+                        InstantiateTarget(targetPosition);
+                    }
+                    else
+                    {
+                        MoveTarget(targetPosition);
+                    }
+                }
+                else
+                {
+                    DestroyTarget();
+                }
             }
         }
     }
 
-    private bool CheckCollisionWithGround(Vector3 position)
+    private void MoveTarget(Vector3 position)
     {
-        RaycastHit hit;
-        if (Physics.Raycast(position, -Vector3.up, out hit, Mathf.Infinity, _groundLayer))
+        _targetInstance.transform.position = position;
+    }
+
+    private void DestroyTarget()
+    {
+        if (_targetInstance != null)
         {
-            Debug.Log("Collision avec le sol à la position simulée : " + position+hit);
-
-            // Instancier la cible à la position de la collision
-            if (_targetInstance == null)
-            {
-                _targetInstance = Instantiate(_ciblePrefab, hit.point, Quaternion.identity);
-                // Ajoutez d'autres configurations si nécessaires
-            }
-
-            // Détruire la cible lorsque _canSmash devient vrai ou lors de la réinitialisation
-            if (_canSmash || _rigidBody.isKinematic)
+            Destroy(_targetInstance);
+            _targetInstance = null;
+        }
+    }
+    private void InstantiateTarget(Vector3 position)
+    {
+        if (_ciblePrefab != null)
+        {
+            if (_targetInstance != null)
             {
                 Destroy(_targetInstance);
-                _targetInstance = null;
             }
 
-            // Mettez à jour _canSmash à true à votre convenance
-            // _canSmash = true;
-
-            return true;
+            _targetInstance = Instantiate(_ciblePrefab, position, Quaternion.Euler(90,0,0));
         }
-
-        return false;
     }
 }
+
 

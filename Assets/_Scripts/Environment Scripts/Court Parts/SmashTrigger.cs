@@ -8,7 +8,6 @@ public class SmashTrigger : MonoBehaviour
     {
         if (other.GetComponent<Ball>())
         {
-            Debug.Log("entered Smash Area");
             Ball ball = other.GetComponent<Ball>();
             ball.SetCanSmash(true);
         }
@@ -17,7 +16,6 @@ public class SmashTrigger : MonoBehaviour
     {
         if (other.GetComponent<Ball>())
         {
-            Debug.Log("entered Smash Area");
             Ball ball = other.GetComponent<Ball>();
             ball.SetCanSmash(false);
         }
