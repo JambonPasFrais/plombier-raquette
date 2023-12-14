@@ -16,6 +16,7 @@ public class CharacterData : ScriptableObject
     [Header("Instance")]
     public GameObject HumanControllerPrefab;
     public GameObject AiControllerPrefab;
+    public GameObject BasicModel;
     
     [Header("GD")]
     public CharacterParameters CharacterParameter;
