@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
         BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
-        GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide);
+        GameManager.Instance.SideManager.SetSideOnline(true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
         _ballInstance.GetComponent<Ball>().ResetBall();
@@ -329,7 +329,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void StartGame()
     {
         StartOnlineGame();
-    } 
+    }
+    [PunRPC]
+    private void ChangeSide()
+    {
+        FindController();
+    }
     [PunRPC]
     private void Served()
     {

@@ -55,8 +55,8 @@ public class ScoreManager : MonoBehaviour
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
                 {
-                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
-                   !GameManager.Instance.ServiceManager.ChangeSides);
+                    GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+                        !GameManager.Instance.ServiceManager.ChangeSides);
                 }
                 else
                 {
@@ -74,8 +74,8 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
                 {
-                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
-                   !GameManager.Instance.ServiceManager.ChangeSides);
+                    GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+                        !GameManager.Instance.ServiceManager.ChangeSides);
                 }
                 else
                 {
@@ -107,8 +107,8 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
                 {
-                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
-                   !GameManager.Instance.ServiceManager.ChangeSides);
+                    GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+                        !GameManager.Instance.ServiceManager.ChangeSides);
                 }
                 else
                 {
@@ -120,16 +120,16 @@ public class ScoreManager : MonoBehaviour
 			{
                 GameManager.Instance.ChangeServer();
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                if (PhotonNetwork.IsConnected)
-                {
-                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
-                   !GameManager.Instance.ServiceManager.ChangeSides);
-                }
-                else
-                {
-                    GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-                    !GameManager.Instance.ServiceManager.ChangeSides);
-                }
+				if (PhotonNetwork.IsConnected)
+				{
+					GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+					   !GameManager.Instance.ServiceManager.ChangeSides);
+				}
+				else
+				{
+					GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+					!GameManager.Instance.ServiceManager.ChangeSides);
+				}
             }
         }
 
@@ -154,8 +154,8 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
         if (PhotonNetwork.IsConnected)
         {
-            GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
-           !GameManager.Instance.ServiceManager.ChangeSides);
+            GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+            !GameManager.Instance.ServiceManager.ChangeSides);
         }
         else
         {
