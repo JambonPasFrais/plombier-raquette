@@ -20,6 +20,7 @@ public class MenuManager : MonoBehaviour
 	public static List<CharacterData> Characters => _instance._characters;
 	public static Dictionary<string, GameObject> CharactersModel => _instance._charactersModel;
 	public static Transform CharactersModelsParent => _instance._charactersModelsParent;
+	public static EventSystem CurrentEventSystem => _instance._eventSystem;
 
 	private void Awake()
 	{
