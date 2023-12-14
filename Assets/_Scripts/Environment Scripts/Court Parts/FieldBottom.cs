@@ -38,7 +38,6 @@ public class FieldBottom : FieldGroundPart
                     }
                     else
                     {
-                        ball.LastPlayerToApplyForce.ServicesCount = 0;
                         GameManager.Instance.EndOfPoint();
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);

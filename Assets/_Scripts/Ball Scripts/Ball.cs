@@ -49,6 +49,16 @@ public class Ball : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<ControllersParent>())
+        {
+            GameManager.Instance.EndOfPoint();
+            GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+            ResetBall();
+        }
+    }
+
     #endregion
 
     #region PHYSICS BEHAVIOR METHODS

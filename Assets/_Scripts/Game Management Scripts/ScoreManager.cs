@@ -101,8 +101,8 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-		Debug.Log(GetScore());
-	}
+		GetScore();
+    }
 
 	public void AddGame(Teams winnerTeam)
     {
