@@ -359,7 +359,6 @@ MonoBehaviour:
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
-  BallInitializationTransform: {fileID: 1712340659}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1335233997}
@@ -1300,11 +1299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1712340659 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6117288123474221374, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
-  m_PrefabInstance: {fileID: 1712340656}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1818065720 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8888437862791054369, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -13341,6 +13335,7 @@ MonoBehaviour:
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _playerTeam: 2
   _ballServiceDetectionArea: {fileID: 571791135}
+  _serviceBallInitializationPoint: {fileID: 1112847464240904049}
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _possibleActions:
@@ -13365,6 +13360,9 @@ MonoBehaviour:
   _speed: 7.5
   _minimumHitForce: 300
   _maximumHitForce: 450
+  _timeBeforeThrowingBallDuringService: 1
+  _timeBeforeShootingBallDuringService: 0.5
+  _serviceForce: 400
 --- !u!1 &9130742584333113956
 GameObject:
   m_ObjectHideFlags: 0

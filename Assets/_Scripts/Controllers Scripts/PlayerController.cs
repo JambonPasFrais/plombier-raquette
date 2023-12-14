@@ -276,13 +276,7 @@ public class PlayerController : ControllersParent
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
-        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
-
-        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-        }
+        ThrowBall();
     }
 
     public void Smash()

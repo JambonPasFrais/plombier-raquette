@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     public ScoreManager ScoreManager;
 
     [Header("Ball Management")]
-    public Transform BallInitializationTransform;
     public GameObject BallPrefab;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
@@ -39,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject _ballInstance;
     private int _serverIndex;
+    private Transform _serviceBallInitializationPoint;
 
     #endregion
 
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     public GameObject Net {  get { return _net; } }
     public List<ControllersParent> Controllers {  get { return _controllers; } }
     public int ServerIndex { get { return _serverIndex; } }
+    public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
 
     #endregion
 
@@ -203,7 +204,8 @@ public class GameManager : MonoBehaviour
     public void BallServiceInitialization()
     {
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
-        _ballInstance.transform.position = BallInitializationTransform.position;
+        _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
+        _ballInstance.transform.position = _serviceBallInitializationPoint.position;
     }
 
     public void DesactivateAllServiceDetectionVolumes()

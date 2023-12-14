@@ -17,6 +17,7 @@ public class ControllersParent : MonoBehaviour
     [SerializeField] protected ActionParameters _actionParameters;
     [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
+    [SerializeField] protected Transform _serviceBallInitializationPoint;
 
     [Header("Force Clamping")]
     [SerializeField] protected float _maximumDistanceToNet;
@@ -32,6 +33,7 @@ public class ControllersParent : MonoBehaviour
     public Teams PlayerTeam { get { return _playerTeam; } }
     public ActionParameters ActionParameters { get { return _actionParameters; } }
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
+    public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
 
     #endregion
 
@@ -57,5 +59,16 @@ public class ControllersParent : MonoBehaviour
     {
         _hitKeyPressedTime = 0;
         _isCharging = false;
+    }
+
+    protected void ThrowBall()
+    {
+        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
+
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        {
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+        }
     }
 }
