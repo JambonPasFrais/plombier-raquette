@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,9 +53,17 @@ public class ScoreManager : MonoBehaviour
 			{
 				_currentGameScore = new Tuple<int, int>(3, 3);
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-					!GameManager.Instance.ServiceManager.ChangeSides);
-			}
+                if (PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+                   !GameManager.Instance.ServiceManager.ChangeSides);
+                }
+                else
+                {
+                    GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                    !GameManager.Instance.ServiceManager.ChangeSides);
+                }
+            }
 			else
 			{
 				if(winnerTeam == Teams.TEAM1)
@@ -63,8 +72,16 @@ public class ScoreManager : MonoBehaviour
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
 
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                if (PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+                   !GameManager.Instance.ServiceManager.ChangeSides);
+                }
+                else
+                {
+                    GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
+                }
             }
 		}
 		else
@@ -88,15 +105,31 @@ public class ScoreManager : MonoBehaviour
 			{
                 GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                if (PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+                   !GameManager.Instance.ServiceManager.ChangeSides);
+                }
+                else
+                {
+                    GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
+                }
             }
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 2 == 1)
 			{
                 GameManager.Instance.ChangeServer();
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                if (PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+                   !GameManager.Instance.ServiceManager.ChangeSides);
+                }
+                else
+                {
+                    GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
+                }
             }
         }
 
@@ -119,11 +152,19 @@ public class ScoreManager : MonoBehaviour
 		_score[_currentSetIndex] = newScore;
 
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
-        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+        if (PhotonNetwork.IsConnected)
+        {
+            GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+           !GameManager.Instance.ServiceManager.ChangeSides);
+        }
+        else
+        {
+            GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
+        }
 
-		// If the players changed sides, the field border points ownership needs to be changed.
-		if (GameManager.Instance.ServiceManager.NbOfGames == 1)
+        // If the players changed sides, the field border points ownership needs to be changed.
+        if (GameManager.Instance.ServiceManager.NbOfGames == 1)
 		{
 			GameManager.Instance.ChangeFieldBorderPointsOwnership();
 		}
