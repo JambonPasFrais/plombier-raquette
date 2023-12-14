@@ -351,6 +351,7 @@ public class GameManager : MonoBehaviour
         }
         if (PhotonNetwork.IsMasterClient == false)
         {
+            _ballInstance = FindObjectOfType<Ball>().gameObject;
             _controllers.Reverse();
             photonView.RPC("StartGame", RpcTarget.All);
         }
