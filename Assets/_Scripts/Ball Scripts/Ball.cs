@@ -203,7 +203,6 @@ public class Ball : MonoBehaviour
         DestroyTarget();
 
         GameManager.Instance.GameState = GameState.SERVICE;
-        if(PhotonNetwork.IsMasterClient)
         GameManager.Instance.BallServiceInitialization();
     }
 

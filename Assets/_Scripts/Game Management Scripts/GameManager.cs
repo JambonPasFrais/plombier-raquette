@@ -319,7 +319,6 @@ public class GameManager : MonoBehaviour
         _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
         _ballInstance.transform.position = _serviceBallInitializationPoint.position;
     }
-
     public void DesactivateAllServiceDetectionVolumes()
     {
         foreach (ControllersParent controller in _controllers)
@@ -332,7 +331,6 @@ public class GameManager : MonoBehaviour
     {
         GameObject go = PhotonNetwork.Instantiate(this._playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
         _controllers.Add(go.GetComponent<PlayerController>());
-        BallInitializationTransform = go.GetComponentInChildren<BallInitialisationPoint>().transform;
     }
     
     private void FindController()
@@ -356,7 +354,7 @@ public class GameManager : MonoBehaviour
             photonView.RPC("StartGame", RpcTarget.All);
         }
     }
-
+  
     private void StartOnlineGame()
     {
         ServiceOnOriginalSide = true;
@@ -369,11 +367,11 @@ public class GameManager : MonoBehaviour
 
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
+        BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
         GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
-        if (PhotonNetwork.IsMasterClient)
-            _ballInstance.GetComponent<Ball>().ResetBall();
+        _ballInstance.GetComponent<Ball>().ResetBall();
         int i = 0;
         foreach (ControllersParent controller in _controllers)
         {
@@ -406,5 +404,11 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         StartOnlineGame();
+    }
+     
+    [PunRPC]
+    private void Served()
+    {
+       BallInstance.GetComponent<Rigidbody>().isKinematic = false;
     }
 }
