@@ -48,8 +48,6 @@ public class PlayerController : ControllersParent
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
-
-            Debug.Log($"hit key press time while charging : {_hitKeyPressedTime}");
         }
     }
 
@@ -221,6 +219,7 @@ public class PlayerController : ControllersParent
 
         if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
         {
+            GameManager.Instance.Serve();
             ballRigidBody.isKinematic = false;
             ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
         }

@@ -46,7 +46,7 @@ public class Ball : MonoBehaviour
 
         if (_rigidBody.isKinematic)
         {
-            transform.position = GameManager.Instance.BallInitializationTransform.position;
+            transform.position = GameManager.Instance.BallInstantiationtransform.position;
         }
     }
 
@@ -163,7 +163,6 @@ public class Ball : MonoBehaviour
         _rigidBody.isKinematic = true;
 
         GameManager.Instance.GameState = GameState.SERVICE;
-        if(PhotonNetwork.IsMasterClient)
         GameManager.Instance.BallServiceInitialization();
     }
 }

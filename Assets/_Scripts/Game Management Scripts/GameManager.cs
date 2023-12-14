@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public ScoreManager ScoreManager;
 
     [Header("Ball Management")]
-    public Transform BallInitializationTransform;
+    public Transform BallInstantiationtransform;
     public GameObject BallPrefab;
     public GameObject OnlineBallPrefab;
 
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
 
-    private GameObject _ballInstance;
+    [SerializeField] private GameObject _ballInstance;
     private int _serverIndex;
 
     #endregion
@@ -224,7 +224,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void BallServiceInitialization()
     {
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
-        _ballInstance.transform.position = _controllers[_serverIndex].GetComponent<BallInitialisationPoint>().gameObject.transform.position;
+        _ballInstance.transform.position = BallInstantiationtransform.position;
     }
 
     public void ServiceThrow(InputAction.CallbackContext context)
@@ -238,6 +238,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void Serve()
+    {
+        photonView.RPC("Served", RpcTarget.Others);
+    }
+
     public void DesactivateAllServiceDetectionVolumes()
     {
         foreach (ControllersParent controller in _controllers)
@@ -245,12 +250,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             controller.BallServiceDetectionArea.gameObject.SetActive(false);
         }
     }
+
     private void InstantiatePlayer()
     {
         GameObject go = PhotonNetwork.Instantiate(this._playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
         _controllers.Add(go.GetComponent<PlayerController>());
-        BallInitializationTransform = go.GetComponentInChildren<BallInitialisationPoint>().transform;
     }
+
     private void FindController()
     {
         ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
@@ -272,7 +278,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             photonView.RPC("StartGame", RpcTarget.All);
         }
     }
-
+  
     private void StartOnlineGame()
     {
         ServiceOnOriginalSide = true;
@@ -285,11 +291,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
+        BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
         GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
-        if (PhotonNetwork.IsMasterClient)
-            _ballInstance.GetComponent<Ball>().ResetBall();
+        _ballInstance.GetComponent<Ball>().ResetBall();
         int i = 0;
         foreach (ControllersParent controller in _controllers)
         {
@@ -319,6 +325,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void StartGame()
     {
         StartOnlineGame();
+    } 
+    [PunRPC]
+    private void Served()
+    {
+       BallInstance.GetComponent<Rigidbody>().isKinematic = false;
     }
 
 }
