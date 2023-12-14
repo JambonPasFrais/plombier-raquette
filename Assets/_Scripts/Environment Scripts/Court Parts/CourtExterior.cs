@@ -32,8 +32,8 @@ public class CourtExterior : MonoBehaviour
                     
                     if (PhotonNetwork.IsConnected)
                     {
-                        GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
-                       !GameManager.Instance.ServiceManager.ChangeSides);
+                        GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+             !GameManager.Instance.ServiceManager.ChangeSides);
                     }
                     else
                     {
