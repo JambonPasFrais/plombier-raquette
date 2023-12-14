@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
 		{
 			if (item != _characters.Last())
 			{
-				go = Instantiate(item.HumanControllerPrefab, _charactersModelsParent);
+				go = Instantiate(item.BasicModel, _charactersModelsParent);
 				go.name = item.Name;
 				go.SetActive(false);
 				_charactersModel.Add(item.Name, go);
@@ -87,7 +87,7 @@ public class MenuManager : MonoBehaviour
 			{
 				for (int i = 0; i < 4; i++)
 				{
-					go = Instantiate(item.HumanControllerPrefab, _charactersModelsParent);
+					go = Instantiate(item.BasicModel, _charactersModelsParent);
 					go.name = item.Name + i;
 					go.SetActive(false);
 					_charactersModel.Add(item.Name + i, go);
