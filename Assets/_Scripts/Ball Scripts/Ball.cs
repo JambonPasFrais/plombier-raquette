@@ -51,7 +51,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<ControllersParent>())
+        if(collision.gameObject.GetComponent<ControllersParent>() && !_rigidBody.isKinematic)
         {
             GameManager.Instance.EndOfPoint();
             GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
@@ -78,6 +78,8 @@ public class Ball : MonoBehaviour
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
+        Debug.Log($"Rising force factor {risingForceFactor}");
+        
         _rigidBody.velocity = Vector3.zero;
         
         if (_currentMovementCoroutine != null)

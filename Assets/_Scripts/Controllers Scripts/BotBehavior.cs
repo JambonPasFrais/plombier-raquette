@@ -145,7 +145,7 @@ public class BotBehavior : ControllersParent
 
         _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
         _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
-        _ballInstance.ApplyForce(force, _ballDetectionArea.GetRisingForceFactor(), direction.normalized, this);
+        _ballInstance.ApplyForce(force, _ballDetectionArea.GetRisingForceFactor(HitType.Flat), direction.normalized, this);
     }
 
     private void MoveTowardsBallX()

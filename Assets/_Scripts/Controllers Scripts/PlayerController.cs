@@ -156,7 +156,7 @@ public class PlayerController : ControllersParent
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
         // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-        _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+        _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
     }
 
     public void Move(InputAction.CallbackContext context)

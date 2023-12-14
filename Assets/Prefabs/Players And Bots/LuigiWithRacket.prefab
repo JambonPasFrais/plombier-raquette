@@ -9532,7 +9532,7 @@ MonoBehaviour:
   PlayerState: 0
   ServicesCount: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 0
+  _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 3437315211321540031}
   _serviceBallInitializationPoint: {fileID: 6117288123474221374}
   _maximumDistanceToNet: 11.89
@@ -12048,6 +12048,10 @@ PrefabInstance:
     - target: {fileID: 6283429410418569052, guid: b0830871afc5dbb4a964dcd755e37d1a, type: 3}
       propertyPath: m_Name
       value: BallDetectionVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720844271885451343, guid: b0830871afc5dbb4a964dcd755e37d1a, type: 3}
+      propertyPath: _lobRisingForceMinimumFactor
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
