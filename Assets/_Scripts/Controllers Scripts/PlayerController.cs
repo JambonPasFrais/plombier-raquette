@@ -98,7 +98,7 @@ public class PlayerController : ControllersParent
             _isCharging = false;
             return;
         }
-
+        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
@@ -136,7 +136,6 @@ public class PlayerController : ControllersParent
         {
             horizontalDirection = Vector3.forward;
         }
-        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         // Initialization of the correct ball physic material.
         _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
@@ -219,6 +218,7 @@ public class PlayerController : ControllersParent
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
+        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
 
         if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
