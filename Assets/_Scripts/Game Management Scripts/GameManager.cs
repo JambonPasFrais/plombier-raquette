@@ -241,6 +241,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void Serve()
     {
         photonView.RPC("Served", RpcTarget.Others);
+    } 
+    public void SetBallInfos(string hitType, ControllersParent controller)
+    {
+        photonView.RPC("SetShotTypeOnline", RpcTarget.Others, hitType, _controllers.IndexOf(controller)); ;
     }
 
     public void DesactivateAllServiceDetectionVolumes()
@@ -330,6 +334,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Served()
     {
        BallInstance.GetComponent<Rigidbody>().isKinematic = false;
+    }
+    [PunRPC]
+    private void SetShotTypeOnline(string hitType, int index)
+    {
+        BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
+        BallInstance.GetComponent<Ball>().InitializeLastPlayerToApplyForce(_controllers[index]);
     }
 
 }

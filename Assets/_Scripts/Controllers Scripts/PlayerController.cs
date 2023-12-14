@@ -27,6 +27,10 @@ public class PlayerController : ControllersParent
     private Vector2 _movementVector;
     private float _currentSpeed;
 
+    public List<NamedActions> PossibleActions { get => _possibleActions; }
+
+
+
     #endregion
 
     #region UNITY METHODS
@@ -61,14 +65,13 @@ public class PlayerController : ControllersParent
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
-
             Vector3 forwardVector = Vector3.zero;
             if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
             {
                 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
             }
 
-            Vector3 movementDirection = transform.right.normalized * _movementVector.x + transform.forward.normalized * _movementVector.y;
+            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
 
             // The player moves according to the movement inputs.
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
@@ -85,6 +88,7 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
+        
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
@@ -99,7 +103,6 @@ public class PlayerController : ControllersParent
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
         float hitForce = CalculateActualForce(wantedHitForce);
-        Debug.Log($"Hit key press time : {hitKeyPressTime} - Wanted force : {wantedHitForce} - Actual force before multiplying by shot force factor : {hitForce}");
 
         // Hit charging variables are reset.
         _hitKeyPressedTime = 0f;
@@ -133,12 +136,13 @@ public class PlayerController : ControllersParent
         {
             horizontalDirection = Vector3.forward;
         }
-
+        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         // Initialization of the correct ball physic material.
         _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
         // Initialization of the other ball physic parameters.
+        GameManager.Instance.SetBallInfos(hitType.ToString(), this);
         _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
