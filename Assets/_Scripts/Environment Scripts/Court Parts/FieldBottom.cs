@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,18 +32,28 @@ public class FieldBottom : FieldGroundPart
                         ball.LastPlayerToApplyForce.ServicesCount++;
                         ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                         ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
-                        GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                        
+                        if (PhotonNetwork.IsConnected)
+                        {
+                            GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+                           !GameManager.Instance.ServiceManager.ChangeSides);
+                        }
+                        else
+                        {
+                            GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                             !GameManager.Instance.ServiceManager.ChangeSides);
+                        }
+                        
                         GameManager.Instance.ServiceManager.EnableLockServiceColliders();
-                        ball.ResetBall();
                     }
                     else
                     {
                         GameManager.Instance.EndOfPoint();
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                        ball.ResetBall();
                     }
+                    
+                    ball.ResetBall();
                 }
             }
         }
