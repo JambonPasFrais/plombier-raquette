@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour
                 currentXRotation = 270;
             }
 
-            // Appliquer la rotation verticale limitée à la caméra
+            // Appliquer la rotation verticale limitï¿½e ï¿½ la camï¿½ra
             _firstPersonCamera.transform.eulerAngles = new Vector3(currentXRotation, _firstPersonCamera.transform.eulerAngles.y, 0);
 
             if (Input.GetMouseButtonDown(0))

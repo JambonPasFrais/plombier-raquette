@@ -14,8 +14,10 @@ public class CharacterData : ScriptableObject
     public Color CharacterColor;
     
     [Header("Instance")]
-    public GameObject Prefab;
+    public GameObject HumanControllerPrefab;
+    public GameObject AiControllerPrefab;
     
     [Header("GD")]
-    public CharacterTypes CharacterType;
+    public CharacterParameters CharacterParameter;
+    public CharacterCategory Category;
 }

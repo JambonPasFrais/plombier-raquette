@@ -28,7 +28,7 @@ public class ControllerManager : MonoBehaviour
     #region Getters
 
     public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
-    public Dictionary<int, PlayerInputHandler> Controllers => _controllers;
+    public static Dictionary<int, PlayerInputHandler> Controllers => _instance._controllers;
     
     #endregion
     

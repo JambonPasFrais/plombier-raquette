@@ -31,17 +31,46 @@ public class CharacterCreator : MonoBehaviour
 
         List<CharacterData> playersCharacter = GameParameters.PlayersCharacters;
 
-        for (int playerIndex = 0; playerIndex < playersCharacter.Count; playerIndex++)
+        // Create Human Characters
+        for (int playerIndex = 0; playerIndex < GameParameters.LocalNbPlayers; playerIndex++)
         {
-            // Init Game object
-            GameObject playerGo = Instantiate(playersCharacter[playerIndex].Prefab, _charContainer);
-            playerGo.transform.localScale = _characterLocalScaleModified;
-            playerGo.transform.position = Vector3.zero;
             
-            _characters.Add(playerGo);
             
             // Init Controllers
-            //ControllerManager.Instance.Controllers[0].Controller.PlayerInput.playerIndex;
+            foreach (var playerInputHandler in ControllerManager.Controllers.Values)
+            {
+                if (playerInputHandler.PlayerInput.playerIndex == playerIndex)
+                {
+                    // Instantiation after CharParameters initialization because we use this variable in the Start() of the Character.cs file
+                    playerInputHandler.Character.SetCharParameters(playersCharacter[playerIndex].CharacterParameter);
+
+                    InitPlayerGo(playersCharacter[playerIndex].HumanControllerPrefab);
+                    // Last character added is the character instantiated above using "InitPlayerGo()"
+                    playerInputHandler.Character = _characters[^1].GetComponent<Character>();
+                    break;
+                }
+            }
         }
+        
+        // Create AI Characters
+        for (int aiIndex = GameParameters.LocalNbPlayers - 1; aiIndex < playersCharacter.Count; aiIndex++)
+        {
+            InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
+        }
+    }
+
+    
+    /// <summary>
+    /// Function that will instantiate the prefab in parameter, will set his local scale and position and
+    /// will add it to the _characters list !
+    /// </summary>
+    /// <param name="prefab"></param>
+    private void InitPlayerGo(GameObject prefab)
+    {
+        GameObject aiGo = Instantiate(prefab, _charContainer);
+        aiGo.transform.localScale = _characterLocalScaleModified;
+        aiGo.transform.position = Vector3.zero;
+            
+        _characters.Add(aiGo);
     }
 }

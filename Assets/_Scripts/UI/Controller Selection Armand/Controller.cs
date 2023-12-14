@@ -15,7 +15,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private Image _imgCharSelectionIcon;
     [SerializeField] private RectTransform _rectTransform;
 
-    [HideInInspector] public PlayerInput PlayerInput;
+    [HideInInspector] public PlayerInput PlayerInput;// TODO : change this variable for private with getter and setter
 
     [Header("Game Feel")]
     [SerializeField] private float _speed;
