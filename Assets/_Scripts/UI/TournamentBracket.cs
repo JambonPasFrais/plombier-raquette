@@ -353,7 +353,7 @@ public class TournamentBracket : MonoBehaviour
 		yield return new WaitForSeconds(1);
 		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
-		_tournamentEndMenu.SetWinnerMenu(_playersCharacter.GetComponent<CharacterUI>().Character.Model3D, _cupImage.sprite);
+		_tournamentEndMenu.SetWinnerMenu(_playersCharacter.GetComponent<CharacterUI>().Character.Prefab, _cupImage.sprite);
 	}
 
 	private IEnumerator WaitBeforeShowingLoserMenu()
@@ -362,6 +362,6 @@ public class TournamentBracket : MonoBehaviour
 		yield return new WaitForSeconds(1);
 		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
-		_tournamentEndMenu.SetLoserMenu(_playersCharacter.GetComponent<CharacterUI>().Character.Model3D);
+		_tournamentEndMenu.SetLoserMenu(_playersCharacter.GetComponent<CharacterUI>().Character.Prefab);
 	}
 }

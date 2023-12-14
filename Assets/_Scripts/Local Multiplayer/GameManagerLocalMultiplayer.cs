@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(GameManager))]
+//[RequireComponent(typeof(GameManager))]
 public class GameManagerLocalMultiplayer : MonoBehaviour
 {
     [Header("Instances")] 
@@ -25,14 +26,20 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
         }
         else
         {
+            
             Destroy(gameObject);
         }
     }
 
     private void Start()
     {
-        _gameManager = GetComponent<GameManager>();
+        //_gameManager = GetComponent<GameManager>();
     }
 
     #endregion
+
+    public void TestScene()
+    {
+        SceneManager.LoadScene("Local_Multiplayer");
+    }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4153,6 +4153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _localNbPlayers: 0
+  _isTournamentMode: 0
+  _tournamentInfos: {fileID: 11400000, guid: 29514cb7803d4c142a6d8962c6f2a246, type: 2}
 --- !u!4 &2031256156
 Transform:
   m_ObjectHideFlags: 0
@@ -6094,7 +6096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainMenu: {fileID: 1359609981560918056}
-  _menusParent: {fileID: 2345528570332682894}
+  _pressInputText: {fileID: 858427451511582824}
 --- !u!114 &674785785611108684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7093,8 +7095,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a9b11cd11540a847aab3dd36dbcbde9, type: 2}
   - {fileID: 11400000, guid: 7be31872b9827ab4d9329257ee9e72de, type: 2}
   _charactersModelsParent: {fileID: 5743142112829123866}
-  _visitedMenus: []
   _eventSystem: {fileID: 0}
+  _tournamentBracketMenu: {fileID: 0}
 --- !u!1 &1016660536940872733
 GameObject:
   m_ObjectHideFlags: 0
@@ -20426,6 +20428,9 @@ MonoBehaviour:
   _musicVolumeSlider: {fileID: 7256569906878038783}
   _musicVolumeText: {fileID: 6051802819480479811}
   _audioMixer: {fileID: 0}
+  _displayOptions: {fileID: 0}
+  _audioOptions: {fileID: 0}
+  _controlsOptions: {fileID: 0}
   _maxFps: 1e0000003c0000005a00000078000000ffffffff
   _qualities:
   - Very Low

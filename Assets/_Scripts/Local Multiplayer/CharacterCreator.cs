@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,20 +10,38 @@ using UnityEngine;
 /// </summary>
 public class CharacterCreator : MonoBehaviour
 {
-    [Header("Instances")] 
-    //[SerializeField] private PlayerController _playerControllerPrefab;
-    [SerializeField] private Character _characterPrefab;
+    [Header("Instances")]
     [SerializeField] private Transform _charContainer;
     
-    // Start is called before the first frame update
-    void Start()
+    [Header("GA")]
+    [SerializeField] private Vector3 _characterLocalScaleModified;
+    
+    #region PRIVATE FIELDS
+    private List<GameObject> _characters;
+    #endregion
+
+    private void OnEnable()
     {
-        
+        InitCharacters();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitCharacters()
     {
-        
+        _characters = new List<GameObject>();
+
+        List<CharacterData> playersCharacter = GameParameters.PlayersCharacters;
+
+        for (int playerIndex = 0; playerIndex < playersCharacter.Count; playerIndex++)
+        {
+            // Init Game object
+            GameObject playerGo = Instantiate(playersCharacter[playerIndex].Prefab, _charContainer);
+            playerGo.transform.localScale = _characterLocalScaleModified;
+            playerGo.transform.position = Vector3.zero;
+            
+            _characters.Add(playerGo);
+            
+            // Init Controllers
+            //ControllerManager.Instance.Controllers[0].Controller.PlayerInput.playerIndex;
+        }
     }
 }

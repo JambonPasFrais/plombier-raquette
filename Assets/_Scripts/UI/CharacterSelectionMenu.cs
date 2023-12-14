@@ -136,6 +136,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_aceItWindow.SetActive(false);
 		
 		//TODO : launch local scene
+		SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
 	// Button "validation" from the rules menu
