@@ -224,7 +224,7 @@ public class Ball : MonoBehaviour
             {
                 if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam2))
                 {
-                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround);
+                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround)+ new Vector3(0, 0.1f, 0);
 
                     if (_targetInstance == null)
                     {
