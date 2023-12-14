@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -69,7 +70,7 @@ public class PlayerController : ControllersParent
                 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
             }
 
-            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
+            Vector3 movementDirection = transform.right.normalized * _movementVector.x + transform.forward.normalized * _movementVector.y;
 
             // The player moves according to the movement inputs.
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
@@ -211,6 +212,17 @@ public class PlayerController : ControllersParent
         {
             Time.timeScale = 1f;
             _currentSpeed = _movementSpeed;
+        }
+    }
+
+    public void ServiceThrow(InputAction.CallbackContext context)
+    {
+        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
+
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        {
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
         }
     }
 

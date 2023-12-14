@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject Net { get { return _net; } }
     public List<ControllersParent> Controllers { get { return _controllers; } }
 
+    public int ServerIndex { get => _serverIndex;}
+
     #endregion
 
     #region UNITY METHODS
