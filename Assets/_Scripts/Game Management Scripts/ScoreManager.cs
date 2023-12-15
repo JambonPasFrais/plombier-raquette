@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -65,7 +66,8 @@ public class ScoreManager : MonoBehaviour
 				//_scoreDisplaying.UpdateGameScore(1, _possiblePoints[_currentGameScore.Item2]);
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
-                {
+				{
+					//GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                 }
@@ -92,6 +94,7 @@ public class ScoreManager : MonoBehaviour
                 
                 if (PhotonNetwork.IsConnected)
                 {
+                    //GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                 }
@@ -128,6 +131,7 @@ public class ScoreManager : MonoBehaviour
                 
                 if (PhotonNetwork.IsConnected)
                 {
+                    //GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                 }
@@ -184,6 +188,7 @@ public class ScoreManager : MonoBehaviour
         
         if (PhotonNetwork.IsConnected)
         {
+            //GameManager.Instance.ServiceManager.SetServiceOnline(true);
             GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
         }

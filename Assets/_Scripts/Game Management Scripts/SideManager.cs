@@ -217,7 +217,7 @@ public class SideManager : MonoBehaviour
 
     public void SetSideOnline(bool serveRight, bool originalSides)
     {
-        GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.All, true, originalSides);
+        GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.All, serveRight, originalSides);
     }
 
     [PunRPC]

@@ -369,6 +369,7 @@ public class GameManager : MonoBehaviour
         _controllers[_serverIndex].IsServing = true;
         BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
         GameManager.Instance.SideManager.SetSideOnline(true, ServiceOnOriginalSide);
+        //GameManager.Instance.ServiceManager.SetServiceOnline(false);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
         _ballInstance.GetComponent<Ball>().ResetBall();

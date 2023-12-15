@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -80,4 +81,32 @@ public class ServiceManager : MonoBehaviour
 		foreach(var item in _lockServiceMovementColliders)
 			item.SetActive(false);
 	}
+
+    public void SetServiceOnline(bool newGame)
+    {
+        GameManager.Instance.photonView.RPC("SetServiceBoxColliderOnline", RpcTarget.All, newGame);
+    }
+
+
+	[PunRPC]
+    public void SetServiceBoxColliderOnline(bool newGame)
+    {
+        if (newGame)
+        {
+            _globalGamesCount++;
+            NbOfGames = (NbOfGames + 1) % 2;
+            _serveRight = true;
+
+            DisableLockServiceColliders();
+
+            if (NbOfGames == 1)
+                ChangeSides = !ChangeSides;
+        }
+        else
+        {
+            _serveRight = !_serveRight;
+        }
+
+        EnableLockServiceColliders();
+    }
 }
