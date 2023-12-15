@@ -8,7 +8,6 @@ public class BallDetection : MonoBehaviour
     [SerializeField] private float _risingForceMinimumFactor;
     [SerializeField] private float _risingForceMaximumFactor;
     [SerializeField] private float _risingForceNormalFactor;
-    [SerializeField] private float _lobRisingForceMinimumFactor;
 
     private Ball _ball;
     private bool _isBallInHitZone;
@@ -74,14 +73,7 @@ public class BallDetection : MonoBehaviour
 
             return _risingForceNormalFactor + (_risingForceMaximumFactor - _risingForceNormalFactor) * ((transform.position.y - _ball.gameObject.transform.position.y) / (_boxCollider.bounds.size.y / 2f));
         }
-        else
-        {
-/*            if(_ball.gameObject.transform.position.y >= transform.position.y)
-            {
-                return _risingForceNormalFactor + (_lobRisingForceMinimumFactor - _risingForceNormalFactor) * ((_ball.gameObject.transform.position.y - transform.position.y) / (_boxCollider.bounds.size.y / 2f));
-            }*/
 
-            return _risingForceNormalFactor;
-        }
+        return _risingForceNormalFactor;
     }
 }
