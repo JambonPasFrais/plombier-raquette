@@ -20,8 +20,6 @@ public class BotBehavior : ControllersParent
     
     [Header("GD")]
     [SerializeField] private float _speed;
-    [SerializeField] private float _minimumHitForce;
-    [SerializeField] private float _maximumHitForce;
 
     [Header("Service Parameters")]
     [SerializeField] private float _timeBeforeThrowingBallDuringService;
@@ -132,7 +130,7 @@ public class BotBehavior : ControllersParent
         {
             Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
             direction = Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.forward) + Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.right);
-            force = Random.Range(_minimumHitForce, _maximumHitForce);
+            force = Random.Range(_minimumShotForce, _maximumShotForce);
 
             if (PlayerState != PlayerStates.PLAY)
             {

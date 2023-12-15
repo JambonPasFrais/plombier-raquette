@@ -139,10 +139,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 9127353872525647490}
-    - target: {fileID: 1773003915773665770, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: _ownerPlayer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1805646794831550741, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -151,10 +147,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 9127353872525647490}
-    - target: {fileID: 3187024997350471719, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: _ownerPlayer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6158525152370027648, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -203,18 +195,6 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 9127353872525647490}
-    - target: {fileID: 8215627872845771109, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: _ownerPlayer
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8566750339095923896, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: _ownerPlayer
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8826042505208906036, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-      propertyPath: _ownerPlayer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 9113566642155893178, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_Name
       value: NewCourt
@@ -368,6 +348,7 @@ MonoBehaviour:
   _borderPointsContainers:
   - {fileID: 159828289}
   - {fileID: 348428141}
+  _leftFaultLineXFromFirstSide: -4.11
 --- !u!114 &175529522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8539,7 +8520,6 @@ MonoBehaviour:
   _risingForceMinimumFactor: 0.5
   _risingForceMaximumFactor: 1.1
   _risingForceNormalFactor: 1
-  _lobRisingForceMinimumFactor: 0.8
 --- !u!1 &5344329793112574789
 GameObject:
   m_ObjectHideFlags: 0
@@ -13333,14 +13313,17 @@ MonoBehaviour:
   _playerTeam: 2
   _ballServiceDetectionArea: {fileID: 571791135}
   _serviceBallInitializationPoint: {fileID: 1112847464240904049}
+  _minimumShotForce: 350
+  _maximumShotForce: 450
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
+  _forceMaximumClampFactor: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
   _targets:
   - {fileID: 1961376066}
   - {fileID: 330511883}
@@ -13355,10 +13338,8 @@ MonoBehaviour:
   - {fileID: 10320972}
   _ballDetectionArea: {fileID: 5342351297477191419}
   _speed: 7.5
-  _minimumHitForce: 300
-  _maximumHitForce: 450
   _timeBeforeThrowingBallDuringService: 1
-  _timeBeforeShootingBallDuringService: 0.4
+  _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
 --- !u!1 &9130742584333113956
 GameObject:

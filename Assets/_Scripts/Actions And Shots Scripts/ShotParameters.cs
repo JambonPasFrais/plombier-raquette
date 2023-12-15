@@ -15,6 +15,7 @@ public class ShotParameters : ScriptableObject
     [SerializeField] private float _inAirCurvingForce;
     [SerializeField] private float _afterReboudCurvingForce;
     [SerializeField] private float _afterReboudCurvingEffectDuration;
+    [SerializeField] private float _forceToDistanceFactor;
 
     #endregion
 
@@ -29,6 +30,7 @@ public class ShotParameters : ScriptableObject
     public float InAirCurvingForce { get { return _inAirCurvingForce; } }
     public float AfterReboudCurvingForce { get { return _afterReboudCurvingForce; } }
     public float AfterReboudCurvingEffectDuration { get { return _afterReboudCurvingEffectDuration; } }
+    public float ForceToDistanceFactor { get { return _forceToDistanceFactor; } }
 
     #endregion
 }

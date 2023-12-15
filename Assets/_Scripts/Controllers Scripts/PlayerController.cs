@@ -18,11 +18,8 @@ public class PlayerController : ControllersParent
 
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
-    [SerializeField] protected float _minimumShotForce;
-    [SerializeField] protected float _maximumShotForce;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
-
 
     private CameraController _cameraController;
     private Vector2 _movementVector;
@@ -282,5 +279,6 @@ public class PlayerController : ControllersParent
     {
 
     }
+
     #endregion
 }

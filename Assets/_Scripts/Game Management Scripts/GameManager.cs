@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,9 +33,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _net;
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
+    [SerializeField] private float _leftFaultLineXFromFirstSide;
 
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
+    private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
     private GameObject _ballInstance;
     private int _serverIndex;
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
     public List<ControllersParent> Controllers {  get { return _controllers; } }
     public int ServerIndex { get { return _serverIndex; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
+    public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
 
     #endregion
 
@@ -96,6 +100,12 @@ public class GameManager : MonoBehaviour
         {
             _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
         }
+
+        _faultLinesXByTeam = new Dictionary<Teams, float[]>()
+        {
+            {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
+            {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
+        };
     }
 
     #endregion
@@ -143,6 +153,16 @@ public class GameManager : MonoBehaviour
             }
 
             _fieldBorderPointsByTeam[borderPointsContainer.Team] = borderPointsContainer;
+        }
+    }
+
+    public void ChangeFaultLinesXByTeamValues()
+    {
+        for(int i = 0; i < _faultLinesXByTeam.Count; i++)
+        {
+            Teams team = _faultLinesXByTeam.Keys.ToList()[i];
+            float[] formerFaultLinesX = _faultLinesXByTeam[team];
+            _faultLinesXByTeam[team] = new float[] { -formerFaultLinesX[0], -formerFaultLinesX[1] };
         }
     }
 
