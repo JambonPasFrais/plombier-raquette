@@ -168,6 +168,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4597670959847397395, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: m_Name
+      value: SimpleBorderPoints
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597670959847397395, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -348,13 +352,14 @@ GameObject:
   m_Component:
   - component: {fileID: 111006662}
   - component: {fileID: 111006663}
+  - component: {fileID: 111006664}
   m_Layer: 0
   m_Name: Local Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &111006662
 Transform:
   m_ObjectHideFlags: 0
@@ -382,7 +387,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322bd2027d89e394a8a8db7a48a0a77e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameManager: {fileID: 175529521}
+  _gameManager: {fileID: 111006664}
+  _characterCreator: {fileID: 0}
+--- !u!114 &111006664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111006661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ab2fa191ef7d448bbe33d8683f3373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameState: 0
+  SideManager: {fileID: 0}
+  ServiceManager: {fileID: 0}
+  ScoreManager: {fileID: 0}
+  BallInitializationTransform: {fileID: 0}
+  BallPrefab: {fileID: 0}
+  ServiceOnOriginalSide: 0
+  _net: {fileID: 0}
+  _controllers: []
+  _borderPointsContainers: []
 --- !u!114 &159828289 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3845736972851772271, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -414,7 +442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &175529519
 Transform:
   m_ObjectHideFlags: 0
@@ -450,9 +478,7 @@ MonoBehaviour:
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1335233997}
-  _controllers:
-  - {fileID: 0}
-  - {fileID: 0}
+  _controllers: []
   _borderPointsContainers:
   - {fileID: 159828289}
   - {fileID: 348428141}
@@ -521,6 +547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameManager: {fileID: 175529521}
+  _characterCreator: {fileID: 56132862}
 --- !u!1 &237461813
 GameObject:
   m_ObjectHideFlags: 0

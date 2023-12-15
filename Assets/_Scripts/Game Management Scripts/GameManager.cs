@@ -49,6 +49,15 @@ public class GameManager : MonoBehaviour
     public List<ControllersParent> Controllers {  get { return _controllers; } }
 
     #endregion
+    
+    #region SETTERS
+
+    public void AddControllers(ControllersParent controller)
+    {
+        _controllers.Add(controller);
+    }
+    
+    #endregion
 
     #region UNITY METHODS
 

@@ -24,13 +24,17 @@ public class CharacterCreator : MonoBehaviour
     #region PRIVATE FIELDS
     private List<GameObject> _characters;
     #endregion
+    
+    #region GETTERS
+    public List<GameObject> Characters => _characters;
+    #endregion
 
     private void OnEnable()
     {
         InitCharacters();
     }
 
-    private void InitCharacters()
+    public void InitCharacters()
     {
         _characters = new List<GameObject>();
 
@@ -44,10 +48,8 @@ public class CharacterCreator : MonoBehaviour
             {
                 if (playerInputHandler.PlayerInput.playerIndex == playerIndex)
                 {
-                    // Instantiation after CharParameters initialization because we use this variable in the Start() of the Character.cs file
-                    
-
                     InitPlayerGo(playersCharacter[playerIndex].HumanControllerPrefab);
+                    
                     // Last character added is the character instantiated above using "InitPlayerGo()"
                     playerInputHandler.Character = _characters[^1].GetComponent<Character>();
                     
@@ -62,7 +64,10 @@ public class CharacterCreator : MonoBehaviour
         {
             InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
             _characters[^1].GetComponent<BotBehavior>().InitTargetVariables(_targets, _firstSideTargetsPositions, _secondSideTargetsPositions);
+            // Also need to init the charParameters here
         }
+        
+        //TODO : Place them in the right spot with the right parameters (Teams, serve order)
     }
 
     
