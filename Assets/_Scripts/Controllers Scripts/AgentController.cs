@@ -39,12 +39,6 @@ public class AgentController : ControllersParent
 
     #region UNITY METHODS
 
-    private void Awake()
-    {
-/*        _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
-        UpdateBorderPointsContainer();*/
-    }
-
     private void Start()
     {
         _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
@@ -70,21 +64,6 @@ public class AgentController : ControllersParent
         }
 
         UpdateBorderPointsContainer();
-
-        // Adding negative reward each frame if the agent doesn't move during at least 5 seconds.
-/*        if (_rigidBody.velocity.magnitude == 0)
-        {
-            if (_noMovementTime >= 5f)
-            {
-                AddReward(-0.1f);
-            }
-
-            _noMovementTime += Time.deltaTime;
-        }
-        else
-        {
-            _noMovementTime = 0f;
-        }*/
     }
 
     #endregion
