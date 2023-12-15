@@ -13,26 +13,33 @@ public class Ball : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
 
-    private ControllersParent _lastPlayerToApplyForce;
+    [SerializeField] private ControllersParent _lastPlayerToApplyForce;
     private float _risingForceFactor;
-    private int _reboundsCount;
+    [SerializeField] private int _reboundsCount;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
-
+    [SerializeField] private bool _canSmash = false;
+    [SerializeField] private GameObject _ciblePrefab;
+    [SerializeField] private GameObject _targetInstance;
     #endregion
 
     #region ACCESSORS
-
+    public bool canSmash { get { return _canSmash; } }
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
 
     #endregion
-
+    private LayerMask _groundLayerTeam1;
+    private LayerMask _groundLayerTeam2;
+    [SerializeField]private float _offsetFromGround = 5f;
+    private Vector3 _normalizedDirection;
     #region UNITY METHODS
 
     private void Start()
     {
         _reboundsCount = 0;
+        _groundLayerTeam1 = LayerMask.GetMask("groundTeam1");
+        _groundLayerTeam2 = LayerMask.GetMask("groundTeam2");
     }
 
     private void Update()
@@ -46,6 +53,10 @@ public class Ball : MonoBehaviour
         if (_rigidBody.isKinematic)
         {
             transform.position = GameManager.Instance.BallInitializationTransform.position;
+        }
+        if (_canSmash&&GameManager.Instance.GameState==GameState.PLAYING)
+        {
+            DrawTarget();
         }
     }
 
@@ -69,7 +80,7 @@ public class Ball : MonoBehaviour
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
-        
+
         if (_currentMovementCoroutine != null)
         {
             StopCoroutine(_currentMovementCoroutine);
@@ -79,13 +90,16 @@ public class Ball : MonoBehaviour
         {
             StopCoroutine(_currentCurvingEffectCoroutine);
         }
-        
+
         _risingForceFactor = risingForceFactor;
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
+        _normalizedDirection = new Vector3(normalizedHorizontalDirection.x, 0f, normalizedHorizontalDirection.z).normalized;
 
         _currentMovementCoroutine = StartCoroutine(BallMovement(force, normalizedHorizontalDirection, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
+
+
     }
 
     private IEnumerator BallMovement(float force, Vector3 normalizedDirection, Vector3 curvingDirection)
@@ -164,4 +178,96 @@ public class Ball : MonoBehaviour
         GameManager.Instance.GameState = GameState.SERVICE;
         GameManager.Instance.BallServiceInitialization();
     }
+    public void ShootSmash(GameObject camera, float smashSpeed, ControllersParent controllersParent)
+    {
+        if (_lastPlayerToApplyForce != controllersParent)
+        {
+            _lastPlayerToApplyForce = controllersParent;
+            _rigidBody.AddForce(camera.transform.forward * smashSpeed, ForceMode.VelocityChange);
+        }
+    }
+    public void SetCanSmash(bool canSmash)
+    {
+        _canSmash = canSmash;
+        DestroyTarget();
+    }
+    private void DrawTarget()
+    {
+        if (LastPlayerToApplyForce != null)
+        {
+            float raycastLength = 10f;
+            Ray ray = new Ray(transform.position, Vector3.down);
+
+            RaycastHit hit;
+
+            if ((LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2&&!GameManager.Instance.ServiceManager.ChangeSides)|| (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 && GameManager.Instance.ServiceManager.ChangeSides))
+            {
+                if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam1))
+                {
+                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround)+ new Vector3(0, 0.1f, 0);
+
+                    if (_targetInstance == null)
+                    {
+                        InstantiateTarget(targetPosition);
+                    }
+                    else
+                    {
+                        MoveTarget(targetPosition);
+                    }
+                }
+                else
+                {
+                    DestroyTarget();
+                }
+            }
+            if ((LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1&& !GameManager.Instance.ServiceManager.ChangeSides)|| (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2 && GameManager.Instance.ServiceManager.ChangeSides))
+            {
+                if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam2))
+                {
+                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround)+ new Vector3(0, 0.1f, 0);
+
+                    if (_targetInstance == null)
+                    {
+                        InstantiateTarget(targetPosition);
+                    }
+                    else
+                    {
+                        MoveTarget(targetPosition);
+                    }
+                }
+                else
+                {
+                    DestroyTarget();
+                }
+            }
+        }
+    }
+
+    private void MoveTarget(Vector3 position)
+    {
+        _targetInstance.transform.position = position;
+    }
+
+    private void DestroyTarget()
+    {
+        if (_targetInstance != null)
+        {
+            Destroy(_targetInstance);
+            _targetInstance = null;
+        }
+    }
+    private void InstantiateTarget(Vector3 position)
+    {
+        if (_ciblePrefab != null)
+        {
+            if (_targetInstance != null)
+            {
+                Destroy(_targetInstance);
+            }
+
+            _targetInstance = Instantiate(_ciblePrefab, position, Quaternion.Euler(90,0,0));
+        }
+    }
 }
+
+

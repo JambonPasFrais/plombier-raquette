@@ -347,15 +347,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ab2fa191ef7d448bbe33d8683f3373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentState: 0
+  GameState: 0
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
   BallInitializationTransform: {fileID: 1687099903}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
-  IsGameFinished: 0
-  ServeRight: 0
+  _net: {fileID: 0}
   _controllers:
   - {fileID: 534994376}
   - {fileID: 9127353872525647490}
@@ -374,14 +373,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77b91b67d7c90744ac47c13dddabf97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serviceBoxesParentSide1: {fileID: 2024003194}
-  _serviceBoxesParentSide2: {fileID: 1256655395}
+  ChangeSides: 0
+  NbOfGames: 0
   _lockServiceMovementColliders:
   - {fileID: 1243780555}
   - {fileID: 1080589701}
-  _lastServiceLateralSide: 1
-  _changeSides: 0
-  _nbOfGames: 0
+  _serveRight: 0
 --- !u!114 &175529523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +393,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _servicePointsFirstSideParent: {fileID: 1024644284}
   _servicePointsSecondSideParent: {fileID: 382264786}
+  _firstSideCollidersParentObject: {fileID: 0}
+  _secondSideCollidersParentObject: {fileID: 0}
   _cameraParent: {fileID: 2006872489}
   _cameras: []
 --- !u!114 &175529524
@@ -1111,11 +1110,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6452562265072210526, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
   m_PrefabInstance: {fileID: 10320970}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1256655395 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 807274177901378629, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-  m_PrefabInstance: {fileID: 10320970}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1549048598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,11 +1580,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2024003194 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3801477712044235029, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
-  m_PrefabInstance: {fileID: 10320970}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2042717044
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,6 +3118,7 @@ MonoBehaviour:
   _normalFOV: 60
   _zoomDuration: 0.5
   _smashImage: {fileID: 1766617644}
+  _isFirstPersonView: 0
   _isSmashing: 0
 --- !u!4 &1112847464240904049
 Transform:
@@ -13518,15 +13508,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6007223981508146278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc96aadbd1c0ef643817a97982189f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsServing: 0
-  CurrentState: 0
+  PlayerState: 0
+  ServicesCount: 0
+  _actionParameters: {fileID: 0}
   _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 571791135}
+  _maximumDistanceToNet: 0
+  _forceMinimumClampFactor: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -13545,7 +13539,7 @@ MonoBehaviour:
   - {fileID: 10320974}
   - {fileID: 10320973}
   - {fileID: 10320972}
-  _ballDetection: {fileID: 5342351297477191419}
+  _ballDetectionArea: {fileID: 0}
   _speed: 7.5
   _minimumHitForce: 300
   _maximumHitForce: 450

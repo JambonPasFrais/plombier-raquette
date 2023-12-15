@@ -24,9 +24,10 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _maximumHitKeyPressTime;
 
 
-    private CameraController _cameraController;
+    private PlayerCameraController _cameraController;
     private Vector2 _movementVector;
     private float _currentSpeed;
+    private bool isSmashing = false;
 
     #endregion
 
@@ -38,7 +39,7 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
-        _cameraController = GetComponent<CameraController>();
+        _cameraController = GetComponent<PlayerCameraController>();
     }
 
     void Update()
@@ -61,7 +62,7 @@ public class PlayerController : ControllersParent
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
         if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH 
-            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic)) 
+            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic)&&isSmashing==false) 
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
@@ -81,17 +82,17 @@ public class PlayerController : ControllersParent
         {
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
         }
-        if (!_cameraController.IsSmashing)
-        {
-            // The global player directions depend on the side he is on.
-            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
-            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
-            Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
+        //if (!_cameraController.IsSmashing)
+        //{
+        //    // The global player directions depend on the side he is on.
+        //    Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+        //    Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+        //    Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
 
-            // The player moves according to the movement inputs.
-            /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
-            _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
-        }
+        //    // The player moves according to the movement inputs.
+        //    /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
+        //    _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+        //}
     }
 
     #endregion
@@ -279,9 +280,9 @@ public class PlayerController : ControllersParent
     {
 
     }
-    public void Smash()
+    public void SetSmash()
     {
-
+        isSmashing = !isSmashing;
     }
     #endregion
 }
