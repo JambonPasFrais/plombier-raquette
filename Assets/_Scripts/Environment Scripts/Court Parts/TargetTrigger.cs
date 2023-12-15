@@ -58,9 +58,9 @@ public class TargetTrigger : MonoBehaviour
     {
         if (other != null)
         {
-            if (other.GetComponent<CameraController>())
+            if (other.GetComponent<PlayerCameraController>())
             {
-                other.GetComponent<CameraController>().setCanSmash(true);
+                other.GetComponent<PlayerCameraController>().setCanSmash(true);
             }
         }
     }
@@ -68,9 +68,9 @@ public class TargetTrigger : MonoBehaviour
     {
         if (other != null)
         {
-            if (other.GetComponent<CameraController>())
+            if (other.GetComponent<PlayerCameraController>())
             {
-                other.GetComponent<CameraController>().setCanSmash(false);
+                other.GetComponent<PlayerCameraController>().setCanSmash(false);
             }
         }
     }

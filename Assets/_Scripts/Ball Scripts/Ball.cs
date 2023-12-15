@@ -31,7 +31,7 @@ public class Ball : MonoBehaviour
     #endregion
     private LayerMask _groundLayerTeam1;
     private LayerMask _groundLayerTeam2;
-    private float _offsetFromGround = 5f;
+    [SerializeField]private float _offsetFromGround = 5f;
     private Vector3 _normalizedDirection;
     #region UNITY METHODS
 
@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour
         {
             transform.position = GameManager.Instance.BallInitializationTransform.position;
         }
-        if (_canSmash)
+        if (_canSmash&&GameManager.Instance.GameState==GameState.PLAYING)
         {
             DrawTarget();
         }
@@ -178,12 +178,12 @@ public class Ball : MonoBehaviour
         GameManager.Instance.GameState = GameState.SERVICE;
         GameManager.Instance.BallServiceInitialization();
     }
-    public void ShootSmash(GameObject camera, float ballSpeed, ControllersParent controllersParent)
+    public void ShootSmash(GameObject camera, float smashSpeed, ControllersParent controllersParent)
     {
         if (_lastPlayerToApplyForce != controllersParent)
         {
             _lastPlayerToApplyForce = controllersParent;
-            _rigidBody.AddForce(camera.transform.forward * ballSpeed, ForceMode.VelocityChange);
+            _rigidBody.AddForce(camera.transform.forward * smashSpeed, ForceMode.VelocityChange);
         }
     }
     public void SetCanSmash(bool canSmash)
@@ -200,7 +200,7 @@ public class Ball : MonoBehaviour
 
             RaycastHit hit;
 
-            if (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2)
+            if ((LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2&&!GameManager.Instance.ServiceManager.ChangeSides)|| (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 && GameManager.Instance.ServiceManager.ChangeSides))
             {
                 if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam1))
                 {
@@ -220,7 +220,7 @@ public class Ball : MonoBehaviour
                     DestroyTarget();
                 }
             }
-            if (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1)
+            if ((LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1&& !GameManager.Instance.ServiceManager.ChangeSides)|| (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2 && GameManager.Instance.ServiceManager.ChangeSides))
             {
                 if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam2))
                 {

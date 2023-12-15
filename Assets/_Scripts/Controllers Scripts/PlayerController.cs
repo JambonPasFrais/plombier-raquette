@@ -24,7 +24,7 @@ public class PlayerController : ControllersParent
     [SerializeField] private float _maximumHitKeyPressTime;
 
 
-    private CameraController _cameraController;
+    private PlayerCameraController _cameraController;
     private Vector2 _movementVector;
     private float _currentSpeed;
     private bool isSmashing = false;
@@ -39,7 +39,7 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
-        _cameraController = GetComponent<CameraController>();
+        _cameraController = GetComponent<PlayerCameraController>();
     }
 
     void Update()

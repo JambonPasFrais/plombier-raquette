@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CameraController : MonoBehaviour
+public class PlayerCameraController : MonoBehaviour
 {
     [Header("Camera For Smash Attacks")]
     [SerializeField] private GameObject _mainCamera;
@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private PlayerController _player;
     [SerializeField] private Transform _ballSpawnPoint;
-    [SerializeField] private float _ballSpeed = 10f;
+    [SerializeField] private float _smashSpeed = 10f;
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _zoomFOV = 40f;
     [SerializeField] private float _normalFOV = 60f; 
@@ -70,7 +70,7 @@ public class CameraController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 _ballPrefab.GetComponent<Rigidbody>().isKinematic =false;
-                _ballPrefab.GetComponent<Ball>().ShootSmash(_firstPersonCamera,_ballSpeed,this.GetComponent<PlayerController>());
+                _ballPrefab.GetComponent<Ball>().ShootSmash(_firstPersonCamera,_smashSpeed,this.GetComponent<PlayerController>());
                 ToggleFirstPersonView();
             }
         }

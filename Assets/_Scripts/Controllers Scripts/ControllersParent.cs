@@ -8,7 +8,7 @@ public class ControllersParent : MonoBehaviour
 
     public bool IsServing;
     public PlayerStates PlayerState;
-    public int ServicesCount;
+    public int ServicesCount=0;
 
     #endregion
 
