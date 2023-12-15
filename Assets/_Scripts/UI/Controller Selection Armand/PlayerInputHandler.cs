@@ -160,9 +160,9 @@ public class PlayerInputHandler : MonoBehaviour
     
     #region CORE FUNCTIONS
 
-    public void ChangeInputActionMap(InputActionMap newInputActionMap)
+    public void ChangeInputActionMap(string inputActionMapName)
     {
-        _playerInput.currentActionMap = newInputActionMap;
+        _playerInput.SwitchCurrentActionMap(inputActionMapName);
     }
     
     #endregion

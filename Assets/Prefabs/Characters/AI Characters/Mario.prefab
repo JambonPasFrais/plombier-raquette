@@ -637,12 +637,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9117340231532037011}
-  - component: {fileID: 7727641744048520385}
-  - component: {fileID: 4455623351335848990}
   - component: {fileID: 792168496379109262}
   - component: {fileID: 7854429094963610365}
   - component: {fileID: -6727901989790092007}
   - component: {fileID: 4910283810038914496}
+  - component: {fileID: -7229802311374205141}
   m_Layer: 0
   m_Name: Mario
   m_TagString: Untagged
@@ -695,64 +694,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7727641744048520385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413760489067164524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 606799102bd65bc47857d399592ed2d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _parameters: {fileID: 0}
-  _playerAnimator: {fileID: 0}
-  _playerController: {fileID: 0}
---- !u!114 &4455623351335848990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413760489067164524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsServing: 0
-  PlayerState: 0
-  ServicesCount: 0
-  _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 0
-  _ballServiceDetectionArea: {fileID: 839914561429225511}
-  _maximumDistanceToNet: 11.89
-  _forceMinimumClampFactor: 0.5
-  _possibleActions:
-  - Name: Flat
-    Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
-  - Name: Drop
-    Parameters: {fileID: 11400000, guid: 23af39eca14e7924098b20ab9c72af9d, type: 2}
-  - Name: Lob
-    Parameters: {fileID: 11400000, guid: 46636fc35f197b14483a26c7adac65b6, type: 2}
-  - Name: TopSpin
-    Parameters: {fileID: 11400000, guid: 6cd7c960d6aeade4c859d35350826a53, type: 2}
-  - Name: Slice
-    Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
-  _possiblePhysicMaterials:
-  - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
-  - Name: Drop
-    PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
-  _rigidBody: {fileID: -6727901989790092007}
-  _ballDetectionArea: {fileID: 2328398429983187687}
-  _movementSpeed: 7.5
-  _minimumShotForce: 325
-  _maximumShotForce: 450
-  _minimumHitKeyPressTimeToIncrementForce: 0.1
-  _maximumHitKeyPressTime: 1.5
 --- !u!95 &792168496379109262
 Animator:
   serializedVersion: 5
@@ -836,6 +777,48 @@ CapsuleCollider:
   m_Height: 15.526773
   m_Direction: 1
   m_Center: {x: 0.023205519, y: 7.2633867, z: 0.6033516}
+--- !u!114 &-7229802311374205141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413760489067164524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc96aadbd1c0ef643817a97982189f33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsServing: 0
+  PlayerState: 0
+  ServicesCount: 0
+  _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
+  _playerTeam: 1
+  _ballServiceDetectionArea: {fileID: 839914561429225511}
+  _maximumDistanceToNet: 0
+  _forceMinimumClampFactor: 0
+  _possibleActions:
+  - Name: Flat
+    Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
+  _possiblePhysicMaterials:
+  - Name: Normal
+    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+  _targets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _firstSideTargetsPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _secondSideTargetsPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _ballDetectionArea: {fileID: 2328398429983187687}
+  _speed: 7.5
+  _minimumHitForce: 300
+  _maximumHitForce: 450
 --- !u!1 &448722317929891980
 GameObject:
   m_ObjectHideFlags: 0
@@ -10629,10 +10612,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ServiceDetectionArea
       objectReference: {fileID: 0}
-    - target: {fileID: 4354645345035807660, guid: 44af0c6b8aae09d4ba2609dd96313a18, type: 3}
-      propertyPath: _player
-      value: 
-      objectReference: {fileID: 4455623351335848990}
     - target: {fileID: 6473280699336721275, guid: 44af0c6b8aae09d4ba2609dd96313a18, type: 3}
       propertyPath: m_RootOrder
       value: -1

@@ -132,10 +132,11 @@ public class CharacterSelectionMenu : MonoBehaviour
 	public void OnConfirmPlay()
 	{
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
-		Debug.Log("Go to play");
-		_aceItWindow.SetActive(false);
 		
-		//TODO : launch local scene
+		_aceItWindow.SetActive(false);
+
+		ControllerManager.Instance.ChangeCtrlersActMapToGame();
+		
 		SceneManager.LoadScene("Local_Multiplayer");
 	}
 	

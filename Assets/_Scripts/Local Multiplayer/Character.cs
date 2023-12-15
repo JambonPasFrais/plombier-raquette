@@ -24,8 +24,6 @@ public class Character : MonoBehaviour
     {
         _playerAnimator = GetComponent<PlayerAnimator>();
         _playerController = GetComponent<PlayerController>();
-        
-        // TODO Init Player Controllers with Parameters  (will do it when i can modify the playerControllers)
     }
 
     #endregion
@@ -35,6 +33,8 @@ public class Character : MonoBehaviour
     public void SetCharParameters(CharacterParameters characterParameters)
     {
         _parameters = characterParameters;
+        
+        // TODO Init Player Controllers with Parameters  (will do it when i can modify the playerControllers)
     }
     
     #endregion

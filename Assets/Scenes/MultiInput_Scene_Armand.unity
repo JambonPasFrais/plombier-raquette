@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2522,11 +2522,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139014734}
   m_CullTransparentMesh: 1
---- !u!224 &1145093736 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6362863423638351361, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
-  m_PrefabInstance: {fileID: 2142918675333696490}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1160887811
 GameObject:
   m_ObjectHideFlags: 0
@@ -12305,18 +12300,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControllerManager (DDOL)
       objectReference: {fileID: 0}
-    - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
-      propertyPath: _characterSelectionMenu
-      value: 
-      objectReference: {fileID: 1385888028301192418}
-    - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
-      propertyPath: _characterSelectionContainer
-      value: 
-      objectReference: {fileID: 239956969512624163}
-    - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
-      propertyPath: _controllerSelectionContainer
-      value: 
-      objectReference: {fileID: 1145093736}
     - target: {fileID: 4253818265338514160, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: m_RootOrder
       value: 7

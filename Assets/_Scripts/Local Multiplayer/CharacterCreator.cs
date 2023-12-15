@@ -13,6 +13,11 @@ public class CharacterCreator : MonoBehaviour
     [Header("Instances")]
     [SerializeField] private Transform _charContainer;
     
+    [Header("Bot Variables")]
+    [SerializeField] private Transform[] _targets;
+    [SerializeField] private Transform[] _firstSideTargetsPositions;
+    [SerializeField] private Transform[] _secondSideTargetsPositions;
+    
     [Header("GA")]
     [SerializeField] private Vector3 _characterLocalScaleModified;
     
@@ -34,28 +39,29 @@ public class CharacterCreator : MonoBehaviour
         // Create Human Characters
         for (int playerIndex = 0; playerIndex < GameParameters.LocalNbPlayers; playerIndex++)
         {
-            
-            
             // Init Controllers
             foreach (var playerInputHandler in ControllerManager.Controllers.Values)
             {
                 if (playerInputHandler.PlayerInput.playerIndex == playerIndex)
                 {
                     // Instantiation after CharParameters initialization because we use this variable in the Start() of the Character.cs file
-                    playerInputHandler.Character.SetCharParameters(playersCharacter[playerIndex].CharacterParameter);
+                    
 
                     InitPlayerGo(playersCharacter[playerIndex].HumanControllerPrefab);
                     // Last character added is the character instantiated above using "InitPlayerGo()"
                     playerInputHandler.Character = _characters[^1].GetComponent<Character>();
+                    
+                    playerInputHandler.Character.SetCharParameters(playersCharacter[playerIndex].CharacterParameter);
                     break;
                 }
             }
         }
         
         // Create AI Characters
-        for (int aiIndex = GameParameters.LocalNbPlayers - 1; aiIndex < playersCharacter.Count; aiIndex++)
+        for (int aiIndex = GameParameters.LocalNbPlayers; aiIndex < playersCharacter.Count; aiIndex++)
         {
             InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
+            _characters[^1].GetComponent<BotBehavior>().InitTargetVariables(_targets, _firstSideTargetsPositions, _secondSideTargetsPositions);
         }
     }
 

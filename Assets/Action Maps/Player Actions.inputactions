@@ -1,5 +1,5 @@
 {
-    "name": "Tennis Actions",
+    "name": "Player Actions",
     "maps": [
         {
             "name": "Game",
@@ -554,7 +554,7 @@
                     "path": "<Keyboard>/anyKey",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Punch",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -598,7 +598,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -609,7 +609,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -620,7 +620,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -631,7 +631,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -664,7 +664,7 @@
                     "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -697,7 +697,7 @@
                     "path": "<Keyboard>/backspace",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Deselect",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -756,33 +756,11 @@
             ]
         },
         {
-            "name": "Touch",
-            "bindingGroup": "Touch",
-            "devices": [
-                {
-                    "devicePath": "<Touchscreen>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
             "name": "Joystick",
             "bindingGroup": "Joystick",
             "devices": [
                 {
                     "devicePath": "<Joystick>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "XR",
-            "bindingGroup": "XR",
-            "devices": [
-                {
-                    "devicePath": "<XRController>",
                     "isOptional": false,
                     "isOR": false
                 }

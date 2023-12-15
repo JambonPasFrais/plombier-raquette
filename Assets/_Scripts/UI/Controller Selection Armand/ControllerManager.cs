@@ -17,6 +17,8 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private Controller _keyboardPrefab;
     [SerializeField] private Controller _joystickPrefab;
     [SerializeField] private GameObject _playerInputHandlerPrefab;
+    [SerializeField] private string _menuActionMapName;
+    [SerializeField] private string _gameActionMapName;
 
     private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
@@ -120,6 +122,23 @@ public class ControllerManager : MonoBehaviour
         {
             controller.Value.Controller.ResetView();
         }
+    }
+
+    public void ChangeCtrlersActMapToGame()
+    {
+        foreach (var playerInputHandler in Controllers.Values)
+        {
+            playerInputHandler.ChangeInputActionMap(_gameActionMapName);
+        }
+    }
+
+    // TODO : use this function at the end of a game OR destroy the controllers (also works)
+    public void ChangeCtrlersActMapToMenu()
+    {
+        foreach (var playerInputHandler in Controllers.Values)
+        {
+            playerInputHandler.ChangeInputActionMap(_menuActionMapName);
+        }   
     }
     
     #endregion
