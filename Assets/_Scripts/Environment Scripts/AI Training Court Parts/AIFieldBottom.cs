@@ -6,7 +6,7 @@ public class AIFieldBottom : AIFieldGroundPart
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (collision.gameObject.TryGetComponent<AIBall>(out AIBall ball))
         {
             ball.Rebound();
 

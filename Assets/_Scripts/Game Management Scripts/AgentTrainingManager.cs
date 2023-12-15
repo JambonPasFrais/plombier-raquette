@@ -112,7 +112,7 @@ public class AgentTrainingManager : MonoBehaviour
         InitializePlayersPosition();
         EnableLockServiceColliders();
 
-        _ballInstance.GetComponent<Ball>().ResetBall();
+        _ballInstance.GetComponent<AIBall>().ResetBall();
     }
 
     /// <summary>
