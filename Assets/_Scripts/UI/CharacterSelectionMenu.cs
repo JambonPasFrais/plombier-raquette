@@ -35,6 +35,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Images to modify for each player when they select a character
 	[SerializeField] private List<Image> _selectedCharacterBackgroundSingle = new List<Image>();
 	[SerializeField] private List<Image> _selectedCharacterBackgroundDouble = new List<Image>();
+	// Emblems to modify for each player when they select a character
+	[SerializeField] private List<Image> _selectedCharacterEmblemSingle = new List<Image>();
+	[SerializeField] private List<Image> _selectedCharacterEmblemDouble = new List<Image>();
 	[SerializeField] private Button _playButton;
 	
 	// All Characters Data
@@ -57,6 +60,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 	
 	// Images for the single or double interface, depending on initialization
 	private List<Image> _currentSelectedCharacterBackground = new List<Image>();
+	
+	// Emblems for the single or double interface, depending on initialization
+	private List<Image> _currentSelectedCharacterEmblem = new List<Image>();
 	
 	// Transform for the single or double interface, depending on initialization
 	private List<Transform> _currentCharacterModelContainer = new List<Transform>();
@@ -149,6 +155,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_currentCharacterModelContainer = _characterModelContainerDouble;
 			_currentSelectedCharacterBackground = _selectedCharacterBackgroundDouble;
 			_currentSelectedCharactersName = _selectedCharactersNameDouble;
+			_currentSelectedCharacterEmblem = _selectedCharacterEmblemDouble;
 		}
 		else
 		{
@@ -157,6 +164,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_totalNbPlayers = 2;
 			_currentCharacterModelContainer = _characterModelContainerSingle;
 			_currentSelectedCharacterBackground = _selectedCharacterBackgroundSingle;
+			_currentSelectedCharacterEmblem = _selectedCharacterEmblemSingle;
 			_currentSelectedCharactersName = _selectedCharactersNameSingle;
 		}
 
@@ -441,6 +449,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 			
 			_currentSelectedCharactersName[playerIndex].text = characterUI.Character.Name;
 			_currentSelectedCharacterBackground[playerIndex].color = characterUI.Character.CharacterColor;
+
+			if (characterUI.Character.Name != "Random")
+				_currentSelectedCharacterEmblem[playerIndex].sprite = characterUI.Character.CharactersLogo;
 
 			string charNameToLookFor = characterUI.Character.Name == "Random" ? characterUI.Character.Name+playerIndex : characterUI.Character.Name;
 
