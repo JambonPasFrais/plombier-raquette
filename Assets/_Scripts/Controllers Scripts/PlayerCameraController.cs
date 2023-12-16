@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class PlayerCameraController : MonoBehaviour
 {
     [Header("Camera For Smash Attacks")]
-    [SerializeField] private GameObject _mainCamera;
     [SerializeField] private GameObject _firstPersonCamera;
     [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private PlayerController _player;
@@ -33,10 +32,9 @@ public class PlayerCameraController : MonoBehaviour
         _ballPrefab = GameManager.Instance.BallInstance;
     }
 
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)&&!_isFirstPersonView&&GameManager.Instance.GameState==GameState.PLAYING&&_canSmash)
+        if (Input.GetKeyDown(KeyCode.F) && !_isFirstPersonView && GameManager.Instance.GameState == GameState.PLAYING && _canSmash) 
         {
             ToggleFirstPersonView();
             _ballPrefab.transform.rotation = Quaternion.identity;
@@ -75,12 +73,13 @@ public class PlayerCameraController : MonoBehaviour
             }
         }
     }
+
     private void ToggleFirstPersonView()
     {
         GetComponent<PlayerController>().SetSmash();
         _firstPersonCamera.transform.rotation = _cameraOriginalRot;
         _isFirstPersonView = !_isFirstPersonView;
-        _mainCamera.SetActive(!_isFirstPersonView);
+        GameManager.Instance.SideManager.ActiveCameraTransform.gameObject.SetActive(!_isFirstPersonView);
         _firstPersonCamera.SetActive(_isFirstPersonView);
         _smashImage.gameObject.SetActive(_isFirstPersonView);
         Cursor.visible = !_isFirstPersonView;
@@ -92,7 +91,6 @@ public class PlayerCameraController : MonoBehaviour
         {
             _firstPersonCameraComponent.fieldOfView = _normalFOV;
         }
-
     }
 
     private IEnumerator ZoomIn()
@@ -111,6 +109,7 @@ public class PlayerCameraController : MonoBehaviour
 
         _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
     }
+
     public void setCanSmash(bool canSmash)
     {
         _canSmash = canSmash;

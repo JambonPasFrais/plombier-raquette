@@ -56,8 +56,8 @@ public class PlayerController : ControllersParent
         // If the game is in the end of point or the the end of match phase, the player can't move.
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
-        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH 
-            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic)&&isSmashing==false) 
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
+            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic) && isSmashing == false) 
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
@@ -274,6 +274,7 @@ public class PlayerController : ControllersParent
     {
         ThrowBall();
     }
+
     public void SetSmash()
     {
         isSmashing = !isSmashing;

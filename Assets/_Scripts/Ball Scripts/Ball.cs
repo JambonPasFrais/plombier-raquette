@@ -21,18 +21,22 @@ public class Ball : MonoBehaviour
     [SerializeField] private bool _canSmash = false;
     [SerializeField] private GameObject _ciblePrefab;
     [SerializeField] private GameObject _targetInstance;
+
     #endregion
 
     #region ACCESSORS
+
     public bool canSmash { get { return _canSmash; } }
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
 
     #endregion
+
     private LayerMask _groundLayerTeam1;
     private LayerMask _groundLayerTeam2;
     [SerializeField]private float _offsetFromGround = 5f;
     private Vector3 _normalizedDirection;
+
     #region UNITY METHODS
 
     private void Start()
