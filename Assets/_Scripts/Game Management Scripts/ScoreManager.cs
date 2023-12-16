@@ -101,8 +101,8 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-		Debug.Log(GetScore());
-	}
+		GetScore();
+    }
 
 	public void AddGame(Teams winnerTeam)
     {
@@ -123,11 +123,12 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
 
-		// If the players changed sides, the field border points ownership needs to be changed.
+		// If the players changed sides, the field border points ownership and the fault lines x values by team need to be changed.
 		if (GameManager.Instance.ServiceManager.NbOfGames == 1)
 		{
 			GameManager.Instance.ChangeFieldBorderPointsOwnership();
-		}
+			GameManager.Instance.ChangeFaultLinesXByTeamValues();
+        }
 
 		if ((_score[_currentSetIndex].Item1 + _score[_currentSetIndex].Item2) % 2 == 1)
 		{

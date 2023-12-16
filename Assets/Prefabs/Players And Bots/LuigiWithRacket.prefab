@@ -9544,7 +9544,7 @@ Transform:
   - {fileID: 6591809208433729437}
   - {fileID: 969680543911118686}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4901136132972770209
 Rigidbody:
@@ -9658,10 +9658,14 @@ MonoBehaviour:
   PlayerState: 0
   ServicesCount: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 0
+  _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 3437315211321540031}
+  _serviceBallInitializationPoint: {fileID: 6117288123474221374}
+  _minimumShotForce: 350
+  _maximumShotForce: 450
   _maximumDistanceToNet: 11.89
   _forceMinimumClampFactor: 0.5
+  _forceMaximumClampFactor: 1
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -9675,14 +9679,12 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
   - Name: Drop
-    PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 68318175dfe26734abaa7a515fcb135e, type: 2}
   _rigidBody: {fileID: 4901136132972770209}
   _ballDetectionArea: {fileID: 1027590233534068807}
   _movementSpeed: 7.5
-  _minimumShotForce: 325
-  _maximumShotForce: 450
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
 --- !u!114 &1088061933505749176
@@ -9824,8 +9826,8 @@ MonoBehaviour:
     m_ActionName: Player/ChargeShot[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 2015187621588100880}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: ServiceThrow
         m_Mode: 0
         m_Arguments:
@@ -12199,6 +12201,10 @@ PrefabInstance:
     - target: {fileID: 6283429410418569052, guid: b0830871afc5dbb4a964dcd755e37d1a, type: 3}
       propertyPath: m_Name
       value: BallDetectionVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720844271885451343, guid: b0830871afc5dbb4a964dcd755e37d1a, type: 3}
+      propertyPath: _lobRisingForceMinimumFactor
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

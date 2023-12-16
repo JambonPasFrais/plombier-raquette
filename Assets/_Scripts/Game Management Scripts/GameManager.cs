@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,7 +21,6 @@ public class GameManager : MonoBehaviour
     public ScoreManager ScoreManager;
 
     [Header("Ball Management")]
-    public Transform BallInitializationTransform;
     public GameObject BallPrefab;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
@@ -33,12 +33,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _net;
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
+    [SerializeField] private float _leftFaultLineXFromFirstSide;
 
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
+    private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
     [SerializeField] private GameObject _ballInstance;
     private int _serverIndex;
+    private Transform _serviceBallInitializationPoint;
 
     #endregion
 
@@ -47,6 +50,9 @@ public class GameManager : MonoBehaviour
     public GameObject BallInstance {  get { return _ballInstance; } }
     public GameObject Net {  get { return _net; } }
     public List<ControllersParent> Controllers {  get { return _controllers; } }
+    public int ServerIndex { get { return _serverIndex; } }
+    public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
+    public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
 
     #endregion
 
@@ -94,6 +100,12 @@ public class GameManager : MonoBehaviour
         {
             _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
         }
+
+        _faultLinesXByTeam = new Dictionary<Teams, float[]>()
+        {
+            {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
+            {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
+        };
     }
 
     #endregion
@@ -141,6 +153,16 @@ public class GameManager : MonoBehaviour
             }
 
             _fieldBorderPointsByTeam[borderPointsContainer.Team] = borderPointsContainer;
+        }
+    }
+
+    public void ChangeFaultLinesXByTeamValues()
+    {
+        for(int i = 0; i < _faultLinesXByTeam.Count; i++)
+        {
+            Teams team = _faultLinesXByTeam.Keys.ToList()[i];
+            float[] formerFaultLinesX = _faultLinesXByTeam[team];
+            _faultLinesXByTeam[team] = new float[] { -formerFaultLinesX[0], -formerFaultLinesX[1] };
         }
     }
 
@@ -202,18 +224,8 @@ public class GameManager : MonoBehaviour
     public void BallServiceInitialization()
     {
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
-        _ballInstance.transform.position = BallInitializationTransform.position;
-    }
-
-    public void ServiceThrow(InputAction.CallbackContext context)
-    {
-        Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
-
-        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * _controllers[_serverIndex].ActionParameters.ServiceThrowForce);
-        }
+        _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
+        _ballInstance.transform.position = _serviceBallInitializationPoint.position;
     }
 
     public void DesactivateAllServiceDetectionVolumes()

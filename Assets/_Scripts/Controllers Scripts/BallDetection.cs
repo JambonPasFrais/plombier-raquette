@@ -61,14 +61,19 @@ public class BallDetection : MonoBehaviour
     /// Calculates the rising force factor to apply on the ball considering the altitude of the ball compared to the altitude of the player.
     /// </summary>
     /// <returns></returns>
-    public float GetRisingForceFactor()
+    public float GetRisingForceFactor(HitType hitType)
     {
-        if (_ball.gameObject.transform.position.y >= transform.position.y)
+        if (hitType != HitType.Lob)
         {
-            return _risingForceNormalFactor + (_risingForceMinimumFactor - _risingForceNormalFactor) *
-                ((_ball.gameObject.transform.position.y - transform.position.y) / (_boxCollider.bounds.size.y / 2f));
+            if (_ball.gameObject.transform.position.y >= transform.position.y)
+            {
+                return _risingForceNormalFactor + (_risingForceMinimumFactor - _risingForceNormalFactor) *
+                    ((_ball.gameObject.transform.position.y - transform.position.y) / (_boxCollider.bounds.size.y / 2f));
+            }
+
+            return _risingForceNormalFactor + (_risingForceMaximumFactor - _risingForceNormalFactor) * ((transform.position.y - _ball.gameObject.transform.position.y) / (_boxCollider.bounds.size.y / 2f));
         }
 
-        return _risingForceNormalFactor + (_risingForceMaximumFactor - _risingForceNormalFactor) * ((transform.position.y - _ball.gameObject.transform.position.y) / (_boxCollider.bounds.size.y / 2f));
+        return _risingForceNormalFactor;
     }
 }

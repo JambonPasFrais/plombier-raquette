@@ -18,11 +18,8 @@ public class PlayerController : ControllersParent
 
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
-    [SerializeField] protected float _minimumShotForce;
-    [SerializeField] protected float _maximumShotForce;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
-
 
     private PlayerCameraController _cameraController;
     private Vector2 _movementVector;
@@ -51,8 +48,6 @@ public class PlayerController : ControllersParent
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
-
-            Debug.Log($"hit key press time while charging : {_hitKeyPressedTime}");
         }
     }
 
@@ -115,7 +110,6 @@ public class PlayerController : ControllersParent
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
         float hitForce = CalculateActualForce(wantedHitForce);
-        Debug.Log($"Hit key press time : {hitKeyPressTime} - Wanted force : {wantedHitForce} - Actual force before multiplying by shot force factor : {hitForce}");
 
         // Hit charging variables are reset.
         _hitKeyPressedTime = 0f;
@@ -159,7 +153,7 @@ public class PlayerController : ControllersParent
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
         // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-        _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+        _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -276,13 +270,14 @@ public class PlayerController : ControllersParent
         }
     }
 
-    public void ServeThrow(InputAction.CallbackContext context)
+    public void ServiceThrow(InputAction.CallbackContext context)
     {
-
+        ThrowBall();
     }
     public void SetSmash()
     {
         isSmashing = !isSmashing;
     }
+
     #endregion
 }
