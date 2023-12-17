@@ -38,7 +38,7 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
-        _cameraController = GetComponent<CameraController>();
+        //_cameraController = GetComponent<CameraController>();
     }
 
     void Update()
@@ -81,7 +81,7 @@ public class PlayerController : ControllersParent
         {
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
         }
-        if (!_cameraController.IsSmashing)
+        if (true)
         {
             // The global player directions depend on the side he is on.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;

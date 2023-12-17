@@ -11,7 +11,8 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
 
     [SerializeField] private CharacterCreator _characterCreator;
-    
+
+    [SerializeField] private Transform[] _playerOriginalPositions;
     // Singleton
     private static GameManagerLocalMultiplayer _instance;
 
@@ -36,13 +37,13 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     private void Start()
     {
         //_gameManager = GetComponent<GameManager>();
-        _characterCreator.InitCharacters();
+        _characterCreator.InitCharacters(_playerOriginalPositions);
         foreach (var t in _characterCreator.Characters)
         {
             _gameManager.AddControllers(t.GetComponent<ControllersParent>());
         }
         
-        //TODO : init score manager
+        _gameManager.Init();
     }
 
     #endregion

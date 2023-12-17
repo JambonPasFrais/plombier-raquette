@@ -31,14 +31,16 @@ public class CharacterCreator : MonoBehaviour
 
     private void OnEnable()
     {
-        InitCharacters();
+        //InitCharacters();
     }
 
-    public void InitCharacters()
+    public void InitCharacters(Transform[] playerOriginalPositions)
     {
         _characters = new List<GameObject>();
 
         List<CharacterData> playersCharacter = GameParameters.PlayersCharacters;
+
+        int nbCharInstantiated = 0;
 
         // Create Human Characters
         for (int playerIndex = 0; playerIndex < GameParameters.LocalNbPlayers; playerIndex++)
@@ -51,9 +53,12 @@ public class CharacterCreator : MonoBehaviour
                     InitPlayerGo(playersCharacter[playerIndex].HumanControllerPrefab);
                     
                     // Last character added is the character instantiated above using "InitPlayerGo()"
+                    _characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
                     playerInputHandler.Character = _characters[^1].GetComponent<Character>();
                     
                     playerInputHandler.Character.SetCharParameters(playersCharacter[playerIndex].CharacterParameter);
+
+                    nbCharInstantiated++;
                     break;
                 }
             }
@@ -63,8 +68,10 @@ public class CharacterCreator : MonoBehaviour
         for (int aiIndex = GameParameters.LocalNbPlayers; aiIndex < playersCharacter.Count; aiIndex++)
         {
             InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
+            _characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
             _characters[^1].GetComponent<BotBehavior>().InitTargetVariables(_targets, _firstSideTargetsPositions, _secondSideTargetsPositions);
             // Also need to init the charParameters here
+            nbCharInstantiated++;
         }
         
         //TODO : Place them in the right spot with the right parameters (Teams, serve order)
