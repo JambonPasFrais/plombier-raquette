@@ -57,7 +57,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				if (characterUI != _selectableCharacters.Last())
 					characterUI.SetSelected(true);
 				_selectedCharactersName.text = characterUI.Character.Name;
-				_selectedCharacterBackground.color = characterUI.Character.CharacterColor;
+				_selectedCharacterBackground.color = characterUI.Character.CharacterPrimaryColor;
 
 				if (_characterModelLocation.childCount > 0)
 				{

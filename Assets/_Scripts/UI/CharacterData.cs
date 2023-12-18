@@ -9,6 +9,7 @@ public class CharacterData : ScriptableObject
     public string Name;
     public Sprite Picture;
     public GameObject Model3D;
-    public Color CharacterColor;
+    public Color CharacterPrimaryColor;
+    public Color CharacterSecondaryColor;
     public Sprite CharactersLogo;
 }
