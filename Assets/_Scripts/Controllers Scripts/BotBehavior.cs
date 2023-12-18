@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+//TODO : set character parameters using public void function(CharacterParameters scriptableObject)
+
 public class BotBehavior : ControllersParent
 {
     #region PRIVATE FIELDS
@@ -111,6 +113,13 @@ public class BotBehavior : ControllersParent
         _botServiceCoroutine = null;
     }
 
+    public void InitTargetVariables(Transform[] targets, Transform[] firstSideTargetsPositions, Transform[] secondSideTargetsPositions)
+    {
+        _targets = targets;
+        _firstSideTargetsPositions = firstSideTargetsPositions;
+        _secondSideTargetsPositions = secondSideTargetsPositions;
+    }
+    
     private void HitBall()
     {
         float force;

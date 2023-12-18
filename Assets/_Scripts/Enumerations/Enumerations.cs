@@ -30,3 +30,10 @@ public enum FieldSide
 	FIRSTSIDE,
 	SECONDSIDE
 }
+
+public enum CharacterCategory
+{
+	SMALL,
+	MEDIUM,
+	BIG
+}

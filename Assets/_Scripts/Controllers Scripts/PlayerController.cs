@@ -66,6 +66,9 @@ public class PlayerController : ControllersParent
         if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
             && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic) && isSmashing == false) 
         {
+            //TODO : known issue: there is no ActiveCameraTransform when split screen enabled coz both camera are used. 
+            // We need to add for each player there "sideIndex" and the vectors will be set using a List<Transform>[sideIndex]
+            
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
         
