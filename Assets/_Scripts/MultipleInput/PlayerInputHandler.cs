@@ -61,10 +61,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnCharacterMove(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            Character.PlayerController.Move(context);
-        }
+        Character.PlayerController.Move(context);
     }
 
     public void OnChargeShot(InputAction.CallbackContext context)
