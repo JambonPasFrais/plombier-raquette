@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -10,13 +12,12 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 {
 	[SerializeField] private GameObject _characterUIPrefab;
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
+	[SerializeField] private PlayerShowroom _playerShowroom;
 	[SerializeField] private Transform _charactersListTransform;
-	[SerializeField] private TextMeshProUGUI _selectedCharactersName;
-	[SerializeField] private Transform _characterModelLocation;
-	[SerializeField] private Image _selectedCharacterBackground;
 	[SerializeField] private LayerMask _characterUILayerMask;
 	[SerializeField] private Transform _charactersModelsParent;
-	[SerializeField] private Button _playButton;
+	[SerializeField] private GameObject _aceItMenu;
+	[SerializeField] private GameObject _playButton;
 	private List<CharacterData> _availableCharacters;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private CharacterData _playerCharacter;
@@ -56,14 +57,16 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			{
 				if (characterUI != _selectableCharacters.Last())
 					characterUI.SetSelected(true);
-				_selectedCharactersName.text = characterUI.Character.Name;
-				_selectedCharacterBackground.color = characterUI.Character.CharacterPrimaryColor;
+				_playerShowroom.CharacterName.text = characterUI.Character.Name;
+				_playerShowroom.Background.color = characterUI.Character.CharacterPrimaryColor;
+				_playerShowroom.NameBackground.color = characterUI.Character.CharacterSecondaryColor;
+				_playerShowroom.CharacterEmblem.sprite = characterUI.Character.CharactersLogo;
 
-				if (_characterModelLocation.childCount > 0)
+				if (_playerShowroom.ModelLocation.childCount > 0)
 				{
 					_selectedCharacterUIs.SetSelected(false);
 
-					go = _characterModelLocation.GetChild(0).gameObject;
+					go = _playerShowroom.ModelLocation.GetChild(0).gameObject;
 					go.transform.SetParent(_charactersListTransform);
 					go.transform.localPosition = Vector3.zero;
 					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
@@ -78,7 +81,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				else
 					_charactersModel.TryGetValue(characterUI.Character.Name, out go);
 
-				go.transform.SetParent(_characterModelLocation);
+				go.transform.SetParent(_playerShowroom.ModelLocation);
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 				go.transform.localScale = new Vector3(20, 20, 20);
@@ -92,11 +95,14 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void VerifyCharacters()
 	{
-		if (_playerCharacter)
+		/*if (_playerCharacter)
 			_playButton.interactable = true;
 
 		else
-			_playButton.interactable = false;
+			_playButton.interactable = false;*/
+
+		_aceItMenu.SetActive(true);
+		EventSystem.current.SetSelectedGameObject(_playButton);
 	}
 
 	public void ResetMenu()
@@ -109,8 +115,10 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			item.Value.gameObject.SetActive(false);
 		}
 
-		_selectedCharacterBackground.color = Color.black;
-		_selectedCharactersName.text = "";
+		_playerShowroom.Background.color = Color.white;
+		_playerShowroom.NameBackground.color = Color.black;
+		_playerShowroom.CharacterName.text = "";
+		_playerShowroom.CharacterEmblem.sprite = null;
 		_playerCharacter = null;
 
 		foreach (var item in _selectableCharacters)
@@ -118,7 +126,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			item.SetSelected(false);
 		}
 
-		_playButton.interactable = false;
+		_aceItMenu.SetActive(false);
 	}
 
 	public void Play()
