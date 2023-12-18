@@ -5,6 +5,7 @@ using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerController : ControllersParent
 {
@@ -155,7 +156,7 @@ public class PlayerController : ControllersParent
             // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
             if (PlayerState == PlayerStates.SERVE)
             {
-                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
+                GameManager.Instance.DeactivateAllServiceDetectionVolumes();
                 GameManager.Instance.ServiceManager.DisableLockServiceColliders();
             }
 
@@ -206,7 +207,7 @@ public class PlayerController : ControllersParent
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
         // Initialization of the other ball physic parameters.
-        GameManager.Instance.SetBallInfos(hitType.ToString(), this);
+        GameManager.Instance.photonView.RPC("SetShotTypeOnline", RpcTarget.Others, hitType.ToString(), GameManager.Instance.Controllers.IndexOf(this));
         _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
@@ -286,7 +287,6 @@ public class PlayerController : ControllersParent
             _currentSpeed = _movementSpeed;
         }
     }
-
     public void TechnicalShot(InputAction.CallbackContext context)
     {
         if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this) 

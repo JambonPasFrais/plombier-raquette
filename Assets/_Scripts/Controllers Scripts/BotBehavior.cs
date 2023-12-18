@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-//TODO : set character parameters using public void function(CharacterParameters scriptableObject)
-
 public class BotBehavior : ControllersParent
 {
-    #region PRIVATE FIELDS
+    #region Private Fields
 
     [Header("Ball Physical Behavior Parameters")]
     [SerializeField] private List<NamedActions> _possibleActions;
@@ -22,23 +20,27 @@ public class BotBehavior : ControllersParent
     
     [Header("GD")]
     [SerializeField] private float _speed;
-
-    [Header("Service Parameters")]
-    [SerializeField] private float _timeBeforeThrowingBallDuringService;
-    [SerializeField] private float _timeBeforeShootingBallDuringService;
-    [SerializeField] private float _serviceForce;
+    [SerializeField] private float _minimumHitForce;
+    [SerializeField] private float _maximumHitForce;
 
     private Ball _ballInstance;
     private Vector3 _targetPosVector3;
     private Dictionary<string, Transform[]> _targetPositionsBySide;
-    private Vector3 _serviceDirection;
-    private Coroutine _botServiceCoroutine;
 
     #endregion
 
     public Vector3 TargetPosVector3 { set {  _targetPosVector3 = value; } }
 
-    #region UNITY METHODS
+    #region Unity Methods
+
+    private void Awake()
+    {
+        _targetPositionsBySide = new Dictionary<string, Transform[]>()
+        {
+            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
+            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
+        };
+    }
 
     private void Start()
     {
@@ -51,97 +53,33 @@ public class BotBehavior : ControllersParent
     {
         if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH)
         {
-            if (PlayerState != PlayerStates.SERVE)
-            {
-                MoveTowardsBallX();
-            }
+            MoveTowardsBallX();
 
-            if (_ballDetectionArea.IsBallInHitZone && _ballDetectionArea.Ball.LastPlayerToApplyForce != this && PlayerState != PlayerStates.SERVE)
+            if (_ballDetectionArea.IsBallInHitZone && _ballDetectionArea.Ball.LastPlayerToApplyForce != this)
             {
                 HitBall();
-            }
-            else if (_ballDetectionArea.IsBallInHitZone && _ballDetectionArea.Ball.LastPlayerToApplyForce != this && _botServiceCoroutine == null)
-            {
-                _botServiceCoroutine = StartCoroutine(BotService());
             }
         }
     }
 
     #endregion
-
-    #region MOVEMENT AND HITTING METHODS
-
-    private Vector3 GetServiceTarget()
-    {
-        float maximumDistance = 0f;
-        Transform correctTarget = null;
-        foreach (Transform target in _targets)
-        {
-            float currentDistance = Vector3.Distance(transform.position, target.position);
-            if (currentDistance > maximumDistance)
-            {
-                maximumDistance = currentDistance;
-                correctTarget = target;
-            }
-        }
-
-        return correctTarget.position;
-    }
-
-    private IEnumerator BotService()
-    {
-        yield return new WaitForSeconds(_timeBeforeThrowingBallDuringService);
-
-        ThrowBall();
-
-        yield return new WaitForSeconds(_timeBeforeShootingBallDuringService);
-
-        Vector3 targetPosition = GetServiceTarget();
-        Vector3 serviceDirection = targetPosition - transform.position;
-        Vector3 horizontalServiceDirection = Vector3.Project(serviceDirection, Vector3.forward) + Vector3.Project(serviceDirection, Vector3.right);
-        _serviceDirection = horizontalServiceDirection;
-        HitBall();
-        _botServiceCoroutine = null;
-    }
-
-    public void InitTargetVariables(Transform[] targets, Transform[] firstSideTargetsPositions, Transform[] secondSideTargetsPositions)
-    {
-        _targets = targets;
-        _firstSideTargetsPositions = firstSideTargetsPositions;
-        _secondSideTargetsPositions = secondSideTargetsPositions;
-        
-        _targetPositionsBySide = new Dictionary<string, Transform[]>()
-        {
-            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
-            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
-        };
-    }
     
+    #region Personalised Methods
+
     private void HitBall()
     {
-        float force;
-        Vector3 direction;
+        Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
+        Vector3 direction = Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.forward) + Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.right);
 
-        if (PlayerState == PlayerStates.SERVE)
+        if (PlayerState != PlayerStates.PLAY)
         {
-            GameManager.Instance.DesactivateAllServiceDetectionVolumes();
-            GameManager.Instance.ServiceManager.DisableLockServiceColliders();
-
-            direction = _serviceDirection;
-            force = _serviceForce;
+            if (PlayerState == PlayerStates.SERVE)
+            {
+                GameManager.Instance.DeactivateAllServiceDetectionVolumes();
+                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
+            }
 
             PlayerState = PlayerStates.PLAY;
-        }
-        else
-        {
-            Vector3 targetPoint = _targets[Random.Range(0, _targets.Length)].position;
-            direction = Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.forward) + Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.right);
-            force = Random.Range(_minimumShotForce, _maximumShotForce);
-
-            if (PlayerState != PlayerStates.PLAY)
-            {
-                PlayerState = PlayerStates.PLAY;
-            }
         }
 
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
@@ -149,7 +87,7 @@ public class BotBehavior : ControllersParent
 
         _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
         _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
-        _ballInstance.ApplyForce(force, _ballDetectionArea.GetRisingForceFactor(HitType.Flat), direction.normalized, this);
+        _ballInstance.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), _ballDetectionArea.GetRisingForceFactor(), direction.normalized, this);
     }
 
     private void MoveTowardsBallX()

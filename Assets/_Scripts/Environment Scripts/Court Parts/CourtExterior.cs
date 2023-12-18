@@ -15,9 +15,16 @@ public class CourtExterior : MonoBehaviour
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
-                GameManager.Instance.EndOfPoint();
-                GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
-                ball.ResetBall();
+                if (PhotonNetwork.IsConnected && ball.LastPlayerToApplyForce.GetComponent<PhotonView>().IsMine)
+                {
+                    GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, false);
+                }
+                if (!PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.EndOfPoint();
+                    GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
+                    ball.ResetBall();
+                }
             }
             // If the player hits a part of the exterior court on the first rebound, it is fault.
             else if (ball.ReboundsCount == 1)
@@ -45,10 +52,17 @@ public class CourtExterior : MonoBehaviour
                 }
                 else
                 {
-                    GameManager.Instance.EndOfPoint();
-                    Teams otherTeam = ball.LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
-                    //Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
-                    GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                    if (PhotonNetwork.IsConnected && ball.LastPlayerToApplyForce.GetComponent<PhotonView>().IsMine)
+                    {
+                        GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, true);
+                    }
+                    if (!PhotonNetwork.IsConnected)
+                    {
+                        GameManager.Instance.EndOfPoint();
+                        Teams otherTeam = ball.LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
+                        //Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
+                        GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                    }
                 }
                 
                 ball.ResetBall();
