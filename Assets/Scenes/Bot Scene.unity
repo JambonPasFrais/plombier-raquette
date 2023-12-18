@@ -143,6 +143,10 @@ PrefabInstance:
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 9127353872525647490}
+    - target: {fileID: 2196464750058801302, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3105107556669345995, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -200,7 +204,8 @@ PrefabInstance:
       value: NewCourt
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2196464750058801302, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -1330,6 +1335,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5027902118874548820, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
       propertyPath: _smashImage
+      value: 
+      objectReference: {fileID: 779330569}
+    - target: {fileID: 5027902118874548820, guid: 829486b8974558f41aefdc072a3593e8, type: 3}
+      propertyPath: _smashTargetImage
       value: 
       objectReference: {fileID: 779330569}
     - target: {fileID: 7513561124101130894, guid: 829486b8974558f41aefdc072a3593e8, type: 3}

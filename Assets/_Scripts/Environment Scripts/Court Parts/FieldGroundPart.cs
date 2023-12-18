@@ -4,7 +4,5 @@ using UnityEngine;
 
 public class FieldGroundPart : MonoBehaviour
 {
-    [SerializeField] protected ControllersParent _ownerPlayer;
-
-    public ControllersParent OwnerPlayer { set { _ownerPlayer = value; } }
+    public ControllersParent OwnerPlayer;
 }

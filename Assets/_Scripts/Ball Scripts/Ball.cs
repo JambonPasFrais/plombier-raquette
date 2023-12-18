@@ -8,42 +8,39 @@ public class Ball : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
-    [SerializeField] private ShotParameters _shotParameters;
+    [Header("Target Parameters")]
+    [SerializeField] private GameObject _targetPrefab;
+    [SerializeField] private float _raycastLength;
+    [SerializeField] private float _horizontalOffset;
+    [SerializeField] private float _verticalOffsetFromGround;
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
 
+    [Header("Observed Variables")]
+    [SerializeField] private ShotParameters _shotParameters;
     [SerializeField] private ControllersParent _lastPlayerToApplyForce;
-    private float _risingForceFactor;
     [SerializeField] private int _reboundsCount;
+    [SerializeField] private GameObject _targetInstance;
+
+    private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
-    [SerializeField] private bool _canSmash = false;
-    [SerializeField] private GameObject _ciblePrefab;
-    [SerializeField] private GameObject _targetInstance;
 
     #endregion
 
     #region ACCESSORS
 
-    public bool canSmash { get { return _canSmash; } }
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
 
     #endregion
-
-    private LayerMask _groundLayerTeam1;
-    private LayerMask _groundLayerTeam2;
-    [SerializeField]private float _offsetFromGround = 5f;
-    private Vector3 _normalizedDirection;
 
     #region UNITY METHODS
 
     private void Start()
     {
         _reboundsCount = 0;
-        _groundLayerTeam1 = LayerMask.GetMask("groundTeam1");
-        _groundLayerTeam2 = LayerMask.GetMask("groundTeam2");
     }
 
     private void Update()
@@ -54,11 +51,11 @@ public class Ball : MonoBehaviour
             ResetBall();
         }
 
-        if (_rigidBody.isKinematic)
+        if (_rigidBody.isKinematic && GameManager.Instance.GameState == GameState.SERVICE)
         {
             transform.position = GameManager.Instance.ServiceBallInitializationPoint.position;
         }
-        if (_canSmash&&GameManager.Instance.GameState==GameState.PLAYING)
+        else if (!_rigidBody.isKinematic) 
         {
             DrawTarget();
         }
@@ -205,31 +202,28 @@ public class Ball : MonoBehaviour
         _lastPlayerToApplyForce = null;
         _rigidBody.velocity = Vector3.zero;
         _rigidBody.isKinematic = true;
+        DestroyTarget();
 
         GameManager.Instance.GameState = GameState.SERVICE;
         GameManager.Instance.BallServiceInitialization();
     }
 
-    public void SetCanSmash(bool canSmash)
-    {
-        _canSmash = canSmash;
-        DestroyTarget();
-    }
+    #region SMASH TARGET MANAGEMENT
 
     private void DrawTarget()
     {
-        if (LastPlayerToApplyForce != null)
+        if (_lastPlayerToApplyForce != null)
         {
-            float raycastLength = 10f;
             Ray ray = new Ray(transform.position, Vector3.down);
 
             RaycastHit hit;
 
-            if ((LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2&&!GameManager.Instance.ServiceManager.ChangeSides)|| (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 && GameManager.Instance.ServiceManager.ChangeSides))
+            if (Physics.Raycast(ray, out hit, _raycastLength) && hit.collider.gameObject.TryGetComponent<FieldGroundPart>(out FieldGroundPart fieldGroundPart))
             {
-                if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam1))
+                if (fieldGroundPart.OwnerPlayer != _lastPlayerToApplyForce)
                 {
-                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround)+ new Vector3(0, 0.1f, 0);
+                    Vector3 horizontalBallDirection = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
+                    Vector3 targetPosition = hit.point + Vector3.up * _verticalOffsetFromGround + horizontalBallDirection.normalized * _horizontalOffset;
 
                     if (_targetInstance == null)
                     {
@@ -239,31 +233,11 @@ public class Ball : MonoBehaviour
                     {
                         MoveTarget(targetPosition);
                     }
-                }
-                else
-                {
-                    DestroyTarget();
                 }
             }
-            if ((LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1&& !GameManager.Instance.ServiceManager.ChangeSides)|| (LastPlayerToApplyForce.PlayerTeam == Teams.TEAM2 && GameManager.Instance.ServiceManager.ChangeSides))
+            else
             {
-                if (Physics.Raycast(ray, out hit, raycastLength, _groundLayerTeam2))
-                {
-                    Vector3 targetPosition = hit.point + (_normalizedDirection*_offsetFromGround)+ new Vector3(0, 0.1f, 0);
-
-                    if (_targetInstance == null)
-                    {
-                        InstantiateTarget(targetPosition);
-                    }
-                    else
-                    {
-                        MoveTarget(targetPosition);
-                    }
-                }
-                else
-                {
-                    DestroyTarget();
-                }
+                DestroyTarget();
             }
         }
     }
@@ -273,8 +247,9 @@ public class Ball : MonoBehaviour
         _targetInstance.transform.position = position;
     }
 
-    private void DestroyTarget()
+    public void DestroyTarget()
     {
+
         if (_targetInstance != null)
         {
             Destroy(_targetInstance);
@@ -284,16 +259,18 @@ public class Ball : MonoBehaviour
 
     private void InstantiateTarget(Vector3 position)
     {
-        if (_ciblePrefab != null)
+        if (_targetPrefab != null)
         {
             if (_targetInstance != null)
             {
                 Destroy(_targetInstance);
             }
 
-            _targetInstance = Instantiate(_ciblePrefab, position, Quaternion.Euler(90,0,0));
+            _targetInstance = Instantiate(_targetPrefab, position, Quaternion.Euler(90, 0, 0));
         }
     }
+
+    #endregion
 }
 
 

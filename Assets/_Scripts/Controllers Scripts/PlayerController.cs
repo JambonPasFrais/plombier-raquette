@@ -122,6 +122,10 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
 
+        // Reseting smash and target states.
+        _cameraController.SetCanSmash(false);
+        _ballDetectionArea.Ball.DestroyTarget();
+
         // The player enters in the PLAY state.
         if (PlayerState != PlayerStates.PLAY)
         {

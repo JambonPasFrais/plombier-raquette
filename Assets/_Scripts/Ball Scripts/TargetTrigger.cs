@@ -9,18 +9,31 @@ public class TargetTrigger : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    #region UNITY METHODS
+
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
+        StartFadeOut();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other != null && other.GetComponent<PlayerCameraController>())
         {
-            Debug.LogError("Le GameObject n'a pas de SpriteRenderer attaché.");
-        }
-        else
-        {
-            StartFadeOut();
+            other.GetComponent<PlayerCameraController>().SetCanSmash(true);
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other != null && other.GetComponent<PlayerCameraController>())
+        {
+            other.GetComponent<PlayerCameraController>().SetCanSmash(false);
+        }
+    }
+
+    #endregion
 
     private void StartFadeOut()
     {
@@ -53,25 +66,5 @@ public class TargetTrigger : MonoBehaviour
 
         currentColor.a = 0f;
         spriteRenderer.color = currentColor;
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other != null)
-        {
-            if (other.GetComponent<PlayerCameraController>())
-            {
-                other.GetComponent<PlayerCameraController>().setCanSmash(true);
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other != null)
-        {
-            if (other.GetComponent<PlayerCameraController>())
-            {
-                other.GetComponent<PlayerCameraController>().setCanSmash(false);
-            }
-        }
     }
 }
