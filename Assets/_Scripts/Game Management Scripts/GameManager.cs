@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         _ballInstance = Instantiate(BallPrefab);
     }
 
-    void Start()
+    public void Init()
     {
         ServiceOnOriginalSide = true;
 

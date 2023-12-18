@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -407,12 +407,13 @@ MonoBehaviour:
   ServiceManager: {fileID: 0}
   ScoreManager: {fileID: 0}
   CameraManager: {fileID: 0}
-  BallInitializationTransform: {fileID: 0}
   BallPrefab: {fileID: 0}
   ServiceOnOriginalSide: 0
   _net: {fileID: 0}
   _controllers: []
   _borderPointsContainers: []
+  _leftFaultLineXFromFirstSide: 0
+  _ballInstance: {fileID: 0}
 --- !u!114 &159828289 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3845736972851772271, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
@@ -477,7 +478,6 @@ MonoBehaviour:
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
   CameraManager: {fileID: 2006872490}
-  BallInitializationTransform: {fileID: 685518587}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1335233997}
@@ -485,6 +485,8 @@ MonoBehaviour:
   _borderPointsContainers:
   - {fileID: 159828289}
   - {fileID: 348428141}
+  _leftFaultLineXFromFirstSide: -4.11
+  _ballInstance: {fileID: 0}
 --- !u!114 &175529522
 MonoBehaviour:
   m_ObjectHideFlags: 0
