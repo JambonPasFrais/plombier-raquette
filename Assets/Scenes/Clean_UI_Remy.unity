@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 192811042}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1664090694
@@ -666,6 +666,22 @@ PrefabInstance:
       propertyPath: _eventSystem
       value: 
       objectReference: {fileID: 1664090693}
+    - target: {fileID: 3434856743486789887, guid: a18af81033f2f654e87094eeac8921ac, type: 3}
+      propertyPath: _confirmPlayButton
+      value: 
+      objectReference: {fileID: 192811042}
+    - target: {fileID: 3434856743486789887, guid: a18af81033f2f654e87094eeac8921ac, type: 3}
+      propertyPath: _playersCharacter.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3434856743486789887, guid: a18af81033f2f654e87094eeac8921ac, type: 3}
+      propertyPath: _playersCharacter.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b898d2bea3160e34fbde4f00eb88df1c, type: 2}
+    - target: {fileID: 3434856743486789887, guid: a18af81033f2f654e87094eeac8921ac, type: 3}
+      propertyPath: _playersCharacter.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 46883bd65acc3cb46b3fd61f1cfd814f, type: 2}
     - target: {fileID: 4951955398158782848, guid: a18af81033f2f654e87094eeac8921ac, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

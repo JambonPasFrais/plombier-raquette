@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -106,7 +107,24 @@ public class CharacterSelectionMenu : MonoBehaviour
 			}
 		}
 	}*/
+
+	private void Update()
+	{
+		var uiModule = (InputSystemUIInputModule)_eventSystem.currentInputModule; //(InputSystemUIInputModule)EventSystem.current.currentInputModule;
+
+		if (uiModule.cancel.action.WasPressedThisFrame())
+			CloseMenu();
+	}
 	#endregion
+
+	private void CloseMenu()
+	{
+		if (_aceItWindow.activeSelf)
+		{
+			_aceItWindow.SetActive(false);
+			_eventSystem.SetSelectedGameObject(null);
+		}
+	}
 
 	#region Listeners
 
@@ -115,6 +133,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	{
 		//TransformRandomSelectionInCharacter();
 		_aceItWindow.SetActive(true);
+		_eventSystem.SetSelectedGameObject(null);
 		_eventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
@@ -320,7 +339,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Check if every local player selected his 
 	private bool IsEveryCharSelectedByLocals()
 	{
-		for (int i = 0; i < GameParameters.LocalNbPlayers; i++)
+		for (int i = 0; i < /*GameParameters.LocalNbPlayers*/2; i++)
 		{
 			if (_playersCharacter[i] == null)
 				return false;
