@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public SideManager SideManager;
     public ServiceManager ServiceManager;
     public ScoreManager ScoreManager;
+    public CameraManager CameraManager;
 
     [Header("Ball Management")]
     public Transform BallInitializationTransform;
@@ -83,8 +84,21 @@ public class GameManager : MonoBehaviour
 
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
-        GameManager.Instance.SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
-        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+
+        // Double
+        if (_controllers.Count > 2)
+        {
+            CameraManager.InitSplitScreenCameras();
+            SideManager.SetSidesInDoubleMatch(_controllers, true, ServiceOnOriginalSide);
+        }
+        else // Simple
+        {
+            CameraManager.InitSoloCamera();
+            SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
+        }
+        
+        ServiceManager.SetServiceBoxCollider(false);
+        
         _ballInstance.GetComponent<Ball>().ResetBall();
 
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();

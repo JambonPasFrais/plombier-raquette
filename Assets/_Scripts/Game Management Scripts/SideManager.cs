@@ -11,18 +11,18 @@ public class SideManager : MonoBehaviour
 	[SerializeField] private Transform _servicePointsSecondSideParent;
 	[SerializeField] private GameObject _firstSideCollidersParentObject;
 	[SerializeField] private GameObject _secondSideCollidersParentObject;
-	[SerializeField] private Transform _cameraParent;
-	[SerializeField] private List<GameObject> _cameras;
+	//SerializeField] private Transform _cameraParent;
+	//[SerializeField] private List<GameObject> _cameras;
 
 	private Dictionary<string, Transform> _servicePointsFirstSide = new Dictionary<string, Transform>();
 	private Dictionary<string, Transform> _servicePointsSecondSide = new Dictionary<string, Transform>();
-	private Transform _activeCameraTransform;
+	//private Transform _activeCameraTransform;
 
     #endregion
 
     #region GETTERS
 
-	public Transform ActiveCameraTransform { get { return _activeCameraTransform; } }
+	public Transform ActiveCameraTransform { get { return GameManager.Instance.CameraManager.ActiveCameraTransform; } }
 
 	#endregion
 
@@ -34,10 +34,10 @@ public class SideManager : MonoBehaviour
 			_servicePointsSecondSide.Add(_servicePointsSecondSideParent.GetChild(i).name, _servicePointsSecondSideParent.GetChild(i));
 		}
 
-		for (int i = 0; i < _cameraParent.childCount; i++)
+		/*for (int i = 0; i < _cameraParent.childCount; i++)
 		{
 			_cameras.Add(_cameraParent.GetChild(i).gameObject);
-		}
+		}*/
 	}
 
 	/// <summary>
@@ -54,9 +54,9 @@ public class SideManager : MonoBehaviour
 
 		if (originalSides)
 		{
-			_activeCameraTransform = _cameras[0].transform;
+			/*_activeCameraTransform = _cameras[0].transform;
             _cameras[0].SetActive(true);
-			_cameras[1].SetActive(false);
+			_cameras[1].SetActive(false);*/
 			players[0].transform.position = _servicePointsFirstSide[side].position;
 			players[0].transform.rotation = _servicePointsFirstSide[side].rotation;
 			players[1].transform.position = _servicePointsSecondSide[side].position;
@@ -64,14 +64,16 @@ public class SideManager : MonoBehaviour
 		}
 		else
 		{
-            _activeCameraTransform = _cameras[1].transform;
+            /*_activeCameraTransform = _cameras[1].transform;
             _cameras[0].SetActive(false);
-			_cameras[1].SetActive(true);
+			_cameras[1].SetActive(true);*/
 			players[0].transform.position = _servicePointsSecondSide[side].position;
 			players[0].transform.rotation = _servicePointsSecondSide[side].rotation;
 			players[1].transform.position = _servicePointsFirstSide[side].position;
 			players[1].transform.rotation = _servicePointsFirstSide[side].rotation;
 		}
+
+		GameManager.Instance.CameraManager.ChangeCameraSide(originalSides);
 
 		UpdateBotValues(players, originalSides);
 		SetCollidersOwnerPlayers(players, originalSides);
@@ -83,7 +85,7 @@ public class SideManager : MonoBehaviour
     /// <param name="players"></param>
     /// <param name="serveRight"></param>
     /// <param name="_originalSides"></param>
-    public void SetSidesInDoubleMatch(List<PlayerController> players, bool serveRight, bool _originalSides)
+    public void SetSidesInDoubleMatch(List<ControllersParent> players, bool serveRight, bool _originalSides)
 	{
 		string side = "";
 
@@ -91,14 +93,16 @@ public class SideManager : MonoBehaviour
 
 		if (_originalSides)
 		{
-			_cameras[0].SetActive(true);
-			_cameras[1].SetActive(false);
+			//_cameras[0].SetActive(true);
+			//_cameras[1].SetActive(false);
 		}
 		else
 		{
-			_cameras[0].SetActive(false);
-			_cameras[1].SetActive(true);
+			//_cameras[0].SetActive(false);
+			//_cameras[1].SetActive(true);
 		}
+		
+		Debug.Log("Sides in Double Match set");
 	}
 
 	/// <summary>

@@ -53,7 +53,7 @@ public class CharacterCreator : MonoBehaviour
                     InitPlayerGo(playersCharacter[playerIndex].HumanControllerPrefab);
                     
                     // Last character added is the character instantiated above using "InitPlayerGo()"
-                    _characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
+                    //_characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
                     playerInputHandler.Character = _characters[^1].GetComponent<Character>();
                     
                     playerInputHandler.Character.SetCharParameters(playersCharacter[playerIndex].CharacterParameter);
@@ -68,13 +68,13 @@ public class CharacterCreator : MonoBehaviour
         for (int aiIndex = GameParameters.LocalNbPlayers; aiIndex < playersCharacter.Count; aiIndex++)
         {
             InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
-            _characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
+            //_characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
             _characters[^1].GetComponent<BotBehavior>().InitTargetVariables(_targets, _firstSideTargetsPositions, _secondSideTargetsPositions);
             // Also need to init the charParameters here
             nbCharInstantiated++;
         }
         
-        //TODO : Place them in the right spot with the right parameters (Teams, serve order)
+        //TODO : Place them in the right spot (handled by side manager) with the right parameters (Teams, serve order)
     }
 
     
