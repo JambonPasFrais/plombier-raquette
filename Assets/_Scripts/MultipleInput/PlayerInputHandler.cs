@@ -135,7 +135,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            Character.PlayerController.ServeThrow(context);
+            Character.PlayerController.ServiceThrow(context);
         }
     }
 
@@ -143,7 +143,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            Character.PlayerController.Smash();
+            //Character.PlayerController.Smash();
         }
     }
     

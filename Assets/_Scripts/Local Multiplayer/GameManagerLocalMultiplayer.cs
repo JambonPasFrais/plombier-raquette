@@ -43,7 +43,7 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
             _gameManager.AddControllers(t.GetComponent<ControllersParent>());
         }
         
-        _gameManager.Init();
+        //_gameManager.Init();
     }
 
     #endregion
