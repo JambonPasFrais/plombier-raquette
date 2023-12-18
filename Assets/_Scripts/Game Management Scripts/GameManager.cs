@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using Photon.Realtime;
 using System.Linq;
+using System.Globalization;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             InstantiatePlayer();
             if (PhotonNetwork.IsMasterClient == false)
             {
-                photonView.RPC("SendConnectedToMaster", RpcTarget.MasterClient);
+                photonView.RPC("AskFindController", RpcTarget.MasterClient);
             }
             if (PhotonNetwork.IsMasterClient)
                 _ballInstance = PhotonNetwork.Instantiate(OnlineBallPrefab.name, new Vector3(0, 256, 0), Quaternion.identity);
@@ -238,16 +239,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void Serve()
-    {
-        photonView.RPC("Served", RpcTarget.Others);
-    } 
-    public void SetBallInfos(string hitType, ControllersParent controller)
-    {
-        photonView.RPC("SetShotTypeOnline", RpcTarget.Others, hitType, _controllers.IndexOf(controller)); ;
-    }
-
-    public void DesactivateAllServiceDetectionVolumes()
+    public void DeactivateAllServiceDetectionVolumes()
     {
         foreach (ControllersParent controller in _controllers)
         {
@@ -273,7 +265,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if (PhotonNetwork.IsMasterClient && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount && GameState == GameState.BEFOREGAME)
         {
-            photonView.RPC("SendControllerToClient", RpcTarget.Others);
+            photonView.RPC("AskFindController", RpcTarget.Others);
         }
         if (PhotonNetwork.IsMasterClient == false)
         {
@@ -316,13 +308,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
         }
     }
+  
     [PunRPC]
-    private void SendConnectedToMaster()
-    {
-        FindController();
-    }
-    [PunRPC]
-    private void SendControllerToClient()
+    private void AskFindController()
     {
         FindController();
     }
@@ -332,20 +320,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         StartOnlineGame();
     }
     [PunRPC]
-    private void ChangeSide()
-    {
-        FindController();
-    }
-    [PunRPC]
     private void Served()
     {
        BallInstance.GetComponent<Rigidbody>().isKinematic = false;
     }
     [PunRPC]
-    private void SetShotTypeOnline(string hitType, int index)
+    private void ShootOnline(string hitType, int index)
     {
         BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
         BallInstance.GetComponent<Ball>().InitializeLastPlayerToApplyForce(_controllers[index]);
     }
-
+    [PunRPC]
+    private void EndPoint(bool fault)
+    {
+        Teams team = BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam;
+        if (fault)
+        {
+            BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.ServicesCount = 0;
+           team = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+        }
+        GameManager.Instance.EndOfPoint();
+        GameManager.Instance.ScoreManager.AddPoint(team);
+        BallInstance.GetComponent<Ball>().ResetBall();
+    }
 }

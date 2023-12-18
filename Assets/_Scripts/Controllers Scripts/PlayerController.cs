@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerController : ControllersParent
 {
@@ -114,7 +115,7 @@ public class PlayerController : ControllersParent
             // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
             if (PlayerState == PlayerStates.SERVE)
             {
-                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
+                GameManager.Instance.DeactivateAllServiceDetectionVolumes();
                 GameManager.Instance.ServiceManager.DisableLockServiceColliders();
             }
 
@@ -141,7 +142,7 @@ public class PlayerController : ControllersParent
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
         // Initialization of the other ball physic parameters.
-        GameManager.Instance.SetBallInfos(hitType.ToString(), this);
+        GameManager.Instance.photonView.RPC("SetShotTypeOnline", RpcTarget.Others, hitType.ToString(), GameManager.Instance.Controllers.IndexOf(this));
         _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
@@ -223,7 +224,7 @@ public class PlayerController : ControllersParent
 
         if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
         {
-            GameManager.Instance.Serve();
+            GameManager.Instance.photonView.RPC("Served", RpcTarget.Others);
             ballRigidBody.isKinematic = false;
             ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
         }

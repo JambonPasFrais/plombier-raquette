@@ -56,7 +56,6 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
 				{
-					//GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                 }
@@ -76,7 +75,6 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
                 {
-                    //GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                 }
@@ -110,7 +108,6 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
                 {
-                    //GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                 }
@@ -126,7 +123,6 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
                 if (PhotonNetwork.IsConnected)
 				{
-                    //GameManager.Instance.ServiceManager.SetServiceOnline(false);
                     GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
 					   !GameManager.Instance.ServiceManager.ChangeSides);
 				}
@@ -159,7 +155,6 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         if (PhotonNetwork.IsConnected)
         {
-            //GameManager.Instance.ServiceManager.SetServiceOnline(true);
             GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
         }
