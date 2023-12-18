@@ -110,7 +110,7 @@ public class Ball : MonoBehaviour
 
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
         Vector3 actualHorizontalDirection;
-        if(playerToApplyForce is PlayerController)
+        if (playerToApplyForce is PlayerController) 
         {
             actualHorizontalDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedHorizontalDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
         }
@@ -122,13 +122,13 @@ public class Ball : MonoBehaviour
         _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualHorizontalDirection.normalized, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
-
-
     }
 
     private IEnumerator BallMovement(float actualHorizontalForce, Vector3 actualNormalizedHorizontalDirection, Vector3 curvingDirection)
     {
         _reboundsCount = 0;
+
+        Debug.Log($"Direction {actualNormalizedHorizontalDirection} - Force {actualHorizontalForce}");
 
         _rigidBody.AddForce(actualNormalizedHorizontalDirection * actualHorizontalForce);
         _rigidBody.AddForce(Vector3.up * _shotParameters.RisingForce * _risingForceFactor);
@@ -209,19 +209,13 @@ public class Ball : MonoBehaviour
         GameManager.Instance.GameState = GameState.SERVICE;
         GameManager.Instance.BallServiceInitialization();
     }
-    public void ShootSmash(GameObject camera, float smashSpeed, ControllersParent controllersParent)
-    {
-        if (_lastPlayerToApplyForce != controllersParent)
-        {
-            _lastPlayerToApplyForce = controllersParent;
-            _rigidBody.AddForce(camera.transform.forward * smashSpeed, ForceMode.VelocityChange);
-        }
-    }
+
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
         DestroyTarget();
     }
+
     private void DrawTarget()
     {
         if (LastPlayerToApplyForce != null)
@@ -287,6 +281,7 @@ public class Ball : MonoBehaviour
             _targetInstance = null;
         }
     }
+
     private void InstantiateTarget(Vector3 position)
     {
         if (_ciblePrefab != null)

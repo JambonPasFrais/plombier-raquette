@@ -10,7 +10,6 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private PlayerController _player;
     [SerializeField] private Transform _ballSpawnPoint;
-    [SerializeField] private float _smashSpeed = 10f;
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _zoomFOV = 40f;
     [SerializeField] private float _normalFOV = 60f; 
@@ -65,10 +64,12 @@ public class PlayerCameraController : MonoBehaviour
 
             _firstPersonCamera.transform.eulerAngles = new Vector3(currentXRotation, _firstPersonCamera.transform.eulerAngles.y, 0);
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) 
             {
-                _ballPrefab.GetComponent<Rigidbody>().isKinematic =false;
-                _ballPrefab.GetComponent<Ball>().ShootSmash(_firstPersonCamera,_smashSpeed,this.GetComponent<PlayerController>());
+                _ballPrefab.GetComponent<Rigidbody>().isKinematic = false;
+                _ballPrefab.GetComponent<Ball>().InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_player.PossiblePhysicMaterials, "Normal"));
+                _ballPrefab.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_player.PossibleActions, "Smash"));
+                _ballPrefab.GetComponent<Ball>().ApplyForce(_player.MaximumShotForce, 0f, _firstPersonCamera.transform.forward, _player);
                 ToggleFirstPersonView();
             }
         }
@@ -82,7 +83,7 @@ public class PlayerCameraController : MonoBehaviour
         GameManager.Instance.SideManager.ActiveCameraTransform.gameObject.SetActive(!_isFirstPersonView);
         _firstPersonCamera.SetActive(_isFirstPersonView);
         _smashImage.gameObject.SetActive(_isFirstPersonView);
-        Cursor.visible = !_isFirstPersonView;
+        Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
         if (_isFirstPersonView)
         {
             StartCoroutine(ZoomIn());

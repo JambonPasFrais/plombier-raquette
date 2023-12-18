@@ -39,6 +39,7 @@ public class ControllersParent : MonoBehaviour
     public ActionParameters ActionParameters { get { return _actionParameters; } }
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
+    public float MaximumShotForce { get { return _maximumShotForce; } }
 
     #endregion
 

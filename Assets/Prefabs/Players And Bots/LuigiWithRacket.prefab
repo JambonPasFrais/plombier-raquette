@@ -9677,6 +9677,8 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: 6cd7c960d6aeade4c859d35350826a53, type: 2}
   - Name: Slice
     Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
+  - Name: Smash
+    Parameters: {fileID: 11400000, guid: bfb979b75805ac742a1f1557ef35c18d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
     PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
@@ -9929,12 +9931,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d203318895d4eae4195d462d177d0fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 0}
   _firstPersonCamera: {fileID: 922496909344414883}
   _ballPrefab: {fileID: 0}
   _player: {fileID: 2015187621588100880}
   _ballSpawnPoint: {fileID: 969680543911118686}
-  _ballSpeed: 50
+  _smashSpeed: 10
   _rotationSpeed: 100
   _zoomFOV: 40
   _normalFOV: 60
