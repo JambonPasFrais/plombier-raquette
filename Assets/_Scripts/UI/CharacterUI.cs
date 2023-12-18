@@ -29,7 +29,7 @@ public class CharacterUI : MonoBehaviour
     {
         _character = character;
         _charactersFace.sprite = character.Picture;
-        _backgroundColor.color = character.CharacterColor;
+        _backgroundColor.color = character.CharacterPrimaryColor;
 		gameObject.name = _character.Name;
 	}
 
