@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 public class CharacterSelectionMenu : MonoBehaviour
@@ -28,6 +29,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Where the model are in not selected -> pooling optimisation technique
 	[SerializeField] private Transform _charactersModelsContainer;
 	[SerializeField] private Button _playButton;
+	[SerializeField] private GameObject _confirmPlayButton;
 	
 	// All Characters Data
 	private List<CharacterData> _characters = new List<CharacterData>();
@@ -39,7 +41,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<CharacterData> _availableCharacters;
 	
 	// Every character that are selected
-	private List<CharacterData> _playersCharacter; 
+	[SerializeField] private List<CharacterData> _playersCharacter; 
 	
 	// Models sorted by names
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
@@ -50,6 +52,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<PlayerShowroom> _currentShowroomList = new List<PlayerShowroom>();
 	
 	private int _totalNbPlayers;
+
+	[SerializeField] private EventSystem _eventSystem;
 
 	#region Unity Functions
 	// Potentially Useless
@@ -105,12 +109,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 	#endregion
 
 	#region Listeners
-	
+
 	// Button "play"
 	public void Play()
 	{
-		TransformRandomSelectionInCharacter();
+		//TransformRandomSelectionInCharacter();
 		_aceItWindow.SetActive(true);
+		_eventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"
@@ -155,6 +160,16 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		SetPlayerInfos();
 		_playButton.interactable = false;
+
+		foreach(var item in _characterShowroomsSingle)
+		{
+			item.CharacterEmblem.gameObject.SetActive(false);
+		}
+		
+		foreach(var item in _characterShowroomsDouble)
+		{
+			item.CharacterEmblem.gameObject.SetActive(false);
+		}
 
 		foreach (var item in _characters)
 		{
@@ -297,7 +312,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 	
 	private void SetPlayButtonInteractability()
 	{
-		_playButton.interactable = IsEveryCharSelectedByLocals();
+		//_playButton.interactable = IsEveryCharSelectedByLocals();
+		if (IsEveryCharSelectedByLocals())
+			Play();
 	}
 
 	// Check if every local player selected his 
@@ -329,6 +346,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			item.NameBackground.color = Color.black;
 			item.CharacterName.text = "";
 			item.CharacterEmblem.sprite = null;
+			item.CharacterEmblem.gameObject.SetActive(false);
 		}
 
 		for (int i = 0; i < _playersCharacter.Count; i++)
