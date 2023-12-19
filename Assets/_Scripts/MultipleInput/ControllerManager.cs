@@ -38,13 +38,13 @@ public class ControllerManager : MonoBehaviour
     private void OnEnable()
     {
         // Enable the input action
-        _joinPlayerAction.Enable();
+        //_joinPlayerAction.Enable();
     }
 
     private void OnDisable()
     {
         // Disable the input action
-        _joinPlayerAction.Disable();
+        //_joinPlayerAction.Disable();
     }
 
     private void Awake()
@@ -58,6 +58,8 @@ public class ControllerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        CreateControllersDict();
     }
     #endregion
 
@@ -210,5 +212,20 @@ public class ControllerManager : MonoBehaviour
             _controllerSelectionMenu.MakeValidationButtonInteractable();
 
     }
+    #endregion
+    
+    #region LocalMultiplayer implementation test simplification
+
+    public List<PlayerInputHandler> _playerInputHandlers;
+
+    public void CreateControllersDict()
+    {
+        foreach (var pih in _playerInputHandlers)
+        {
+            _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
+        }
+    }
+        
+    
     #endregion
 }

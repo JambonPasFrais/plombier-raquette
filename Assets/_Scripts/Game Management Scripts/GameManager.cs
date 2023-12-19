@@ -115,6 +115,11 @@ public class GameManager : MonoBehaviour
             Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
             _teamControllersAssociated.Add(controller, team);
             i++;
+
+            if (i > 1)
+            {
+                i %= 2;
+            }
         }
 
         _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();

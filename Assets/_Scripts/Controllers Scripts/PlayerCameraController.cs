@@ -64,7 +64,7 @@ public class PlayerCameraController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0)) 
             {
-                // Reseting smash and target states.
+                // Resetting smash and target states.
                 _canSmash = false;
                 _ballInstance.GetComponent<Ball>().DestroyTarget();
 

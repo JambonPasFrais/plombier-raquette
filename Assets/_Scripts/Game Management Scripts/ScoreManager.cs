@@ -167,7 +167,7 @@ public class ScoreManager : MonoBehaviour
 		else
 			_nbOfSets = new Tuple<int, int>(_nbOfSets.Item1, _nbOfSets.Item2 + 1);
 
-		Debug.Log($"{_nbOfSets.Item1} set à {_nbOfSets.Item2}");
+		Debug.Log($"{_nbOfSets.Item1} set Ã  {_nbOfSets.Item2}");
 
 		if (_nbOfSets.Item1 == _nbOfSetsToWin)
 		{
