@@ -1869,6 +1869,7 @@ GameObject:
   - component: {fileID: 3950159987820724853}
   - component: {fileID: 6656433339225851837}
   - component: {fileID: 4930501403640221118}
+  - component: {fileID: -8994089751683610411}
   m_Layer: 0
   m_Name: Birdo
   m_TagString: Untagged
@@ -1936,15 +1937,15 @@ MonoBehaviour:
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
+  PlayerTeam: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 0
   _ballServiceDetectionArea: {fileID: 7182724276727742458}
   _serviceBallInitializationPoint: {fileID: 8144158612998060378}
   _minimumShotForce: 325
   _maximumShotForce: 450
   _maximumDistanceToNet: 11.89
   _forceMinimumClampFactor: 0.5
-  _forceMaximumClampFactor: 0
+  _forceMaximumClampFactor: 1
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -2049,6 +2050,30 @@ CapsuleCollider:
   m_Height: 21.388597
   m_Direction: 1
   m_Center: {x: 0, y: 10.194299, z: 0}
+--- !u!114 &-8994089751683610411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793691165080735929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d203318895d4eae4195d462d177d0fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firstPersonCamera: {fileID: 4992412559491024541}
+  _ballInstance: {fileID: 0}
+  _player: {fileID: 7146410963481921543}
+  _ballSpawnPoint: {fileID: 778372898433563948}
+  _rotationSpeed: 400
+  _zoomFOV: 40
+  _normalFOV: 60
+  _zoomDuration: 0.5
+  _smashTargetImage: {fileID: 0}
+  _canSmash: 0
+  _distanceToBall: 5
+  _isFirstPersonView: 0
 --- !u!1 &2887134000137616205
 GameObject:
   m_ObjectHideFlags: 0
@@ -5340,5 +5365,10 @@ PrefabInstance:
 --- !u!4 &1368827399073990051 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8443478029363938490, guid: a3416471aab670146bb81feb6cad4b70, type: 3}
+  m_PrefabInstance: {fileID: 7481129669172723993}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4992412559491024541 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2493537382482331524, guid: a3416471aab670146bb81feb6cad4b70, type: 3}
   m_PrefabInstance: {fileID: 7481129669172723993}
   m_PrefabAsset: {fileID: 0}

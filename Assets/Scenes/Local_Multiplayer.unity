@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2196464750058801302, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3105107556669345995, guid: 28c6b732ce07a7343af74803be22cd51, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -522,8 +526,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 235}
-  m_SizeDelta: {x: 200, y: 100}
+  m_AnchoredPosition: {x: -711, y: 301.23438}
+  m_SizeDelta: {x: 115.994, y: 76.222}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &237461815
 MonoBehaviour:
@@ -569,7 +573,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 175529525}
         m_TargetAssemblyTypeName: GameManagerLocalMultiplayer, Assembly-CSharp
         m_MethodName: TestScene
         m_Mode: 1
@@ -1041,8 +1045,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -127}
-  m_SizeDelta: {x: 743.9788, y: 201.10522}
+  m_AnchoredPosition: {x: -711, y: -103.090576}
+  m_SizeDelta: {x: 431.4853, y: 153.2863}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &714526697
 MonoBehaviour:
@@ -1869,6 +1873,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Input Handler
       objectReference: {fileID: 0}
+    - target: {fileID: 3770056709067675740, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: _playerInput
+      value: 
+      objectReference: {fileID: 2004522844}
     - target: {fileID: 5089189695655052442, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1936,6 +1944,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c121f5cbc016abd4b95b49a025b7baf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2004522844 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+  m_PrefabInstance: {fileID: 2004522841}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2006872490 stripped

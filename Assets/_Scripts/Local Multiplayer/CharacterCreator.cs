@@ -34,13 +34,14 @@ public class CharacterCreator : MonoBehaviour
         //InitCharacters();
     }
 
-    public void InitCharacters(Transform[] playerOriginalPositions)
+    public void InitCharacters()
     {
         _characters = new List<GameObject>();
 
         List<CharacterData> playersCharacter = GameParameters.PlayersCharacters;
 
         int nbCharInstantiated = 0;
+        bool playerInTeamOne = true;
 
         // Create Human Characters
         for (int playerIndex = 0; playerIndex < GameParameters.LocalNbPlayers; playerIndex++)
@@ -58,6 +59,10 @@ public class CharacterCreator : MonoBehaviour
                     
                     playerInputHandler.Character.SetCharParameters(playersCharacter[playerIndex].CharacterParameter);
 
+                    playerInputHandler.Character.PlayerController.PlayerTeam =
+                        playerInTeamOne ? Teams.TEAM1 : Teams.TEAM2;
+                    playerInTeamOne = !playerInTeamOne;
+
                     nbCharInstantiated++;
                     break;
                 }
@@ -69,8 +74,14 @@ public class CharacterCreator : MonoBehaviour
         {
             InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
             //_characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;
-            _characters[^1].GetComponent<BotBehavior>().InitTargetVariables(_targets, _firstSideTargetsPositions, _secondSideTargetsPositions);
-            // Also need to init the charParameters here
+            BotBehavior botBehavior = _characters[^1].GetComponent<BotBehavior>();
+            botBehavior.InitTargetVariables(_targets, _firstSideTargetsPositions, _secondSideTargetsPositions);
+            botBehavior.PlayerTeam =
+                playerInTeamOne ? Teams.TEAM1 : Teams.TEAM2;
+            playerInTeamOne = !playerInTeamOne; 
+            
+            // TODO : Init the charParameters here (how?)
+            
             nbCharInstantiated++;
         }
         

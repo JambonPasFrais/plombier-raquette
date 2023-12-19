@@ -59,7 +59,7 @@ public class ControllerManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        CreateControllersDict();
+        CreateControllersDict();//TODO : comment when finish testing
     }
     #endregion
 
@@ -215,11 +215,14 @@ public class ControllerManager : MonoBehaviour
     #endregion
     
     #region LocalMultiplayer implementation test simplification
+    //TODO : comment when local multiplayer implementation is finished
 
     public List<PlayerInputHandler> _playerInputHandlers;
 
     public void CreateControllersDict()
     {
+        //_controllers = new Dictionary<int, PlayerInputHandler>();
+        
         foreach (var pih in _playerInputHandlers)
         {
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);

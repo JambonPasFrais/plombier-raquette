@@ -37,7 +37,7 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     private void Start()
     {
         //_gameManager = GetComponent<GameManager>();
-        _characterCreator.InitCharacters(_playerOriginalPositions);
+        _characterCreator.InitCharacters();
         foreach (var t in _characterCreator.Characters)
         {
             _gameManager.AddControllers(t.GetComponent<ControllersParent>());

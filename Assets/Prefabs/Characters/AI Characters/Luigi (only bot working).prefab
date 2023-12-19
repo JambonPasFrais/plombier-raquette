@@ -3792,7 +3792,7 @@ GameObject:
   - component: {fileID: 5962522241361225335}
   - component: {fileID: -8802549185527419068}
   m_Layer: 0
-  m_Name: Luigi
+  m_Name: Luigi (only bot working)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3961,12 +3961,12 @@ MonoBehaviour:
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
+  PlayerTeam: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 8642139629764695327}
   _serviceBallInitializationPoint: {fileID: 7829016367837994453}
-  _minimumShotForce: 0
-  _maximumShotForce: 0
+  _minimumShotForce: 350
+  _maximumShotForce: 450
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
@@ -3990,9 +3990,9 @@ MonoBehaviour:
   - {fileID: 0}
   _ballDetectionArea: {fileID: 6243607518820617945}
   _speed: 7.5
-  _timeBeforeThrowingBallDuringService: 0
-  _timeBeforeShootingBallDuringService: 0
-  _serviceForce: 0
+  _timeBeforeThrowingBallDuringService: 1
+  _timeBeforeShootingBallDuringService: 0.35
+  _serviceForce: 400
 --- !u!1 &2602300957486344323
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Serialization;
 
 public class ControllersParent : MonoBehaviour
 {
@@ -11,13 +12,13 @@ public class ControllersParent : MonoBehaviour
     public bool IsServing;
     public PlayerStates PlayerState;
     public int ServicesCount=0;
+    public Teams PlayerTeam;
 
     #endregion
 
     #region PROTECTED FIELDS
 
     [SerializeField] protected ActionParameters _actionParameters;
-    [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
     [SerializeField] protected Transform _serviceBallInitializationPoint;
     [SerializeField] protected float _minimumShotForce;
@@ -34,8 +35,7 @@ public class ControllersParent : MonoBehaviour
     #endregion
 
     #region GETTERS
-
-    public Teams PlayerTeam { get { return _playerTeam; } }
+    
     public ActionParameters ActionParameters { get { return _actionParameters; } }
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
