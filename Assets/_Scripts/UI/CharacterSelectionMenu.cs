@@ -23,7 +23,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private GameObject _characterUIPrefab;
 	[SerializeField] private Transform _characterUiContainer;
 	[SerializeField] private LayerMask _characterUILayerMask;
-
 	// List of player's visual references
 	[SerializeField] private List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
 	[SerializeField] private List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
@@ -53,6 +52,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<PlayerShowroom> _currentShowroomList = new List<PlayerShowroom>();
 	
 	private int _totalNbPlayers;
+
+	private InputSystemUIInputModule _inputSystemUIInputModule;
 
 	[SerializeField] private EventSystem _eventSystem;
 
@@ -108,12 +109,15 @@ public class CharacterSelectionMenu : MonoBehaviour
 		}
 	}*/
 
+	private void Start()
+	{
+		//_inputSystemUIInputModule = (InputSystemUIInputModule)_eventSystem.currentInputModule;
+	}
+
 	private void Update()
 	{
-		var uiModule = (InputSystemUIInputModule)_eventSystem.currentInputModule; //(InputSystemUIInputModule)EventSystem.current.currentInputModule;
-
-		if (uiModule.cancel.action.WasPressedThisFrame())
-			CloseMenu();
+		/*if (_inputSystemUIInputModule.cancel.action.WasPressedThisFrame())
+			CloseMenu();*/
 	}
 	#endregion
 

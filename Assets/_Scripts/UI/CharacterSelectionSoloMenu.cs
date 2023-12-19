@@ -18,6 +18,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 	[SerializeField] private Transform _charactersModelsParent;
 	[SerializeField] private GameObject _aceItMenu;
 	[SerializeField] private GameObject _playButton;
+
 	private List<CharacterData> _availableCharacters;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	private CharacterData _playerCharacter;
