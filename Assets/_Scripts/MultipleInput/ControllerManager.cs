@@ -221,11 +221,14 @@ public class ControllerManager : MonoBehaviour
 
     public void CreateControllersDict()
     {
-        //_controllers = new Dictionary<int, PlayerInputHandler>();
+        _controllers = new Dictionary<int, PlayerInputHandler>();
         
         foreach (var pih in _playerInputHandlers)
         {
+            if (pih.PlayerInput.devices.Count <= 0)
+                continue;
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
+            Debug.Log(_controllers.Count);
         }
     }
         
