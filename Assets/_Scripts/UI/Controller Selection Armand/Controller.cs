@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -13,6 +14,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject _controllerMenuIcon;
     [SerializeField] private GameObject _characterSelectionIcon;
     [SerializeField] private Image _imgCharSelectionIcon;
+    [SerializeField] private TextMeshProUGUI _playerIndexText;
     [SerializeField] private RectTransform _rectTransform;
 
     [HideInInspector] public PlayerInput PlayerInput;
@@ -96,7 +98,7 @@ public class Controller : MonoBehaviour
         _isSelectingCharacter = false;
         
         _controllerMenuIcon.SetActive(true);
-        _characterSelectionIcon.SetActive(false);
+        _characterSelectionIcon.SetActive(true);
         
         transform.position = Vector3.zero;
         transform.localScale = Vector3.one;
@@ -118,6 +120,11 @@ public class Controller : MonoBehaviour
     {
         _characterSelected = false;
         _imgCharSelectionIcon.color = Color.white;
+    }
+
+    public void SetPlayerIndex()
+    {
+        _playerIndexText.text = "J" + PlayerInput.playerIndex;
     }
     #endregion
 }

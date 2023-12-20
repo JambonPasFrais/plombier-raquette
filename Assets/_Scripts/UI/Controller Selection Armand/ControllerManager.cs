@@ -168,13 +168,16 @@ public class ControllerManager : MonoBehaviour
         {
             case Joystick:
                 playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
+				playerInputHandler.Controller.SetPlayerIndex();
                 break;
             case Gamepad:
                 playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-                break;
+				playerInputHandler.Controller.SetPlayerIndex();
+				break;
             case Keyboard:
                 playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-                break;
+				playerInputHandler.Controller.SetPlayerIndex();
+				break;
         }
 
         playerInputHandler.Controller.ControllerSelectionMode();

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1583,6 +1583,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04109b8f3b11f6e478a0b630e7d7c7ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _trophyPosition: {fileID: 0}
+  _trophyModels: []
+  _eventSystem: {fileID: 0}
+  _firstSelectedObject: {fileID: 0}
+  _currentSelectedButton: {fileID: 0}
+  _scalingFactor: 0.05
 --- !u!1 &848382700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2423,7 +2429,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091813751}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 890feef12b1ba834e937086356e026c8, type: 3}
   m_Name: 
@@ -3191,16 +3197,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterUIPrefab: {fileID: 2994260158086343618, guid: 51f47967f66d70d4493d49dd1d748caa, type: 3}
-  _characters: []
-  _charactersListTransform: {fileID: 1831914021}
-  _selectedCharactersName: {fileID: 2080812468}
-  _characterModelLocation: {fileID: 1005222291}
-  _selectedCharacterBackground: {fileID: 376450838}
+  _characterUIContainer: {fileID: 0}
   _characterUILayerMask:
     serializedVersion: 2
     m_Bits: 128
-  _charactersModelsParent: {fileID: 5743142112829123866}
-  _playButton: {fileID: 958726033}
+  _playerShowroom:
+    PlayerInfo: {fileID: 0}
+    CharacterName: {fileID: 0}
+    NameBackground: {fileID: 0}
+    ModelLocation: {fileID: 0}
+    Background: {fileID: 0}
+    CharacterEmblem: {fileID: 0}
+  _charactersModelsContainer: {fileID: 0}
+  _aceItWindow: {fileID: 0}
+  _playButton: {fileID: 0}
+  _eventSystem: {fileID: 0}
 --- !u!1 &1664090691
 GameObject:
   m_ObjectHideFlags: 0
@@ -4152,7 +4163,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b838a0b046da7448c19fc3279589b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _localNbPlayers: 0
+  _localNbPlayers: 2
+  _numberOfPlayerBySide: 0
+  _currentGameMode:
+    _name: 
+    _nbOfSets: 0
+    _nbOfGames: 0
+  _COMDifficulty: 0
+  _isTournamentMode: 0
+  _tournamentInfos: {fileID: 11400000, guid: 29514cb7803d4c142a6d8962c6f2a246, type: 2}
 --- !u!4 &2031256156
 Transform:
   m_ObjectHideFlags: 0
@@ -6094,7 +6113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainMenu: {fileID: 1359609981560918056}
-  _menusParent: {fileID: 2345528570332682894}
+  _pressInputText: {fileID: 0}
 --- !u!114 &674785785611108684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7065,7 +7084,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2281343724795467866}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a670560a0381a84bb58f4a0a82f82ca, type: 3}
   m_Name: 
@@ -7093,8 +7112,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a9b11cd11540a847aab3dd36dbcbde9, type: 2}
   - {fileID: 11400000, guid: 7be31872b9827ab4d9329257ee9e72de, type: 2}
   _charactersModelsParent: {fileID: 5743142112829123866}
-  _visitedMenus: []
   _eventSystem: {fileID: 0}
+  _tournamentBracketMenu: {fileID: 0}
 --- !u!1 &1016660536940872733
 GameObject:
   m_ObjectHideFlags: 0
@@ -7856,44 +7875,17 @@ MonoBehaviour:
   _matchSingleWindow: {fileID: 434912103}
   _matchDoubleWindow: {fileID: 684062047897570510}
   _characterUIPrefab: {fileID: 2994260158086343618, guid: 51f47967f66d70d4493d49dd1d748caa, type: 3}
-  _characterUiContainer: {fileID: 8111026571399842528}
+  _characterUIContainer: {fileID: 0}
   _characterUILayerMask:
     serializedVersion: 2
     m_Bits: 128
-  _selectedCharactersNameSingle:
-  - {fileID: 2121232750}
-  - {fileID: 301166216}
-  _selectedCharactersNameDouble:
-  - {fileID: 3883471568751593894}
-  - {fileID: 2568910924281354623}
-  - {fileID: 3622324605169599908}
-  - {fileID: 4941327598976909641}
-  _playersInfoSingle:
-  - {fileID: 2105691758}
-  - {fileID: 244741372}
-  _playersInfoDouble:
-  - {fileID: 361099751134639899}
-  - {fileID: 5947613033094375695}
-  - {fileID: 2722997058975112180}
-  - {fileID: 5558728042918413577}
-  _characterModelContainerSingle:
-  - {fileID: 1240345772}
-  - {fileID: 1817345216}
-  _characterModelContainerDouble:
-  - {fileID: 2196328329954677462}
-  - {fileID: 1503631639331680017}
-  - {fileID: 2367422267363219363}
-  - {fileID: 7493936033485593904}
+  _characterShowroomsSingle: []
+  _characterShowroomsDouble: []
   _charactersModelsContainer: {fileID: 5743142112829123866}
-  _selectedCharacterBackgroundSingle:
-  - {fileID: 1139014736}
-  - {fileID: 1621820545}
-  _selectedCharacterBackgroundDouble:
-  - {fileID: 453923376743966228}
-  - {fileID: 32950345903190096}
-  - {fileID: 8525924776195634023}
-  - {fileID: 901129396213760746}
   _playButton: {fileID: 674785785611108684}
+  _confirmPlayButton: {fileID: 0}
+  _playersCharacter: []
+  _eventSystem: {fileID: 0}
 --- !u!114 &1415352444562186868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9027,6 +9019,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2345528570332682894}
     m_Modifications:
+    - target: {fileID: 721950147811154436, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 721950147811154436, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 721950147811154436, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 721950147811154436, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1288221578413464869, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1288221578413464869, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1288221578413464869, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1288221578413464869, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1293889915925450196, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
       propertyPath: _characterSelectionMenu
       value: 
@@ -9135,10 +9159,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControllerSelectionMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 5187592777614870815, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5609894161208404799, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1006972565354338573}
+    - target: {fileID: 6103338525523567022, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103338525523567022, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103338525523567022, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103338525523567022, guid: 6ad5706b1e197d846b7405c243e7b100, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20416,6 +20460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd45a236688e1454392fe986598b05e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _navigationButtonsParent: {fileID: 0}
   _resolutionDropdown: {fileID: 8415929276012566659}
   _fpsDropdown: {fileID: 2008431556811489887}
   _qualityDropdown: {fileID: 6987177479768299814}
@@ -20426,6 +20471,12 @@ MonoBehaviour:
   _musicVolumeSlider: {fileID: 7256569906878038783}
   _musicVolumeText: {fileID: 6051802819480479811}
   _audioMixer: {fileID: 0}
+  _firstDisplayButton: {fileID: 0}
+  _firstAudioButton: {fileID: 0}
+  _firstControlsButton: {fileID: 0}
+  _displayOptions: {fileID: 0}
+  _audioOptions: {fileID: 0}
+  _controlsOptions: {fileID: 0}
   _maxFps: 1e0000003c0000005a00000078000000ffffffff
   _qualities:
   - Very Low
@@ -20433,6 +20484,7 @@ MonoBehaviour:
   - Medium
   - High
   - Ultra
+  _eventSystem: {fileID: 0}
 --- !u!224 &8108827307815502561
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21666,18 +21718,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2e4e802310952d43b61880a31644c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _COMDifficultyText: {fileID: 7394462284677756736}
-  _difficulties:
+  _playerNumberText: {fileID: 5709723978678229757}
+  _gameTypeText: {fileID: 0}
+  _gameModeText: {fileID: 0}
+  _comDifficultyText: {fileID: 0}
+  _explanationText: {fileID: 0}
+  _gameModes: []
+  _comDifficulties:
   - Easy
   - Medium
   - Hard
   - Expert
   - Invincible
-  _characterSelectionMenu: {fileID: 3598822929740130267}
-  _validationButton: {fileID: 408259363139953110}
-  _gameTypeButtonsParent: {fileID: 1789039411554692724}
-  _gameModeButtonsParent: {fileID: 4649268632911353424}
-  _playerNumberText: {fileID: 5709723978678229757}
+  _firstSelectedObject: {fileID: 0}
 --- !u!224 &8745490629714222788
 RectTransform:
   m_ObjectHideFlags: 0
