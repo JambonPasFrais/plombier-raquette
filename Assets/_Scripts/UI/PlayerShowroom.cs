@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Class containing every refences to set visual of player's showroom
+// Class containing every refences to set visual of player's showroom for character selections
 [System.Serializable]
 public class PlayerShowroom
 {
