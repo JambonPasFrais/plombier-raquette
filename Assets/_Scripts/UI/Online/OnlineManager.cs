@@ -26,7 +26,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     private Dictionary<string, CharacterData> CharDataDic = new Dictionary<string, CharacterData>();
 
     private MyPlayerCard _localPlayerCard;
-    private Dictionary<string, bool> _inRoomPlayersReadyState = new Dictionary<string, bool>() ;
+    private Dictionary<string, bool> _inRoomPlayersReadyState = new Dictionary<string, bool>();
     private int _readyPlayersCount;
 
 
