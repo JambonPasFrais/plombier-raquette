@@ -174,12 +174,12 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount++;
 
-        if (_reboundsCount == 1)
+        /*if (_reboundsCount == 1)
         {
             Vector3 horizontalDistanceVector = Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.forward) +
                 Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.right);
-            Debug.Log($"Real distance travelled until first rebound : {horizontalDistanceVector.magnitude}");
-        }
+            //Debug.Log($"Real distance travelled until first rebound : {horizontalDistanceVector.magnitude}");
+        }*/
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
         _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));

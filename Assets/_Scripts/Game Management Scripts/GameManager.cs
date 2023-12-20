@@ -95,13 +95,15 @@ public class GameManager : MonoBehaviour
         if (_controllers.Count > 2)
         {
             CameraManager.InitSplitScreenCameras();
-            SideManager.SetSidesInDoubleMatch(_controllers, true, ServiceOnOriginalSide);
+            //SideManager.SetSidesInDoubleMatch(_controllers, true, ServiceOnOriginalSide);
         }
         else // Simple
         {
             CameraManager.InitSoloCamera();
-            SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
+            //SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
         }
+        
+        SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
         
         ServiceManager.SetServiceBoxCollider(false);
         

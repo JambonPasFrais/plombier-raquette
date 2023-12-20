@@ -40,13 +40,26 @@ public class SideManager : MonoBehaviour
 		}*/
 	}
 
+
+	/// <summary>
+	/// This function is called externally and will determine either to set sides for simple or double match based on the
+	/// nb of players
+	/// </summary>
+	public void SetSides(List<ControllersParent> players, bool serveRight, bool originalSides)
+	{
+		if (players.Count > 2)
+			SetSidesInDoubleMatch(players, serveRight, originalSides);
+		else
+			SetSidesInSimpleMatch(players, serveRight, originalSides);
+	}
+	
 	/// <summary>
 	/// Alternates the player's fields and set the players, the cameras and the bot targets to the correct positions for a 1v1 match.
 	/// </summary>
 	/// <param name="players"></param>
 	/// <param name="serveRight"></param>
 	/// <param name="originalSides"></param>
-	public void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
+	private void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
 		string side = "";
 
@@ -85,7 +98,7 @@ public class SideManager : MonoBehaviour
     /// <param name="players"></param>
     /// <param name="serveRight"></param>
     /// <param name="_originalSides"></param>
-    public void SetSidesInDoubleMatch(List<ControllersParent> players, bool serveRight, bool _originalSides)
+    private void SetSidesInDoubleMatch(List<ControllersParent> players, bool serveRight, bool _originalSides)
 	{
 		string side = "";
 
