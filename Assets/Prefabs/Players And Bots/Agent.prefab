@@ -2836,8 +2836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trainingManager: {fileID: 0}
   _boxCollider: {fileID: 7816196676974858508}
-  _risingForceMinimumFactor: 0.7
-  _risingForceMaximumFactor: 1.2
+  _risingForceMinimumFactor: 0.77
+  _risingForceMaximumFactor: 1.1
   _risingForceNormalFactor: 1
 --- !u!65 &7816196676974858508
 BoxCollider:
@@ -6624,11 +6624,14 @@ MonoBehaviour:
   ServicesCount: 0
   _trainingManager: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 0
+  _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 2235423786061844894}
   _serviceBallInitializationPoint: {fileID: 6716864470333118959}
+  _minimumShotForce: 325
+  _maximumShotForce: 450
   _maximumDistanceToNet: 11.89
-  _forceMinimumClampFactor: 0.5
+  _forceMinimumClampFactor: 0.45
+  _forceMaximumClampFactor: 1
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -6642,14 +6645,12 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: f6dc4df3b61b4224f8e68c5bc8e628e8, type: 2}
   - Name: Drop
-    PhysicMaterial: {fileID: 13400000, guid: e0474b626c2854e47bc34c8dadd07026, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: ad26db2a57054894896000eb51a3a26f, type: 2}
   _rigidBody: {fileID: 1662565903311258972}
   _ballDetectionArea: {fileID: 5015416284651310188}
   _movementSpeed: 7.5
-  _minimumShotForce: 325
-  _maximumShotForce: 450
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
 --- !u!114 &7312906625559688185

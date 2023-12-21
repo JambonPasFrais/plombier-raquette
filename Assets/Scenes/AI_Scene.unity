@@ -222,6 +222,7 @@ MonoBehaviour:
   _borderPointsContainers:
   - {fileID: 3845736973216990914}
   - {fileID: 6720412245509593864}
+  _leftFaultLineXFromFirstSide: -4.11
 --- !u!1 &330511882
 GameObject:
   m_ObjectHideFlags: 0
@@ -13228,17 +13229,20 @@ MonoBehaviour:
   ServicesCount: 0
   _trainingManager: {fileID: 175529520}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 1
+  _playerTeam: 2
   _ballServiceDetectionArea: {fileID: 571791135}
   _serviceBallInitializationPoint: {fileID: 1112847464240904049}
+  _minimumShotForce: 300
+  _maximumShotForce: 450
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
+  _forceMaximumClampFactor: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: f6dc4df3b61b4224f8e68c5bc8e628e8, type: 2}
   _targets:
   - {fileID: 1961376066}
   - {fileID: 330511883}
@@ -13253,8 +13257,6 @@ MonoBehaviour:
   - {fileID: 3802616860169035364}
   _ballDetectionArea: {fileID: 5342351297477191419}
   _speed: 7
-  _minimumHitForce: 300
-  _maximumHitForce: 450
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.4
   _serviceForce: 400

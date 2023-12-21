@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviour
         }
 
         _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
-
         foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
         {
             _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);

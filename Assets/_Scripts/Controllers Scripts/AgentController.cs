@@ -20,8 +20,6 @@ public class AgentController : ControllersParent
 
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
-    [SerializeField] protected float _minimumShotForce;
-    [SerializeField] protected float _maximumShotForce;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
@@ -30,8 +28,6 @@ public class AgentController : ControllersParent
     private float _currentSpeed;
     private ControllersParent _otherPlayer;
     private FieldBorderPointsContainer _borderPointsContainer;
-
-    private float _noMovementTime;
 
     #endregion
 
@@ -44,7 +40,6 @@ public class AgentController : ControllersParent
         _otherPlayer = _trainingManager.Controllers[0] == this ? _trainingManager.Controllers[1] : _trainingManager.Controllers[0];
         UpdateBorderPointsContainer();
 
-        _noMovementTime = 0;
         ServicesCount = 0;
         _hitKeyPressedTime = 0f;
         _isCharging = false;
@@ -141,7 +136,7 @@ public class AgentController : ControllersParent
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
         // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-        _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+        _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
     }
 
     public void Move(InputAction.CallbackContext context)

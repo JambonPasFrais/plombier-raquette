@@ -31,11 +31,6 @@ public class AIBall : MonoBehaviour
 
     #region UNITY METHODS
 
-    private void Awake()
-    {
-        _rigidBody = GetComponent<Rigidbody>();
-    }
-
     private void Start()
     {
         _reboundsCount = 0;
@@ -82,6 +77,16 @@ public class AIBall : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<ControllersParent>() && !_rigidBody.isKinematic)
+        {
+            GameManager.Instance.EndOfPoint();
+            GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+            ResetBall();
+        }
+    }
+
     #endregion
 
     #region PHYSICS BEHAVIOR METHODS
@@ -122,18 +127,29 @@ public class AIBall : MonoBehaviour
         }
 
         _risingForceFactor = risingForceFactor;
-        Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
+        float actualHorizontalForce = _shotParameters.ShotForceFactor * force;
 
-        _currentMovementCoroutine = StartCoroutine(BallMovement(force, normalizedHorizontalDirection, curvingDirection));
+        Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
+        Vector3 actualHorizontalDirection;
+        if (playerToApplyForce is PlayerController || playerToApplyForce is AgentController)
+        {
+            actualHorizontalDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedHorizontalDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
+        }
+        else
+        {
+            actualHorizontalDirection = normalizedHorizontalDirection;
+        }
+
+        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualHorizontalDirection.normalized, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
     }
 
-    private IEnumerator BallMovement(float force, Vector3 normalizedDirection, Vector3 curvingDirection)
+    private IEnumerator BallMovement(float actualHorizontalForce, Vector3 actualNormalizedHorizontalDirection, Vector3 curvingDirection)
     {
         _reboundsCount = 0;
 
-        _rigidBody.AddForce(normalizedDirection * force * _shotParameters.ShotForceFactor);
+        _rigidBody.AddForce(actualNormalizedHorizontalDirection * actualHorizontalForce);
         _rigidBody.AddForce(Vector3.up * _shotParameters.RisingForce * _risingForceFactor);
 
         _currentCurvingEffectCoroutine = StartCoroutine(CurvingEffect(curvingDirection));
@@ -179,6 +195,13 @@ public class AIBall : MonoBehaviour
     public void Rebound()
     {
         _reboundsCount++;
+
+/*        if (_reboundsCount == 1)
+        {
+            Vector3 horizontalDistanceVector = Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.forward) +
+                Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.right);
+            Debug.Log($"Real distance travelled until first rebound : {horizontalDistanceVector.magnitude}");
+        }*/
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
         _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));

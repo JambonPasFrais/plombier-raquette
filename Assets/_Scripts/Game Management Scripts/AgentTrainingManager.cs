@@ -34,9 +34,11 @@ public class AgentTrainingManager : MonoBehaviour
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
+    [SerializeField] private float _leftFaultLineXFromFirstSide;
 
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
+    private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
     private GameObject _ballInstance;
     private int _serverIndex;
@@ -55,6 +57,7 @@ public class AgentTrainingManager : MonoBehaviour
     public FieldBorderPointsContainer[] BorderPointsContainers { get { return _borderPointsContainers; } }
     public int ServerIndex { get { return _serverIndex; } }
     public bool ServeRight { get { return _serveRight; } }
+    public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
 
     #endregion
 
@@ -91,11 +94,16 @@ public class AgentTrainingManager : MonoBehaviour
         }
 
         _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
-
         foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
         {
             _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
         }
+
+        _faultLinesXByTeam = new Dictionary<Teams, float[]>()
+        {
+            {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
+            {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
+        };
     }
 
     #endregion

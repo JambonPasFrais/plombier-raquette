@@ -223,17 +223,6 @@ public class PlayerController : ControllersParent
         }
     }
 
-    public void ServiceThrow(InputAction.CallbackContext context)
-    {
-        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
-
-        if (GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * _actionParameters.ServiceThrowForce);
-        }
-    }
-
     public void TechnicalShot(InputAction.CallbackContext context)
     {
         if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this) 
@@ -279,11 +268,6 @@ public class PlayerController : ControllersParent
                 transform.position += wantedDirection * distanceToBorderInWantedDirection;
             }
         }
-    }
-
-    public void ServiceThrow(InputAction.CallbackContext context)
-    {
-        ThrowBall();
     }
 
     public void Smash()
