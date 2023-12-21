@@ -32,10 +32,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     // Online Room Menu Reference
     [SerializeField] private GameObject _roomPanel;
 
-    [Header("Online Room Menu References")]
-    // Players Container from Online Room Menu
-    [SerializeField] private GameObject _playersContainer;
-
     [Header("Character Data List")]
     // List of all the possible CharacterData
     private List<CharacterData> _charDataList;
@@ -53,15 +49,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     private byte _maxPlayersPerRoom = 2;
 
     private bool _isConnecting;
-
-	// Will become useless
-	[Header("Prefabs")]
-	// My Player Prefab
-	[SerializeField] private GameObject _playerObject;
-	// Other Player Prefab
-	[SerializeField] private GameObject _otherPlayerObject;
-	private MyPlayerCard _localPlayerCard;
-	private bool _connected = false;
 
 	#endregion
 
@@ -91,20 +78,15 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        foreach (CharacterData cd in _charDataList)
+		_charDataList = new List<CharacterData>(MenuManager.Instance.Characters);
+
+		foreach (CharacterData cd in _charDataList)
         {
             _charDataDic.Add(cd.Name, cd);
         }
 
         _playOnlineRoomButton.interactable = false;
-
-        _charDataList = new List<CharacterData>(MenuManager.Instance.Characters);
     }
-
-    /*private void Update()
-    {
-        _playButton.interactable = _connected;
-    }*/
 
 	#endregion
 
@@ -131,7 +113,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         if (_isConnecting)
         {
-            //_connected = true;
 			_playCharacterSelectionButton.interactable = true;
 			_isConnecting = false;
         }
@@ -158,10 +139,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
             GetOtherPlayersInRoomInformation();
         }
-
-        /*GameObject myPlayerPreview = Instantiate(_playerObject, _playersContainer.transform);
-        _localPlayerCard = myPlayerPreview.GetComponent<MyPlayerCard>();
-        _localPlayerCard.Initialize(PhotonNetwork.LocalPlayer.NickName, GameParameters.Instance.GetCharactersPlayers());*/
 
         _playerShowrooms[0].InitializeOnlineShowroom(GameParameters.Instance.GetCharactersPlayers(), PhotonNetwork.LocalPlayer.NickName);
 
@@ -210,11 +187,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
 
-        /*for (int i = 0; i < _playersContainer.transform.childCount; i++)
-        {
-            Destroy(_playersContainer.transform.GetChild(i).gameObject);
-        }*/
-
         foreach (var showroom in _playerShowrooms)
         {
             showroom.ResetShowroom();
@@ -227,17 +199,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        /*for (int i = 0; i < _playersContainer.transform.childCount; i++)
-        {
-            PlayerCard player = _playersContainer.transform.GetChild(i).gameObject.GetComponent<PlayerCard>();
-
-            if (player.PlayerName == otherPlayer.NickName)
-            {
-                Destroy(player.gameObject);
-                break;
-            }
-        }*/
-
         _playerShowrooms[1].ResetShowroom();
         _playerShowrooms[1].Container.SetActive(false);
     }
@@ -298,9 +259,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
     {
-        /*GameObject otherPlayerPreview = Instantiate(_otherPlayerObject, _playersContainer.transform);
-        otherPlayerPreview.GetComponent<PlayerCard>().Initialize(nickname, _charDataDic[otherPlayerCharacterData]);
-		string characterData = GameParameters.Instance.GetCharactersPlayers().Name;*/
 
         _playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
 
@@ -312,9 +270,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.NickName == nickname)
         {
-			/*GameObject otherPlayerPreview = Instantiate(_otherPlayerObject, _playersContainer.transform);
-            otherPlayerPreview.GetComponent<PlayerCard>().Initialize(senderNickname, _charDataDic[otherPlayerCharacterData]);*/
-
 			_playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
 		}
 	}

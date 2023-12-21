@@ -141,7 +141,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		_playButton.interactable = false;
 	}
 
-	// Button play on Ace It Menu allow to launch tournament mode
+	// Button play that will make the random character selection and send player Character to Game Parameters 
 	public void Play()
 	{
 		System.Random random = new System.Random();

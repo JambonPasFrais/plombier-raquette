@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 public class CharacterSelectionMenu : MonoBehaviour
