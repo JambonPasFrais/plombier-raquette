@@ -4,12 +4,13 @@ public class BallDetection : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
+    [SerializeField] private AgentTrainingManager _trainingManager;
     [SerializeField] private BoxCollider _boxCollider;
     [SerializeField] private float _risingForceMinimumFactor;
     [SerializeField] private float _risingForceMaximumFactor;
     [SerializeField] private float _risingForceNormalFactor;
 
-    private Ball _ball;
+    private AIBall _ball;
     private bool _isBallInHitZone;
 
     #endregion
@@ -17,7 +18,7 @@ public class BallDetection : MonoBehaviour
     #region ACCESSORS
 
     public bool IsBallInHitZone { get { return _isBallInHitZone; } }
-    public Ball Ball { get { return _ball; } }
+    public AIBall Ball { get { return _ball; } }
 
     #endregion
 
@@ -39,7 +40,7 @@ public class BallDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (other.gameObject.TryGetComponent<AIBall>(out AIBall ball))
         {
             _isBallInHitZone = true;
             _ball = ball;
@@ -48,7 +49,7 @@ public class BallDetection : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (other.gameObject.TryGetComponent<AIBall>(out AIBall ball))
         {
             _isBallInHitZone = false;
             _ball = null;
@@ -82,7 +83,7 @@ public class BallDetection : MonoBehaviour
     /// </summary>
     public void SetBallAtService()
     {
-        _ball = GameManager.Instance.BallInstance.GetComponent<Ball>();
+        _ball = _trainingManager.BallInstance.GetComponent<AIBall>();
         _isBallInHitZone = true;
     }
 }

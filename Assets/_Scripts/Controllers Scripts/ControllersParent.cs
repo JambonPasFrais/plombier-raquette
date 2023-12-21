@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.InputSystem;
 
 public class ControllersParent : Agent
 {
@@ -16,6 +16,7 @@ public class ControllersParent : Agent
 
     #region PROTECTED FIELDS
 
+    [SerializeField] protected AgentTrainingManager _trainingManager;
     [SerializeField] protected ActionParameters _actionParameters;
     [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
@@ -42,13 +43,39 @@ public class ControllersParent : Agent
 
     #endregion
 
+    public void ServiceThrow(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (this is AgentController)
+            {
+                ((AgentController)this).ActionIndex = 1;
+            }
+            else
+            {
+                ThrowBall();
+            }
+        }
+    }
+
+    protected void ThrowBall()
+    {
+        Rigidbody ballRigidBody = _trainingManager.BallInstance.GetComponent<Rigidbody>();
+
+        if (_trainingManager.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        {
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * _actionParameters.ServiceThrowForce);
+        }
+    }
+
     /// <summary>
     /// Calculates the distance between the player and the net, clamped bewteen 0m and the maximum distance to the net which corresponds the bottom line of the field.
     /// </summary>
     /// <returns></returns>
     private float CaluclateClampedDistanceToNet()
     {
-        float actualDistanceToNet = Vector3.Project(GameManager.Instance.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
+        float actualDistanceToNet = Vector3.Project(_trainingManager.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
         float clampedDistanceToNet = Mathf.Clamp(actualDistanceToNet, 0f, _maximumDistanceToNet);
         return clampedDistanceToNet;
     }
@@ -133,16 +160,5 @@ public class ControllersParent : Agent
     {
         _hitKeyPressedTime = 0;
         _isCharging = false;
-    }
-
-    protected void ThrowBall()
-    {
-        Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
-
-        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-        }
     }
 }
