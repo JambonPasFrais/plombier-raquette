@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class MenuManager : MonoBehaviour
 {
@@ -61,7 +60,7 @@ public class MenuManager : MonoBehaviour
     }
     public void SetFirstSelectedButton(GameObject Button)
     {
-		//_eventSystem.SetSelectedGameObject(Button);
+		_eventSystem.SetSelectedGameObject(Button);
     }
     public void GoToPreviousMenu()
     {
@@ -142,5 +141,10 @@ public class MenuManager : MonoBehaviour
 		navigation.selectOnDown = downObject;
 
 		currentButton.navigation = navigation;
+	}
+
+	public void QuitGame()
+	{
+		Application.Quit();
 	}
 }
