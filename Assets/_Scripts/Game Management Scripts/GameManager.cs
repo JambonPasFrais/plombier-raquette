@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Ball Management")]
     public GameObject BallPrefab;
+
+    [SerializeField] private GameObject _smashTargetGo;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
 
@@ -54,6 +57,8 @@ public class GameManager : MonoBehaviour
     public int ServerIndex { get { return _serverIndex; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
+
+    public GameObject SmashTargetGo => _smashTargetGo;
 
     #endregion
     

@@ -136,11 +136,17 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnPrepSmash(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            Character.PlayerController.PrepareSmash(context);
+    }
+    
     public void OnSmash(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            //Character.PlayerController.Smash();
+            Character.PlayerController.Smash(context);
         }
     }
     

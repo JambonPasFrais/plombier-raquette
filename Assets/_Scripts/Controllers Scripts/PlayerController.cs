@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,17 +16,22 @@ public class PlayerController : ControllersParent
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private BallDetection _ballDetectionArea;
-
+    [SerializeField] private PlayerCameraController _playerCameraController;
+    
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
+    [Header("Smash Parameters")]
+    [SerializeField] private bool _canSmash;
+    
     private PlayerCameraController _cameraController;
     private Vector2 _movementVector;
     private float _currentSpeed;
-    private bool isSmashing = false;
-
+    private Ball _ballInstance;
+    
+    
     #endregion
 
     #region GETTERS
@@ -44,6 +50,7 @@ public class PlayerController : ControllersParent
         _isCharging = false;
         _currentSpeed = _movementSpeed;
         _cameraController = GetComponent<PlayerCameraController>();
+        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
     }
 
     void Update()
@@ -64,7 +71,7 @@ public class PlayerController : ControllersParent
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
         if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
-            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic) && isSmashing == false) 
+            && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && _playerCameraController.IsFirstPersonView == false) 
         {
             //TODO : known issue: there is no ActiveCameraTransform when split screen enabled coz both camera are used. 
             // We need to add for each player there "sideIndex" and the vectors will be set using a List<Transform>[sideIndex]
@@ -87,17 +94,6 @@ public class PlayerController : ControllersParent
         {
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
         }
-        //if (!_cameraController.IsSmashing)
-        //{
-        //    // The global player directions depend on the side he is on.
-        //    Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
-        //    Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
-        //    Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
-
-        //    // The player moves according to the movement inputs.
-        //    /*_rigidBody.velocity = (new Vector3(_movementVector.x, 0, _movementVector.y)).normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);*/
-        //    _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
-        //}
     }
 
     #endregion
@@ -126,7 +122,8 @@ public class PlayerController : ControllersParent
         _isCharging = false;
 
         // Reseting smash and target states.
-        _cameraController.SetCanSmash(false);
+        _canSmash = false;
+        //_cameraController.SetCanSmash(false);
         _ballDetectionArea.Ball.DestroyTarget();
 
         // The player enters in the PLAY state.
@@ -225,7 +222,7 @@ public class PlayerController : ControllersParent
 
     public void SlowTime(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this)
         {
             Time.timeScale = _actionParameters.SlowTimeScaleFactor;
             _currentSpeed = _movementSpeed / Time.timeScale;
@@ -239,7 +236,7 @@ public class PlayerController : ControllersParent
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this) 
+        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this) 
         {
             float tempForwardMovementFactor = 0f;
             float tempRightMovementFactor = 0f;
@@ -289,9 +286,48 @@ public class PlayerController : ControllersParent
         ThrowBall();
     }
 
-    public void SetSmash()
+    public void PrepareSmash(InputAction.CallbackContext context)
     {
-        isSmashing = !isSmashing;
+        if (context.performed)
+        {
+            if (_playerCameraController.IsFirstPersonView)
+                return;
+            if (GameManager.Instance.GameState != GameState.PLAYING)
+                return;
+            if (!_canSmash)
+                return;
+            
+            _playerCameraController.ToggleFirstPersonView();
+            _ballInstance.gameObject.transform.rotation = Quaternion.identity;
+        }
+    }
+
+    public void Smash(InputAction.CallbackContext context)
+    {
+        if (!_playerCameraController.IsFirstPersonView)
+            return;
+        
+        if (context.performed)
+        {
+            _canSmash = false;
+
+            _ballInstance.DestroyTarget();
+            _ballInstance.Rb.isKinematic = false;
+            _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
+            _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
+
+            Vector3 playerCameraTransformForward = _playerCameraController.FirstPersonCamera.transform.forward;
+            Vector3 horizontalDirection = Vector3.Project(playerCameraTransformForward, Vector3.forward) + Vector3.Project(playerCameraTransformForward, Vector3.right);
+            
+            _ballInstance.ApplyForce(_maximumShotForce, 0f, horizontalDirection.normalized, this);
+            
+            _playerCameraController.ToggleFirstPersonView();
+        }
+    }
+
+    public void SetCanSmash(bool canSmash)
+    {
+        _canSmash = canSmash;
     }
 
     #endregion
