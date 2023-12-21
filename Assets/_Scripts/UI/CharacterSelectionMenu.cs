@@ -54,8 +54,6 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private InputSystemUIInputModule _inputSystemUIInputModule;
 
-	[SerializeField] private EventSystem _eventSystem;
-
 	#region Unity Functions
 	// Potentially Useless
 	/*private void Update()
@@ -110,7 +108,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private void Start()
 	{
-		_inputSystemUIInputModule = (InputSystemUIInputModule)_eventSystem.currentInputModule;
+		_inputSystemUIInputModule = MenuManager.Instance.CurrentEventSystem.GetComponent<InputSystemUIInputModule>();
 	}
 
 	private void Update()
@@ -125,7 +123,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		if (_aceItWindow.activeSelf)
 		{
 			_aceItWindow.SetActive(false);
-			_eventSystem.SetSelectedGameObject(null);
+			MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
 		}
 	}
 
@@ -136,8 +134,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 	{
 		//TransformRandomSelectionInCharacter();
 		_aceItWindow.SetActive(true);
-		_eventSystem.SetSelectedGameObject(null);
-		_eventSystem.SetSelectedGameObject(_confirmPlayButton);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"

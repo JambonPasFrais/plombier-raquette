@@ -90,7 +90,7 @@ public class ControllerManager : MonoBehaviour
         foreach (var controller in _controllers)
         {
             controller.Value.Controller.gameObject.transform.SetParent(cltrSelectionContainer);
-            controller.Value.Controller.ControllerSelectionMode();
+			controller.Value.Controller.ControllerSelectionMode();
         }
     }
     
