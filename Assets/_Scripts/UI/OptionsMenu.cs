@@ -204,7 +204,7 @@ public class OptionsMenu : MonoBehaviour
 
 	public void ShowDisplayParameters()
 	{
-		MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton.gameObject);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton.gameObject);
 		SetMenuNavigation(_firstDisplayButton);
 		_controlsOptions.SetActive(false);
 		_audioOptions.SetActive(false);
@@ -213,7 +213,7 @@ public class OptionsMenu : MonoBehaviour
 	
 	public void ShowAudioParameters()
 	{
-		MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton.gameObject);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton.gameObject);
 		SetMenuNavigation(_firstAudioButton);
 		_controlsOptions.SetActive(false);
 		_audioOptions.SetActive(true);

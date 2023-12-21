@@ -16,10 +16,10 @@ public class MenuManager : MonoBehaviour
 	[SerializeField] private GameObject _tournamentBracketMenu;
 
 	public static MenuManager Instance => _instance;
-	public static List<CharacterData> Characters => _instance._characters;
-	public static Dictionary<string, GameObject> CharactersModel => _instance._charactersModel;
-	public static Transform CharactersModelsParent => _instance._charactersModelsParent;
-	public static EventSystem CurrentEventSystem => _instance._eventSystem;
+	public  List<CharacterData> Characters => _characters;
+	public Dictionary<string, GameObject> CharactersModel => _charactersModel;
+	public Transform CharactersModelsParent => _charactersModelsParent;
+	public EventSystem CurrentEventSystem => _eventSystem;
 
 	private void Awake()
 	{

@@ -20,12 +20,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 	[SerializeField] private PlayerShowroom _playerShowroom;
 	// Where the model are in not selected -> pooling optimisation technique
 	[SerializeField] private Transform _charactersModelsContainer;
-	// References to GameObject we will need to enable/disable or assign during the life of the menu
-	[SerializeField] private GameObject _aceItWindow;
-	[SerializeField] private GameObject _playButton;
-	// Eventsystem reference
-	[SerializeField] private EventSystem _eventSystem;
-	private InputSystemUIInputModule _inputSystemUIInputModule;
+	[SerializeField] private Button _playButton;
 
 	// All Characters Data
 	private List<CharacterData> _characters = new List<CharacterData>();
@@ -44,11 +39,10 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void Start()
 	{
-		_inputSystemUIInputModule = (InputSystemUIInputModule)_eventSystem.currentInputModule;
-		_characters = MenuManager.Characters;
-		_charactersModelsContainer = MenuManager.CharactersModelsParent;
-		_charactersModel = MenuManager.CharactersModel;
-		_aceItWindow.SetActive(false);
+		_characters = MenuManager.Instance.Characters;
+		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
+		_charactersModel = MenuManager.Instance.CharactersModel;
+		_playButton.interactable = false;
 
 		GameObject go;
 
@@ -107,23 +101,8 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				go.SetActive(true);
 				_previousSelectedCharacterUI = characterUI;
 				_playerCharacter = characterUI.Character;
-				_aceItWindow.SetActive(true);
-				EventSystem.current.SetSelectedGameObject(_playButton);
+				_playButton.interactable = true;
 			}
-		}
-
-		// Verify if player press cancel input and to the appropriate action
-		if (_inputSystemUIInputModule.cancel.action.WasPressedThisFrame())
-			CloseMenu();
-	}
-
-	// Close the Ace It Window if it is active
-	private void CloseMenu()
-	{
-		if (_aceItWindow.activeSelf)
-		{
-			_aceItWindow.SetActive(false);
-			_eventSystem.SetSelectedGameObject(null);
 		}
 	}
 
@@ -159,7 +138,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			item.SetSelected(false);
 		}
 
-		_aceItWindow.SetActive(false);
+		_playButton.interactable = false;
 	}
 
 	// Button play on Ace It Menu allow to launch tournament mode

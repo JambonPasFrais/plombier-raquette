@@ -176,10 +176,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Any button that loads the menu
 	public void OnMenuLoaded()
 	{
-		_characters = MenuManager.Characters;
+		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
-		_charactersModelsContainer = MenuManager.CharactersModelsParent;
-		_charactersModel = MenuManager.CharactersModel;
+		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
+		_charactersModel = MenuManager.Instance.CharactersModel;
 
 		SetPlayerInfos();
 		_playButton.interactable = false;

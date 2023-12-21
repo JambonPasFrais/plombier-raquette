@@ -98,7 +98,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
         _playOnlineRoomButton.interactable = false;
 
-        _charDataList = new List<CharacterData>(MenuManager.Characters);
+        _charDataList = new List<CharacterData>(MenuManager.Instance.Characters);
     }
 
     /*private void Update()

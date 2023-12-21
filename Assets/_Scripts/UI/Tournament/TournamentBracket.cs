@@ -155,7 +155,7 @@ public class TournamentBracket : MonoBehaviour
 		GameParameters.CurrentTournamentInfos.CupSprite = _tournamentCupsSprite[GameParameters.Instance.ReturnCupIndex()];
 
 		_selectedCharacters.Add(GameParameters.Instance.GetCharactersPlayers());
-		_availableCharacters = new List<CharacterData>(MenuManager.Characters);
+		_availableCharacters = new List<CharacterData>(MenuManager.Instance.Characters);
 		_availableCharacters.Remove(_selectedCharacters[0]);
 		_availableCharacters.Remove(_availableCharacters.Last());
 
