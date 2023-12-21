@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using TMPro;
+
 
 public class TournamentEndMenu : MonoBehaviour
 {
@@ -10,13 +14,23 @@ public class TournamentEndMenu : MonoBehaviour
     [SerializeField] private Image _currentCup;
     [SerializeField] private Transform _winnerPlayerLocation;
     [SerializeField] private Transform _loserPlayerLocation;
-    [SerializeField] private Transform _confettisLocation;
-    [SerializeField] private GameObject _conffetisParticleEffects;
 	[SerializeField] private GameObject _continueText;
-	private bool _canReturn = false;
+    [SerializeField] private EventSystem _eventSystem;
+    [SerializeField] private TextMeshProUGUI _pressInputTextWin;
+    [SerializeField] private TextMeshProUGUI _pressInputTextLose;
+	[SerializeField] private TextMeshProUGUI _pressInputGlobal;
+    private InputSystemUIInputModule _inputSystemUIInputModule;
 
-	public void SetWinnerMenu(GameObject winnerPrefab, Sprite cupSprite)
+    [SerializeField]private bool _canReturn = false;
+    private int _factor = -1;
+    private void Awake()
     {
+		_inputSystemUIInputModule = _eventSystem.gameObject.GetComponent<InputSystemUIInputModule>();
+    }
+
+    public void SetWinnerMenu(GameObject winnerPrefab, Sprite cupSprite)
+    {
+		_pressInputGlobal = _pressInputTextWin;
 		_continueText.SetActive(false);
 		_canReturn = false;
 		_winnerDisplay.SetActive(true);
@@ -28,7 +42,6 @@ public class TournamentEndMenu : MonoBehaviour
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
-		go = Instantiate(_conffetisParticleEffects, _confettisLocation);
 		go.transform.localScale = new Vector3(10, 10, 1);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		StartCoroutine(WaitBeforeCanReturn());
@@ -36,7 +49,8 @@ public class TournamentEndMenu : MonoBehaviour
 
 	public void SetLoserMenu(GameObject loserPrefab)
 	{
-		_continueText.SetActive(false);
+		_pressInputGlobal = _pressInputTextLose;
+        _continueText.SetActive(false);
 		_canReturn = false;
 		_loserDisplay.SetActive(true);
 		_winnerDisplay.SetActive(false);
@@ -46,16 +60,15 @@ public class TournamentEndMenu : MonoBehaviour
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		StartCoroutine(WaitBeforeCanReturn());
-	}
+    }
 
-	private void Update()
-	{
-		if(Input.GetMouseButtonDown(0) && _canReturn)
+    private void Update()
+    {
+		if(_inputSystemUIInputModule.submit.action.WasPressedThisFrame() && _canReturn)
 		{
 			if (_winnerPlayerLocation.childCount != 0)
 			{
 				Destroy(_winnerPlayerLocation.GetChild(0).gameObject);
-				Destroy(_confettisLocation.GetChild(0).gameObject);
 			}
 			else
 				Destroy(_loserPlayerLocation.GetChild(0).gameObject);
@@ -64,11 +77,15 @@ public class TournamentEndMenu : MonoBehaviour
 			GameParameters.Instance.CurrentTournamentInfos.Reset();
 			MenuManager.Instance.GoBackToMainMenu();
 		}
-	}
+        _pressInputGlobal.alpha = _pressInputGlobal.alpha + (1 * _factor * Time.deltaTime);
 
-	private IEnumerator WaitBeforeCanReturn()
+        if (_pressInputGlobal.alpha < 0 || _pressInputGlobal.alpha > 1)
+            _factor *= -1;
+    }
+
+    private IEnumerator WaitBeforeCanReturn()
 	{
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(3f);
 		_canReturn = true;
 		_continueText.SetActive(true);
 	}
