@@ -16,11 +16,13 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     // Online Button from Main Menu
 	[SerializeField] private Button _connectButton;
     // Play Button from Online Character Selection Menu
-    [SerializeField] private Button _playButton;
+    [SerializeField] private Button _playCharacterSelectionButton;
     // Start Button from Online Room Menu
-    [SerializeField] private Button _startButton;
+    [SerializeField] private Button _playOnlineRoomButton;
     // Ready Button from Online Room Menu
 	[SerializeField] private Button _readyButton;
+    // Leave Button from Online Room Menu
+    [SerializeField] private Button _leaveButton;
 
     [Header("Other Menus Reference")]
     // Main Menu Reference
@@ -36,7 +38,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     [Header("Character Data List")]
     // List of all the possible CharacterData
-    [SerializeField] private List<CharacterData> _charDataList;
+    private List<CharacterData> _charDataList;
 
     [Header("Online Room Player Showrooms")]
     // References to player's visuals
@@ -51,7 +53,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     private byte _maxPlayersPerRoom = 2;
 
     private bool _isConnecting;
-    private bool _connected = false;
 
 	// Will become useless
 	[Header("Prefabs")]
@@ -60,6 +61,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 	// Other Player Prefab
 	[SerializeField] private GameObject _otherPlayerObject;
 	private MyPlayerCard _localPlayerCard;
+	private bool _connected = false;
 
 	#endregion
 
@@ -94,13 +96,15 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             _charDataDic.Add(cd.Name, cd);
         }
 
-        _startButton.interactable = false;
+        _playOnlineRoomButton.interactable = false;
+
+        _charDataList = new List<CharacterData>(MenuManager.Characters);
     }
 
-    private void Update()
+    /*private void Update()
     {
         _playButton.interactable = _connected;
-    }
+    }*/
 
 	#endregion
 
@@ -127,8 +131,9 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         if (_isConnecting)
         {
-            _connected = true;
-            _isConnecting = false;
+            //_connected = true;
+			_playCharacterSelectionButton.interactable = true;
+			_isConnecting = false;
         }
     }
 
@@ -141,9 +146,11 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         _isConnecting = false;
         _connectButton.interactable = true;
-    }
+		_playCharacterSelectionButton.interactable = false;
 
-    public override void OnJoinedRoom()
+	}
+
+	public override void OnJoinedRoom()
     {
         ChangeActivePanel(_roomPanel.name);
 
@@ -160,11 +167,16 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            _startButton.gameObject.SetActive(true);
+            _playOnlineRoomButton.gameObject.SetActive(true);
+            MenuManager.Instance.SetButtonNavigation(_readyButton, _playOnlineRoomButton, null, null, null);
+            MenuManager.Instance.SetButtonNavigation(_playOnlineRoomButton, _leaveButton, _readyButton, null, null);
+            MenuManager.Instance.SetButtonNavigation(_leaveButton, null, _playOnlineRoomButton, null, null);
         }
         else
         {
-            _startButton.gameObject.SetActive(false);
+            _playOnlineRoomButton.gameObject.SetActive(false);
+            MenuManager.Instance.SetButtonNavigation(_readyButton, _leaveButton, null, null, null);
+            MenuManager.Instance.SetButtonNavigation(_leaveButton, null, _readyButton, null, null);
         }
     }
 
@@ -260,11 +272,11 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
             if (_readyPlayersCount == _maxPlayersPerRoom)
             {
-                _startButton.interactable = true;
+                _playOnlineRoomButton.interactable = true;
             }
             else
             {
-                _startButton.interactable = false;
+                _playOnlineRoomButton.interactable = false;
             }
         }
 
@@ -286,10 +298,13 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
     {
-        GameObject otherPlayerPreview = Instantiate(_otherPlayerObject, _playersContainer.transform);
+        /*GameObject otherPlayerPreview = Instantiate(_otherPlayerObject, _playersContainer.transform);
         otherPlayerPreview.GetComponent<PlayerCard>().Initialize(nickname, _charDataDic[otherPlayerCharacterData]);
-        string characterData = GameParameters.Instance.GetCharactersPlayers().Name;
-        photonView.RPC("InstantiatePresentPlayers", RpcTarget.Others, characterData, nickname, PhotonNetwork.LocalPlayer.NickName);
+		string characterData = GameParameters.Instance.GetCharactersPlayers().Name;*/
+
+        _playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
+
+		photonView.RPC("InstantiatePresentPlayers", RpcTarget.Others, GameParameters.Instance.GetCharactersPlayers().Name, nickname, PhotonNetwork.LocalPlayer.NickName);
     }
 
     [PunRPC]
@@ -297,8 +312,10 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.NickName == nickname)
         {
-            GameObject otherPlayerPreview = Instantiate(_otherPlayerObject, _playersContainer.transform);
-            otherPlayerPreview.GetComponent<PlayerCard>().Initialize(senderNickname, _charDataDic[otherPlayerCharacterData]);
-        }
-    }
+			/*GameObject otherPlayerPreview = Instantiate(_otherPlayerObject, _playersContainer.transform);
+            otherPlayerPreview.GetComponent<PlayerCard>().Initialize(senderNickname, _charDataDic[otherPlayerCharacterData]);*/
+
+			_playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
+		}
+	}
 }

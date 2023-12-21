@@ -228,11 +228,11 @@ public class OptionsMenu : MonoBehaviour
 
 	private void SetMenuNavigation(Selectable firstMenuElement)
 	{
-		Navigation navigation;
+		//Navigation navigation;
 
 		foreach (var button in _navigationButtons)
 		{
-			navigation = new Navigation();
+			/*navigation = new Navigation();
 
 			navigation.mode = Navigation.Mode.Explicit;
 			navigation.selectOnRight = firstMenuElement;
@@ -240,7 +240,9 @@ public class OptionsMenu : MonoBehaviour
 			navigation.selectOnUp = button.navigation.selectOnUp;
 			navigation.selectOnDown = button.navigation.selectOnDown;
 
-			button.navigation = navigation;
+			button.navigation = navigation;*/
+
+			MenuManager.Instance.SetButtonNavigation(button, button.navigation.selectOnLeft, firstMenuElement, button.navigation.selectOnUp, button.navigation.selectOnDown);
 		}
 	}
 }

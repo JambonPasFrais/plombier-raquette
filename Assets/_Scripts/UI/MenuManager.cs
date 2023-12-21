@@ -129,4 +129,18 @@ public class MenuManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(firstSelectable);
         }
     }
+
+	public void SetButtonNavigation(Button currentButton, Selectable leftObject, Selectable rightObject, Selectable upObject, Selectable downObject)
+	{
+		Navigation navigation = new Navigation();
+
+		navigation.mode = Navigation.Mode.Explicit;
+
+		navigation.selectOnRight = rightObject;
+		navigation.selectOnLeft = leftObject;
+		navigation.selectOnUp = upObject;
+		navigation.selectOnDown = downObject;
+
+		currentButton.navigation = navigation;
+	}
 }
