@@ -13318,8 +13318,6 @@ MonoBehaviour:
   _playerTeam: 2
   _ballServiceDetectionArea: {fileID: 571791135}
   _serviceBallInitializationPoint: {fileID: 1112847464240904049}
-  _minimumShotForce: 350
-  _maximumShotForce: 450
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
@@ -13343,9 +13341,41 @@ MonoBehaviour:
   - {fileID: 10320972}
   _ballDetectionArea: {fileID: 5342351297477191419}
   _speed: 7.5
+  _minimumHitForce: 300
+  _maximumHitForce: 450
   _timeBeforeThrowingBallDuringService: 1
-  _timeBeforeShootingBallDuringService: 0.35
+  _timeBeforeShootingBallDuringService: 0.5
   _serviceForce: 400
+--- !u!114 &9127353872525647491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007223981508146278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &9130742584333113956
 GameObject:
   m_ObjectHideFlags: 0

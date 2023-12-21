@@ -86,4 +86,13 @@ public class BallDetection : MonoBehaviour
         _ball = _trainingManager.BallInstance.GetComponent<AIBall>();
         _isBallInHitZone = true;
     }
+
+    /// <summary>
+    /// Set the ball variable at service beginning for the bot.
+    /// </summary>
+    public void SetBallAtService()
+    {
+        _ball = _trainingManager.BallInstance.GetComponent<AIBall>();
+        _isBallInHitZone = true;
+    }
 }

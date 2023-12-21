@@ -51,8 +51,9 @@ public class GameManager : MonoBehaviour
     public GameObject BallInstance {  get { return _ballInstance; } }
     public GameObject Net {  get { return _net; } }
     public List<ControllersParent> Controllers {  get { return _controllers; } }
+    public Transform ServiceBallInitializationPoint {  get { return _serviceBallInitializationPoint; } }
     public int ServerIndex { get { return _serverIndex; } }
-    public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
+    public FieldBorderPointsContainer[] BorderPointsContainers {  get { return _borderPointsContainers; } }
     public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
 
     #endregion
