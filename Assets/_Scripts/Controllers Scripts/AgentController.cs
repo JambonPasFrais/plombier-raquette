@@ -41,7 +41,7 @@ public class AgentController : ControllersParent
 
     private void Start()
     {
-        _otherPlayer = GameManager.Instance.Controllers[0] == this ? GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
+        _otherPlayer = _trainingManager.Controllers[0] == this ? _trainingManager.Controllers[1] : _trainingManager.Controllers[0];
         UpdateBorderPointsContainer();
 
         _noMovementTime = 0;
@@ -70,7 +70,7 @@ public class AgentController : ControllersParent
 
     private void UpdateBorderPointsContainer()
     {
-        foreach (FieldBorderPointsContainer borderPointContainer in GameManager.Instance.BorderPointsContainers)
+        foreach (FieldBorderPointsContainer borderPointContainer in _trainingManager.BorderPointsContainers)
         {
             if (borderPointContainer.Team == _playerTeam)
             {
@@ -87,7 +87,7 @@ public class AgentController : ControllersParent
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic
-            || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
+            || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || _trainingManager.GameState == GameState.ENDPOINT)
         {
             _hitKeyPressedTime = 0f;
             _isCharging = false;
@@ -109,16 +109,16 @@ public class AgentController : ControllersParent
             // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
             if (PlayerState == PlayerStates.SERVE)
             {
-                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
-                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
+                _trainingManager.DesactivateAllServiceDetectionVolumes();
+                _trainingManager.DisableLockServiceColliders();
             }
 
             PlayerState = PlayerStates.PLAY;
         }
 
         // The game enters in playing phase when the ball is hit by the other player after the service.
-        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
-            GameManager.Instance.GameState = GameState.PLAYING;
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && _trainingManager.GameState == GameState.SERVICE)
+            _trainingManager.GameState = GameState.PLAYING;
 
         Vector3 horizontalDirection;
 
@@ -228,28 +228,28 @@ public class AgentController : ControllersParent
         }
     }
 
-/*    public void SlowTime(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+    /*    public void SlowTime(InputAction.CallbackContext context)
         {
-            _actionIndex = 2;
+            if (context.performed)
+            {
+                _actionIndex = 2;
+            }
+            else if (context.canceled)
+            {
+                Time.timeScale = 1f;
+                _currentSpeed = _movementSpeed;
+                _actionIndex = 0;
+            }
         }
-        else if (context.canceled)
-        {
-            Time.timeScale = 1f;
-            _currentSpeed = _movementSpeed;
-            _actionIndex = 0;
-        }
-    }
 
-    public void SlowTime()
-    {
-        if (PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        public void SlowTime()
         {
-            Time.timeScale = _actionParameters.SlowTimeScaleFactor;
-            _currentSpeed = _movementSpeed / Time.timeScale;
-        }
-    }*/
+            if (PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+            {
+                Time.timeScale = _actionParameters.SlowTimeScaleFactor;
+                _currentSpeed = _movementSpeed / Time.timeScale;
+            }
+        }*/
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
@@ -261,7 +261,7 @@ public class AgentController : ControllersParent
 
     public void TechnicalShot()
     {
-        if(PlayerState != PlayerStates.SERVE && GameManager.Instance.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        if(PlayerState != PlayerStates.SERVE && _trainingManager.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
         {
             float tempForwardMovementFactor = 0f;
             float tempRightMovementFactor = 0f;
@@ -289,11 +289,11 @@ public class AgentController : ControllersParent
                 rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
             }
 
-            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
-            Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
+            Vector3 forwardVector = Vector3.Project(_trainingManager.CameraTransform.forward, Vector3.forward).normalized;
+            Vector3 rightVector = Vector3.Project(_trainingManager.CameraTransform.right, Vector3.right).normalized;
             Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
 
-            float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
+            float distanceToBorderInWantedDirection = _trainingManager.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
 
             if (distanceToBorderInWantedDirection > _actionParameters.TechnicalShotMovementLength)
             {
@@ -343,11 +343,11 @@ public class AgentController : ControllersParent
         // The other player's position is observed.
         sensor.AddObservation(_otherPlayer.transform.position);
         // The ball position is observed.
-        sensor.AddObservation(GameManager.Instance.BallInstance.transform.position);
+        sensor.AddObservation(_trainingManager.BallInstance.transform.position);
         // The player state is observed.
         sensor.AddObservation(GetIndexOfEnumerationValue(PlayerState));
         // The game state is observed.
-        sensor.AddObservation(GetIndexOfEnumerationValue(GameManager.Instance.GameState));
+        sensor.AddObservation(GetIndexOfEnumerationValue(_trainingManager.GameState));
         // The field limits are observed.
         sensor.AddObservation(_borderPointsContainer.FrontPointTransform.position);
         sensor.AddObservation(_borderPointsContainer.BackPointTransform.position);
@@ -370,16 +370,16 @@ public class AgentController : ControllersParent
         // If the game is in the end of point or the the end of match phase, the player can't move.
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
-        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
-            && !(PlayerState == PlayerStates.SERVE && !GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic))
+        if (_trainingManager.GameState != GameState.ENDPOINT && _trainingManager.GameState != GameState.ENDMATCH
+            && !(PlayerState == PlayerStates.SERVE && !_trainingManager.BallInstance.GetComponent<Rigidbody>().isKinematic))
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
-            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+            Vector3 rightVector = _trainingManager.CameraTransform.right;
 
             Vector3 forwardVector = Vector3.zero;
-            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY)
+            if (_trainingManager.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY)
             {
-                forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+                forwardVector = Vector3.Project(_trainingManager.CameraTransform.forward, Vector3.forward);
             }
 
             Vector3 movementDirection = rightVector.normalized * actions.ContinuousActions[0] + forwardVector.normalized * actions.ContinuousActions[1];
@@ -401,7 +401,7 @@ public class AgentController : ControllersParent
                 // Throw the ball in the air during the service.
                 if (PlayerState == PlayerStates.SERVE && IsServing)
                 {
-                    GameManager.Instance.ThrowBall();
+                    ThrowBall();
                 }
                 // The action index is set to 0 after each action.
                 _actionIndex = 0;
@@ -457,9 +457,8 @@ public class AgentController : ControllersParent
 
     private void ReplacingPlayers()
     {
-        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-            !GameManager.Instance.ServiceManager.ChangeSides);
-        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
+        _trainingManager.InitializePlayersPosition();
+        _trainingManager.EnableLockServiceColliders();
     }
 
     #region POSITIVE & NEGATIVE REWARDS SYSTEM

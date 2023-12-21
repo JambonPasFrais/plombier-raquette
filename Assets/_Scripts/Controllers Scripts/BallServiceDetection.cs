@@ -12,5 +12,9 @@ public class BallServiceDetection : MonoBehaviour
         {
             ball.ResetBall();
         }
+        else if (other.gameObject.TryGetComponent<AIBall>(out AIBall aiBall) && _player.PlayerState == PlayerStates.SERVE)
+        {
+            aiBall.ResetBall();
+        }
     }
 }

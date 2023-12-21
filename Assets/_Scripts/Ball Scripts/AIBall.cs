@@ -31,6 +31,11 @@ public class AIBall : MonoBehaviour
 
     #region UNITY METHODS
 
+    private void Awake()
+    {
+        _rigidBody = GetComponent<Rigidbody>();
+    }
+
     private void Start()
     {
         _reboundsCount = 0;
@@ -180,6 +185,11 @@ public class AIBall : MonoBehaviour
     }
 
     #endregion
+
+    public void InitializeVariables(AgentTrainingManager trainingManager)
+    {
+        _trainingManager = trainingManager;
+    }
 
     public void ResetBall()
     {

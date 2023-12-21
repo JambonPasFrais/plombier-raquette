@@ -31,6 +31,7 @@ public class AgentTrainingManager : MonoBehaviour
 
     [Header("Environment Objects")]
     [SerializeField] private GameObject _net;
+    [SerializeField] private Transform _cameraTransform;
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
 
@@ -46,8 +47,9 @@ public class AgentTrainingManager : MonoBehaviour
 
     #region GETTERS
 
-    public GameObject BallInstance { get { return _ballInstance; } }
     public GameObject Net { get { return _net; } }
+    public GameObject BallInstance { get { return _ballInstance; } }
+    public Transform CameraTransform { get { return _cameraTransform; } }
     public List<ControllersParent> Controllers { get { return _controllers; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public FieldBorderPointsContainer[] BorderPointsContainers { get { return _borderPointsContainers; } }
@@ -71,6 +73,7 @@ public class AgentTrainingManager : MonoBehaviour
         _currentPointsCount = 0;
 
         _ballInstance = Instantiate(BallPrefab);
+        _ballInstance.GetComponent<AIBall>().InitializeVariables(this);
     }
 
     void Start()
@@ -139,6 +142,12 @@ public class AgentTrainingManager : MonoBehaviour
     {
         int sideIndex = (_globalGamesCount % 2);
         _lockServiceMovementColliders[sideIndex].SetActive(true);
+    }
+
+    public void DisableLockServiceColliders()
+    {
+        foreach (var item in _lockServiceMovementColliders)
+            item.SetActive(false);
     }
 
     public Teams? GetPlayerTeam(ControllersParent currentPlayer)
@@ -225,30 +234,6 @@ public class AgentTrainingManager : MonoBehaviour
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
         _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
         _ballInstance.transform.position = _serviceBallInitializationPoint.position;
-    }
-
-    public void ServiceThrow(InputAction.CallbackContext context)
-    {
-        if (_controllers[_serverIndex] is AgentController)
-        {
-            AgentController agent = (AgentController)_controllers[_serverIndex];
-            agent.ActionIndex = 1;
-        }
-        else
-        {
-            ThrowBall();
-        }
-    }
-
-    public void ThrowBall()
-    {
-        Rigidbody ballRigidBody = _ballInstance.GetComponent<Rigidbody>();
-
-        if (_controllers[_serverIndex].PlayerState == PlayerStates.SERVE && _controllers[_serverIndex].IsServing && GameState == GameState.SERVICE && ballRigidBody.isKinematic)
-        {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * _controllers[_serverIndex].ActionParameters.ServiceThrowForce);
-        }
     }
 
     public void DesactivateAllServiceDetectionVolumes()

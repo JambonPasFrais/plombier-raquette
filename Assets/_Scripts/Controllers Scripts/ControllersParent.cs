@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ControllersParent : Agent
 {
@@ -13,8 +14,9 @@ public class ControllersParent : Agent
 
     #endregion
 
-    #region PRIVATE FIELDS
+    #region PROTECTED FIELDS
 
+    [SerializeField] protected AgentTrainingManager _trainingManager;
     [SerializeField] protected ActionParameters _actionParameters;
     [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
@@ -38,9 +40,35 @@ public class ControllersParent : Agent
 
     #endregion
 
+    public void ServiceThrow(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (this is AgentController)
+            {
+                ((AgentController)this).ActionIndex = 1;
+            }
+            else
+            {
+                ThrowBall();
+            }
+        }
+    }
+
+    protected void ThrowBall()
+    {
+        Rigidbody ballRigidBody = _trainingManager.BallInstance.GetComponent<Rigidbody>();
+
+        if (_trainingManager.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        {
+            ballRigidBody.isKinematic = false;
+            ballRigidBody.AddForce(Vector3.up * _actionParameters.ServiceThrowForce);
+        }
+    }
+
     public float CalculateActualForce(float hitForce)
     {
-        float actualDistanceToNet = Vector3.Project(GameManager.Instance.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
+        float actualDistanceToNet = Vector3.Project(_trainingManager.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
         float clampedDistanceToNet = Mathf.Clamp(actualDistanceToNet, 0f, _maximumDistanceToNet);
         float forceFactor = (clampedDistanceToNet / _maximumDistanceToNet) * (1 - _forceMinimumClampFactor) + _forceMinimumClampFactor;
         return forceFactor * hitForce;
