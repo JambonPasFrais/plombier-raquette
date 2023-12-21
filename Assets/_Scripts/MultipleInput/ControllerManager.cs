@@ -228,7 +228,6 @@ public class ControllerManager : MonoBehaviour
             if (pih.PlayerInput.devices.Count <= 0)
                 continue;
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
-            Debug.Log(_controllers.Count);
         }
     }
         

@@ -34,6 +34,8 @@ public class Ball : MonoBehaviour
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
 
+    public Rigidbody Rb => _rigidBody;
+
     #endregion
 
     #region UNITY METHODS

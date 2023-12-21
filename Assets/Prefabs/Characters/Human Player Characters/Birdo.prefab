@@ -1957,6 +1957,8 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: 6cd7c960d6aeade4c859d35350826a53, type: 2}
   - Name: Slice
     Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
+  - Name: Smash
+    Parameters: {fileID: 11400000, guid: bfb979b75805ac742a1f1557ef35c18d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
     PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
@@ -1964,9 +1966,11 @@ MonoBehaviour:
     PhysicMaterial: {fileID: 13400000, guid: 68318175dfe26734abaa7a515fcb135e, type: 2}
   _rigidBody: {fileID: 6656433339225851837}
   _ballDetectionArea: {fileID: 7664064411156213972}
+  _playerCameraController: {fileID: -8994089751683610411}
   _movementSpeed: 7.5
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
+  _canSmash: 0
 --- !u!95 &2492067642450663289
 Animator:
   serializedVersion: 5
@@ -2070,7 +2074,6 @@ MonoBehaviour:
   _zoomFOV: 40
   _normalFOV: 60
   _zoomDuration: 0.5
-  _smashTargetImage: {fileID: 0}
   _canSmash: 0
   _distanceToBall: 5
   _isFirstPersonView: 0
