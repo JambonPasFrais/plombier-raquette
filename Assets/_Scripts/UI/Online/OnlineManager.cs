@@ -164,7 +164,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public void ReadyButtonClicked()
     {
-        photonView.RPC("PlayerClickedOnReadyButton", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer, _localPlayerCard.IsReady);
+        //photonView.RPC("PlayerClickedOnReadyButton", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer, _localPlayerCard.IsReady);
     }
 
     public void OnOnlineButtonClicked()
