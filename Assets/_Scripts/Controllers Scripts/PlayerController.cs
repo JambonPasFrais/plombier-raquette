@@ -99,7 +99,7 @@ public class PlayerController : ControllersParent
             _isCharging = false;
             return;
         }
-        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
+        //_ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
@@ -142,12 +142,12 @@ public class PlayerController : ControllersParent
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
         // Initialization of the other ball physic parameters.
-        GameManager.Instance.photonView.RPC("SetShotTypeOnline", RpcTarget.Others, hitType.ToString(), GameManager.Instance.Controllers.IndexOf(this));
-        _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+        GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
+        //_ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
         // Applying a specific force in a specific direction and with a specific rising force factor.
         // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-        _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+        //_ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -219,14 +219,13 @@ public class PlayerController : ControllersParent
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
-        _ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
+        //_ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
 
         if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
         {
-            GameManager.Instance.photonView.RPC("Served", RpcTarget.Others);
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+            GameManager.Instance.photonView.RPC("Served", RpcTarget.AllViaServer);
+           
         }
     }
 

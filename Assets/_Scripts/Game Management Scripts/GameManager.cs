@@ -73,8 +73,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 photonView.RPC("AskFindController", RpcTarget.MasterClient);
             }
-            if (PhotonNetwork.IsMasterClient)
-                _ballInstance = PhotonNetwork.Instantiate(OnlineBallPrefab.name, new Vector3(0, 256, 0), Quaternion.identity);
+            _ballInstance = Instantiate(BallPrefab);
+            /*if (PhotonNetwork.IsMasterClient)
+                _ballInstance = PhotonNetwork.Instantiate(OnlineBallPrefab.name, new Vector3(0, 256, 0), Quaternion.identity);*/
         }
         else
         {
@@ -84,8 +85,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-
-
         if (PhotonNetwork.IsConnected == false)
         {
             ServiceOnOriginalSide = true;
@@ -322,13 +321,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void Served()
     {
-       BallInstance.GetComponent<Rigidbody>().isKinematic = false;
+        BallInstance.GetComponent<Rigidbody>().isKinematic = false;
+        BallInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
     }
     [PunRPC]
-    private void ShootOnline(string hitType, int index)
+    private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, int controllerIndex)
     {
         BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
-        BallInstance.GetComponent<Ball>().InitializeLastPlayerToApplyForce(_controllers[index]);
+        BallInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, Controllers[controllerIndex]);
     }
     [PunRPC]
     private void EndPoint(bool fault)
