@@ -85,12 +85,12 @@ public class PlayerController : ControllersParent
             // We need to add for each player there "sideIndex" and the vectors will be set using a List<Transform>[sideIndex]
             
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
-            Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+            Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         
             Vector3 forwardVector = Vector3.zero;
             if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
             {
-                forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+                forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
             }
 
             Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
@@ -272,8 +272,8 @@ public class PlayerController : ControllersParent
                 rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
             }
 
-            Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward).normalized;
-            Vector3 rightVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right).normalized;
+            Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward).normalized;
+            Vector3 rightVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right, Vector3.right).normalized;
             Vector3 wantedDirection = forwardMovementFactor * forwardVector + rightMovementFactor * rightVector;
 
             float distanceToBorderInWantedDirection = GameManager.Instance.GetDistanceToBorderByDirection(this, wantedDirection, forwardVector, rightVector);
@@ -306,6 +306,9 @@ public class PlayerController : ControllersParent
                 return;
             
             _playerCameraController.ToggleFirstPersonView();
+            
+            GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(false); // TODO: Try to simplify it
+            
             _ballInstance.gameObject.transform.rotation = Quaternion.identity;
         }
     }
@@ -330,6 +333,7 @@ public class PlayerController : ControllersParent
             _ballInstance.ApplyForce(_maximumShotForce, 0f, horizontalDirection.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
+            GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(true); // TODO: Try to simplify it
         }
     }
 

@@ -97,15 +97,17 @@ public class GameManager : MonoBehaviour
         _controllers[_serverIndex].IsServing = true;
 
         // Double
-        if (_controllers.Count > 2)
+        
+        if (_controllers.Count > 2 )
         {
             CameraManager.InitSplitScreenCameras();
-            //SideManager.SetSidesInDoubleMatch(_controllers, true, ServiceOnOriginalSide);
+        }else if (GameParameters.LocalNbPlayers == _controllers.Count)
+        {
+            CameraManager.InitSplitScreenCameras();
         }
         else // Simple
         {
             CameraManager.InitSoloCamera();
-            //SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
         }
         
         SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);

@@ -13,6 +13,7 @@ public class ControllersParent : MonoBehaviour
     public PlayerStates PlayerState;
     public int ServicesCount=0;
     public Teams PlayerTeam;
+    public bool IsInOriginalSide;
 
     #endregion
 
@@ -65,8 +66,8 @@ public class ControllersParent : MonoBehaviour
     {
         float distanceToFirstReboundPosition = forceToDistanceFactor * actualforce;
         Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
-        Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+        Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
+        Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         float maximumLateralDistance;
         Vector3 extremeShootingDirection;
 
@@ -106,8 +107,8 @@ public class ControllersParent : MonoBehaviour
     /// <returns></returns>
     public Vector3 CalculateActualShootingDirection(Vector3 wantedDirection, float forceToDistanceFactor, float actualforce)
     {
-        float rotationSign = Mathf.Sign(Vector3.Dot(wantedDirection, Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right)));
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+        float rotationSign = Mathf.Sign(Vector3.Dot(wantedDirection, Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right, Vector3.right)));
+        Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
         Vector3 extremeShootingDirection = CalculateExtremeShootingDirection(rotationSign > 0 ? true : false, forceToDistanceFactor, actualforce);
 
         if (Vector3.Angle(forwardVector, wantedDirection) > Vector3.Angle(forwardVector, extremeShootingDirection))

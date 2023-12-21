@@ -1,69 +1,122 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
     [Header("Instances")] [SerializeField] private Transform _soloCamerasContainer;
     [SerializeField] private Transform _splitScreenCamerasContainer;
+    //[SerializeField] private List<Transform> _activeCameraTransformsBySide;
+
+    private bool _splitScreenCameraIsOn;
+    private List<Camera> _soloCameras;
+    private Dictionary<string, List<Camera>> _splitScreenCamerasBySide;
     
-    private List<GameObject> _soloCamerasGo;
-    private List<GameObject> _splitScreenCamerasGo;
-    private Transform _activeCameraTransform;
+    //private Transform _activeCameraTransform;
 
     #region GETTERS
 
-    public Transform ActiveCameraTransform => _activeCameraTransform;
+    //public Transform ActiveCameraTransform => _activeCameraTransform;
+    //public List<Transform> ActiveCameraTransformsBySide => _activeCameraTransformsBySide;
 
     #endregion
 
     private void Awake()
     {
-        _soloCamerasGo = new List<GameObject>();
-        _splitScreenCamerasGo = new List<GameObject>();
+        _soloCameras = new List<Camera>();
+        //_activeCameraTransformsBySide = new List<Transform>();
+        _splitScreenCamerasBySide = new Dictionary<string, List<Camera>>();
         
         for (int i = 0; i < _soloCamerasContainer.childCount; i++)
         {
-            _soloCamerasGo.Add(_soloCamerasContainer.GetChild(i).gameObject);
+            _soloCameras.Add(_soloCamerasContainer.GetChild(i).gameObject.GetComponent<Camera>());
         }
         
         for (int i = 0; i < _splitScreenCamerasContainer.childCount; i++)
         {
-            _splitScreenCamerasGo.Add(_splitScreenCamerasContainer.GetChild(i).gameObject);
+            List<Camera> cameraListForCurrentSide = new List<Camera>();
+            
+            for (int j = 0; j < _splitScreenCamerasContainer.GetChild(i).childCount; j++)
+            {
+                cameraListForCurrentSide.Add(_splitScreenCamerasContainer.GetChild(i).GetChild(j).GetComponent<Camera>());
+            }
+
+            _splitScreenCamerasBySide.Add(i == 0 ? "Left" : "Right", cameraListForCurrentSide);
         }
     }
 
     public void InitSplitScreenCameras()
     {
-        foreach (var soloCamera in _soloCamerasGo)
+        foreach (var soloCamera in _soloCameras)
         {
-            soloCamera.SetActive(false);
+            soloCamera.gameObject.SetActive(false);
         }
 
-        foreach (var splitScreenCamera in _splitScreenCamerasGo)
+        foreach (var splitScreenCamera in _splitScreenCamerasBySide.Values)
         {
-            splitScreenCamera.SetActive(true);
+            splitScreenCamera[0].gameObject.SetActive(true);
+            splitScreenCamera[1].gameObject.SetActive(true);
         }
+
+        _splitScreenCameraIsOn = true;
     }
 
     public void InitSoloCamera()
     {
-        foreach (var splitScreenCamera in _splitScreenCamerasGo)
+        foreach (var splitScreenCamera in _splitScreenCamerasBySide.Values)
         {
-            splitScreenCamera.SetActive(false);
+            splitScreenCamera[0].gameObject.SetActive(false);
+            splitScreenCamera[1].gameObject.SetActive(false);
         }
         
-        foreach (var soloCamera in _soloCamerasGo)
+        foreach (var soloCamera in _soloCameras)
         {
-            soloCamera.SetActive(true);
+            soloCamera.gameObject.SetActive(true);
         }
+        
+        _splitScreenCameraIsOn = false;
     }
 
     public void ChangeCameraSide(bool isOriginalSide)
     {
-        _activeCameraTransform = _soloCamerasGo[isOriginalSide ? 0 : 1].transform;
-        _soloCamerasGo[isOriginalSide ? 0 : 1].SetActive(true);
-        _soloCamerasGo[isOriginalSide ? 1 : 0].SetActive(false);
+        if (_splitScreenCameraIsOn)
+        {
+            _splitScreenCamerasBySide[isOriginalSide ? "Left" : "Right"][0].gameObject.SetActive(true);
+            _splitScreenCamerasBySide[isOriginalSide ? "Left" : "Right"][1].gameObject.SetActive(true);
+
+            _splitScreenCamerasBySide[isOriginalSide ? "Right" : "Left"][0].gameObject.SetActive(false);
+            _splitScreenCamerasBySide[isOriginalSide ? "Right" : "Left"][1].gameObject.SetActive(false);
+
+            /*
+            foreach (var splitScreenCameraFromSide in _splitScreenCamerasBySide.Values)
+            {               
+                splitScreenCameraFromSide[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
+                splitScreenCameraFromSide[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
+            }*/
+        }
+        else
+        {
+            //_activeCameraTransform = _soloCameras[isOriginalSide ? 0 : 1].transform;
+            _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
+            _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
+        }
+    }
+
+    public Transform GetActiveCameraTransformBySide(bool isOriginalSide)
+    {
+        if (_splitScreenCameraIsOn)
+        {
+            var cameraBySide = _splitScreenCamerasBySide[isOriginalSide ? "Left" : "Right"];
+            
+            for (int i = 0; i < cameraBySide.Count; i++)
+            {
+                if (cameraBySide[i].gameObject.activeSelf)
+                    return cameraBySide[i].transform;
+            }
+
+            //throw new SyntaxErrorException("No Camera active for side: " + isOriginalSide);
+        }
+
+        return _soloCameras[isOriginalSide ? 0 : 1].transform;
     }
 }
