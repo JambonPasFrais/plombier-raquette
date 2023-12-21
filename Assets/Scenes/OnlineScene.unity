@@ -388,8 +388,8 @@ MonoBehaviour:
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
-  BallInitializationTransform: {fileID: 0}
-  BallPrefab: {fileID: 5628292310031842273, guid: add4fc48ebdc2374c92c99e4106f8100, type: 3}
+  BallInstantiationtransform: {fileID: 0}
+  BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   OnlineBallPrefab: {fileID: 5628292310031842273, guid: add4fc48ebdc2374c92c99e4106f8100, type: 3}
   ServiceOnOriginalSide: 0
   _net: {fileID: 10320974}
@@ -398,6 +398,7 @@ MonoBehaviour:
   - {fileID: 159828289}
   - {fileID: 348428141}
   _playerPrefab: {fileID: 7513561124101130894, guid: 1af5ac59f7c9d2c41af6c9d90d9fafd6, type: 3}
+  _ballInstance: {fileID: 0}
 --- !u!114 &175529526
 MonoBehaviour:
   m_ObjectHideFlags: 0
