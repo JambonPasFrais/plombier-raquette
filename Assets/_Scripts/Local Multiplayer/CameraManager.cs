@@ -11,7 +11,8 @@ public class CameraManager : MonoBehaviour
     private bool _splitScreenCameraIsOn;
     private List<Camera> _soloCameras;
     private Dictionary<string, List<Camera>> _splitScreenCamerasBySide;
-    
+    private List<Camera> _camerasToActivateAfterSmash;
+
     //private Transform _activeCameraTransform;
 
     #region GETTERS
@@ -118,5 +119,47 @@ public class CameraManager : MonoBehaviour
         }
 
         return _soloCameras[isOriginalSide ? 0 : 1].transform;
+    }
+
+    public void ToggleGameCamerasForSmash()
+    {
+        if (_camerasToActivateAfterSmash != null)
+        {
+            foreach (var cameraToActivate in _camerasToActivateAfterSmash)
+            {
+                cameraToActivate.gameObject.SetActive(true);
+            }
+
+            _camerasToActivateAfterSmash = null;
+            return;
+        }
+
+        _camerasToActivateAfterSmash = new List<Camera>();
+        
+        if (_splitScreenCameraIsOn)
+        {
+            foreach (var sideCameras in _splitScreenCamerasBySide.Values)
+            {
+                foreach (var sideCamera in sideCameras)
+                {
+                    if (sideCamera.gameObject.activeSelf)
+                    {
+                        _camerasToActivateAfterSmash.Add(sideCamera);
+                        sideCamera.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var soloCamera in _soloCameras)
+            {
+                if (soloCamera.gameObject.activeSelf)
+                {
+                    _camerasToActivateAfterSmash.Add(soloCamera);
+                    soloCamera.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }
