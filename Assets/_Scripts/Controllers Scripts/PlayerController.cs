@@ -26,18 +26,25 @@ public class PlayerController : ControllersParent
     [Header("Smash Parameters")]
     [SerializeField] private bool _canSmash;
     
-    private PlayerCameraController _cameraController;
     private Vector2 _movementVector;
     private float _currentSpeed;
     private Ball _ballInstance;
-    
-    
+
     #endregion
 
     #region GETTERS
 
     public List<NamedPhysicMaterials> PossiblePhysicMaterials { get { return _possiblePhysicMaterials; } }
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
+
+    #endregion
+
+    #region SETTERS
+
+    public void SetCanSmash(bool canSmash)
+    {
+        _canSmash = canSmash;
+    }
 
     #endregion
 
@@ -49,7 +56,8 @@ public class PlayerController : ControllersParent
         _hitKeyPressedTime = 0f;
         _isCharging = false;
         _currentSpeed = _movementSpeed;
-        _cameraController = GetComponent<PlayerCameraController>();
+        if (_playerCameraController == null)
+            _playerCameraController = GetComponent<PlayerCameraController>();
         _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
     }
 
@@ -323,11 +331,6 @@ public class PlayerController : ControllersParent
             
             _playerCameraController.ToggleFirstPersonView();
         }
-    }
-
-    public void SetCanSmash(bool canSmash)
-    {
-        _canSmash = canSmash;
     }
 
     #endregion

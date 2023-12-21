@@ -6,28 +6,33 @@ using UnityEngine.UI;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    [Header("Camera For Smash Attacks")]
+    [Header("Instances")]
     [SerializeField] private GameObject _firstPersonCamera;
-    [SerializeField] private Ball _ballInstance;
-    [SerializeField] private PlayerController _player;
     [SerializeField] private Transform _ballSpawnPoint;
+    
+    [Header("Camera Parameters for Smash")]
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _zoomFOV = 40f;
     [SerializeField] private float _normalFOV = 60f; 
     [SerializeField] private float _zoomDuration = 0.5f;
-
-    [SerializeField] private bool _canSmash;
-    [SerializeField] private float _distanceToBall = 5f;
+    
+    // Instances
     private Camera _firstPersonCameraComponent;
     private GameObject _smashTargetGo;
-    [SerializeField] private bool _isFirstPersonView;
+    private Ball _ballInstance;
+    
+    // Logic variables
+    private bool _isFirstPersonView;
     
     #region GETTERS
 
     public GameObject FirstPersonCamera => _firstPersonCamera;
     public bool IsFirstPersonView => _isFirstPersonView;
+    
     #endregion
 
+    #region UNITY FUNCTIONS
+    
     void Start()
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
@@ -64,10 +69,12 @@ public class PlayerCameraController : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region FUNCTIONS CALLED EXTERNALLY
+    
     public void ToggleFirstPersonView()
     {
-        //GetComponent<PlayerController>().SetSmash();
-
         Vector3 horizontalBallDirection = Vector3.Project(_ballInstance.Rb.velocity, Vector3.forward) +
             Vector3.Project(_ballInstance.Rb.velocity, Vector3.right);
         Vector3 cameraLookingDirection = -horizontalBallDirection;
@@ -93,6 +100,10 @@ public class PlayerCameraController : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region INTERN FUNCTIONS
+    
     private IEnumerator ZoomIn()
     {
         float timer = 0f;
@@ -109,9 +120,6 @@ public class PlayerCameraController : MonoBehaviour
 
         _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
     }
-
-    public void SetCanSmash(bool canSmash)
-    {
-        _canSmash = canSmash;
-    }
+    
+    #endregion
 }
