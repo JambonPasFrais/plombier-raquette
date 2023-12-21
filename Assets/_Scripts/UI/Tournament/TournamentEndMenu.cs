@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TournamentEndMenu : MonoBehaviour
 {
@@ -10,10 +12,11 @@ public class TournamentEndMenu : MonoBehaviour
     [SerializeField] private Image _currentCup;
     [SerializeField] private Transform _winnerPlayerLocation;
     [SerializeField] private Transform _loserPlayerLocation;
-    [SerializeField] private Transform _confettisLocation;
-    [SerializeField] private GameObject _conffetisParticleEffects;
 	[SerializeField] private GameObject _continueText;
-	private bool _canReturn = false;
+    [SerializeField] private EventSystem _eventSystem;
+    private InputSystemUIInputModule _inputSystemUIInputModule;
+
+    private bool _canReturn = false;
 
 	public void SetWinnerMenu(GameObject winnerPrefab, Sprite cupSprite)
     {
@@ -28,7 +31,6 @@ public class TournamentEndMenu : MonoBehaviour
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
-		go = Instantiate(_conffetisParticleEffects, _confettisLocation);
 		go.transform.localScale = new Vector3(10, 10, 1);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		StartCoroutine(WaitBeforeCanReturn());
@@ -46,16 +48,14 @@ public class TournamentEndMenu : MonoBehaviour
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		StartCoroutine(WaitBeforeCanReturn());
-	}
-
-	private void Update()
-	{
-		if(Input.GetMouseButtonDown(0) && _canReturn)
+    }
+    private void Update()
+    {
+		if(_inputSystemUIInputModule.submit.action.WasPressedThisFrame() && _canReturn)
 		{
 			if (_winnerPlayerLocation.childCount != 0)
 			{
 				Destroy(_winnerPlayerLocation.GetChild(0).gameObject);
-				Destroy(_confettisLocation.GetChild(0).gameObject);
 			}
 			else
 				Destroy(_loserPlayerLocation.GetChild(0).gameObject);
@@ -65,8 +65,12 @@ public class TournamentEndMenu : MonoBehaviour
 			MenuManager.Instance.GoBackToMainMenu();
 		}
 	}
+    private void Start()
+    {
+        _inputSystemUIInputModule = (InputSystemUIInputModule)_eventSystem.currentInputModule;
+    }
 
-	private IEnumerator WaitBeforeCanReturn()
+    private IEnumerator WaitBeforeCanReturn()
 	{
 		yield return new WaitForSeconds(3);
 		_canReturn = true;
