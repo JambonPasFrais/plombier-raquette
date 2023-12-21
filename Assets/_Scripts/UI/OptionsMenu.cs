@@ -55,7 +55,7 @@ public class OptionsMenu : MonoBehaviour
 		"Ultra"
 	};
 
-	[SerializeField] private EventSystem _eventSystem;
+	//[SerializeField] private EventSystem _eventSystem;
 
 	private Resolution[] _resolutions;
 	private List<string> _maxFpsDropdownOptions;
@@ -207,7 +207,7 @@ public class OptionsMenu : MonoBehaviour
 	public void ShowDisplayParameters()
 	{
 		//MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton);
-		_eventSystem.SetSelectedGameObject(_firstDisplayButton.gameObject);
+		MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton.gameObject);
 		SetMenuNavigation(_firstDisplayButton);
 		_controlsOptions.SetActive(false);
 		_audioOptions.SetActive(false);
@@ -217,7 +217,7 @@ public class OptionsMenu : MonoBehaviour
 	public void ShowAudioParameters()
 	{
 		//MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton);
-		_eventSystem.SetSelectedGameObject(_firstAudioButton.gameObject);
+		MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton.gameObject);
 		SetMenuNavigation(_firstAudioButton);
 		_controlsOptions.SetActive(false);
 		_audioOptions.SetActive(true);
