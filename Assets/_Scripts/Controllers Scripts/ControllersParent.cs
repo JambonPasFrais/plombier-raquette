@@ -139,12 +139,31 @@ public class ControllersParent : MonoBehaviour
 
     protected void ThrowBall()
     {
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex] != this)
+            return;
+        
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState != PlayerStates.SERVE)
+            return;
+        
+        if (!GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing)
+            return;
+        
+        if (GameManager.Instance.GameState != GameState.SERVICE)
+            return;
+        
         Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
 
-        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        if (!ballRigidBody.isKinematic)
+            return;
+        
+        ballRigidBody.isKinematic = false;
+        ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+
+        
+        /*if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
         {
             ballRigidBody.isKinematic = false;
             ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-        }
+        }*/
     }
 }
