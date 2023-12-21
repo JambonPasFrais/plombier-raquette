@@ -220,11 +220,18 @@ public class OptionsMenu : MonoBehaviour
 		_displayOptions.SetActive(false);
 	}
 
+	public void ResetMenu()
+	{
+		SetMenuNavigation(_firstDisplayButton);
+		_controlsOptions.SetActive(false);
+		_audioOptions.SetActive(false);
+		_displayOptions.SetActive(true);
+	}
+
 	#endregion
 
 	private void SetMenuNavigation(Selectable firstMenuElement)
 	{
-
 		foreach (var button in _navigationButtons)
 		{
 			MenuManager.Instance.SetButtonNavigation(button, button.navigation.selectOnLeft, firstMenuElement, button.navigation.selectOnUp, button.navigation.selectOnDown);
