@@ -55,8 +55,6 @@ public class OptionsMenu : MonoBehaviour
 		"Ultra"
 	};
 
-	//[SerializeField] private EventSystem _eventSystem;
-
 	private Resolution[] _resolutions;
 	private List<string> _maxFpsDropdownOptions;
 	private List<Button> _navigationButtons = new List<Button>();
@@ -206,7 +204,6 @@ public class OptionsMenu : MonoBehaviour
 
 	public void ShowDisplayParameters()
 	{
-		//MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton);
 		MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton.gameObject);
 		SetMenuNavigation(_firstDisplayButton);
 		_controlsOptions.SetActive(false);
@@ -216,7 +213,6 @@ public class OptionsMenu : MonoBehaviour
 	
 	public void ShowAudioParameters()
 	{
-		//MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton);
 		MenuManager.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton.gameObject);
 		SetMenuNavigation(_firstAudioButton);
 		_controlsOptions.SetActive(false);
@@ -228,20 +224,9 @@ public class OptionsMenu : MonoBehaviour
 
 	private void SetMenuNavigation(Selectable firstMenuElement)
 	{
-		//Navigation navigation;
 
 		foreach (var button in _navigationButtons)
 		{
-			/*navigation = new Navigation();
-
-			navigation.mode = Navigation.Mode.Explicit;
-			navigation.selectOnRight = firstMenuElement;
-			navigation.selectOnLeft = button.navigation.selectOnLeft;
-			navigation.selectOnUp = button.navigation.selectOnUp;
-			navigation.selectOnDown = button.navigation.selectOnDown;
-
-			button.navigation = navigation;*/
-
 			MenuManager.Instance.SetButtonNavigation(button, button.navigation.selectOnLeft, firstMenuElement, button.navigation.selectOnUp, button.navigation.selectOnDown);
 		}
 	}
