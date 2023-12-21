@@ -25,6 +25,7 @@ public class Controller : MonoBehaviour
     private Vector2 _movementDir;
     private bool _isSelectingCharacter;
     private bool _characterSelected;
+    private int _controllerIndex;
 
     #region UNITY FUNCTIONS
 
@@ -122,9 +123,10 @@ public class Controller : MonoBehaviour
         _imgCharSelectionIcon.color = Color.white;
     }
 
-    public void SetPlayerIndex()
+    public void SetPlayerIndex(int index)
     {
-        _playerIndexText.text = "J" + PlayerInput.playerIndex;
+        _controllerIndex = index;
+        _playerIndexText.text = "P" + _controllerIndex;
     }
     #endregion
 }

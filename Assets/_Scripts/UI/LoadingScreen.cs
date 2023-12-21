@@ -11,7 +11,7 @@ public class LoadingScreen : MonoBehaviour
 
 	private void Start()
 	{
-		if (GameParameters.CurrentTournamentInfos.CurrentRound == 0)
+		if (GameParameters.Instance.CurrentTournamentInfos.CurrentRound == 0)
 		{
 			gameObject.SetActive(true);
 			_menusContainer.SetActive(false);

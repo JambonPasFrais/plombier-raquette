@@ -31,7 +31,7 @@ public class MenuManager : MonoBehaviour
 	
     private void Start()
     {
-		if (GameParameters.CurrentTournamentInfos.CurrentRound == 0)
+		if (GameParameters.Instance.CurrentTournamentInfos.CurrentRound == 0)
 		{
 			transform.GetChild(0).gameObject.SetActive(true);
 
@@ -44,7 +44,7 @@ public class MenuManager : MonoBehaviour
 		else
 		{
 			_tournamentBracketMenu.SetActive(true);
-			_tournamentBracketMenu.GetComponent<TournamentBracket>().SetCurrentBracket(GameParameters.CurrentTournamentInfos);
+			_tournamentBracketMenu.GetComponent<TournamentBracket>().SetCurrentBracket(GameParameters.Instance.CurrentTournamentInfos);
 		}
 
 		_visitedMenus.Add(transform.GetChild(0).gameObject);

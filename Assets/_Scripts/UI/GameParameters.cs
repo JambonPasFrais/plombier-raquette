@@ -25,8 +25,8 @@ public class GameParameters : MonoBehaviour
     [SerializeField] private TournamentInfos _tournamentInfos;
 
     public static GameParameters Instance => _instance;
-    public static int LocalNbPlayers => _instance._localNbPlayers;
-    public static TournamentInfos CurrentTournamentInfos => _instance._tournamentInfos;
+    public int LocalNbPlayers => _localNbPlayers;
+    public TournamentInfos CurrentTournamentInfos => _tournamentInfos;
     public static bool IsTournamentMode
     {
         get { return _instance._isTournamentMode; }

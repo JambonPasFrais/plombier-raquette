@@ -224,7 +224,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			_characterShowroomsSingle[0].PlayerInfo.text = "P1";
 
-			if (GameParameters.LocalNbPlayers == 1)
+			if (GameParameters.Instance.LocalNbPlayers == 1)
 				_characterShowroomsSingle[1].PlayerInfo.text = "COM";
 			else
 				_characterShowroomsSingle[1].PlayerInfo.text = "P2";
@@ -235,7 +235,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 			for(int i = 1; i < 4; i++)
 			{
-				if (i < GameParameters.LocalNbPlayers)
+				if (i < GameParameters.Instance.LocalNbPlayers)
 					_characterShowroomsDouble[i].PlayerInfo.text = "P" + (i + 1).ToString();
 
 				else
@@ -280,7 +280,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Will load "random" model for each bot and assign the right variables for later transformations
 	private void SetTheRandomSelectionForBots()
 	{
-		for (int i = _totalNbPlayers - 1; i > GameParameters.LocalNbPlayers - 1; i--)
+		for (int i = _totalNbPlayers - 1; i > GameParameters.Instance.LocalNbPlayers - 1; i--)
 		{
 			// We select the "Random" Character UI so it's in Last
 			CharacterUI characterUI = _charactersUI.Last();

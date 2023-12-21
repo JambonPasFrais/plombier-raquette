@@ -61,7 +61,7 @@ public class TournamentEndMenu : MonoBehaviour
 				Destroy(_loserPlayerLocation.GetChild(0).gameObject);
 
 			gameObject.SetActive(false);
-			GameParameters.CurrentTournamentInfos.Reset();
+			GameParameters.Instance.CurrentTournamentInfos.Reset();
 			MenuManager.Instance.GoBackToMainMenu();
 		}
 	}

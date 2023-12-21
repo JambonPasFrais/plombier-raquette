@@ -90,7 +90,7 @@ public class TournamentBracket : MonoBehaviour
 		if (_tournamentWinner != null)
 			winnerData = _tournamentWinner.GetComponent<CharacterUI>().Character;
 
-		GameParameters.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
+		GameParameters.Instance.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
 
 		SceneManager.LoadScene(1);
 	}
@@ -99,17 +99,17 @@ public class TournamentBracket : MonoBehaviour
 	{
 		int winnerIndex = 0;
 
-		if (GameParameters.CurrentTournamentInfos.HasPlayerWon == Teams.TEAM2)
+		if (GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon == Teams.TEAM2)
 			winnerIndex = 1;
 
-		if(GameParameters.CurrentTournamentInfos.CurrentRound == 1)
+		if(GameParameters.Instance.CurrentTournamentInfos.CurrentRound == 1)
 		{
 			_secondRoundPlayers.Add(_firstRoundPlayers[winnerIndex]);
 			_firstRoundPlayers[winnerIndex].transform.SetParent(_characterSecondRoundLocations[winnerIndex / 2]);
 			_firstRoundPlayers[winnerIndex].transform.localPosition = Vector3.zero;
 			_firstRoundPlayers[winnerIndex] = null;
 		}
-		else if(GameParameters.CurrentTournamentInfos.CurrentRound == 2)
+		else if(GameParameters.Instance.CurrentTournamentInfos.CurrentRound == 2)
 		{
 			_thirdRoundPlayers.Add(_secondRoundPlayers[winnerIndex]);
 			_secondRoundPlayers[winnerIndex].transform.SetParent(_characterThirdRoundLocations[winnerIndex / 2]);
@@ -125,9 +125,9 @@ public class TournamentBracket : MonoBehaviour
 			_thirdRoundPlayers[winnerIndex] = null;
 		}
 
-		GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.DEFAULT;
+		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.DEFAULT;
 
-		if (GameParameters.CurrentTournamentInfos.CurrentRound < 4)
+		if (GameParameters.Instance.CurrentTournamentInfos.CurrentRound < 4)
 			PlayCurrentRound();
 	}
 
@@ -152,7 +152,7 @@ public class TournamentBracket : MonoBehaviour
 		_playMatchButton.interactable = true;
 		_tournamentWinner = null;
 		_cupImage.sprite = _tournamentCupsSprite[GameParameters.Instance.ReturnCupIndex()];
-		GameParameters.CurrentTournamentInfos.CupSprite = _tournamentCupsSprite[GameParameters.Instance.ReturnCupIndex()];
+		GameParameters.Instance.CurrentTournamentInfos.CupSprite = _tournamentCupsSprite[GameParameters.Instance.ReturnCupIndex()];
 
 		_selectedCharacters.Add(GameParameters.Instance.GetCharactersPlayers());
 		_availableCharacters = new List<CharacterData>(MenuManager.Instance.Characters);
@@ -174,13 +174,13 @@ public class TournamentBracket : MonoBehaviour
 			_firstRoundPlayers.Add(go);
 		}
 
-		GameParameters.CurrentTournamentInfos.PlayersCharacter = _firstRoundPlayers[0].GetComponent<CharacterUI>().Character;
+		GameParameters.Instance.CurrentTournamentInfos.PlayersCharacter = _firstRoundPlayers[0].GetComponent<CharacterUI>().Character;
 	}
 
 	public void SetCurrentBracket(TournamentInfos currentTournament)
 	{
 		_playMatchButton.interactable = true;
-		_cupImage.sprite = GameParameters.CurrentTournamentInfos.CupSprite;
+		_cupImage.sprite = GameParameters.Instance.CurrentTournamentInfos.CupSprite;
 		_currentRound = currentTournament.CurrentRound;
 		List<CharacterData> datas = new List<CharacterData>();
 		currentTournament.RoundPlayers.TryGetValue(0, out datas);
@@ -259,7 +259,7 @@ public class TournamentBracket : MonoBehaviour
 			}
 		}
 
-		if (GameParameters.CurrentTournamentInfos.HasPlayerWon != Teams.DEFAULT)
+		if (GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon != Teams.DEFAULT)
 			GetMatchResults();
 	}
 
@@ -343,7 +343,7 @@ public class TournamentBracket : MonoBehaviour
 	public void Forfait()
 	{
 		ResetBracket();
-		GameParameters.CurrentTournamentInfos.Reset();
+		GameParameters.Instance.CurrentTournamentInfos.Reset();
 		MenuManager.Instance.GoBackToMainMenu();
 	}
 
