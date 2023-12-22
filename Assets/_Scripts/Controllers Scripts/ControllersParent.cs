@@ -23,6 +23,7 @@ public class ControllersParent : Agent
     [SerializeField] protected Transform _serviceBallInitializationPoint;
     [SerializeField] protected float _minimumShotForce;
     [SerializeField] protected float _maximumShotForce;
+    [SerializeField] protected float _extremeShootingDirectionLateralDistanceMargin;
 
     [Header("Force Clamping")]
     [SerializeField] protected float _maximumDistanceToNet;
@@ -97,11 +98,11 @@ public class ControllersParent : Agent
 
         if (rightSideIsTargeted)
         {
-            maximumLateralDistance = Mathf.Abs(_trainingManager.FaultLinesXByTeam[this.PlayerTeam][1] - transform.position.x) - 0.1f;
+            maximumLateralDistance = Mathf.Abs(_trainingManager.FaultLinesXByTeam[this.PlayerTeam][1] - transform.position.x) - _extremeShootingDirectionLateralDistanceMargin;
         }
         else
         {
-            maximumLateralDistance = Mathf.Abs(_trainingManager.FaultLinesXByTeam[this.PlayerTeam][0] - transform.position.x) - 0.1f;
+            maximumLateralDistance = Mathf.Abs(_trainingManager.FaultLinesXByTeam[this.PlayerTeam][0] - transform.position.x) - _extremeShootingDirectionLateralDistanceMargin;
         }
 
         float maximumForwardDistance = Mathf.Sqrt(Mathf.Pow(distanceToFirstReboundPosition, 2) + Mathf.Pow(maximumLateralDistance, 2));

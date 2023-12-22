@@ -6629,6 +6629,7 @@ MonoBehaviour:
   _serviceBallInitializationPoint: {fileID: 6716864470333118959}
   _minimumShotForce: 325
   _maximumShotForce: 450
+  _extremeShootingDirectionLateralDistanceMargin: 0.1
   _maximumDistanceToNet: 11.89
   _forceMinimumClampFactor: 0.45
   _forceMaximumClampFactor: 1
@@ -6704,12 +6705,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4997082742284177480}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Record: 0
+  Record: 1
   NumStepsToRecord: 0
   DemonstrationName: IL_Demonstration1
   DemonstrationDirectory: Demonstrations
