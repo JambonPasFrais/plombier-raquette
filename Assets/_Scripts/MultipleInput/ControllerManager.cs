@@ -39,13 +39,13 @@ public class ControllerManager : MonoBehaviour
     private void OnEnable()
     {
         // Enable the input action
-        //_joinPlayerAction.Enable();
+        _joinPlayerAction.Enable();
     }
 
     private void OnDisable()
     {
         // Disable the input action
-        //_joinPlayerAction.Disable();
+        _joinPlayerAction.Disable();
     }
 
     private void Awake()
@@ -200,19 +200,17 @@ public class ControllerManager : MonoBehaviour
         {
             case Joystick:
                 playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-                playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
                 break;
             case Gamepad:
                 playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-				playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
 				break;
             case Keyboard:
                 playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-				playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
 				break;
         }
 
-        playerInputHandler.Controller.ControllerSelectionMode();
+		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
+		playerInputHandler.Controller.ControllerSelectionMode();
         playerInputHandler.Controller.PlayerInput = playerInput;
         
         //UI Stuff of the controller prefab

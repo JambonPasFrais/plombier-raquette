@@ -99,7 +99,7 @@ public class Controller : MonoBehaviour
 		_isSelectingCharacter = false;
 
 		_controllerMenuIcon.SetActive(true);
-		_characterSelectionIcon.SetActive(true);
+		_characterSelectionIcon.SetActive(false);
 
 		transform.position = Vector3.zero;
 		transform.localScale = Vector3.one;
@@ -125,6 +125,7 @@ public class Controller : MonoBehaviour
 
 	public void SetPlayerIndex(int index)
 	{
+		_playerIndexText.gameObject.SetActive(true);
 		_controllerIndex = index;
 		_playerIndexText.text = "P" + _controllerIndex;
 	}

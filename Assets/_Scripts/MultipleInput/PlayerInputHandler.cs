@@ -10,7 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
 	// TODO : change this variable for private with getter and setter
 	[HideInInspector] public Controller Controller;
 	[HideInInspector] public Character Character;
-	[SerializeField] private PlayerInput _playerInput;// TODO : comment when finishing localmultiplayer implementation
+	[SerializeField] private PlayerInput _playerInput; // TODO : comment when finishing localmultiplayer implementation
 
 	#region GETTERS
 
