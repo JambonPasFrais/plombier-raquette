@@ -21,7 +21,7 @@ public class PlayerShowroom
         PlayerInfo.text = username;
         CharacterName.text = data.Name;
         NameBackground.color = data.CharacterSecondaryColor;
-        GameObject model = GameObject.Instantiate(data.Model3D, ModelLocation);
+        GameObject model = GameObject.Instantiate(data.BasicModel, ModelLocation);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.Euler(0, 0, 0);
         Background.color = data.CharacterPrimaryColor;

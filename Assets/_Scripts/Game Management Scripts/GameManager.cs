@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         if (_controllers.Count > 2 )
         {
             CameraManager.InitSplitScreenCameras();
-        }else if (GameParameters.LocalNbPlayers == _controllers.Count)
+        }else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count)
         {
             CameraManager.InitSplitScreenCameras();
         }

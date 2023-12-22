@@ -38,13 +38,13 @@ public class CharacterCreator : MonoBehaviour
     {
         _characters = new List<GameObject>();
 
-        List<CharacterData> playersCharacter = GameParameters.PlayersCharacters;
+        List<CharacterData> playersCharacter = GameParameters.Instance.PlayersCharacter;
 
         int nbCharInstantiated = 0;
         bool playerInTeamOne = true;
 
         // Create Human Characters
-        for (int playerIndex = 0; playerIndex < GameParameters.LocalNbPlayers; playerIndex++)
+        for (int playerIndex = 0; playerIndex < GameParameters.Instance.LocalNbPlayers; playerIndex++)
         {
             // Init Controllers
             foreach (var playerInputHandler in ControllerManager.Controllers.Values)
@@ -70,7 +70,7 @@ public class CharacterCreator : MonoBehaviour
         }
         
         // Create AI Characters
-        for (int aiIndex = GameParameters.LocalNbPlayers; aiIndex < playersCharacter.Count; aiIndex++)
+        for (int aiIndex = GameParameters.Instance.LocalNbPlayers; aiIndex < playersCharacter.Count; aiIndex++)
         {
             InitPlayerGo(playersCharacter[aiIndex].AiControllerPrefab);
             //_characters[^1].transform.position = playerOriginalPositions[nbCharInstantiated].position;

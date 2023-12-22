@@ -27,6 +27,7 @@ public class GameParameters : MonoBehaviour
     public static GameParameters Instance => _instance;
     public int LocalNbPlayers => _localNbPlayers;
     public TournamentInfos CurrentTournamentInfos => _tournamentInfos;
+    public List<CharacterData> PlayersCharacter => _playersCharacters;
     public static bool IsTournamentMode
     {
         get { return _instance._isTournamentMode; }
