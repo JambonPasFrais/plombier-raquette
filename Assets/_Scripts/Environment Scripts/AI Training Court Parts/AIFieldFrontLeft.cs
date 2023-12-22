@@ -60,6 +60,10 @@ public class AIFieldFrontLeft : AIFieldGroundPart
                         }
                     }
                 }
+                else
+                {
+
+                }
             }
         }
     }

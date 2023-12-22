@@ -89,6 +89,9 @@ public class AgentController : ControllersParent
             return;
         }
 
+        // The agent gains rewards when it hits the ball.
+        HasHitBall();
+
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
         float wantedHitForce = _minimumShotForce + ((hitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce) / (_maximumHitKeyPressTime - _minimumHitKeyPressTimeToIncrementForce)) * (_maximumShotForce - _minimumShotForce);
@@ -473,7 +476,7 @@ public class AgentController : ControllersParent
 
     public void TouchedForbiddenCollider()
     {
-        AddReward(-5f);
+        AddReward(-6f);
         ReplacingPlayers();
         EndEpisode();
     }
@@ -485,12 +488,16 @@ public class AgentController : ControllersParent
     public void HasHitBall()
     {
         AddReward(0.5f);
-        EndEpisode();
+    }
+
+    public void BallTouchedFieldWithoutProvokingFault()
+    {
+        AddReward(1f);
     }
 
     public void ScoredPoint()
     {
-        AddReward(4f);
+        AddReward(5f);
         EndEpisode();
     }
 
