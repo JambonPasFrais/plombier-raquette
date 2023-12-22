@@ -59,9 +59,9 @@ public class AIFieldFrontRight : AIFieldGroundPart
                         }
                     }
                 }
-                else
+                else if (ball.LastPlayerToApplyForce.gameObject.TryGetComponent<AgentController>(out AgentController agent)) 
                 {
-
+                    agent.BallTouchedFieldWithoutProvokingFault();
                 }
             }
         }
