@@ -39,7 +39,7 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
-    max_steps: 500000
+    max_steps: 3000000
     time_horizon: 64
     summary_freq: 50000
     threaded: false
@@ -68,7 +68,7 @@ engine_settings:
 environment_parameters: null
 checkpoint_settings:
   run_id: Test1
-  initialize_from: null
+  initialize_from: ILT02_IntLTraining01
   load_model: false
   resume: false
   force: false
