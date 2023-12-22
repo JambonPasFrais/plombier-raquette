@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +29,8 @@ public class AgentController : ControllersParent
     private float _currentSpeed;
     private ControllersParent _otherPlayer;
     private FieldBorderPointsContainer _borderPointsContainer;
+    private float _shootingDirectionLateralComponent;
+    private float _shootingDirectionForwardComponent;
 
     #endregion
 
@@ -120,14 +123,21 @@ public class AgentController : ControllersParent
 
         Vector3 horizontalDirection;
 
-        // The hit direction is set according to the mouse position on the screen.
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+        if (GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly)
         {
-            horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
+            horizontalDirection = _shootingDirectionLateralComponent * Vector3.right + _shootingDirectionForwardComponent * Vector3.forward;
         }
         else
         {
-            horizontalDirection = Vector3.forward;
+            // The hit direction is set according to the mouse position on the screen.
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+            {
+                horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
+            }
+            else
+            {
+                horizontalDirection = Vector3.forward;
+            }
         }
 
         // Initialization of the correct ball physic material.
@@ -390,6 +400,14 @@ public class AgentController : ControllersParent
             _rigidBody.velocity = new Vector3(0, _rigidBody.velocity.y, 0);
         }
 
+        _shootingDirectionLateralComponent = actions.ContinuousActions[2];
+        _shootingDirectionForwardComponent = actions.ContinuousActions[3];
+
+        if (GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly)
+        {
+            _hitKeyPressedTime = actions.ContinuousActions[4];
+        }
+
         switch (actions.DiscreteActions[0])
         {
             case 0:
@@ -453,12 +471,6 @@ public class AgentController : ControllersParent
 
     #endregion
 
-    private void ReplacingPlayers()
-    {
-        _trainingManager.InitializePlayersPosition();
-        _trainingManager.EnableLockServiceColliders();
-    }
-
     #region POSITIVE & NEGATIVE REWARDS SYSTEM
 
     #region NEGATIVE REWARDS
@@ -477,7 +489,7 @@ public class AgentController : ControllersParent
     public void TouchedForbiddenCollider()
     {
         AddReward(-6f);
-        ReplacingPlayers();
+        _trainingManager.PlacingPlayers();
         EndEpisode();
     }
 

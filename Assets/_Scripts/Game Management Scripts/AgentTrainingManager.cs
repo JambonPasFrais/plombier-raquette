@@ -120,10 +120,14 @@ public class AgentTrainingManager : MonoBehaviour
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
 
-        InitializePlayersPosition();
-        EnableLockServiceColliders();
+        PlacingPlayers();
 
         _ballInstance.GetComponent<AIBall>().ResetBall();
+    }
+
+    public void ChangeServingSide()
+    {
+        _serveRight = !_serveRight;
     }
 
     /// <summary>
@@ -150,6 +154,12 @@ public class AgentTrainingManager : MonoBehaviour
     {
         int sideIndex = (_globalGamesCount % 2);
         _lockServiceMovementColliders[sideIndex].SetActive(true);
+    }
+
+    public void PlacingPlayers()
+    {
+        InitializePlayersPosition();
+        EnableLockServiceColliders();
     }
 
     public void DisableLockServiceColliders()
@@ -225,8 +235,8 @@ public class AgentTrainingManager : MonoBehaviour
             ChangeServer();
         }
 
-        InitializePlayersPosition();
-        EnableLockServiceColliders();
+        ChangeServingSide();
+        PlacingPlayers();
     }
 
     public void ChangeServer()

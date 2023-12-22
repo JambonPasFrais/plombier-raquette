@@ -56,8 +56,6 @@ public class AIBall : MonoBehaviour
             if (_staticTime >= 5f)
             {
                 _trainingManager.EndOfPoint();
-                _trainingManager.InitializePlayersPosition();
-                _trainingManager.EnableLockServiceColliders();
                 ResetBall();
                 ControllersParent controller;
                 if ((controller = _trainingManager.Controllers[_trainingManager.ServerIndex]) is BotBehavior)

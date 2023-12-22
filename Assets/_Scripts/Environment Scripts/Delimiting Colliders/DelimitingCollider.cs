@@ -14,7 +14,6 @@ public class DelimitingCollider : MonoBehaviour
         }
         else if (collision.gameObject.TryGetComponent<AIBall>(out AIBall ball))
         {
-            Debug.Log($"AI ball touched this forbidden collider : {gameObject.name}");
             ball.Rebound();
 
             // If it is the second rebound of the ball, then it is point for the hitting player.
@@ -40,8 +39,7 @@ public class DelimitingCollider : MonoBehaviour
                     ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                     ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
 
-                    _trainingManager.InitializePlayersPosition();
-                    _trainingManager.EnableLockServiceColliders();
+                    _trainingManager.PlacingPlayers();
 
                     ball.ResetBall();
 

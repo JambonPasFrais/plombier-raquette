@@ -36,8 +36,7 @@ public class AIFieldFrontLeft : AIFieldGroundPart
                         ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                         ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
 
-                        _trainingManager.InitializePlayersPosition();
-                        _trainingManager.EnableLockServiceColliders();
+                        _trainingManager.PlacingPlayers();
 
                         ball.ResetBall();
 
