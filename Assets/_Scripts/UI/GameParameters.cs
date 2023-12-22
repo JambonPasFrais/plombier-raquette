@@ -33,6 +33,7 @@ public class GameParameters : MonoBehaviour
         get { return _instance._isTournamentMode; }
         set { _instance._isTournamentMode = value; }
     }
+    public int NumberOfPlayerBySide => _numberOfPlayerBySide;
 
 	private void Awake()
 	{

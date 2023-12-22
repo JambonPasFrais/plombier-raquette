@@ -150,10 +150,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 		SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
-	// Button "validation" from the rules menu
-	public void SetNumberOfShowrooms(bool isDouble)
+	// Display right number of showrooms whether it is a single or double match
+	public void SetNumberOfShowrooms(int numberOfPlayerBySide)
 	{
-		if (isDouble)
+		if (numberOfPlayerBySide == 2)
 		{
 			_matchDoubleWindow.SetActive(true);
 			_matchSingleWindow.SetActive(false);
@@ -165,7 +165,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_matchDoubleWindow.SetActive(false);
 			_matchSingleWindow.SetActive(true);
 			_totalNbPlayers = 2;
-			_currentShowroomList = _characterShowroomsDouble;
+			_currentShowroomList = _characterShowroomsSingle;
 		}
 
 		_playersCharacter = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
@@ -180,6 +180,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
 		_charactersModel = MenuManager.Instance.CharactersModel;
 
+		SetNumberOfShowrooms(GameParameters.Instance.NumberOfPlayerBySide + 1);
 		SetPlayerInfos();
 		_playButton.interactable = false;
 
@@ -290,6 +291,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			
 			_currentShowroomList[i].CharacterName.text = characterUI.Character.Name;
 			_currentShowroomList[i].Background.color = characterUI.Character.CharacterPrimaryColor;
+			_currentShowroomList[i].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
 
 			characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
 			characterModel.transform.localPosition = Vector3.zero;

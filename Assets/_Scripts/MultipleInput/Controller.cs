@@ -16,6 +16,13 @@ public class Controller : MonoBehaviour
 	[SerializeField] private Image _imgCharSelectionIcon;
 	[SerializeField] private TextMeshProUGUI _playerIndexText;
 	[SerializeField] private RectTransform _rectTransform;
+	[SerializeField] private List<Color> _playerColors = new List<Color>()
+	{
+		Color.red,
+		Color.blue,
+		Color.green,
+		Color.yellow
+	};
 
 	[HideInInspector] public PlayerInput PlayerInput;// TODO : change this variable for private with getter and setter
 
@@ -65,6 +72,7 @@ public class Controller : MonoBehaviour
 
 	public void TrySelect()
 	{
+		Debug.Log("J'appuie sur une touche !");
 		if (!_isSelectingCharacter)
 			return;
 
@@ -72,6 +80,7 @@ public class Controller : MonoBehaviour
 			return;
 
 		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
+
 		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, PlayerInput.playerIndex))
 		{
 			_characterSelected = true;
@@ -100,6 +109,7 @@ public class Controller : MonoBehaviour
 
 		_controllerMenuIcon.SetActive(true);
 		_characterSelectionIcon.SetActive(false);
+		_playerIndexText.gameObject.SetActive(true);
 
 		transform.position = Vector3.zero;
 		transform.localScale = Vector3.one;
@@ -111,8 +121,9 @@ public class Controller : MonoBehaviour
 
 		_controllerMenuIcon.SetActive(false);
 		_characterSelectionIcon.SetActive(true);
+		_playerIndexText.gameObject.SetActive(false);
 
-		_rectTransform.sizeDelta = new Vector2(80f, 80f);
+		_rectTransform.sizeDelta = new Vector2(50f, 50f);
 		transform.position = Vector3.zero;
 		transform.localScale = Vector3.one;
 	}
@@ -128,6 +139,11 @@ public class Controller : MonoBehaviour
 		_playerIndexText.gameObject.SetActive(true);
 		_controllerIndex = index;
 		_playerIndexText.text = "P" + _controllerIndex;
+	}
+
+	public void SetColorVisual(int index)
+	{
+		_playerIndexText.color = _playerColors[index];
 	}
 	#endregion
 }
