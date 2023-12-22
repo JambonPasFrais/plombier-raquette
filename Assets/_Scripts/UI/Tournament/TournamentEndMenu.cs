@@ -15,7 +15,7 @@ public class TournamentEndMenu : MonoBehaviour
     [SerializeField] private Transform _winnerPlayerLocation;
     [SerializeField] private Transform _loserPlayerLocation;
 	[SerializeField] private GameObject _continueText;
-    [SerializeField] private EventSystem _eventSystem;
+    //[SerializeField] private EventSystem _eventSystem;
     [SerializeField] private TextMeshProUGUI _pressInputTextWin;
     [SerializeField] private TextMeshProUGUI _pressInputTextLose;
 	[SerializeField] private TextMeshProUGUI _pressInputGlobal;
@@ -23,9 +23,10 @@ public class TournamentEndMenu : MonoBehaviour
 
     [SerializeField]private bool _canReturn = false;
     private int _factor = -1;
-    private void Awake()
+
+    private void Start()
     {
-		_inputSystemUIInputModule = _eventSystem.gameObject.GetComponent<InputSystemUIInputModule>();
+		_inputSystemUIInputModule = MenuManager.Instance.CurrentEventSystem.gameObject.GetComponent<InputSystemUIInputModule>();
     }
 
     public void SetWinnerMenu(GameObject winnerPrefab, Sprite cupSprite)
@@ -39,10 +40,7 @@ public class TournamentEndMenu : MonoBehaviour
 		_currentCup.sprite = cupSprite;
         GameObject go = Instantiate(winnerPrefab, _winnerPlayerLocation.transform);
         go.transform.localPosition = Vector3.zero;
-		go.transform.localScale = new Vector3(20, 20, 20);
-		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-
-		go.transform.localScale = new Vector3(10, 10, 1);
+		go.transform.localScale = new Vector3(30, 30, 30);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		StartCoroutine(WaitBeforeCanReturn());
 	}

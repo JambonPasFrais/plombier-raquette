@@ -91,7 +91,7 @@ public class TournamentBracket : MonoBehaviour
 			winnerData = _tournamentWinner.GetComponent<CharacterUI>().Character;
 
 		GameParameters.Instance.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
-		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
+		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
 		SceneManager.LoadScene(10);
 	}
 
@@ -353,7 +353,7 @@ public class TournamentBracket : MonoBehaviour
 		yield return new WaitForSeconds(1);
 		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
-		_tournamentEndMenu.SetWinnerMenu(_playersCharacter.GetComponent<CharacterUI>().Character.HumanControllerPrefab, _cupImage.sprite);
+		_tournamentEndMenu.SetWinnerMenu(_playersCharacter.GetComponent<CharacterUI>().Character.BasicModel, _cupImage.sprite);
 	}
 
 	private IEnumerator WaitBeforeShowingLoserMenu()
@@ -362,6 +362,6 @@ public class TournamentBracket : MonoBehaviour
 		yield return new WaitForSeconds(1);
 		ResetBracket();
 		_tournamentEndMenu.gameObject.SetActive(true);
-		_tournamentEndMenu.SetLoserMenu(_playersCharacter.GetComponent<CharacterUI>().Character.HumanControllerPrefab);
+		_tournamentEndMenu.SetLoserMenu(_playersCharacter.GetComponent<CharacterUI>().Character.BasicModel);
 	}
 }

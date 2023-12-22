@@ -57,7 +57,6 @@ MonoBehaviour:
   _winnerPlayerLocation: {fileID: 928017577128329605}
   _loserPlayerLocation: {fileID: 8148659400074884439}
   _continueText: {fileID: 1390466608112212176}
-  _eventSystem: {fileID: 0}
   _pressInputTextWin: {fileID: 2787172562789917876}
   _pressInputTextLose: {fileID: 2594237517215325582}
   _pressInputGlobal: {fileID: 2594237517215325582}
@@ -92,6 +91,7 @@ RectTransform:
   m_Children:
   - {fileID: 2420302634368873819}
   - {fileID: 6376694345934461390}
+  - {fileID: 928017577128329605}
   - {fileID: 8926389775573093496}
   - {fileID: 1737470495762621608}
   - {fileID: 3575594554545943472}
@@ -861,7 +861,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 986902124187519203}
-  - {fileID: 928017577128329605}
   m_Father: {fileID: 9139398621497218955}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -898,12 +897,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8926389775573093496}
+  m_Father: {fileID: 9139398621497218955}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -495, y: 1}
+  m_AnchoredPosition: {x: -495, y: -114.58008}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6166967809087013021
@@ -1030,6 +1029,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9139398621497218955}
     m_Modifications:
+    - target: {fileID: 7310339703745015856, guid: 34787d88055071848b9f6402a83307dc, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7310339703745015859, guid: 34787d88055071848b9f6402a83307dc, type: 3}
       propertyPath: m_Name
       value: Confetti_Particles_Cone (1)
@@ -1082,6 +1085,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 8869225339820212253, guid: 34787d88055071848b9f6402a83307dc, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8944546354493042597, guid: 34787d88055071848b9f6402a83307dc, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -1104,6 +1111,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9139398621497218955}
     m_Modifications:
+    - target: {fileID: 7310339703745015856, guid: 34787d88055071848b9f6402a83307dc, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7310339703745015859, guid: 34787d88055071848b9f6402a83307dc, type: 3}
       propertyPath: m_Name
       value: Confetti_Particles_Cone
@@ -1155,6 +1166,10 @@ PrefabInstance:
     - target: {fileID: 7310339703745015862, guid: 34787d88055071848b9f6402a83307dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 89.99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869225339820212253, guid: 34787d88055071848b9f6402a83307dc, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8944546354493042597, guid: 34787d88055071848b9f6402a83307dc, type: 3}
       propertyPath: m_Layer
