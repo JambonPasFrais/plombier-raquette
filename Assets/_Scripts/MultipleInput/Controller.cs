@@ -10,123 +10,123 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-    [Header("Instances")]
-    [SerializeField] private GameObject _controllerMenuIcon;
-    [SerializeField] private GameObject _characterSelectionIcon;
-    [SerializeField] private Image _imgCharSelectionIcon;
-    [SerializeField] private TextMeshProUGUI _playerIndexText;
-    [SerializeField] private RectTransform _rectTransform;
+	[Header("Instances")]
+	[SerializeField] private GameObject _controllerMenuIcon;
+	[SerializeField] private GameObject _characterSelectionIcon;
+	[SerializeField] private Image _imgCharSelectionIcon;
+	[SerializeField] private TextMeshProUGUI _playerIndexText;
+	[SerializeField] private RectTransform _rectTransform;
 
-    [HideInInspector] public PlayerInput PlayerInput;// TODO : change this variable for private with getter and setter
+	[HideInInspector] public PlayerInput PlayerInput;// TODO : change this variable for private with getter and setter
 
-    [Header("Game Feel")]
-    [SerializeField] private float _speed;
-    
-    private Vector2 _movementDir;
-    private bool _isSelectingCharacter;
-    private bool _characterSelected;
-    private int _controllerIndex;
+	[Header("Game Feel")]
+	[SerializeField] private float _speed;
 
-    #region UNITY FUNCTIONS
+	private Vector2 _movementDir;
+	private bool _isSelectingCharacter;
+	private bool _characterSelected;
+	private int _controllerIndex;
 
-    private void Start()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-    }
+	#region UNITY FUNCTIONS
 
-    private void Update()
-    {
-        transform.Translate(_movementDir * Time.deltaTime * _speed);
-    }
-    #endregion
-    
-    #region CALLED EXTERNALLY
-    public void TryPunch()
-    {
-        Debug.Log(PlayerInput.playerIndex);
-        
-        if (_isSelectingCharacter)
-            return;
-        
-        transform.DOComplete();
-        transform.DOPunchScale(Vector3.one * .1f, .2f);
-    }
+	private void Start()
+	{
+		_rectTransform = GetComponent<RectTransform>();
+	}
 
-    public void TryMove(Vector2 readValue)
-    {
-        if (!_isSelectingCharacter)
-            return;
-        
-        if (_characterSelected)
-            return;
+	private void Update()
+	{
+		transform.Translate(_movementDir * Time.deltaTime * _speed);
+	}
+	#endregion
 
-        _movementDir = readValue;
-    }
+	#region CALLED EXTERNALLY
+	public void TryPunch()
+	{
+		Debug.Log(PlayerInput.playerIndex);
 
-    public void TrySelect()
-    {
-        if (!_isSelectingCharacter)
-            return;
-        
-        if (_characterSelected)
-            return;
-        
-        Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
-        if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, PlayerInput.playerIndex))
-        {
-            _characterSelected = true;
-            _imgCharSelectionIcon.color /= 2;
-        }
-    }
+		if (_isSelectingCharacter)
+			return;
 
-    public void TryDeselect()
-    {
-        if (!_isSelectingCharacter)
-            return;
-        
-        if (!_characterSelected)
-            return;
+		transform.DOComplete();
+		transform.DOPunchScale(Vector3.one * .1f, .2f);
+	}
 
-        if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))
-        {
-            _characterSelected = false;
-            _imgCharSelectionIcon.color = Color.white;
-        }
-    }
-    
-    public void ControllerSelectionMode()
-    {
-        _isSelectingCharacter = false;
-        
-        _controllerMenuIcon.SetActive(true);
-        _characterSelectionIcon.SetActive(true);
-        
-        transform.position = Vector3.zero;
-        transform.localScale = Vector3.one;
-    }
+	public void TryMove(Vector2 readValue)
+	{
+		if (!_isSelectingCharacter)
+			return;
 
-    public void CharacterSelectionMode()
-    {
-        _isSelectingCharacter = true;
-        
-        _controllerMenuIcon.SetActive(false);
-        _characterSelectionIcon.SetActive(true);
+		if (_characterSelected)
+			return;
 
-        _rectTransform.sizeDelta = new Vector2(80f, 80f);
-        transform.position = Vector3.zero;
-        transform.localScale = Vector3.one;
-    }
+		_movementDir = readValue;
+	}
 
-    public void ResetView()
-    {
-        _characterSelected = false;
-        _imgCharSelectionIcon.color = Color.white;
-    }
+	public void TrySelect()
+	{
+		if (!_isSelectingCharacter)
+			return;
 
-    public void SetPlayerIndex(int index)
-    {
-        _controllerIndex = index;
-        _playerIndexText.text = "P" + _controllerIndex;
-    }
-    #endregion
+		if (_characterSelected)
+			return;
+
+		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
+		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, PlayerInput.playerIndex))
+		{
+			_characterSelected = true;
+			_imgCharSelectionIcon.color /= 2;
+		}
+	}
+
+	public void TryDeselect()
+	{
+		if (!_isSelectingCharacter)
+			return;
+
+		if (!_characterSelected)
+			return;
+
+		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))
+		{
+			_characterSelected = false;
+			_imgCharSelectionIcon.color = Color.white;
+		}
+	}
+
+	public void ControllerSelectionMode()
+	{
+		_isSelectingCharacter = false;
+
+		_controllerMenuIcon.SetActive(true);
+		_characterSelectionIcon.SetActive(true);
+
+		transform.position = Vector3.zero;
+		transform.localScale = Vector3.one;
+	}
+
+	public void CharacterSelectionMode()
+	{
+		_isSelectingCharacter = true;
+
+		_controllerMenuIcon.SetActive(false);
+		_characterSelectionIcon.SetActive(true);
+
+		_rectTransform.sizeDelta = new Vector2(80f, 80f);
+		transform.position = Vector3.zero;
+		transform.localScale = Vector3.one;
+	}
+
+	public void ResetView()
+	{
+		_characterSelected = false;
+		_imgCharSelectionIcon.color = Color.white;
+	}
+
+	public void SetPlayerIndex(int index)
+	{
+		_controllerIndex = index;
+		_playerIndexText.text = "P" + _controllerIndex;
+	}
+	#endregion
 }
