@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AIExteriorCourt : MonoBehaviour
 {
-    private AgentTrainingManager _trainingManager;
+    [SerializeField] private AgentTrainingManager _trainingManager;
 
     private void OnCollisionEnter(Collision collision)
     {

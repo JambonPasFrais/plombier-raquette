@@ -34,18 +34,18 @@ behaviors:
           goal_conditioning_type: hyper
           deterministic: false
       gail:
-        strength: 0.5
+        strength: 0.4
         demo_path: Demonstrations/ILDemonstration1.demo
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
-    max_steps: 500000
+    max_steps: 1500000
     time_horizon: 64
     summary_freq: 50000
     threaded: false
     self_play: null
     behavioral_cloning:
-      strength: 0.4
+      strength: 0.3
       demo_path: Demonstrations/ILDemonstration1.demo
 env_settings:
   env_path: null
@@ -68,7 +68,7 @@ engine_settings:
 environment_parameters: null
 checkpoint_settings:
   run_id: Test1
-  initialize_from: null
+  initialize_from: ILTraining01
   load_model: false
   resume: false
   force: false
