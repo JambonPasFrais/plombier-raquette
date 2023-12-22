@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
 
     #region UNITY METHODES
 
-    private void Start()
+    private void Awake()
     {
         _playerAnimator = GetComponent<PlayerAnimator>();
         _playerController = GetComponent<PlayerController>();

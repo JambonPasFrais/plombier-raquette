@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Ball Management")]
     public GameObject BallPrefab;
+
+    [SerializeField] private GameObject _smashTargetGo;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
 
@@ -55,6 +58,8 @@ public class GameManager : MonoBehaviour
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
 
+    public GameObject SmashTargetGo => _smashTargetGo;
+
     #endregion
     
     #region SETTERS
@@ -78,7 +83,7 @@ public class GameManager : MonoBehaviour
         _ballInstance = Instantiate(BallPrefab);
     }
 
-    void Start()
+    public void Init()
     {
         ServiceOnOriginalSide = true;
 
@@ -92,16 +97,20 @@ public class GameManager : MonoBehaviour
         _controllers[_serverIndex].IsServing = true;
 
         // Double
-        if (_controllers.Count > 2)
+        
+        if (_controllers.Count > 2 )
         {
             CameraManager.InitSplitScreenCameras();
-            SideManager.SetSidesInDoubleMatch(_controllers, true, ServiceOnOriginalSide);
+        }else if (GameParameters.LocalNbPlayers == _controllers.Count)
+        {
+            CameraManager.InitSplitScreenCameras();
         }
         else // Simple
         {
             CameraManager.InitSoloCamera();
-            SideManager.SetSidesInSimpleMatch(_controllers, true, ServiceOnOriginalSide);
         }
+        
+        SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
         
         ServiceManager.SetServiceBoxCollider(false);
         
@@ -115,6 +124,11 @@ public class GameManager : MonoBehaviour
             Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
             _teamControllersAssociated.Add(controller, team);
             i++;
+
+            if (i > 1)
+            {
+                i %= 2;
+            }
         }
 
         _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();

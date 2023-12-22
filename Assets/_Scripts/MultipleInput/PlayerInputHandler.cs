@@ -10,7 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     // TODO : change this variable for private with getter and setter
     [HideInInspector] public Controller Controller;
     [HideInInspector] public Character Character;
-    private PlayerInput _playerInput;
+    [SerializeField] private PlayerInput _playerInput;// TODO : comment when finishing localmultiplayer implementation
     
     #region GETTERS
 
@@ -136,11 +136,17 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnPrepSmash(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            Character.PlayerController.PrepareSmash(context);
+    }
+    
     public void OnSmash(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            //Character.PlayerController.Smash();
+            Character.PlayerController.Smash(context);
         }
     }
     

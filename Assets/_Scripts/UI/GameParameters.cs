@@ -12,7 +12,8 @@ public class GameParameters : MonoBehaviour
 	private int _nbOfSets;
 	private int _nbOfGames;
 	private int _COMDifficulty;
-	private List<CharacterData> _playersCharacters = new List<CharacterData>();
+	//TODO : comment [SerializeField] when local multiplayer implementation is finished
+	[SerializeField] private List<CharacterData> _playersCharacters;
     [SerializeField] private bool _isTournamentMode;
     private int _tournamentDifficulty;
     private string _currentTournamentName;

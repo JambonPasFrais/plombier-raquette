@@ -2,36 +2,46 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SideManager : MonoBehaviour
 {
     #region PRIVATE FIELDS
 
-	[SerializeField] private Transform _servicePointsFirstSideParent;
-	[SerializeField] private Transform _servicePointsSecondSideParent;
+	[SerializeField] private  Transform _serviceNodesFirstSideContainer;
+	[SerializeField] private Transform _serviceNodesSecondSideContainer;
 	[SerializeField] private GameObject _firstSideCollidersParentObject;
 	[SerializeField] private GameObject _secondSideCollidersParentObject;
 	//SerializeField] private Transform _cameraParent;
 	//[SerializeField] private List<GameObject> _cameras;
 
-	private Dictionary<string, Transform> _servicePointsFirstSide = new Dictionary<string, Transform>();
-	private Dictionary<string, Transform> _servicePointsSecondSide = new Dictionary<string, Transform>();
+	private Dictionary<string, List<Transform>> _servicePointsFirstSide = new Dictionary<string, List<Transform>>();
+	private Dictionary<string, List<Transform>> _servicePointsSecondSide = new Dictionary<string, List<Transform>>();
 	//private Transform _activeCameraTransform;
 
     #endregion
 
     #region GETTERS
 
-	public Transform ActiveCameraTransform { get { return GameManager.Instance.CameraManager.ActiveCameraTransform; } }
+	//public Transform ActiveCameraTransform { get { return GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(); } }
 
 	#endregion
 
 	private void Awake()
 	{
-		for (int i = 0; i < _servicePointsFirstSideParent.childCount; i++)
+		for (int i = 0; i < _serviceNodesFirstSideContainer.childCount; i++)
 		{
-			_servicePointsFirstSide.Add(_servicePointsFirstSideParent.GetChild(i).name, _servicePointsFirstSideParent.GetChild(i));
-			_servicePointsSecondSide.Add(_servicePointsSecondSideParent.GetChild(i).name, _servicePointsSecondSideParent.GetChild(i));
+			List<Transform> firstSideServiceNodes = new List<Transform>();
+			List<Transform> secondSideServiceNodes = new List<Transform>();
+
+			for (int j = 0; j < _serviceNodesFirstSideContainer.GetChild(i).childCount; j++)
+			{
+				firstSideServiceNodes.Add(_serviceNodesFirstSideContainer.GetChild(i).GetChild(j));
+				secondSideServiceNodes.Add(_serviceNodesSecondSideContainer.GetChild(i).GetChild(j));
+			}
+			
+			_servicePointsFirstSide.Add(_serviceNodesFirstSideContainer.GetChild(i).name, firstSideServiceNodes);
+			_servicePointsSecondSide.Add(_serviceNodesSecondSideContainer.GetChild(i).name, secondSideServiceNodes);
 		}
 
 		/*for (int i = 0; i < _cameraParent.childCount; i++)
@@ -40,13 +50,26 @@ public class SideManager : MonoBehaviour
 		}*/
 	}
 
+
+	/// <summary>
+	/// This function is called externally and will determine either to set sides for simple or double match based on the
+	/// nb of players
+	/// </summary>
+	public void SetSides(List<ControllersParent> players, bool serveRight, bool originalSides)
+	{
+		if (players.Count > 2)
+			SetSidesInDoubleMatch(players, serveRight, originalSides);
+		else
+			SetSidesInSimpleMatch(players, serveRight, originalSides);
+	}
+	
 	/// <summary>
 	/// Alternates the player's fields and set the players, the cameras and the bot targets to the correct positions for a 1v1 match.
 	/// </summary>
 	/// <param name="players"></param>
 	/// <param name="serveRight"></param>
 	/// <param name="originalSides"></param>
-	public void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
+	private void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
 		string side = "";
 
@@ -54,23 +77,23 @@ public class SideManager : MonoBehaviour
 
 		if (originalSides)
 		{
-			/*_activeCameraTransform = _cameras[0].transform;
-            _cameras[0].SetActive(true);
-			_cameras[1].SetActive(false);*/
-			players[0].transform.position = _servicePointsFirstSide[side].position;
-			players[0].transform.rotation = _servicePointsFirstSide[side].rotation;
-			players[1].transform.position = _servicePointsSecondSide[side].position;
-			players[1].transform.rotation = _servicePointsSecondSide[side].rotation;
+			players[0].transform.position = _servicePointsFirstSide[side][0].position;
+			players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+			players[0].IsInOriginalSide = true;
+			
+			players[1].transform.position = _servicePointsSecondSide[side][0].position;
+			players[1].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+			players[1].IsInOriginalSide = false;
 		}
 		else
 		{
-            /*_activeCameraTransform = _cameras[1].transform;
-            _cameras[0].SetActive(false);
-			_cameras[1].SetActive(true);*/
-			players[0].transform.position = _servicePointsSecondSide[side].position;
-			players[0].transform.rotation = _servicePointsSecondSide[side].rotation;
-			players[1].transform.position = _servicePointsFirstSide[side].position;
-			players[1].transform.rotation = _servicePointsFirstSide[side].rotation;
+            players[0].transform.position = _servicePointsSecondSide[side][0].position;
+			players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+			players[0].IsInOriginalSide = false;
+
+			players[1].transform.position = _servicePointsFirstSide[side][0].position;
+			players[1].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+			players[1].IsInOriginalSide = true;
 		}
 
 		GameManager.Instance.CameraManager.ChangeCameraSide(originalSides);
@@ -85,22 +108,50 @@ public class SideManager : MonoBehaviour
     /// <param name="players"></param>
     /// <param name="serveRight"></param>
     /// <param name="_originalSides"></param>
-    public void SetSidesInDoubleMatch(List<ControllersParent> players, bool serveRight, bool _originalSides)
+    private void SetSidesInDoubleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
 		string side = "";
 
 		side = serveRight ? "Right" : "Left";
 
-		if (_originalSides)
+		if (originalSides)
 		{
-			//_cameras[0].SetActive(true);
-			//_cameras[1].SetActive(false);
+			players[0].transform.position = _servicePointsFirstSide[side][0].position;
+			players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+			players[0].IsInOriginalSide = true;
+			
+			players[1].transform.position = _servicePointsSecondSide[side][0].position;
+			players[1].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+			players[1].IsInOriginalSide = false;
+			
+			players[2].transform.position = _servicePointsFirstSide[side][1].position;
+			players[2].transform.rotation = _servicePointsFirstSide[side][1].rotation;
+			players[2].IsInOriginalSide = true;
+			
+			players[3].transform.position = _servicePointsSecondSide[side][1].position;
+			players[3].transform.rotation = _servicePointsSecondSide[side][1].rotation;
+			players[3].IsInOriginalSide = false;
 		}
 		else
 		{
-			//_cameras[0].SetActive(false);
-			//_cameras[1].SetActive(true);
+			players[0].transform.position = _servicePointsSecondSide[side][0].position;
+			players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+			players[0].IsInOriginalSide = false;
+
+			players[1].transform.position = _servicePointsFirstSide[side][0].position;
+			players[1].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+			players[1].IsInOriginalSide = true;
+			
+			players[2].transform.position = _servicePointsSecondSide[side][1].position;
+			players[2].transform.rotation = _servicePointsSecondSide[side][1].rotation;
+			players[2].IsInOriginalSide = false;
+
+			players[3].transform.position = _servicePointsFirstSide[side][1].position;
+			players[3].transform.rotation = _servicePointsFirstSide[side][1].rotation;
+			players[3].IsInOriginalSide = true;
 		}
+		
+		GameManager.Instance.CameraManager.ChangeCameraSide(originalSides);
 		
 		Debug.Log("Sides in Double Match set");
 	}

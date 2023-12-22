@@ -6,44 +6,49 @@ using UnityEngine.UI;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    [Header("Camera For Smash Attacks")]
+    [Header("Instances")]
     [SerializeField] private GameObject _firstPersonCamera;
-    [SerializeField] private GameObject _ballInstance;
-    [SerializeField] private PlayerController _player;
     [SerializeField] private Transform _ballSpawnPoint;
+    
+    [Header("Camera Parameters for Smash")]
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _zoomFOV = 40f;
     [SerializeField] private float _normalFOV = 60f; 
     [SerializeField] private float _zoomDuration = 0.5f;
-    [SerializeField] private Image _smashTargetImage;
-
-    [SerializeField] private bool _canSmash;
-    [SerializeField] private float _distanceToBall = 5f;
+    
+    // Instances
     private Camera _firstPersonCameraComponent;
+    private GameObject _smashTargetGo;
+    private Ball _ballInstance;
+    
+    // Logic variables
+    private bool _isFirstPersonView;
+    
+    #region GETTERS
 
-    public bool _isFirstPersonView;
+    public GameObject FirstPersonCamera => _firstPersonCamera;
+    public bool IsFirstPersonView => _isFirstPersonView;
+    
+    #endregion
 
+    #region UNITY FUNCTIONS
+    
     void Start()
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
-        _ballInstance = GameManager.Instance.BallInstance;
+        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
+        _smashTargetGo = GameManager.Instance.SmashTargetGo;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && !_isFirstPersonView && GameManager.Instance.GameState == GameState.PLAYING && _canSmash) 
-        {
-            ToggleFirstPersonView();
-            _ballInstance.transform.rotation = Quaternion.identity;
-        }
-
         if (_isFirstPersonView)
         {
-            if (!_ballInstance.GetComponent<Rigidbody>().isKinematic)
+            if (!_ballInstance.Rb.isKinematic)
             {
-                _ballInstance.GetComponent<Rigidbody>().isKinematic = !_ballInstance.GetComponent<Rigidbody>().isKinematic;
+                _ballInstance.Rb.isKinematic = !_ballInstance.Rb.isKinematic;
             }
-            _ballInstance.transform.position = _ballSpawnPoint.position;
+            _ballInstance.gameObject.transform.position = _ballSpawnPoint.position;
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
@@ -61,37 +66,30 @@ public class PlayerCameraController : MonoBehaviour
             }
 
             _firstPersonCamera.transform.eulerAngles = new Vector3(currentXRotation, _firstPersonCamera.transform.eulerAngles.y, 0);
-
-            if (Input.GetMouseButtonDown(0)) 
-            {
-                // Reseting smash and target states.
-                _canSmash = false;
-                _ballInstance.GetComponent<Ball>().DestroyTarget();
-
-                _ballInstance.GetComponent<Rigidbody>().isKinematic = false;
-                _ballInstance.GetComponent<Ball>().InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_player.PossiblePhysicMaterials, "Normal"));
-                _ballInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_player.PossibleActions, "Smash"));
-                Vector3 horizontalDirection = Vector3.Project(_firstPersonCamera.transform.forward, Vector3.forward) + Vector3.Project(_firstPersonCamera.transform.forward, Vector3.right);
-                _ballInstance.GetComponent<Ball>().ApplyForce(_player.MaximumShotForce, 0f, horizontalDirection.normalized, _player);
-                ToggleFirstPersonView();
-            }
         }
     }
 
-    private void ToggleFirstPersonView()
+    #endregion
+    
+    #region FUNCTIONS CALLED EXTERNALLY
+    
+    public void ToggleFirstPersonView()
     {
-        GetComponent<PlayerController>().SetSmash();
-
-        Vector3 horizontalBallDirection = Vector3.Project(_ballInstance.GetComponent<Rigidbody>().velocity, Vector3.forward) +
-            Vector3.Project(_ballInstance.GetComponent<Rigidbody>().velocity, Vector3.right);
+        Vector3 horizontalBallDirection = Vector3.Project(_ballInstance.Rb.velocity, Vector3.forward) +
+            Vector3.Project(_ballInstance.Rb.velocity, Vector3.right);
         Vector3 cameraLookingDirection = -horizontalBallDirection;
         _firstPersonCamera.transform.forward = cameraLookingDirection;
-
+        
         _isFirstPersonView = !_isFirstPersonView;
-        GameManager.Instance.SideManager.ActiveCameraTransform.gameObject.SetActive(!_isFirstPersonView);
+        
+        // TODO : fix it for 2v2
+        //GameManager.Instance.SideManager.ActiveCameraTransform.gameObject.SetActive(!_isFirstPersonView);
+        
         _firstPersonCamera.SetActive(_isFirstPersonView);
-        _smashTargetImage.gameObject.SetActive(_isFirstPersonView);
+        _smashTargetGo.SetActive(_isFirstPersonView);
+        
         Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+        
         if (_isFirstPersonView)
         {
             StartCoroutine(ZoomIn());
@@ -102,6 +100,10 @@ public class PlayerCameraController : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region INTERN FUNCTIONS
+    
     private IEnumerator ZoomIn()
     {
         float timer = 0f;
@@ -118,9 +120,6 @@ public class PlayerCameraController : MonoBehaviour
 
         _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
     }
-
-    public void SetCanSmash(bool canSmash)
-    {
-        _canSmash = canSmash;
-    }
+    
+    #endregion
 }

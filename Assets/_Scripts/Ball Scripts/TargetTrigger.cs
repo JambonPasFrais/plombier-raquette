@@ -19,17 +19,17 @@ public class TargetTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other != null && other.GetComponent<PlayerCameraController>())
+        if (other != null && other.GetComponent<PlayerController>())
         {
-            other.GetComponent<PlayerCameraController>().SetCanSmash(true);
+            other.GetComponent<PlayerController>().SetCanSmash(true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other != null && other.GetComponent<PlayerCameraController>())
+        if (other != null && other.GetComponent<PlayerController>())
         {
-            other.GetComponent<PlayerCameraController>().SetCanSmash(false);
+            other.GetComponent<PlayerController>().SetCanSmash(false);
         }
     }
 

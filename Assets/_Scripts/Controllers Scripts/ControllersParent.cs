@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Serialization;
 
 public class ControllersParent : MonoBehaviour
 {
@@ -11,13 +12,14 @@ public class ControllersParent : MonoBehaviour
     public bool IsServing;
     public PlayerStates PlayerState;
     public int ServicesCount=0;
+    public Teams PlayerTeam;
+    public bool IsInOriginalSide;
 
     #endregion
 
     #region PROTECTED FIELDS
 
     [SerializeField] protected ActionParameters _actionParameters;
-    [SerializeField] protected Teams _playerTeam;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
     [SerializeField] protected Transform _serviceBallInitializationPoint;
     [SerializeField] protected float _minimumShotForce;
@@ -34,8 +36,7 @@ public class ControllersParent : MonoBehaviour
     #endregion
 
     #region GETTERS
-
-    public Teams PlayerTeam { get { return _playerTeam; } }
+    
     public ActionParameters ActionParameters { get { return _actionParameters; } }
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
@@ -65,8 +66,8 @@ public class ControllersParent : MonoBehaviour
     {
         float distanceToFirstReboundPosition = forceToDistanceFactor * actualforce;
         Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
-        Vector3 rightVector = GameManager.Instance.SideManager.ActiveCameraTransform.right;
+        Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
+        Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         float maximumLateralDistance;
         Vector3 extremeShootingDirection;
 
@@ -106,8 +107,8 @@ public class ControllersParent : MonoBehaviour
     /// <returns></returns>
     public Vector3 CalculateActualShootingDirection(Vector3 wantedDirection, float forceToDistanceFactor, float actualforce)
     {
-        float rotationSign = Mathf.Sign(Vector3.Dot(wantedDirection, Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.right, Vector3.right)));
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.SideManager.ActiveCameraTransform.forward, Vector3.forward);
+        float rotationSign = Mathf.Sign(Vector3.Dot(wantedDirection, Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right, Vector3.right)));
+        Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
         Vector3 extremeShootingDirection = CalculateExtremeShootingDirection(rotationSign > 0 ? true : false, forceToDistanceFactor, actualforce);
 
         if (Vector3.Angle(forwardVector, wantedDirection) > Vector3.Angle(forwardVector, extremeShootingDirection))
@@ -138,12 +139,31 @@ public class ControllersParent : MonoBehaviour
 
     protected void ThrowBall()
     {
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex] != this)
+            return;
+        
+        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState != PlayerStates.SERVE)
+            return;
+        
+        if (!GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing)
+            return;
+        
+        if (GameManager.Instance.GameState != GameState.SERVICE)
+            return;
+        
         Rigidbody ballRigidBody = GameManager.Instance.BallInstance.GetComponent<Rigidbody>();
 
-        if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        if (!ballRigidBody.isKinematic)
+            return;
+        
+        ballRigidBody.isKinematic = false;
+        ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+
+        
+        /*if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
         {
             ballRigidBody.isKinematic = false;
             ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-        }
+        }*/
     }
 }

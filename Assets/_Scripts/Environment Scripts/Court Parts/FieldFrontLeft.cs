@@ -31,7 +31,7 @@ public class FieldFrontLeft : FieldGroundPart
                         ball.LastPlayerToApplyForce.ServicesCount++;
                         ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                         ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
-                        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight, 
+                        GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight, 
                             !GameManager.Instance.ServiceManager.ChangeSides);
                         GameManager.Instance.ServiceManager.EnableLockServiceColliders();
                         ball.ResetBall();
@@ -39,7 +39,7 @@ public class FieldFrontLeft : FieldGroundPart
                     else
                     {
                         GameManager.Instance.EndOfPoint();
-                        Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                        Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                         ball.ResetBall();
                     }

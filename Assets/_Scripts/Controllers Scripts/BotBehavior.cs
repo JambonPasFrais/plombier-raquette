@@ -40,15 +40,6 @@ public class BotBehavior : ControllersParent
 
     #region UNITY METHODS
 
-    private void Awake()
-    {
-        _targetPositionsBySide = new Dictionary<string, Transform[]>()
-        {
-            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
-            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
-        };
-    }
-
     private void Start()
     {
         ServicesCount = 0;
@@ -118,6 +109,12 @@ public class BotBehavior : ControllersParent
         _targets = targets;
         _firstSideTargetsPositions = firstSideTargetsPositions;
         _secondSideTargetsPositions = secondSideTargetsPositions;
+        
+        _targetPositionsBySide = new Dictionary<string, Transform[]>()
+        {
+            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
+            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
+        };
     }
     
     private void HitBall()

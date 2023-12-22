@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum GameState
 {
 	BEFOREGAME,
@@ -20,9 +16,9 @@ public enum PlayerStates
 
 public enum Teams
 {
-	DEFAULT,
 	TEAM1,
-	TEAM2
+	TEAM2,
+	DEFAULT
 }
 
 public enum FieldSide

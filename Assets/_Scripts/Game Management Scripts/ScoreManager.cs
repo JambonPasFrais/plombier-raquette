@@ -53,7 +53,7 @@ public class ScoreManager : MonoBehaviour
 			{
 				_currentGameScore = new Tuple<int, int>(3, 3);
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+				GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
 			}
 			else
@@ -64,7 +64,7 @@ public class ScoreManager : MonoBehaviour
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
 
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
             }
 		}
@@ -89,14 +89,14 @@ public class ScoreManager : MonoBehaviour
 			{
                 GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
             }
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 2 == 1)
 			{
                 GameManager.Instance.ChangeServer();
                 GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-                GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                     !GameManager.Instance.ServiceManager.ChangeSides);
             }
         }
@@ -120,7 +120,7 @@ public class ScoreManager : MonoBehaviour
 		_score[_currentSetIndex] = newScore;
 
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
-        GameManager.Instance.SideManager.SetSidesInSimpleMatch(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+        GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
             !GameManager.Instance.ServiceManager.ChangeSides);
 
 		// If the players changed sides, the field border points ownership and the fault lines x values by team need to be changed.
@@ -167,7 +167,7 @@ public class ScoreManager : MonoBehaviour
 		else
 			_nbOfSets = new Tuple<int, int>(_nbOfSets.Item1, _nbOfSets.Item2 + 1);
 
-		Debug.Log($"{_nbOfSets.Item1} set à {_nbOfSets.Item2}");
+		Debug.Log($"{_nbOfSets.Item1} set Ã  {_nbOfSets.Item2}");
 
 		if (_nbOfSets.Item1 == _nbOfSetsToWin)
 		{
