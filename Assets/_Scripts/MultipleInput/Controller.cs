@@ -31,7 +31,7 @@ public class Controller : MonoBehaviour
 
 	private Vector2 _movementDir;
 	private bool _isSelectingCharacter;
-	private bool _characterSelected;
+	[SerializeField] private bool _characterSelected;
 	private int _controllerIndex;
 
 	#region UNITY FUNCTIONS
@@ -50,10 +50,10 @@ public class Controller : MonoBehaviour
 	#region CALLED EXTERNALLY
 	public void TryPunch()
 	{
-		Debug.Log(PlayerInput.playerIndex);
-
 		if (_isSelectingCharacter)
 			return;
+
+		Debug.Log(PlayerInput.playerIndex);
 
 		transform.DOComplete();
 		transform.DOPunchScale(Vector3.one * .1f, .2f);
@@ -72,7 +72,6 @@ public class Controller : MonoBehaviour
 
 	public void TrySelect()
 	{
-		Debug.Log("J'appuie sur une touche !");
 		if (!_isSelectingCharacter)
 			return;
 
