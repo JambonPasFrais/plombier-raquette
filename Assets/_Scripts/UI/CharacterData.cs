@@ -12,6 +12,8 @@ public class CharacterData : ScriptableObject
     public Sprite Picture;
     public Sprite CharactersLogo;
     public Color CharacterColor;
+    public Color CharacterPrimaryColor;
+    public Color CharacterSecondaryColor;
     
     [Header("Instance")]
     public GameObject HumanControllerPrefab;
@@ -21,4 +23,5 @@ public class CharacterData : ScriptableObject
     [Header("GD")]
     public CharacterParameters CharacterParameter;
     public CharacterCategory Category;
+
 }

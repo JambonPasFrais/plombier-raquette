@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -19,23 +20,15 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private GameObject _matchDoubleWindow;
 	// Character Ui related
 	[SerializeField] private GameObject _characterUIPrefab;
-	[SerializeField] private Transform _characterUiContainer;
+	[SerializeField] private Transform _characterUIContainer;
 	[SerializeField] private LayerMask _characterUILayerMask;
-	// Text Mesh Pros for character's names 
-	[SerializeField] private List<TextMeshProUGUI> _selectedCharactersNameSingle = new List<TextMeshProUGUI>();
-	[SerializeField] private List<TextMeshProUGUI> _selectedCharactersNameDouble = new List<TextMeshProUGUI>();
-	// Text mesh Pros for player's names
-	[SerializeField] private List<TextMeshProUGUI> _playersInfoSingle = new List<TextMeshProUGUI>();
-	[SerializeField] private List<TextMeshProUGUI> _playersInfoDouble = new List<TextMeshProUGUI>();
-	// Where to put the models for each character in each category
-	[SerializeField] private List<Transform> _characterModelContainerSingle = new List<Transform>();
-	[SerializeField] private List<Transform> _characterModelContainerDouble = new List<Transform>();
+	// List of player's visual references
+	[SerializeField] private List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
+	[SerializeField] private List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
 	// Where the model are in not selected -> pooling optimisation technique
 	[SerializeField] private Transform _charactersModelsContainer;
-	// Images to modify for each player when they select a character
-	[SerializeField] private List<Image> _selectedCharacterBackgroundSingle = new List<Image>();
-	[SerializeField] private List<Image> _selectedCharacterBackgroundDouble = new List<Image>();
 	[SerializeField] private Button _playButton;
+	[SerializeField] private GameObject _confirmPlayButton;
 	
 	// All Characters Data
 	private List<CharacterData> _characters = new List<CharacterData>();
@@ -47,24 +40,19 @@ public class CharacterSelectionMenu : MonoBehaviour
 	private List<CharacterData> _availableCharacters;
 	
 	// Every character that are selected
-	private List<CharacterData> _playersCharacter; 
+	[SerializeField] private List<CharacterData> _playersCharacter; 
 	
 	// Models sorted by names
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	
 	// Keeps track of the selected characters per player index
 	private List<CharacterUI> _selectedCharacterUIs;
-	
-	// Images for the single or double interface, depending on initialization
-	private List<Image> _currentSelectedCharacterBackground = new List<Image>();
-	
-	// Transform for the single or double interface, depending on initialization
-	private List<Transform> _currentCharacterModelContainer = new List<Transform>();
-	
-	// Text Mesh Pros for the single or double interface, depending on initialization
-	private List<TextMeshProUGUI> _currentSelectedCharactersName = new List<TextMeshProUGUI>();
+
+	private List<PlayerShowroom> _currentShowroomList = new List<PlayerShowroom>();
 	
 	private int _totalNbPlayers;
+
+	private InputSystemUIInputModule _inputSystemUIInputModule;
 
 	#region Unity Functions
 	// Potentially Useless
@@ -117,15 +105,37 @@ public class CharacterSelectionMenu : MonoBehaviour
 			}
 		}
 	}*/
+
+	private void Start()
+	{
+		_inputSystemUIInputModule = MenuManager.Instance.CurrentEventSystem.GetComponent<InputSystemUIInputModule>();
+	}
+
+	private void Update()
+	{
+		if (_inputSystemUIInputModule.cancel.action.WasPressedThisFrame())
+			CloseMenu();
+	}
 	#endregion
 
+	private void CloseMenu()
+	{
+		if (_aceItWindow.activeSelf)
+		{
+			_aceItWindow.SetActive(false);
+			MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
+		}
+	}
+
 	#region Listeners
-	
+
 	// Button "play"
 	public void Play()
 	{
-		TransformRandomSelectionInCharacter();
+		//TransformRandomSelectionInCharacter();
 		_aceItWindow.SetActive(true);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"
@@ -148,18 +158,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_matchDoubleWindow.SetActive(true);
 			_matchSingleWindow.SetActive(false);
 			_totalNbPlayers = 4;
-			_currentCharacterModelContainer = _characterModelContainerDouble;
-			_currentSelectedCharacterBackground = _selectedCharacterBackgroundDouble;
-			_currentSelectedCharactersName = _selectedCharactersNameDouble;
+			_currentShowroomList = _characterShowroomsDouble;
 		}
 		else
 		{
 			_matchDoubleWindow.SetActive(false);
 			_matchSingleWindow.SetActive(true);
 			_totalNbPlayers = 2;
-			_currentCharacterModelContainer = _characterModelContainerSingle;
-			_currentSelectedCharacterBackground = _selectedCharacterBackgroundSingle;
-			_currentSelectedCharactersName = _selectedCharactersNameSingle;
+			_currentShowroomList = _characterShowroomsDouble;
 		}
 
 		_playersCharacter = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
@@ -169,17 +175,27 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Any button that loads the menu
 	public void OnMenuLoaded()
 	{
-		_characters = MenuManager.Characters;
+		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
-		_charactersModelsContainer = MenuManager.CharactersModelsParent;
-		_charactersModel = MenuManager.CharactersModel;
+		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
+		_charactersModel = MenuManager.Instance.CharactersModel;
 
 		SetPlayerInfos();
 		_playButton.interactable = false;
 
+		foreach(var item in _characterShowroomsSingle)
+		{
+			item.CharacterEmblem.gameObject.SetActive(false);
+		}
+		
+		foreach(var item in _characterShowroomsDouble)
+		{
+			item.CharacterEmblem.gameObject.SetActive(false);
+		}
+
 		foreach (var item in _characters)
 		{
-			CharacterUI charUI = Instantiate(_characterUIPrefab, _characterUiContainer).GetComponent<CharacterUI>();
+			CharacterUI charUI = Instantiate(_characterUIPrefab, _characterUIContainer).GetComponent<CharacterUI>();
 
 			charUI.SetVisual(item);
 
@@ -206,24 +222,24 @@ public class CharacterSelectionMenu : MonoBehaviour
 	{
 		if(_totalNbPlayers == 2)
 		{
-			_playersInfoSingle[0].text = "P1";
+			_characterShowroomsSingle[0].PlayerInfo.text = "P1";
 
-			if (GameParameters.LocalNbPlayers == 1)
-				_playersInfoSingle[1].text = "COM";
+			if (GameParameters.Instance.LocalNbPlayers == 1)
+				_characterShowroomsSingle[1].PlayerInfo.text = "COM";
 			else
-				_playersInfoSingle[1].text = "P2";
+				_characterShowroomsSingle[1].PlayerInfo.text = "P2";
 		}
 		else
 		{
-			_playersInfoDouble[0].text = "P1";
+			_characterShowroomsDouble[0].PlayerInfo.text = "P1";
 
 			for(int i = 1; i < 4; i++)
 			{
-				if (i < GameParameters.LocalNbPlayers)
-					_playersInfoDouble[i].text = "P" + (i + 1).ToString();
+				if (i < GameParameters.Instance.LocalNbPlayers)
+					_characterShowroomsDouble[i].PlayerInfo.text = "P" + (i + 1).ToString();
 
 				else
-					_playersInfoDouble[i].text = "COM";
+					_characterShowroomsDouble[i].PlayerInfo.text = "COM";
 			}
 		}
 	}
@@ -247,13 +263,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 		
 		_charactersUI[playerIndex].SetSelected(true);
 		CharacterData cd = ReturnRandomCharacter();
-		_currentSelectedCharactersName[playerIndex].text = cd.Name;
-		_currentSelectedCharacterBackground[playerIndex].color = cd.CharacterColor;
+		_currentShowroomList[playerIndex].CharacterName.text = cd.Name;
+		_currentShowroomList[playerIndex].Background.color = cd.CharacterPrimaryColor;
 
 		if (!_charactersModel.TryGetValue(cd.Name, out GameObject go))
 			return;
 			
-		go.transform.SetParent(_currentCharacterModelContainer[playerIndex]);
+		go.transform.SetParent(_currentShowroomList[playerIndex].ModelLocation);
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		go.SetActive(true);
@@ -264,7 +280,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Will load "random" model for each bot and assign the right variables for later transformations
 	private void SetTheRandomSelectionForBots()
 	{
-		for (int i = _totalNbPlayers - 1; i > GameParameters.LocalNbPlayers - 1; i--)
+		for (int i = _totalNbPlayers - 1; i > GameParameters.Instance.LocalNbPlayers - 1; i--)
 		{
 			// We select the "Random" Character UI so it's in Last
 			CharacterUI characterUI = _charactersUI.Last();
@@ -272,10 +288,10 @@ public class CharacterSelectionMenu : MonoBehaviour
 			if (!_charactersModel.TryGetValue(characterUI.Character.Name + i, out var characterModel))
 				return;
 			
-			_currentSelectedCharactersName[i].text = characterUI.Character.Name;
-			_currentSelectedCharacterBackground[i].color = characterUI.Character.CharacterColor;
+			_currentShowroomList[i].CharacterName.text = characterUI.Character.Name;
+			_currentShowroomList[i].Background.color = characterUI.Character.CharacterPrimaryColor;
 
-			characterModel.transform.SetParent(_currentCharacterModelContainer[i]);
+			characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
 			characterModel.transform.localPosition = Vector3.zero;
 			characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
 			characterModel.SetActive(true);
@@ -300,14 +316,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// This function removes any model, color or asset, previously selected on a player selection UI
 	private bool RemoveCharacterFromPlayerSelectionUi(int playerIndex)
 	{
-		if (_currentCharacterModelContainer[playerIndex].childCount <= 0)
+		if (_currentShowroomList[playerIndex].ModelLocation.childCount <= 0)
 			return false;
 		
 		_selectedCharacterUIs[playerIndex].SetSelected(false);
 		_selectedCharacterUIs[playerIndex] = null;
 		
-		GameObject oldGo = _currentCharacterModelContainer[playerIndex].GetChild(0).gameObject;
-		oldGo.transform.SetParent(_characterUiContainer);
+		GameObject oldGo = _currentShowroomList[playerIndex].ModelLocation.GetChild(0).gameObject;
+		oldGo.transform.SetParent(_characterUIContainer);
 		oldGo.transform.localPosition = Vector3.zero;
 		oldGo.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		oldGo.gameObject.SetActive(false);
@@ -318,13 +334,15 @@ public class CharacterSelectionMenu : MonoBehaviour
 	
 	private void SetPlayButtonInteractability()
 	{
-		_playButton.interactable = IsEveryCharSelectedByLocals();
+		//_playButton.interactable = IsEveryCharSelectedByLocals();
+		if (IsEveryCharSelectedByLocals())
+			Play();
 	}
 
 	// Check if every local player selected his 
 	private bool IsEveryCharSelectedByLocals()
 	{
-		for (int i = 0; i < GameParameters.LocalNbPlayers; i++)
+		for (int i = 0; i < /*GameParameters.LocalNbPlayers*/2; i++)
 		{
 			if (_playersCharacter[i] == null)
 				return false;
@@ -344,14 +362,13 @@ public class CharacterSelectionMenu : MonoBehaviour
 			item.Value.gameObject.SetActive(false);
 		}
 
-		foreach (var item in _currentSelectedCharacterBackground)
+		foreach (var item in _currentShowroomList)
 		{
-			item.color = Color.black;
-		}
-
-		foreach (var item in _currentSelectedCharactersName)
-		{
-			item.text = "";
+			item.Background.color = Color.white;
+			item.NameBackground.color = Color.black;
+			item.CharacterName.text = "";
+			item.CharacterEmblem.sprite = null;
+			item.CharacterEmblem.gameObject.SetActive(false);
 		}
 
 		for (int i = 0; i < _playersCharacter.Count; i++)
@@ -434,21 +451,29 @@ public class CharacterSelectionMenu : MonoBehaviour
 	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
 	{
 		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
-		    && hit.collider.TryGetComponent(out CharacterUI characterUI)
-		    && !characterUI.IsSelected)
+			&& hit.collider.TryGetComponent(out CharacterUI characterUI)
+			&& !characterUI.IsSelected)
 		{
 			// We do this because different players can select the Random Statement
 			if (characterUI.Character.Name != "Random")
 				characterUI.SetSelected(true);
-			
-			_currentSelectedCharactersName[playerIndex].text = characterUI.Character.Name;
-			_currentSelectedCharacterBackground[playerIndex].color = characterUI.Character.CharacterColor;
+
+			_currentShowroomList[playerIndex].CharacterName.text = characterUI.Character.Name;
+			_currentShowroomList[playerIndex].Background.color = characterUI.Character.CharacterPrimaryColor;
+
+			if (characterUI.Character.Name != "Random") 
+			{
+				_currentShowroomList[playerIndex].CharacterEmblem.gameObject.SetActive(true);
+				_currentShowroomList[playerIndex].CharacterEmblem.sprite = characterUI.Character.CharactersLogo; 
+			}
+			else
+				_currentShowroomList[playerIndex].CharacterEmblem.gameObject.SetActive(false);
 
 			string charNameToLookFor = characterUI.Character.Name == "Random" ? characterUI.Character.Name+playerIndex : characterUI.Character.Name;
 
 			if (_charactersModel.TryGetValue(charNameToLookFor, out var characterModel))
 			{
-				characterModel.transform.SetParent(_currentCharacterModelContainer[playerIndex]);
+				characterModel.transform.SetParent(_currentShowroomList[playerIndex].ModelLocation);
 				characterModel.transform.localPosition = Vector3.zero;
 				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
 				characterModel.SetActive(true);

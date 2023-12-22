@@ -184,7 +184,7 @@ public class ScoreManager : MonoBehaviour
 			
 			if (GameParameters.IsTournamentMode)
 			{
-				GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
+				GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
 				SceneManager.LoadScene(0);
 			}
 		}
@@ -201,7 +201,7 @@ public class ScoreManager : MonoBehaviour
 
 			if (GameParameters.IsTournamentMode)
 			{
-				GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
+				GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
 				SceneManager.LoadScene(0);
 			}
 

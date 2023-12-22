@@ -8,12 +8,10 @@ public class GameParameters : MonoBehaviour
 {
 	[SerializeField] private int _localNbPlayers;
 	private bool _isOnline;
-	private int _numberOfPlayerBySide;
-	private int _nbOfSets;
-	private int _nbOfGames;
-	private int _COMDifficulty;
-	//TODO : comment [SerializeField] when local multiplayer implementation is finished
-	[SerializeField] private List<CharacterData> _playersCharacters;
+	[SerializeField] private int _numberOfPlayerBySide;
+	[SerializeField] private GameMode _currentGameMode;
+	[SerializeField] private int _COMDifficulty;
+	private List<CharacterData> _playersCharacters = new List<CharacterData>();
     [SerializeField] private bool _isTournamentMode;
     private int _tournamentDifficulty;
     private string _currentTournamentName;
@@ -27,11 +25,8 @@ public class GameParameters : MonoBehaviour
     [SerializeField] private TournamentInfos _tournamentInfos;
 
     public static GameParameters Instance => _instance;
-    public static int LocalNbPlayers => _instance._localNbPlayers;
-    public static TournamentInfos CurrentTournamentInfos => _instance._tournamentInfos;
-
-    public static List<CharacterData> PlayersCharacters => _instance._playersCharacters;
-
+    public int LocalNbPlayers => _localNbPlayers;
+    public TournamentInfos CurrentTournamentInfos => _tournamentInfos;
     public static bool IsTournamentMode
     {
         get { return _instance._isTournamentMode; }
@@ -55,32 +50,13 @@ public class GameParameters : MonoBehaviour
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, int gameMode, int COMDifficulty)
+    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, GameMode gameMode, int COMDifficulty)
     {
         _numberOfPlayerBySide = isDouble;
         _COMDifficulty = COMDifficulty;
         _localNbPlayers = nbOfLocalPlayers;
         _isTournamentMode = false;
-
-        switch (gameMode)
-        {
-            case 0:
-                _nbOfSets = 1;
-                _nbOfGames = 1;
-                break;
-			case 1:
-				_nbOfSets = 1;
-				_nbOfGames = 6;
-				break;
-            case 2:
-				_nbOfSets = 2;
-				_nbOfGames = 6;
-				break;
-            case 3:
-				_nbOfSets = 3;
-				_nbOfGames = 6;
-				break;
-		}
+        _currentGameMode = gameMode;
     }
 
     public void SetCharactersPlayers(List<CharacterData> playersCharacters)

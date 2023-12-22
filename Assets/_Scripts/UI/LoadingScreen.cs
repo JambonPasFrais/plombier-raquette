@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class LoadingScreen : MonoBehaviour
 {
-    [SerializeField] private GameObject _mainMenu;
+    [SerializeField] private GameObject _menusContainer;
 	[SerializeField] private TextMeshProUGUI _pressInputText;
 	private int _factor = -1;
 
 	private void Start()
 	{
-		if (GameParameters.CurrentTournamentInfos.CurrentRound == 0)
+		if (GameParameters.Instance.CurrentTournamentInfos.CurrentRound == 0)
 		{
 			gameObject.SetActive(true);
-			_mainMenu.SetActive(false);
+			_menusContainer.SetActive(false);
 		}
 		else
 		{
 			gameObject.SetActive(false);
-			_mainMenu.SetActive(true);
+			_menusContainer.SetActive(true);
 		}
 
 		_factor = -1;
@@ -30,7 +30,7 @@ public class LoadingScreen : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			gameObject.SetActive(false);
-			_mainMenu.SetActive(true);
+			_menusContainer.SetActive(true);
 		}
 
 		_pressInputText.alpha = _pressInputText.alpha + (1 * _factor * Time.deltaTime);

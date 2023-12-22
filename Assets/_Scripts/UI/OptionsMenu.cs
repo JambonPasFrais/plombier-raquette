@@ -4,18 +4,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour
 {
 	#region PRIVATE FIELDS
 
+	[SerializeField] private Transform _navigationButtonsParent;	
+
 	[Header("Display Istances")]
 	[SerializeField] private TMP_Dropdown _resolutionDropdown;
 	[SerializeField] private TMP_Dropdown _fpsDropdown;
 	[SerializeField] private TMP_Dropdown _qualityDropdown;
 
-	[Header("Audio INstances")]
+	[Header("Audio Instances")]
 	[SerializeField] private Slider _globalVolumeSlider;
 	[SerializeField] private TextMeshProUGUI _globalVolumeText;
 	[SerializeField] private Slider _sfxVolumeSlider;
@@ -23,6 +26,11 @@ public class OptionsMenu : MonoBehaviour
 	[SerializeField] private Slider _musicVolumeSlider;
 	[SerializeField] private TextMeshProUGUI _musicVolumeText;
 	[SerializeField] private AudioMixer _audioMixer;
+
+	[Header("First Menu Element Instances")]
+	[SerializeField] private Selectable _firstDisplayButton;
+	[SerializeField] private Selectable _firstAudioButton;
+	[SerializeField] private Selectable _firstControlsButton;
 
 	[Header("Option Menus")]
 	[SerializeField] private GameObject _displayOptions;
@@ -49,12 +57,22 @@ public class OptionsMenu : MonoBehaviour
 
 	private Resolution[] _resolutions;
 	private List<string> _maxFpsDropdownOptions;
+	private List<Button> _navigationButtons = new List<Button>();
 
 	#endregion
 
 	private void Start()
 	{
 		_audioMixer = AudioManager.AudioMixer;
+
+		for(int i = 0; i < _navigationButtonsParent.childCount; i++) 
+		{ 
+			_navigationButtons.Add(_navigationButtonsParent.GetChild(i).gameObject.GetComponent<Button>());
+		}
+
+		SetMenuNavigation(_firstDisplayButton);
+
+		ShowDisplayParameters();
 
 		CreateResolutionsItems();
 		CreateMaxFPSItems();
@@ -83,8 +101,10 @@ public class OptionsMenu : MonoBehaviour
 			cpt++;
 		}
 
+		options.Reverse();
+
 		_resolutionDropdown.AddOptions(options);
-		_resolutionDropdown.value = currentResolutionIndex;
+		_resolutionDropdown.value = options.Count - currentResolutionIndex - 1;
 		_resolutionDropdown.RefreshShownValue();
 	}
 
@@ -103,7 +123,7 @@ public class OptionsMenu : MonoBehaviour
 		}
 
 		_fpsDropdown.AddOptions(_maxFpsDropdownOptions);
-		_fpsDropdown.value = _maxFpsDropdownOptions.Count - 1;
+		_fpsDropdown.value = 0;
 		_fpsDropdown.RefreshShownValue();
 	}
 
@@ -112,7 +132,7 @@ public class OptionsMenu : MonoBehaviour
 		QualitySettings.GetQualitySettings();
 		_qualityDropdown.ClearOptions();
 		_qualityDropdown.AddOptions(_qualities);
-		_qualityDropdown.value = QualitySettings.GetQualityLevel();
+		_qualityDropdown.value = 0;
 		_qualityDropdown.RefreshShownValue();
 	}
 
@@ -184,6 +204,8 @@ public class OptionsMenu : MonoBehaviour
 
 	public void ShowDisplayParameters()
 	{
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_firstDisplayButton.gameObject);
+		SetMenuNavigation(_firstDisplayButton);
 		_controlsOptions.SetActive(false);
 		_audioOptions.SetActive(false);
 		_displayOptions.SetActive(true);
@@ -191,10 +213,28 @@ public class OptionsMenu : MonoBehaviour
 	
 	public void ShowAudioParameters()
 	{
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_firstAudioButton.gameObject);
+		SetMenuNavigation(_firstAudioButton);
 		_controlsOptions.SetActive(false);
 		_audioOptions.SetActive(true);
 		_displayOptions.SetActive(false);
 	}
 
+	public void ResetMenu()
+	{
+		SetMenuNavigation(_firstDisplayButton);
+		_controlsOptions.SetActive(false);
+		_audioOptions.SetActive(false);
+		_displayOptions.SetActive(true);
+	}
+
 	#endregion
+
+	private void SetMenuNavigation(Selectable firstMenuElement)
+	{
+		foreach (var button in _navigationButtons)
+		{
+			MenuManager.Instance.SetButtonNavigation(button, button.navigation.selectOnLeft, firstMenuElement, button.navigation.selectOnUp, button.navigation.selectOnDown);
+		}
+	}
 }

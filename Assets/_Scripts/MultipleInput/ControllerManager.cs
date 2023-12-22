@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -20,7 +21,7 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private string _menuActionMapName;
     [SerializeField] private string _gameActionMapName;
 
-    private int _maxPlayerCount;
+    [SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
     private CharacterSelectionMenu _characterSelectionMenu;
@@ -59,7 +60,7 @@ public class ControllerManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        CreateControllersDict();//TODO : comment when finish testing
+        //CreateControllersDict();//TODO : comment when finish testing
     }
     #endregion
 
@@ -73,7 +74,7 @@ public class ControllerManager : MonoBehaviour
     
     public void Init(CharacterSelectionMenu characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
-        _maxPlayerCount = GameParameters.LocalNbPlayers;
+        _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
         _characterSelectionMenu = characterSelectionMenuRef;
         _controllerSelectionMenu = controllerSelectionMenu;
         _controllers = new Dictionary<int, PlayerInputHandler>();
@@ -93,7 +94,7 @@ public class ControllerManager : MonoBehaviour
         foreach (var controller in _controllers)
         {
             controller.Value.Controller.gameObject.transform.SetParent(cltrSelectionContainer);
-            controller.Value.Controller.ControllerSelectionMode();
+			controller.Value.Controller.ControllerSelectionMode();
         }
     }
     
@@ -109,10 +110,13 @@ public class ControllerManager : MonoBehaviour
 
     public void DestroyControllers()
     {
-        foreach (var pair in _controllers)
+        if (_controllers.Count > 0)
         {
-            Destroy(pair.Value.Controller.gameObject);
-            Destroy(pair.Value.gameObject);
+            foreach (var pair in _controllers)
+            {
+                Destroy(pair.Value.Controller.gameObject);
+                Destroy(pair.Value.gameObject);
+            }
         }
         
         _controllers.Clear();
@@ -153,6 +157,13 @@ public class ControllerManager : MonoBehaviour
         Destroy(_controllers[deviceId].Controller.gameObject);
         Destroy(_controllers[deviceId].gameObject);
         _controllers.Remove(deviceId);
+
+        List<PlayerInputHandler> _playerInputHandlersFormControllers = _controllers.Values.ToList<PlayerInputHandler>();
+
+        for(int i = 0; i < _playerInputHandlersFormControllers.Count; i++)
+        {
+            _playerInputHandlersFormControllers[i].Controller.SetPlayerIndex(i + 1);
+        }
         
         _controllerSelectionMenu.MakeValidationButtonNotInteractable();
     }
@@ -189,13 +200,16 @@ public class ControllerManager : MonoBehaviour
         {
             case Joystick:
                 playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
+                playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
                 break;
             case Gamepad:
                 playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-                break;
+				playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
+				break;
             case Keyboard:
                 playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-                break;
+				playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
+				break;
         }
 
         playerInputHandler.Controller.ControllerSelectionMode();
@@ -217,7 +231,7 @@ public class ControllerManager : MonoBehaviour
     #region LocalMultiplayer implementation test simplification
     //TODO : comment when local multiplayer implementation is finished
 
-    public List<PlayerInputHandler> _playerInputHandlers;
+    /*public List<PlayerInputHandler> _playerInputHandlers;
 
     public void CreateControllersDict()
     {
@@ -229,7 +243,7 @@ public class ControllerManager : MonoBehaviour
                 continue;
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
         }
-    }
+    }*/
         
     
     #endregion

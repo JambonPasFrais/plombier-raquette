@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class MenuManager : MonoBehaviour
 {
@@ -17,9 +16,10 @@ public class MenuManager : MonoBehaviour
 	[SerializeField] private GameObject _tournamentBracketMenu;
 
 	public static MenuManager Instance => _instance;
-	public static List<CharacterData> Characters => _instance._characters;
-	public static Dictionary<string, GameObject> CharactersModel => _instance._charactersModel;
-	public static Transform CharactersModelsParent => _instance._charactersModelsParent;
+	public  List<CharacterData> Characters => _characters;
+	public Dictionary<string, GameObject> CharactersModel => _charactersModel;
+	public Transform CharactersModelsParent => _charactersModelsParent;
+	public EventSystem CurrentEventSystem => _eventSystem;
 
 	private void Awake()
 	{
@@ -31,7 +31,7 @@ public class MenuManager : MonoBehaviour
 	
     private void Start()
     {
-		if (GameParameters.CurrentTournamentInfos.CurrentRound == 0)
+		if (GameParameters.Instance.CurrentTournamentInfos.CurrentRound == 0)
 		{
 			transform.GetChild(0).gameObject.SetActive(true);
 
@@ -44,7 +44,7 @@ public class MenuManager : MonoBehaviour
 		else
 		{
 			_tournamentBracketMenu.SetActive(true);
-			_tournamentBracketMenu.GetComponent<TournamentBracket>().SetCurrentBracket(GameParameters.CurrentTournamentInfos);
+			_tournamentBracketMenu.GetComponent<TournamentBracket>().SetCurrentBracket(GameParameters.Instance.CurrentTournamentInfos);
 		}
 
 		_visitedMenus.Add(transform.GetChild(0).gameObject);
@@ -60,7 +60,7 @@ public class MenuManager : MonoBehaviour
     }
     public void SetFirstSelectedButton(GameObject Button)
     {
-		//_eventSystem.SetSelectedGameObject(Button);
+		_eventSystem.SetSelectedGameObject(Button);
     }
     public void GoToPreviousMenu()
     {
@@ -128,4 +128,23 @@ public class MenuManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(firstSelectable);
         }
     }
+
+	public void SetButtonNavigation(Button currentButton, Selectable leftObject, Selectable rightObject, Selectable upObject, Selectable downObject)
+	{
+		Navigation navigation = new Navigation();
+
+		navigation.mode = Navigation.Mode.Explicit;
+
+		navigation.selectOnRight = rightObject;
+		navigation.selectOnLeft = leftObject;
+		navigation.selectOnUp = upObject;
+		navigation.selectOnDown = downObject;
+
+		currentButton.navigation = navigation;
+	}
+
+	public void QuitGame()
+	{
+		Application.Quit();
+	}
 }
