@@ -8,9 +8,8 @@ public class TournamentSelection : MonoBehaviour
 {
     [SerializeField] private Transform _trophyPosition;
     [SerializeField] private List<TrophyModel> _trophyModels = new List<TrophyModel>();
-    [SerializeField] private EventSystem _eventSystem;
-    [SerializeField] private GameObject _firstSelectedObject;
-    [SerializeField] private GameObject _currentSelectedButton;
+    private EventSystem _eventSystem;
+    private GameObject _currentSelectedButton;
     [SerializeField] private float _scalingFactor = 0.05f;
     private int _trophyIndex;
     private Vector3 _currentScalingFactor;
@@ -24,15 +23,14 @@ public class TournamentSelection : MonoBehaviour
             go = Instantiate(item.TrophyPrefab, _trophyPosition);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.Euler(item.Rotation);
-            /*go.transform.localScale = item.Scale;*/
             go.SetActive(false);
         }
 
         _currentScalingFactor = Vector3.one * _scalingFactor;
         _trophyIndex = 0;
         _trophyPosition.GetChild(0).gameObject.SetActive(true);
-        _currentSelectedButton = _firstSelectedObject;
-        _eventSystem.SetSelectedGameObject(_firstSelectedObject);
+        _eventSystem = MenuManager.Instance.CurrentEventSystem;
+        _currentSelectedButton = _eventSystem.currentSelectedGameObject;
 	}
 
 	public void SetDifficulty(int difficulty)
