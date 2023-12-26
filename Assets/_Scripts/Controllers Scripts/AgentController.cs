@@ -32,10 +32,17 @@ public class AgentController : ControllersParent
     private float _shootingDirectionLateralComponent;
     private float _shootingDirectionForwardComponent;
 
+    private int _wrongServicesCount;
+    private bool _ballHasBeenHitBackByAgent;
+
     #endregion
+
+    #region GETTERS
 
     public int ActionIndex { set { _actionIndex = value; } }
 
+    #endregion
+    
     #region UNITY METHODS
 
     private void Start()
@@ -48,6 +55,9 @@ public class AgentController : ControllersParent
         _isCharging = false;
         _currentSpeed = _movementSpeed;
         _actionIndex = 0;
+
+        _wrongServicesCount = 0;
+        _ballHasBeenHitBackByAgent = false;
     }
 
     void Update()
@@ -59,6 +69,12 @@ public class AgentController : ControllersParent
             {
                 _hitKeyPressedTime += Time.deltaTime;
             }
+        }
+
+        // The agent earns a reward each frame from the moment he hit the ball back and while the point is faught by the agent and the bot.
+        if (_ballHasBeenHitBackByAgent)
+        {
+            PointFaughtAfterAgentHitBackTheBall();
         }
 
         UpdateBorderPointsContainer();
@@ -87,6 +103,7 @@ public class AgentController : ControllersParent
         if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic
             || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || _trainingManager.GameState == GameState.ENDPOINT)
         {
+            TryToHitBall();
             _hitKeyPressedTime = 0f;
             _isCharging = false;
             return;
@@ -344,18 +361,25 @@ public class AgentController : ControllersParent
         _isCharging = false;
         _currentSpeed = _movementSpeed;
         _actionIndex = 0;
+        _ballHasBeenHitBackByAgent = false;
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // The other player's position is observed.
-        sensor.AddObservation(_otherPlayer.transform.position);
-        // The ball position is observed.
-        sensor.AddObservation(_trainingManager.BallInstance.transform.position);
+        // The ball presence in the hit zone is observed.
+        sensor.AddObservation(_ballDetectionArea.IsBallInHitZone);
+        // The ball kinematic state is observed.
+        sensor.AddObservation(GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic);
+        // The boolean describing if the agent already hit the ball is observed.
+        sensor.AddObservation(GameManager.Instance.BallInstance.GetComponent<AIBall>().LastPlayerToApplyForce == this);
         // The player state is observed.
         sensor.AddObservation(GetIndexOfEnumerationValue(PlayerState));
         // The game state is observed.
         sensor.AddObservation(GetIndexOfEnumerationValue(_trainingManager.GameState));
+        // The other player's position is observed.
+        sensor.AddObservation(_otherPlayer.transform.position);
+        // The ball position is observed.
+        sensor.AddObservation(_trainingManager.BallInstance.transform.position);
         // The field limits are observed.
         sensor.AddObservation(_borderPointsContainer.FrontPointTransform.position);
         sensor.AddObservation(_borderPointsContainer.BackPointTransform.position);
@@ -477,12 +501,20 @@ public class AgentController : ControllersParent
 
     public void WrongFirstService()
     {
-        AddReward(-0.5f);
+        WrongService();
     }
 
     public void LostPoint()
     {
-        AddReward(-2f);
+        if (GameManager.Instance.GameState == GameState.SERVICE)
+        {
+            WrongService();
+        }
+        else
+        {
+            AddReward(-2f);
+        }
+
         EndEpisode();
     }
 
@@ -493,18 +525,40 @@ public class AgentController : ControllersParent
         EndEpisode();
     }
 
+    public void WrongService()
+    {
+        _wrongServicesCount++;
+        AddReward(-0.5f * _wrongServicesCount);
+    }
+
+    public void TryToHitBall()
+    {
+        AddReward(-0.5f);
+    }
+
     #endregion
 
     #region POSITIVE REWARDS
 
     public void HasHitBall()
     {
-        AddReward(0.5f);
+        AddReward(1.5f);
     }
 
     public void BallTouchedFieldWithoutProvokingFault()
     {
         AddReward(1f);
+    }
+
+    public void ProperService()
+    {
+        _wrongServicesCount = 0;
+        AddReward(1f);
+    }
+
+    private void PointFaughtAfterAgentHitBackTheBall()
+    {
+        AddReward(0.01f);
     }
 
     public void ScoredPoint()

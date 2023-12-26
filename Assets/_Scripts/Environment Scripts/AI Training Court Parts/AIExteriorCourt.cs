@@ -15,14 +15,14 @@ public class AIExteriorCourt : MonoBehaviour
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
-                _trainingManager.EndOfPoint();
-                ball.ResetBall();
-
                 // If the scoring player is the agent, it gains reward points.
                 if (ball.LastPlayerToApplyForce is AgentController)
                 {
                     ((AgentController)ball.LastPlayerToApplyForce).ScoredPoint();
                 }
+
+                _trainingManager.EndOfPoint();
+                ball.ResetBall();
             }
             // If the player hits a part of the exterior court on the first rebound, it is fault.
             else if (ball.ReboundsCount == 1)
@@ -31,6 +31,12 @@ public class AIExteriorCourt : MonoBehaviour
                 // Otherwise it is counted as a fault.
                 if (ball.LastPlayerToApplyForce.ServicesCount == 0 && _trainingManager.GameState == GameState.SERVICE)
                 {
+                    // If the wrong first service has been realised by the agent, it loses reward points.
+                    if (ball.LastPlayerToApplyForce is AgentController)
+                    {
+                        ((AgentController)ball.LastPlayerToApplyForce).WrongFirstService();
+                    }
+
                     ball.LastPlayerToApplyForce.ServicesCount++;
                     ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                     ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
@@ -38,24 +44,18 @@ public class AIExteriorCourt : MonoBehaviour
                     _trainingManager.PlacingPlayers();
 
                     ball.ResetBall();
-
-                    // If the wrong first service has been realised by the agent, it loses reward points.
-                    if (ball.LastPlayerToApplyForce is AgentController)
-                    {
-                        ((AgentController)ball.LastPlayerToApplyForce).WrongFirstService();
-                    }
                 }
                 else
                 {
-                    ball.LastPlayerToApplyForce.ServicesCount = 0;
-                    _trainingManager.EndOfPoint();
-                    ball.ResetBall();
-
                     // If the player that lost the point is the agent, it loses reward points.
                     if (ball.LastPlayerToApplyForce is AgentController)
                     {
                         ((AgentController)ball.LastPlayerToApplyForce).LostPoint();
                     }
+
+                    ball.LastPlayerToApplyForce.ServicesCount = 0;
+                    _trainingManager.EndOfPoint();
+                    ball.ResetBall();
                 }
             }
         }

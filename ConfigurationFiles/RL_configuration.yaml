@@ -24,7 +24,7 @@ behaviors:
     reward_signals:
       extrinsic:
         gamma: 0.99
-        strength: 0.9
+        strength: 1.0
         network_settings:
           normalize: false
           hidden_units: 128
@@ -33,9 +33,6 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-      gail:
-        strength: 0.15
-        demo_path: Demonstrations/ILDemonstration1.demo
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
@@ -44,9 +41,6 @@ behaviors:
     summary_freq: 50000
     threaded: false
     self_play: null
-    behavioral_cloning:
-      strength: 0.1
-      demo_path: Demonstrations/ILDemonstration1.demo
 env_settings:
   env_path: null
   env_args: null
