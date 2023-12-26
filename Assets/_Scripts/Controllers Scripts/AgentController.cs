@@ -130,6 +130,10 @@ public class AgentController : ControllersParent
                 _trainingManager.DesactivateAllServiceDetectionVolumes();
                 _trainingManager.DisableLockServiceColliders();
             }
+            else
+            {
+                _ballHasBeenHitBackByAgent = true;
+            }
 
             PlayerState = PlayerStates.PLAY;
         }
@@ -369,9 +373,9 @@ public class AgentController : ControllersParent
         // The ball presence in the hit zone is observed.
         sensor.AddObservation(_ballDetectionArea.IsBallInHitZone);
         // The ball kinematic state is observed.
-        sensor.AddObservation(GameManager.Instance.BallInstance.GetComponent<Rigidbody>().isKinematic);
+        sensor.AddObservation(_trainingManager.BallInstance.GetComponent<Rigidbody>().isKinematic);
         // The boolean describing if the agent already hit the ball is observed.
-        sensor.AddObservation(GameManager.Instance.BallInstance.GetComponent<AIBall>().LastPlayerToApplyForce == this);
+        sensor.AddObservation(_trainingManager.BallInstance.GetComponent<AIBall>().LastPlayerToApplyForce == this);
         // The player state is observed.
         sensor.AddObservation(GetIndexOfEnumerationValue(PlayerState));
         // The game state is observed.
@@ -506,7 +510,7 @@ public class AgentController : ControllersParent
 
     public void LostPoint()
     {
-        if (GameManager.Instance.GameState == GameState.SERVICE)
+        if (_trainingManager.GameState == GameState.SERVICE)
         {
             WrongService();
         }
