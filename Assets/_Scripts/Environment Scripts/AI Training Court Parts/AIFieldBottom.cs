@@ -51,7 +51,7 @@ public class AIFieldBottom : AIFieldGroundPart
                         // If the player that lost the point is the agent, it loses reward points.
                         if (ball.LastPlayerToApplyForce is AgentController)
                         {
-                            ((AgentController)ball.LastPlayerToApplyForce).LostPoint();
+                            ((AgentController)ball.LastPlayerToApplyForce).MadeFault();
                         }
 
                         ball.LastPlayerToApplyForce.ServicesCount = 0;

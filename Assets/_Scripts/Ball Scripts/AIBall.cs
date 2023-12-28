@@ -19,13 +19,16 @@ public class AIBall : MonoBehaviour
     private Coroutine _currentCurvingEffectCoroutine;
 
     private float _staticTime;
+    private float _actualHorizontalForce;
 
     #endregion
 
-    #region ACCESSORS
+    #region GETTERS
 
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
+    public ShotParameters ShotParameters { get { return _shotParameters; } }
+    public float ActualHorizontalForce { get { return _actualHorizontalForce; } }
 
     #endregion
 
@@ -72,15 +75,14 @@ public class AIBall : MonoBehaviour
         else if (_staticTime > 0f)
         {
             _staticTime = 0f;
-        }
+        }   
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<ControllersParent>() && !_rigidBody.isKinematic)
         {
-            GameManager.Instance.EndOfPoint();
-            GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+            _trainingManager.EndOfPoint();
             ResetBall();
         }
     }
@@ -125,20 +127,20 @@ public class AIBall : MonoBehaviour
         }
 
         _risingForceFactor = risingForceFactor;
-        float actualHorizontalForce = _shotParameters.ShotForceFactor * force;
+        _actualHorizontalForce = _shotParameters.ShotForceFactor * force;
 
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
         Vector3 actualHorizontalDirection;
         if (playerToApplyForce is PlayerController || playerToApplyForce is AgentController)
         {
-            actualHorizontalDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedHorizontalDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
+            actualHorizontalDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedHorizontalDirection, _shotParameters.ForceToDistanceFactor, _actualHorizontalForce);
         }
         else
         {
             actualHorizontalDirection = normalizedHorizontalDirection;
         }
 
-        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualHorizontalDirection.normalized, curvingDirection));
+        _currentMovementCoroutine = StartCoroutine(BallMovement(_actualHorizontalForce, actualHorizontalDirection.normalized, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
     }

@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class AgentController : ControllersParent
 {
@@ -34,15 +37,20 @@ public class AgentController : ControllersParent
 
     private int _wrongServicesCount;
     private bool _ballHasBeenHitBackByAgent;
+    private float _serviceDurationCounter;
+    private bool _otherPlayerHitBall;
+    private Vector3 _ballFirstReboundPosition;
+    private Vector3 _distanceToBallTrajectoryVector;
 
     #endregion
 
-    #region GETTERS
+    #region SETTERS
 
     public int ActionIndex { set { _actionIndex = value; } }
+    public bool OtherPlayerHitBall { set { _otherPlayerHitBall = value; } }
 
     #endregion
-    
+
     #region UNITY METHODS
 
     private void Start()
@@ -58,6 +66,7 @@ public class AgentController : ControllersParent
 
         _wrongServicesCount = 0;
         _ballHasBeenHitBackByAgent = false;
+        _serviceDurationCounter = 0f;
     }
 
     void Update()
@@ -68,6 +77,33 @@ public class AgentController : ControllersParent
             if (_hitKeyPressedTime < _maximumHitKeyPressTime)
             {
                 _hitKeyPressedTime += Time.deltaTime;
+            }
+        }
+
+        if (PlayerState == PlayerStates.SERVE && IsServing && _trainingManager.GameState == GameState.SERVICE && _ballDetectionArea.IsBallInHitZone)
+        {
+            _serviceDurationCounter += Time.deltaTime;
+
+            if (_serviceDurationCounter >= 2f)
+            {
+                AgentDoesntServe();
+            }
+        }
+
+        if (_otherPlayerHitBall)
+        {
+            AIBall ball = _trainingManager.BallInstance.GetComponent<AIBall>();
+            _ballFirstReboundPosition = ball.gameObject.transform.position + ball.gameObject.GetComponent<Rigidbody>().velocity.normalized *
+                ball.ActualHorizontalForce * ball.ShotParameters.ForceToDistanceFactor;
+            _distanceToBallTrajectoryVector = Vector3.ProjectOnPlane(_ballFirstReboundPosition - gameObject.transform.position, Vector3.up);
+
+            if (_distanceToBallTrajectoryVector.magnitude <= 0.8f)
+            {
+                AgentCloseToBallReboundPoint();
+            }
+            else
+            {
+                AgentAwayFromBallReboundPoint(_distanceToBallTrajectoryVector.magnitude);
             }
         }
 
@@ -111,6 +147,7 @@ public class AgentController : ControllersParent
 
         // The agent gains rewards when it hits the ball.
         HasHitBall();
+        _otherPlayerHitBall = false;
 
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);
@@ -129,6 +166,7 @@ public class AgentController : ControllersParent
             {
                 _trainingManager.DesactivateAllServiceDetectionVolumes();
                 _trainingManager.DisableLockServiceColliders();
+                _serviceDurationCounter = 0f;
             }
             else
             {
@@ -144,22 +182,7 @@ public class AgentController : ControllersParent
 
         Vector3 horizontalDirection;
 
-        if (GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly)
-        {
-            horizontalDirection = _shootingDirectionLateralComponent * Vector3.right + _shootingDirectionForwardComponent * Vector3.forward;
-        }
-        else
-        {
-            // The hit direction is set according to the mouse position on the screen.
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
-            {
-                horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
-            }
-            else
-            {
-                horizontalDirection = Vector3.forward;
-            }
-        }
+        horizontalDirection = _shootingDirectionLateralComponent * Vector3.right + _shootingDirectionForwardComponent * Vector3.forward;
 
         // Initialization of the correct ball physic material.
         _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
@@ -288,34 +311,28 @@ public class AgentController : ControllersParent
         }
     }
 
-    public void TechnicalShot()
+    public void TechnicalShot(int movementDirectionIndex)
     {
-        if(PlayerState != PlayerStates.SERVE && _trainingManager.BallInstance.GetComponent<Ball>().LastPlayerToApplyForce != this)
+        if(PlayerState != PlayerStates.SERVE && _trainingManager.BallInstance.GetComponent<AIBall>().LastPlayerToApplyForce != this)
         {
-            float tempForwardMovementFactor = 0f;
-            float tempRightMovementFactor = 0f;
-            int forwardMovementFactor = 0;
-            int rightMovementFactor = 0;
+            float forwardMovementFactor = 0f;
+            float rightMovementFactor = 0f;
 
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            if (movementDirectionIndex == 0)
             {
-                tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
+                forwardMovementFactor = 1f;
             }
-
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            else if (movementDirectionIndex == 1)
             {
-                tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
+                rightMovementFactor = 1f;
             }
-
-            if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor))
+            else if (movementDirectionIndex == 2)
             {
-                forwardMovementFactor = 0;
-                rightMovementFactor = (int)tempRightMovementFactor;
+                forwardMovementFactor = -1f;
             }
             else
             {
-                forwardMovementFactor = Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor) ? (int)tempForwardMovementFactor : 0;
-                rightMovementFactor = Mathf.Abs(tempRightMovementFactor) > Mathf.Abs(tempForwardMovementFactor) ? (int)tempRightMovementFactor : 0;
+                rightMovementFactor = -1f;
             }
 
             Vector3 forwardVector = Vector3.Project(_trainingManager.CameraTransform.forward, Vector3.forward).normalized;
@@ -398,7 +415,51 @@ public class AgentController : ControllersParent
 
         continuousActions[0] = _movementVector.x;
         continuousActions[1] = _movementVector.y;
+
+        // The hit direction is set according to the mouse position on the screen.
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+        {
+            continuousActions[2] = Vector3.Project(hit.point - transform.position, Vector3.right).x;
+            continuousActions[3] = Vector3.Project(hit.point - transform.position, Vector3.forward).z;
+        }
+        else
+        {
+            continuousActions[2] = 0f;
+            continuousActions[3] = 1f;
+        }
+
+        continuousActions[4] = _hitKeyPressedTime;
+
         discreteActions[0] = _actionIndex;
+
+        float tempForwardMovementFactor = 0f;
+        float tempRightMovementFactor = 0f;
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        {
+            tempForwardMovementFactor = MathF.Sign(Input.GetAxis("Vertical"));
+        }
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            tempRightMovementFactor = MathF.Sign(Input.GetAxis("Horizontal"));
+        }
+
+        if (Mathf.Abs(tempForwardMovementFactor) == Mathf.Abs(tempRightMovementFactor))
+        {
+            discreteActions[1] = (int)tempRightMovementFactor > 0 ? 1 : 3;
+        }
+        else
+        {
+            if(Mathf.Abs(tempForwardMovementFactor) > Mathf.Abs(tempRightMovementFactor))
+            {
+                discreteActions[1] = (int)tempForwardMovementFactor > 0 ? 0 : 2;
+            }
+            else
+            {
+                discreteActions[1] = (int)tempRightMovementFactor > 0 ? 1 : 3;
+            }
+        }
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -436,64 +497,67 @@ public class AgentController : ControllersParent
             _hitKeyPressedTime = actions.ContinuousActions[4];
         }
 
-        switch (actions.DiscreteActions[0])
+        if (actions.DiscreteActions[0] == _actionIndex)
         {
-            case 0:
-                // Doing nothing.
-                break;
-            case 1:
-                // Throw the ball in the air during the service.
-                if (PlayerState == PlayerStates.SERVE && IsServing)
-                {
-                    ThrowBall();
-                }
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-/*            case 2:
-                // Slowing time.
-                SlowTime();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;*/
-            case 2:
-                // Realising the technical shot.
-                TechnicalShot();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-            case 3:
-                // Flat shot.
-                Flat();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-            case 4:
-                // Top spin shot.
-                TopSpin();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-            case 5:
-                // Slice shot.
-                Slice();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-            case 6:
-                // Drop shot.
-                Drop();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-            case 7:
-                // Lob shot.
-                Lob();
-                // The action index is set to 0 after each action.
-                _actionIndex = 0;
-                break;
-            default:
-                break;
+            switch (actions.DiscreteActions[0])
+            {
+                case 0:
+                    // Doing nothing.
+                    break;
+                case 1:
+                    // Throw the ball in the air during the service.
+                    if (PlayerState == PlayerStates.SERVE && IsServing)
+                    {
+                        ThrowBall();
+                    }
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                /*            case 2:
+                                // Slowing time.
+                                SlowTime();
+                                // The action index is set to 0 after each action.
+                                _actionIndex = 0;
+                                break;*/
+                case 2:
+                    // Realising the technical shot.
+                    TechnicalShot(actions.DiscreteActions[1]);
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                case 3:
+                    // Flat shot.
+                    Flat();
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                case 4:
+                    // Top spin shot.
+                    TopSpin();
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                case 5:
+                    // Slice shot.
+                    Slice();
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                case 6:
+                    // Drop shot.
+                    Drop();
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                case 7:
+                    // Lob shot.
+                    Lob();
+                    // The action index is set to 0 after each action.
+                    _actionIndex = 0;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -508,7 +572,7 @@ public class AgentController : ControllersParent
         WrongService();
     }
 
-    public void LostPoint()
+    public void MadeFault()
     {
         if (_trainingManager.GameState == GameState.SERVICE)
         {
@@ -516,7 +580,7 @@ public class AgentController : ControllersParent
         }
         else
         {
-            AddReward(-2f);
+            AddReward(-1.5f);
         }
 
         EndEpisode();
@@ -540,13 +604,18 @@ public class AgentController : ControllersParent
         AddReward(-0.5f);
     }
 
+    private void AgentDoesntServe()
+    {
+        AddReward(-0.005f);
+    }
+
     #endregion
 
     #region POSITIVE REWARDS
 
     public void HasHitBall()
     {
-        AddReward(1.5f);
+        AddReward(3f);
     }
 
     public void BallTouchedFieldWithoutProvokingFault()
@@ -557,12 +626,23 @@ public class AgentController : ControllersParent
     public void ProperService()
     {
         _wrongServicesCount = 0;
-        AddReward(1f);
+        AddReward(2f);
     }
 
     private void PointFaughtAfterAgentHitBackTheBall()
     {
-        AddReward(0.01f);
+        AddReward(0.015f);
+    }
+
+    private void AgentCloseToBallReboundPoint()
+    {
+        AddReward(0.007f);
+    }
+
+    private void AgentAwayFromBallReboundPoint(float distance)
+    {
+        float clampedDistance = Mathf.Clamp(distance, 0f, 14f);
+        AddReward(-0.007f * (clampedDistance / 14f));
     }
 
     public void ScoredPoint()

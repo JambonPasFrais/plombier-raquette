@@ -55,7 +55,7 @@ public class FieldAlley : FieldGroundPart
                     // If the player that lost the point is the agent, it loses reward points.
                     if (ball.LastPlayerToApplyForce is AgentController)
                     {
-                        ((AgentController)ball.LastPlayerToApplyForce).LostPoint();
+                        ((AgentController)ball.LastPlayerToApplyForce).MadeFault();
                     }
                 }
             }

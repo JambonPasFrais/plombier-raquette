@@ -125,6 +125,15 @@ public class AIBotBehavior : ControllersParent
         float force;
         Vector3 direction;
 
+        foreach(ControllersParent controller in _trainingManager.Controllers)
+        {
+            if(controller is AgentController)
+            {
+                ((AgentController)controller).OtherPlayerHitBall = true;
+                break;
+            }
+        }
+
         if (PlayerState == PlayerStates.SERVE)
         {
             _trainingManager.DesactivateAllServiceDetectionVolumes();

@@ -6275,7 +6275,7 @@ Transform:
   - {fileID: 4695017823648106724}
   - {fileID: 5026999176507985454}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1662565903311258972
 Rigidbody:
@@ -6671,14 +6671,14 @@ MonoBehaviour:
     NumStackedVectorObservations: 2
     m_ActionSpec:
       m_NumContinuousActions: 5
-      BranchSizes: 08000000
+      BranchSizes: 0800000004000000
     VectorActionSize: 
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 9f8a96b3146911f4aab5aa93065b35b3, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: TennisPlayerBehavior
   TeamId: 0
   m_UseChildSensors: 1
