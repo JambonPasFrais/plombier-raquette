@@ -6275,7 +6275,7 @@ Transform:
   - {fileID: 4695017823648106724}
   - {fileID: 5026999176507985454}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1662565903311258972
 Rigidbody:
@@ -6676,9 +6676,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 6fe30533dfd7c924a97da7efbc6a89d2, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
+  m_BehaviorType: 2
   m_BehaviorName: TennisPlayerBehavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -6712,7 +6712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Record: 0
   NumStepsToRecord: 0
-  DemonstrationName: ILDemonstration2
+  DemonstrationName: ILDemonstration3
   DemonstrationDirectory: Demonstrations
 --- !u!1 &5010461871572363494
 GameObject:

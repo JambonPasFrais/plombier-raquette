@@ -497,7 +497,8 @@ public class AgentController : ControllersParent
             _hitKeyPressedTime = actions.ContinuousActions[4];
         }
 
-        if (actions.DiscreteActions[0] == _actionIndex)
+        if ((GetComponent<BehaviorParameters>().BehaviorType == BehaviorType.HeuristicOnly && actions.DiscreteActions[0] == _actionIndex) ||
+            GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly) 
         {
             switch (actions.DiscreteActions[0])
             {

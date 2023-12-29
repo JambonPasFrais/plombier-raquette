@@ -35,7 +35,7 @@ behaviors:
           deterministic: false
       gail:
         strength: 0.9
-        demo_path: Demonstrations/ILDemonstration2.demo
+        demo_path: Demonstrations/ILDemonstration3.demo
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
@@ -46,7 +46,7 @@ behaviors:
     self_play: null
     behavioral_cloning:
       strength: 0.8
-      demo_path: Demonstrations/ILDemonstration2.demo
+      demo_path: Demonstrations/ILDemonstration3.demo
 env_settings:
   env_path: null
   env_args: null
