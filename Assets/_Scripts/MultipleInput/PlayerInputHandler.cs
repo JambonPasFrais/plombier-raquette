@@ -23,6 +23,13 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
     }
+
+    private void Start()
+    {
+        Character.PlayerController.SetDirectionController(_playerInput.devices[0] is Keyboard ? 
+                ShootDirectionController.MOUSE : ShootDirectionController.STICK);
+    }
+
     #endregion
 
     #region UI ACTION MAP LISTENERS

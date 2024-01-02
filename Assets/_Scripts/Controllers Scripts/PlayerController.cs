@@ -29,6 +29,7 @@ public class PlayerController : ControllersParent
     private Vector2 _movementVector;
     private float _currentSpeed;
     private Ball _ballInstance;
+    [SerializeField] private ShootDirectionController _shootDirectionController;
 
     #endregion
 
@@ -44,6 +45,11 @@ public class PlayerController : ControllersParent
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
+    }
+
+    public void SetDirectionController(ShootDirectionController shootDirectionController)
+    {
+        _shootDirectionController = shootDirectionController;
     }
 
     #endregion
@@ -151,17 +157,29 @@ public class PlayerController : ControllersParent
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
             GameManager.Instance.GameState = GameState.PLAYING;
 
+        #region Shoot Direction
+        
         Vector3 horizontalDirection;
 
-        // The hit direction is set according to the mouse position on the screen.
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+        if (_shootDirectionController == ShootDirectionController.MOUSE)
         {
-            horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
+            // The hit direction is set according to the mouse position on the screen.
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+            {
+                horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
+            }
+            else
+            {
+                horizontalDirection = Vector3.forward;
+            }
         }
         else
         {
             horizontalDirection = Vector3.forward;
         }
+        
+        
+        #endregion
 
         // Initialization of the correct ball physic material.
         _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
