@@ -1035,7 +1035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: _playerInputHandlers.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: _playerInputHandlers.Array.data[0]
@@ -1393,7 +1393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 887026200301164258, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: _localNbPlayers
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 887026200301164258, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: _playersCharacters.Array.size
@@ -1406,7 +1406,7 @@ PrefabInstance:
     - target: {fileID: 887026200301164258, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: _playersCharacters.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 52c5e30dd0c82f74092e0500fdbe8d65, type: 2}
+      objectReference: {fileID: 11400000, guid: bf30652cd4a3936428aed38635f29033, type: 2}
     - target: {fileID: 887026200301164258, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: _playersCharacters.Array.data[2]
       value: 
@@ -1435,6 +1435,10 @@ PrefabInstance:
     - target: {fileID: 2992191248066274806, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
       propertyPath: m_Name
       value: Player Input Handler (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2992191248066274806, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3770056709067675740, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
       propertyPath: _playerInput
