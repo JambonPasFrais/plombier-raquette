@@ -85,7 +85,7 @@ public class AgentTrainingManager : MonoBehaviour
 
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
 
-        int i = 0;
+        int i = 1;
         foreach (ControllersParent controller in _controllers)
         {
             Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);

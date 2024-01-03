@@ -130,6 +130,7 @@ public class AIBotBehavior : ControllersParent
             if(controller is AgentController)
             {
                 ((AgentController)controller).OtherPlayerHitBall = true;
+                ((AgentController)controller).CalculateBallFirstReboundHorizontalPosition();
                 break;
             }
         }

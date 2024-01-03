@@ -84,17 +84,16 @@ public class AgentController : ControllersParent
         {
             _serviceDurationCounter += Time.deltaTime;
 
+            // If the agent has to serve but 2 seconds passed without a service, he gets a negative reward.
             if (_serviceDurationCounter >= 2f)
             {
                 AgentDoesntServe();
             }
         }
 
+        // If the other player hit the ball, the agent must be close to the first rebound position.
         if (_otherPlayerHitBall)
         {
-            AIBall ball = _trainingManager.BallInstance.GetComponent<AIBall>();
-            _ballFirstReboundPosition = ball.gameObject.transform.position + ball.gameObject.GetComponent<Rigidbody>().velocity.normalized *
-                ball.ActualHorizontalForce * ball.ShotParameters.ForceToDistanceFactor;
             _distanceToBallTrajectoryVector = Vector3.ProjectOnPlane(_ballFirstReboundPosition - gameObject.transform.position, Vector3.up);
 
             if (_distanceToBallTrajectoryVector.magnitude <= 0.8f)
@@ -106,17 +105,40 @@ public class AgentController : ControllersParent
                 AgentAwayFromBallReboundPoint(_distanceToBallTrajectoryVector.magnitude);
             }
         }
+        // Otherwise, if the agent is the last controller to hit the ball, he has to get back to the center of the field.
+        else if (PlayerState != PlayerStates.SERVE)
+        {
+            float zMinimumDistance = Mathf.Abs(_borderPointsContainer.FrontPointTransform.position.z - _borderPointsContainer.BackPointTransform.position.z) / 2f - 1f;
+            float xMinimumDistance = Mathf.Abs(_borderPointsContainer.RightPointTransform.position.x - _borderPointsContainer.LeftPointTransform.position.x) / 2f - 1f;
+
+            if ((Vector3.Distance(transform.position, _borderPointsContainer.FrontPointTransform.position) < zMinimumDistance) ||
+                (Vector3.Distance(transform.position, _borderPointsContainer.BackPointTransform.position) < zMinimumDistance) ||
+                (Vector3.Distance(transform.position, _borderPointsContainer.RightPointTransform.position) < xMinimumDistance) ||
+                (Vector3.Distance(transform.position, _borderPointsContainer.LeftPointTransform.position) < xMinimumDistance)) 
+            {
+                AgentNotInMiddleSquareAfterHittingBall();
+            }
+            else
+            {
+                AgentInMiddleSquareAfterHittingBall();
+            }
+        }
 
         // The agent earns a reward each frame from the moment he hit the ball back and while the point is faught by the agent and the bot.
         if (_ballHasBeenHitBackByAgent)
         {
             PointFaughtAfterAgentHitBackTheBall();
         }
-
-        UpdateBorderPointsContainer();
     }
 
     #endregion
+
+    public void CalculateBallFirstReboundHorizontalPosition()
+    {
+        AIBall ball = _trainingManager.BallInstance.GetComponent<AIBall>();
+        _ballFirstReboundPosition = ball.gameObject.transform.position + Vector3.ProjectOnPlane(ball.gameObject.GetComponent<Rigidbody>().velocity.normalized, Vector3.up).normalized *
+            ball.ActualHorizontalForce * ball.ShotParameters.ForceToDistanceFactor;
+    }
 
     private void UpdateBorderPointsContainer()
     {
@@ -591,6 +613,7 @@ public class AgentController : ControllersParent
     {
         AddReward(-6f);
         _trainingManager.PlacingPlayers();
+        _trainingManager.BallInstance.GetComponent<AIBall>().ResetBall();
         EndEpisode();
     }
 
@@ -608,6 +631,17 @@ public class AgentController : ControllersParent
     private void AgentDoesntServe()
     {
         AddReward(-0.005f);
+    }
+
+    private void AgentAwayFromBallReboundPoint(float distance)
+    {
+        float clampedDistance = Mathf.Clamp(distance, 0f, 14f);
+        AddReward(-0.007f * (clampedDistance / 14f));
+    }
+
+    private void AgentNotInMiddleSquareAfterHittingBall()
+    {
+        AddReward(-0.003f);
     }
 
     #endregion
@@ -640,10 +674,9 @@ public class AgentController : ControllersParent
         AddReward(0.007f);
     }
 
-    private void AgentAwayFromBallReboundPoint(float distance)
+    private void AgentInMiddleSquareAfterHittingBall()
     {
-        float clampedDistance = Mathf.Clamp(distance, 0f, 14f);
-        AddReward(-0.007f * (clampedDistance / 14f));
+        AddReward(0.006f);
     }
 
     public void ScoredPoint()

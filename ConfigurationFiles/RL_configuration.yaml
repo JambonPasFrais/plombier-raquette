@@ -35,10 +35,10 @@ behaviors:
           deterministic: false
     init_path: null
     keep_checkpoints: 5
-    checkpoint_interval: 500000
-    max_steps: 3000000
+    checkpoint_interval: 250000
+    max_steps: 1000000
     time_horizon: 64
-    summary_freq: 50000
+    summary_freq: 25000
     threaded: false
     self_play: null
 env_settings:
@@ -62,7 +62,7 @@ engine_settings:
 environment_parameters: null
 checkpoint_settings:
   run_id: Test1
-  initialize_from: ILT04_RLTraining01
+  initialize_from: ILT04_RLTraining01010101
   load_model: false
   resume: false
   force: false

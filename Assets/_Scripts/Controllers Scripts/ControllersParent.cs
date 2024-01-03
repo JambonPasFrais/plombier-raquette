@@ -91,7 +91,6 @@ public class ControllersParent : Agent
     private Vector3 CalculateExtremeShootingDirection(bool rightSideIsTargeted, float forceToDistanceFactor, float actualforce)
     {
         float distanceToFirstReboundPosition = forceToDistanceFactor * actualforce;
-        /*Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");*/
         Vector3 forwardVector = Vector3.Project(_trainingManager.CameraTransform.forward, Vector3.forward);
         Vector3 rightVector = _trainingManager.CameraTransform.right;
         float maximumLateralDistance;
