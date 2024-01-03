@@ -38,6 +38,8 @@ public class PlayerController : ControllersParent
     public List<NamedPhysicMaterials> PossiblePhysicMaterials { get { return _possiblePhysicMaterials; } }
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
 
+    public PlayerCameraController PlayerCameraController => _playerCameraController;
+
     #endregion
 
     #region SETTERS
@@ -330,31 +332,6 @@ public class PlayerController : ControllersParent
             GameManager.Instance.CameraManager.ToggleGameCamerasForSmash();
             
             _ballInstance.gameObject.transform.rotation = Quaternion.identity;
-        }
-    }
-
-    public void MoveSmashTarget(InputAction.CallbackContext context)
-    {
-        if (!_playerCameraController.IsFirstPersonView)
-            return;
-
-        if (context.performed)
-        {
-            Vector2 targetMovement = new Vector2();   
-            
-            if (_shootDirectionController == ShootDirectionController.MOUSE)
-            {
-                // TODO Check if possible to check the context.readvalue of mouse instead of old input system
-                float mouseX = Input.GetAxis("Mouse X");
-                float mouseY = Input.GetAxis("Mouse Y");
-                targetMovement = new Vector2(-mouseY, mouseX); 
-            }
-            else
-            {
-                targetMovement = context.ReadValue<Vector2>();
-            }
-        
-            _playerCameraController.SetTargetMovements(targetMovement);
         }
     }
 

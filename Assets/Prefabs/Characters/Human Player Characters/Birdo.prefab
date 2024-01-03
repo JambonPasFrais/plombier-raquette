@@ -1938,6 +1938,7 @@ MonoBehaviour:
   PlayerState: 0
   ServicesCount: 0
   PlayerTeam: 0
+  IsInOriginalSide: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 7182724276727742458}
   _serviceBallInitializationPoint: {fileID: 8144158612998060378}
@@ -1971,6 +1972,7 @@ MonoBehaviour:
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
   _canSmash: 0
+  _shootDirectionController: 0
 --- !u!95 &2492067642450663289
 Animator:
   serializedVersion: 5
@@ -2067,16 +2069,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firstPersonCamera: {fileID: 4992412559491024541}
-  _ballInstance: {fileID: 0}
-  _player: {fileID: 7146410963481921543}
   _ballSpawnPoint: {fileID: 778372898433563948}
-  _rotationSpeed: 400
+  _rotationSpeed: 50
   _zoomFOV: 40
   _normalFOV: 60
   _zoomDuration: 0.5
-  _canSmash: 0
-  _distanceToBall: 5
-  _isFirstPersonView: 0
 --- !u!1 &2887134000137616205
 GameObject:
   m_ObjectHideFlags: 0
