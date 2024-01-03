@@ -38,6 +38,8 @@ public class PlayerController : ControllersParent
     public List<NamedPhysicMaterials> PossiblePhysicMaterials { get { return _possiblePhysicMaterials; } }
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
 
+    public PlayerCameraController PlayerCameraController => _playerCameraController;
+
     #endregion
 
     #region SETTERS

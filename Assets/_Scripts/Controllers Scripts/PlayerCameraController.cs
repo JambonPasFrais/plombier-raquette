@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerCameraController : MonoBehaviour
@@ -23,6 +24,7 @@ public class PlayerCameraController : MonoBehaviour
     
     // Logic variables
     private bool _isFirstPersonView;
+    private Vector2 _targetMovements;
     
     #region GETTERS
 
@@ -40,7 +42,7 @@ public class PlayerCameraController : MonoBehaviour
         _smashTargetGo = GameManager.Instance.SmashTargetGo;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (_isFirstPersonView)
         {
@@ -49,10 +51,13 @@ public class PlayerCameraController : MonoBehaviour
                 _ballInstance.Rb.isKinematic = !_ballInstance.Rb.isKinematic;
             }
             _ballInstance.gameObject.transform.position = _ballSpawnPoint.position;
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
+            
+            /* trying to rework camera controller with new inputsystem
+             float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");*/
 
-            Vector3 rotation = new Vector3(-mouseY, mouseX, 0); 
+            Vector3 rotation = new Vector3(-_targetMovements.y, _targetMovements.x, 0);
+            
             _firstPersonCamera.transform.Rotate(rotation * _rotationSpeed * Time.deltaTime);
 
             float currentXRotation = _firstPersonCamera.transform.eulerAngles.x;
@@ -99,6 +104,14 @@ public class PlayerCameraController : MonoBehaviour
             _firstPersonCameraComponent.fieldOfView = _normalFOV;
         }
     }
+    
+    public void AimSmashTarget(InputAction.CallbackContext context)
+    {
+        if (!_isFirstPersonView)
+            return;
+
+        _targetMovements = context.ReadValue<Vector2>();
+    }
 
     #endregion
     
@@ -107,18 +120,18 @@ public class PlayerCameraController : MonoBehaviour
     private IEnumerator ZoomIn()
     {
         float timer = 0f;
-        float initialFOV = _firstPersonCamera.GetComponent<Camera>().fieldOfView;
-        Debug.Log(initialFOV);
+        float initialFOV = _firstPersonCameraComponent.fieldOfView;
+        
         while (timer < _zoomDuration)
         {
             float t = timer / _zoomDuration;
-            _firstPersonCamera.GetComponent<Camera>().fieldOfView = Mathf.Lerp(initialFOV, _zoomFOV, t);
+            _firstPersonCameraComponent.fieldOfView = Mathf.Lerp(initialFOV, _zoomFOV, t);
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        _firstPersonCamera.GetComponent<Camera>().fieldOfView = _zoomFOV;
+        _firstPersonCameraComponent.fieldOfView = _zoomFOV;
     }
     
     #endregion
