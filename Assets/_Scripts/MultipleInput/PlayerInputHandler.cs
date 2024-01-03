@@ -148,6 +148,12 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.performed)
             Character.PlayerController.PrepareSmash(context);
     }
+
+    // TODO : add as listener
+    public void OnSmashTargetMove(InputAction.CallbackContext context)
+    {
+        Character.PlayerController.MoveSmashTarget(context);
+    }
     
     public void OnSmash(InputAction.CallbackContext context)
     {

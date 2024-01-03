@@ -23,11 +23,21 @@ public class PlayerCameraController : MonoBehaviour
     
     // Logic variables
     private bool _isFirstPersonView;
+    private Vector2 _targetMovements;
     
     #region GETTERS
 
     public GameObject FirstPersonCamera => _firstPersonCamera;
     public bool IsFirstPersonView => _isFirstPersonView;
+    
+    #endregion
+    
+    #region SETTERS
+
+    public void SetTargetMovements(Vector2 targetMov)
+    {
+        _targetMovements = targetMov;
+    }
     
     #endregion
 
@@ -49,11 +59,14 @@ public class PlayerCameraController : MonoBehaviour
                 _ballInstance.Rb.isKinematic = !_ballInstance.Rb.isKinematic;
             }
             _ballInstance.gameObject.transform.position = _ballSpawnPoint.position;
-            float mouseX = Input.GetAxis("Mouse X");
+            
+            /* trying to rework camera controller with new inputsystem
+             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
-            Vector3 rotation = new Vector3(-mouseY, mouseX, 0); 
-            _firstPersonCamera.transform.Rotate(rotation * _rotationSpeed * Time.deltaTime);
+            Vector3 rotation = new Vector3(-mouseY, mouseX, 0); */
+            
+            _firstPersonCamera.transform.Rotate(_targetMovements * _rotationSpeed * Time.deltaTime);
 
             float currentXRotation = _firstPersonCamera.transform.eulerAngles.x;
             if (currentXRotation > 90 && currentXRotation < 180)
