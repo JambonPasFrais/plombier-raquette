@@ -61,26 +61,26 @@ public class ControllersParent : MonoBehaviour
     /// <param name="rightSideIsTargeted"></param>
     /// <param name="forceToDistanceFactor"></param>
     /// <param name="actualForce"></param>
+    /// <param name="forwardVector"></param>
     /// <returns></returns>
     private Vector3 CalculateExtremeShootingDirection(bool rightSideIsTargeted, float forceToDistanceFactor, float actualForce, Vector3 forwardVector)
     {
         float distanceToFirstReboundPosition = forceToDistanceFactor * actualForce;
         //Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
-        //Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
         Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         float maximumLateralDistance;
 
         if (rightSideIsTargeted)
         {
-            maximumLateralDistance = Mathf.Abs(GameManager.Instance.FaultLinesXByTeam[this.PlayerTeam][1] - transform.position.x);
+            maximumLateralDistance = Mathf.Abs(GameManager.Instance.FaultLinesXByTeam[PlayerTeam][1] - transform.position.x);
         }
         else
         {
-            maximumLateralDistance = Mathf.Abs(GameManager.Instance.FaultLinesXByTeam[this.PlayerTeam][0] - transform.position.x);
+            maximumLateralDistance = Mathf.Abs(GameManager.Instance.FaultLinesXByTeam[PlayerTeam][0] - transform.position.x);
         }
 
         float maximumForwardDistance = Mathf.Sqrt(Mathf.Pow(distanceToFirstReboundPosition, 2) + Mathf.Pow(maximumLateralDistance, 2));
-        return rightVector.normalized * (rightSideIsTargeted ? 1 : -1) * maximumLateralDistance + forwardVector.normalized * maximumForwardDistance;
+        return (rightVector.normalized * ((rightSideIsTargeted ? 1 : -1) * maximumLateralDistance) + forwardVector.normalized * maximumForwardDistance).normalized;
     }
 
     /// <summary>
@@ -101,8 +101,9 @@ public class ControllersParent : MonoBehaviour
     /// the player and the net.
     /// This "actual shooting direction" system has been created to make the game more casual by avoiding direct faults as much as possible.
     /// </summary>
-    /// <param name="wantedHorizontalDirection"></param>
+    /// <param name="wantedDirection"></param>
     /// <param name="actualForce"></param>
+    /// <param name="forceToDistanceFactor"></param>
     /// <returns></returns>
     public Vector3 CalculateActualShootingDirection(Vector3 wantedDirection, float forceToDistanceFactor, float actualForce)
     {
