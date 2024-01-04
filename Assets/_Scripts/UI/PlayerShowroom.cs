@@ -18,12 +18,14 @@ public class PlayerShowroom
 
     public void InitializeOnlineShowroom(CharacterData data, string username)
     {
+        Container.SetActive(true);
         PlayerInfo.text = username;
         CharacterName.text = data.Name;
         NameBackground.color = data.CharacterSecondaryColor;
         GameObject model = GameObject.Instantiate(data.BasicModel, ModelLocation);
         model.transform.localPosition = Vector3.zero;
-        model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        model.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+		model.transform.localScale = new Vector3(20, 20, 20);
         Background.color = data.CharacterPrimaryColor;
         CharacterEmblem.sprite = data.CharactersLogo;
 	}
@@ -33,8 +35,15 @@ public class PlayerShowroom
         PlayerInfo.text = " ?? ";
         CharacterName.text = " ?? ";
         NameBackground.color = Color.black;
-        GameObject.Destroy(ModelLocation.GetChild(0).gameObject);
-        Background.color = Color.white;
+		if(ModelLocation.childCount > 0)
+		{
+			GameObject model = ModelLocation.GetChild(0).gameObject;
+			model.transform.SetParent(MenuManager.Instance.CharactersModelsParent);
+			model.transform.localPosition = Vector3.zero;
+			model.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+			model.gameObject.SetActive(false);
+		}
+		Background.color = Color.white;
         CharacterEmblem.sprite = null;
     }
 }

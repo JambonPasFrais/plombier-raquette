@@ -19,7 +19,6 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 	// Visual of Player References
 	[SerializeField] private PlayerShowroom _playerShowroom;
 	// Where the model are in not selected -> pooling optimisation technique
-	[SerializeField] private Transform _charactersModelsContainer;
 	[SerializeField] private Button _playButton;
 
 	// All Characters Data
@@ -40,7 +39,6 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 	private void Start()
 	{
 		_characters = MenuManager.Instance.Characters;
-		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
 		_charactersModel = MenuManager.Instance.CharactersModel;
 		_playButton.interactable = false;
 
@@ -80,7 +78,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 					_previousSelectedCharacterUI.SetSelected(false);
 
 					go = _playerShowroom.ModelLocation.GetChild(0).gameObject;
-					go.transform.SetParent(_characterUIContainer);
+					go.transform.SetParent(MenuManager.Instance.CharactersModelsParent);
 					go.transform.localPosition = Vector3.zero;
 					go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 					go.transform.localScale = Vector3.one;
@@ -121,7 +119,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 	{
 		foreach (var item in _charactersModel)
 		{
-			item.Value.transform.SetParent(_charactersModelsContainer);
+			item.Value.transform.SetParent(MenuManager.Instance.CharactersModelsParent);
 			item.Value.transform.localPosition = Vector3.zero;
 			item.Value.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 			item.Value.gameObject.SetActive(false);

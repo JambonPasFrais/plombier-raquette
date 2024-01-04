@@ -10,7 +10,7 @@ public class MenuManager : MonoBehaviour
 	private static MenuManager _instance;
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();
 	[SerializeField] private Transform _charactersModelsParent;
-	private List<GameObject> _visitedMenus = new List<GameObject>();
+	[SerializeField] private List<GameObject> _visitedMenus = new List<GameObject>();
 	[SerializeField] private EventSystem _eventSystem;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	[SerializeField] private GameObject _tournamentBracketMenu;
@@ -58,6 +58,7 @@ public class MenuManager : MonoBehaviour
         _visitedMenus.Add(nextMenu);
         SetDefaultSelected(nextMenu);
     }
+
     public void SetFirstSelectedButton(GameObject Button)
     {
 		_eventSystem.SetSelectedGameObject(Button);

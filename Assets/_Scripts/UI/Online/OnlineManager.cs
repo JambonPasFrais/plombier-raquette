@@ -192,9 +192,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             showroom.ResetShowroom();
         }
 
-		_playerShowrooms[1].Container.SetActive(false);
-
-		ChangeActivePanel(_characterSelection.name);
+        ChangeActivePanel(_characterSelection.name);
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
@@ -259,7 +257,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
     {
-
         _playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
 
 		photonView.RPC("InstantiatePresentPlayers", RpcTarget.Others, GameParameters.Instance.GetCharactersPlayers().Name, nickname, PhotonNetwork.LocalPlayer.NickName);
