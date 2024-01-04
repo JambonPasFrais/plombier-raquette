@@ -60,16 +60,15 @@ public class ControllersParent : MonoBehaviour
     /// </summary>
     /// <param name="rightSideIsTargeted"></param>
     /// <param name="forceToDistanceFactor"></param>
-    /// <param name="actualforce"></param>
+    /// <param name="actualForce"></param>
     /// <returns></returns>
-    private Vector3 CalculateExtremeShootingDirection(bool rightSideIsTargeted, float forceToDistanceFactor, float actualforce)
+    private Vector3 CalculateExtremeShootingDirection(bool rightSideIsTargeted, float forceToDistanceFactor, float actualForce, Vector3 forwardVector)
     {
-        float distanceToFirstReboundPosition = forceToDistanceFactor * actualforce;
-        Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
-        Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
+        float distanceToFirstReboundPosition = forceToDistanceFactor * actualForce;
+        //Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
+        //Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
         Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         float maximumLateralDistance;
-        Vector3 extremeShootingDirection;
 
         if (rightSideIsTargeted)
         {
@@ -105,15 +104,19 @@ public class ControllersParent : MonoBehaviour
     /// <param name="wantedHorizontalDirection"></param>
     /// <param name="actualForce"></param>
     /// <returns></returns>
-    public Vector3 CalculateActualShootingDirection(Vector3 wantedDirection, float forceToDistanceFactor, float actualforce)
+    public Vector3 CalculateActualShootingDirection(Vector3 wantedDirection, float forceToDistanceFactor, float actualForce)
     {
         float rotationSign = Mathf.Sign(Vector3.Dot(wantedDirection, Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right, Vector3.right)));
         Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
-        Vector3 extremeShootingDirection = CalculateExtremeShootingDirection(rotationSign > 0 ? true : false, forceToDistanceFactor, actualforce);
+        Vector3 extremeShootingDirection = CalculateExtremeShootingDirection(rotationSign > 0 ? true : false, forceToDistanceFactor, actualForce, forwardVector);
 
-        if (Vector3.Angle(forwardVector, wantedDirection) > Vector3.Angle(forwardVector, extremeShootingDirection))
+        // Idea to fix the prob : create a vector3 wantedDirectionWithNulY = (wantedDir.x, 0, wantedDir.z);
+
+        Vector3 wantedDirectionHorizontal = new Vector3(wantedDirection.x, 0, wantedDirection.z);
+        
+        if (Vector3.Angle(forwardVector, wantedDirectionHorizontal) > Vector3.Angle(forwardVector, extremeShootingDirection))
         {
-            return extremeShootingDirection;
+            return new Vector3(extremeShootingDirection.x, wantedDirection.y, extremeShootingDirection.z);
         }
         else
         {
