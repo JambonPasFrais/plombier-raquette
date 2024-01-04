@@ -23,6 +23,7 @@ public class Controller : MonoBehaviour
 		Color.green,
 		Color.yellow
 	};
+	[SerializeField] private TextMeshProUGUI _characterSelectionIndex;
 
 	[HideInInspector] public PlayerInput PlayerInput;// TODO : change this variable for private with getter and setter
 
@@ -138,11 +139,18 @@ public class Controller : MonoBehaviour
 		_playerIndexText.gameObject.SetActive(true);
 		_controllerIndex = index;
 		_playerIndexText.text = "P" + _controllerIndex;
+		_characterSelectionIndex.text = "P" + _controllerIndex;
 	}
 
 	public void SetColorVisual(int index)
 	{
 		_playerIndexText.color = _playerColors[index];
+		_imgCharSelectionIcon.color = _playerColors[index] / .5f;
+	}
+
+	public void ReturnOnControllerSelectionMenu()
+	{
+		_rectTransform.sizeDelta = new Vector2(200f, 250f);
 	}
 	#endregion
 }

@@ -98,7 +98,8 @@ public class ControllerManager : MonoBehaviour
         {
             controller.Value.Controller.gameObject.transform.SetParent(cltrSelectionContainer);
 			controller.Value.Controller.ControllerSelectionMode();
-        }
+            controller.Value.Controller.ReturnOnControllerSelectionMenu();
+		}
     }
     
     public void ControllerCanBeAdded()

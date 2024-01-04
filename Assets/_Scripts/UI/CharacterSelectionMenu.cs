@@ -29,6 +29,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private Transform _charactersModelsContainer;
 	[SerializeField] private Button _playButton;
 	[SerializeField] private GameObject _confirmPlayButton;
+	[Header("Other Menus References")]
+	[SerializeField] private ControllerSelectionMenu _controllerSelectionMenu;
 	
 	// All Characters Data
 	private List<CharacterData> _characters = new List<CharacterData>();
@@ -124,6 +126,12 @@ public class CharacterSelectionMenu : MonoBehaviour
 		{
 			_aceItWindow.SetActive(false);
 			MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
+		}
+		else
+		{
+			OnMenuDisabled();
+			_controllerSelectionMenu.OnBackToControllerSelection();
+			MenuManager.Instance.GoToPreviousMenu();
 		}
 	}
 
