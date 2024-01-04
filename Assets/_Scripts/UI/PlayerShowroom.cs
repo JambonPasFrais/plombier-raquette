@@ -45,5 +45,6 @@ public class PlayerShowroom
 		}
 		Background.color = Color.white;
         CharacterEmblem.sprite = null;
+        Container.SetActive(false);
     }
 }

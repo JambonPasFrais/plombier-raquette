@@ -10,6 +10,7 @@ public class MyPlayerCard : PlayerCard
     [SerializeField] private TextMeshProUGUI _rdyButtonText;
     [SerializeField] private Image _rdyButtonImage;
     [SerializeField] private Button _readyButton;
+
     #endregion
 
     public override void Initialize(string playerName, CharacterData selectedCharacter)
@@ -36,7 +37,7 @@ public class MyPlayerCard : PlayerCard
             SetButtonToReady();
         }
 
-        OnlineManager.Instance.ReadyButtonClicked();
+        OnlineManager.Instance.OnReadyButtonClicked();
     }
 
     private void SetButtonToReady()
