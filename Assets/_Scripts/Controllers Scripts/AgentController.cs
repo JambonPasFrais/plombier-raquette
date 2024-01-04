@@ -41,6 +41,8 @@ public class AgentController : ControllersParent
     private bool _otherPlayerHitBall;
     private Vector3 _ballFirstReboundPosition;
     private Vector3 _distanceToBallTrajectoryVector;
+    private float _xMinimumDistanceToReboundPosition;
+    private float _zMinimumDistanceToReboundPosition;
 
     #endregion
 
@@ -57,6 +59,9 @@ public class AgentController : ControllersParent
     {
         _otherPlayer = _trainingManager.Controllers[0] == this ? _trainingManager.Controllers[1] : _trainingManager.Controllers[0];
         UpdateBorderPointsContainer();
+
+        _xMinimumDistanceToReboundPosition = _ballDetectionArea.BoxCollider.size.x * _ballDetectionArea.transform.localScale.x * transform.localScale.x / 2f;
+        _zMinimumDistanceToReboundPosition = _ballDetectionArea.BoxCollider.size.z * _ballDetectionArea.transform.localScale.z * transform.localScale.z / 2f;
 
         ServicesCount = 0;
         _hitKeyPressedTime = 0f;
@@ -96,7 +101,7 @@ public class AgentController : ControllersParent
         {
             _distanceToBallTrajectoryVector = Vector3.ProjectOnPlane(_ballFirstReboundPosition - gameObject.transform.position, Vector3.up);
 
-            if (_distanceToBallTrajectoryVector.magnitude <= 0.8f)
+            if (_distanceToBallTrajectoryVector.x <= _xMinimumDistanceToReboundPosition && _distanceToBallTrajectoryVector.z <= _zMinimumDistanceToReboundPosition)
             {
                 AgentCloseToBallReboundPoint();
             }
@@ -633,6 +638,11 @@ public class AgentController : ControllersParent
         AddReward(-0.005f);
     }
 
+    public void AgentDoesntHitTheBall()
+    {
+        AddReward(-0.005f);
+    }
+
     private void AgentAwayFromBallReboundPoint(float distance)
     {
         float clampedDistance = Mathf.Clamp(distance, 0f, 14f);
@@ -641,7 +651,7 @@ public class AgentController : ControllersParent
 
     private void AgentNotInMiddleSquareAfterHittingBall()
     {
-        AddReward(-0.003f);
+        AddReward(-0.0025f);
     }
 
     #endregion
@@ -650,7 +660,7 @@ public class AgentController : ControllersParent
 
     public void HasHitBall()
     {
-        AddReward(3f);
+        AddReward(10f);
     }
 
     public void BallTouchedFieldWithoutProvokingFault()
@@ -676,7 +686,7 @@ public class AgentController : ControllersParent
 
     private void AgentInMiddleSquareAfterHittingBall()
     {
-        AddReward(0.006f);
+        AddReward(0.005f);
     }
 
     public void ScoredPoint()

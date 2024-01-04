@@ -12,6 +12,7 @@ public class BallDetection : MonoBehaviour
 
     private AIBall _ball;
     private bool _isBallInHitZone;
+    private ControllersParent _controller;
 
     #endregion
 
@@ -19,6 +20,7 @@ public class BallDetection : MonoBehaviour
 
     public bool IsBallInHitZone { get { return _isBallInHitZone; } }
     public AIBall Ball { get { return _ball; } }
+    public BoxCollider BoxCollider { get { return _boxCollider; } }
 
     #endregion
 
@@ -28,6 +30,7 @@ public class BallDetection : MonoBehaviour
     {
         _isBallInHitZone = false;
         _ball = null;
+        _controller = transform.parent.gameObject.GetComponent<ControllersParent>();
     }
 
     private void Update()
@@ -35,6 +38,11 @@ public class BallDetection : MonoBehaviour
         if (_ball == null && _isBallInHitZone)
         {
             _isBallInHitZone = false;
+        }
+
+        if (_ball != null && _controller is AgentController && _ball.LastPlayerToApplyForce != _controller && _controller.PlayerState != PlayerStates.SERVE)
+        {
+            ((AgentController)_controller).AgentDoesntHitTheBall();
         }
     }
 
