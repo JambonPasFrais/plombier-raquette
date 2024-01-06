@@ -24,15 +24,20 @@ public class GameParameters : MonoBehaviour
     };
     [SerializeField] private TournamentInfos _tournamentInfos;
 
+    #region GETTERS
+    
     public static GameParameters Instance => _instance;
     public int LocalNbPlayers => _localNbPlayers;
     public TournamentInfos CurrentTournamentInfos => _tournamentInfos;
     public List<CharacterData> PlayersCharacter => _playersCharacters;
+    public GameMode CurrentGameMode => _currentGameMode;
     public static bool IsTournamentMode
     {
         get { return _instance._isTournamentMode; }
         set { _instance._isTournamentMode = value; }
     }
+    
+    #endregion
 
 	private void Awake()
 	{

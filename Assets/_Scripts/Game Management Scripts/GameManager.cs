@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
         ServiceOnOriginalSide = true;
 
         GameState = GameState.SERVICE;
-        foreach(ControllersParent controller in _controllers)
+        foreach (ControllersParent controller in _controllers)
         {
             controller.PlayerState = PlayerStates.IDLE;
         }
@@ -97,15 +97,14 @@ public class GameManager : MonoBehaviour
         _controllers[_serverIndex].IsServing = true;
 
         // Double
-        
         if (_controllers.Count > 2 )
         {
             CameraManager.InitSplitScreenCameras();
-        }else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count)
+        }else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count) // Simple with 2 locals
         {
             CameraManager.InitSplitScreenCameras();
         }
-        else // Simple
+        else // Simple vs bot
         {
             CameraManager.InitSoloCamera();
         }
@@ -113,6 +112,8 @@ public class GameManager : MonoBehaviour
         SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
         
         ServiceManager.SetServiceBoxCollider(false);
+        
+        ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, false); //TODO : can't play just a tiebreak ?
         
         _ballInstance.GetComponent<Ball>().ResetBall();
 
