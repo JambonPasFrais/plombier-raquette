@@ -51,11 +51,8 @@ public class PlayerCameraController : MonoBehaviour
             {
                 _ballInstance.Rb.isKinematic = !_ballInstance.Rb.isKinematic;
             }
+
             _ballInstance.gameObject.transform.position = _ballSmashPosition.position;
-            
-            /* trying to rework camera controller with new inputsystem
-             float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");*/
 
             Vector3 rotation = new Vector3(-_targetMovements.y, _targetMovements.x, 0);
             

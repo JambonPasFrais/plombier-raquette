@@ -3794,7 +3794,7 @@ GameObject:
   - component: {fileID: 5962522241361225335}
   - component: {fileID: 4173432701239628354}
   m_Layer: 0
-  m_Name: Luigi
+  m_Name: Luigi (working)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3927,10 +3927,12 @@ MonoBehaviour:
   _ballDetectionArea: {fileID: 6243607518820617945}
   _playerCameraController: {fileID: 4173432701239628354}
   _movementSpeed: 7.5
+  _chargingMoveSpeed: 4
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
   _canSmash: 0
   _shootDirectionController: 0
+  _shotDirection: {x: 0, y: 0, z: 0}
 --- !u!95 &1819106038946207351
 Animator:
   serializedVersion: 5

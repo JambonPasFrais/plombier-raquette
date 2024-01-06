@@ -1969,10 +1969,12 @@ MonoBehaviour:
   _ballDetectionArea: {fileID: 7664064411156213972}
   _playerCameraController: {fileID: -8994089751683610411}
   _movementSpeed: 7.5
+  _chargingMoveSpeed: 4
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
   _canSmash: 0
   _shootDirectionController: 0
+  _shotDirection: {x: 0, y: 0, z: 0}
 --- !u!95 &2492067642450663289
 Animator:
   serializedVersion: 5

@@ -66,6 +66,11 @@ public class PlayerInputHandler : MonoBehaviour
     
     #region GAME ACTION MAP LISTENERS
 
+    public void OnAimShot(InputAction.CallbackContext context)
+    {
+        Character.PlayerController.AimShot(context);
+    }
+    
     public void OnCharacterMove(InputAction.CallbackContext context)
     {
         Character.PlayerController.Move(context);

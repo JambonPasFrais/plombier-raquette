@@ -2647,7 +2647,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
       propertyPath: m_DefaultControlScheme
+      value: Gamepad
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_ActionId
+      value: 194e7edb-539f-4ce4-bc56-402de8fd2a82
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_ActionName
+      value: Game/AimShot[/Mouse/position,/XInputControllerWindows1/leftStick]
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 2004522843}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnAimShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerInputHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636106367081486968, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
