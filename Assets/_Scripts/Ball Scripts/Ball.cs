@@ -90,7 +90,7 @@ public class Ball : MonoBehaviour
         _shotParameters = shotParameters;
     }
 
-    public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
+    public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
 
@@ -108,17 +108,17 @@ public class Ball : MonoBehaviour
         float actualHorizontalForce = _shotParameters.ShotForceFactor * force;
 
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
-        Vector3 actualHorizontalDirection;
-        if (playerToApplyForce is PlayerController) 
+        Vector3 actualNormalizedDirection;
+        if (playerToApplyForce is PlayerController && _shotParameters.ForceToDistanceFactor != 0) 
         {
-            actualHorizontalDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedHorizontalDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
+            actualNormalizedDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
         }
         else
         {
-            actualHorizontalDirection = normalizedHorizontalDirection;
+            actualNormalizedDirection = normalizedDirection;
         }
 
-        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualHorizontalDirection.normalized, curvingDirection));
+        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
     }
