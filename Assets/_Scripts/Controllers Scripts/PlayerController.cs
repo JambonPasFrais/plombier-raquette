@@ -352,9 +352,9 @@ public class PlayerController : ControllersParent
             _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
 
             Vector3 playerCameraTransformForward = _playerCameraController.FirstPersonCamera.transform.forward;
-            Vector3 horizontalDirection = Vector3.Project(playerCameraTransformForward, Vector3.forward) + Vector3.Project(playerCameraTransformForward, Vector3.right);
+            //Vector3 horizontalDirection = Vector3.Project(playerCameraTransformForward, Vector3.forward) + Vector3.Project(playerCameraTransformForward, Vector3.right);
             
-            _ballInstance.ApplyForce(_maximumShotForce, 0f, horizontalDirection.normalized, this);
+            _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
             //GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(true); // TODO: Try to simplify it

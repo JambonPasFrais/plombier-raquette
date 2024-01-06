@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerCameraController : MonoBehaviour
 {
     [Header("Instances")]
     [SerializeField] private GameObject _firstPersonCamera;
-    [SerializeField] private Transform _ballSpawnPoint;
+    [SerializeField] private Transform _ballSmashPosition;
     
     [Header("Camera Parameters for Smash")]
     [SerializeField] private float _rotationSpeed = 10f;
@@ -50,7 +51,7 @@ public class PlayerCameraController : MonoBehaviour
             {
                 _ballInstance.Rb.isKinematic = !_ballInstance.Rb.isKinematic;
             }
-            _ballInstance.gameObject.transform.position = _ballSpawnPoint.position;
+            _ballInstance.gameObject.transform.position = _ballSmashPosition.position;
             
             /* trying to rework camera controller with new inputsystem
              float mouseX = Input.GetAxis("Mouse X");
