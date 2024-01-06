@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
 
     #endregion
 
-    #region ACCESSORS
+    #region GETTERS
 
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }

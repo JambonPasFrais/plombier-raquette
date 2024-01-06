@@ -219,15 +219,15 @@ public class GameManager : MonoBehaviour
         {
             return Mathf.Abs(borderPointsContainer.FrontPointTransform.position.z - playerPosition.z);
         }
-        else if(movementDirection == -currentForwardVector)
+        if(movementDirection == -currentForwardVector)
         {
             return Mathf.Abs(borderPointsContainer.BackPointTransform.position.z - playerPosition.z);
         }
-        else if(movementDirection == currentRightVector)
+        if(movementDirection == currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.RightPointTransform.position.x - playerPosition.x);
         }
-        else if(movementDirection == -currentRightVector)
+        if(movementDirection == -currentRightVector)
         {
             return Mathf.Abs(borderPointsContainer.LeftPointTransform.position.x - playerPosition.x);
         }
