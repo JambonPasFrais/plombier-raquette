@@ -61,10 +61,10 @@ public class AIFieldFrontLeft : AIFieldGroundPart
                 }
                 else if (ball.LastPlayerToApplyForce.gameObject.TryGetComponent<AgentController>(out AgentController agent))
                 {
-                    if (_trainingManager.GameState == GameState.SERVICE)
+/*                    if (_trainingManager.GameState == GameState.SERVICE)
                     {
                         agent.ProperService();
-                    }
+                    }*/
 
                     agent.BallTouchedFieldWithoutProvokingFault();
                 }

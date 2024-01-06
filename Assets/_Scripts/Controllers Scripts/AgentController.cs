@@ -608,7 +608,7 @@ public class AgentController : ControllersParent
         }
         else
         {
-            AddReward(-1.5f);
+            AddReward(-6f);
         }
 
         EndEpisode();
@@ -625,7 +625,7 @@ public class AgentController : ControllersParent
     public void WrongService()
     {
         _wrongServicesCount++;
-        AddReward(-0.5f * _wrongServicesCount);
+        AddReward(-2f * _wrongServicesCount);
     }
 
     public void TryToHitBall()
@@ -660,19 +660,19 @@ public class AgentController : ControllersParent
 
     public void HasHitBall()
     {
-        AddReward(10f);
+        AddReward(5f);
     }
 
     public void BallTouchedFieldWithoutProvokingFault()
     {
-        AddReward(1f);
+        AddReward(8f);
     }
 
-    public void ProperService()
+/*    public void ProperService()
     {
         _wrongServicesCount = 0;
-        AddReward(2f);
-    }
+        AddReward(3f);
+    }*/
 
     private void PointFaughtAfterAgentHitBackTheBall()
     {
@@ -691,7 +691,7 @@ public class AgentController : ControllersParent
 
     public void ScoredPoint()
     {
-        AddReward(5f);
+        AddReward(4f);  
         EndEpisode();
     }
 
