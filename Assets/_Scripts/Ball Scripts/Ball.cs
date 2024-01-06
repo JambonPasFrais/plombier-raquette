@@ -26,10 +26,11 @@ public class Ball : MonoBehaviour
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
+    private SphereCollider _sphereCollider;
 
     #endregion
 
-    #region ACCESSORS
+    #region GETTERS
 
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
@@ -43,6 +44,7 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         _reboundsCount = 0;
+        _sphereCollider = GetComponent<SphereCollider>();
     }
 
     private void Update()
@@ -79,9 +81,9 @@ public class Ball : MonoBehaviour
 
     public void InitializePhysicsMaterial(PhysicMaterial physicMaterial)
     {
-        if (gameObject.GetComponent<SphereCollider>().material != physicMaterial)
+        if (_sphereCollider.material != physicMaterial)
         {
-            gameObject.GetComponent<SphereCollider>().sharedMaterial = physicMaterial;
+            _sphereCollider.sharedMaterial = physicMaterial;
         }
     }
 
@@ -176,13 +178,6 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount++;
 
-        /*if (_reboundsCount == 1)
-        {
-            Vector3 horizontalDistanceVector = Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.forward) +
-                Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.right);
-            //Debug.Log($"Real distance travelled until first rebound : {horizontalDistanceVector.magnitude}");
-        }*/
-
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
         _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
     }
@@ -251,7 +246,6 @@ public class Ball : MonoBehaviour
 
     public void DestroyTarget()
     {
-
         if (_targetInstance != null)
         {
             Destroy(_targetInstance);
