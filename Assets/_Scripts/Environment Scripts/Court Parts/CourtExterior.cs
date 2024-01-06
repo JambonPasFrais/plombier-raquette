@@ -7,7 +7,7 @@ public class CourtExterior : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (collision.gameObject.TryGetComponent(out Ball ball))
         {
             ball.Rebound();
 
@@ -31,15 +31,16 @@ public class CourtExterior : MonoBehaviour
                     GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                     GameManager.Instance.ServiceManager.EnableLockServiceColliders();
-                    ball.ResetBall();
                 }
                 else
                 {
                     GameManager.Instance.EndOfPoint();
-                    Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
+                    Teams otherTeam = ball.LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
+                    //Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
                     GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                    ball.ResetBall();
                 }
+                
+                ball.ResetBall();
             }
         }
     }

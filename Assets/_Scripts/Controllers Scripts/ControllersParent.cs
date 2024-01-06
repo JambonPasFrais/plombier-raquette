@@ -48,7 +48,7 @@ public class ControllersParent : MonoBehaviour
     /// Calculates the distance between the player and the net, clamped bewteen 0m and the maximum distance to the net which corresponds the bottom line of the field.
     /// </summary>
     /// <returns></returns>
-    private float CaluclateClampedDistanceToNet()
+    private float CalculateClampedDistanceToNet()
     {
         float actualDistanceToNet = Vector3.Project(GameManager.Instance.Net.transform.position - gameObject.transform.position, Vector3.forward).magnitude;
         float clampedDistanceToNet = Mathf.Clamp(actualDistanceToNet, 0f, _maximumDistanceToNet);
@@ -91,7 +91,7 @@ public class ControllersParent : MonoBehaviour
     /// <returns></returns>
     protected float CalculateActualForce(float hitForce)
     {
-        float clampedDistanceToNet = CaluclateClampedDistanceToNet();
+        float clampedDistanceToNet = CalculateClampedDistanceToNet();
         float forceFactor = (clampedDistanceToNet / _maximumDistanceToNet) * (_forceMaximumClampFactor - _forceMinimumClampFactor) + _forceMinimumClampFactor;
         return forceFactor * hitForce;
     }

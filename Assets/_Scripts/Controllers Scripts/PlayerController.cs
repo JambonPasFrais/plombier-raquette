@@ -31,7 +31,8 @@ public class PlayerController : ControllersParent
     private Vector2 _movementVector;
     private float _currentSpeed;
     private Ball _ballInstance;
-    [SerializeField] private ShootDirectionController _shootDirectionController;
+    private ShootDirectionController _shootDirectionController;
+    private Vector3 _shotDirection;
 
     #endregion
 
@@ -206,8 +207,6 @@ public class PlayerController : ControllersParent
         // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
         _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
     }
-
-    public Vector3 _shotDirection;
 
     public void AimShot(InputAction.CallbackContext context)
     {
