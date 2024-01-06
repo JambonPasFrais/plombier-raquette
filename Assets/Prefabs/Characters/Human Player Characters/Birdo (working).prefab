@@ -1871,7 +1871,7 @@ GameObject:
   - component: {fileID: 4930501403640221118}
   - component: {fileID: -8994089751683610411}
   m_Layer: 0
-  m_Name: Birdo
+  m_Name: Birdo (working)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1938,6 +1938,7 @@ MonoBehaviour:
   PlayerState: 0
   ServicesCount: 0
   PlayerTeam: 0
+  IsInOriginalSide: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 7182724276727742458}
   _serviceBallInitializationPoint: {fileID: 8144158612998060378}
@@ -1968,9 +1969,12 @@ MonoBehaviour:
   _ballDetectionArea: {fileID: 7664064411156213972}
   _playerCameraController: {fileID: -8994089751683610411}
   _movementSpeed: 7.5
+  _chargingMoveSpeed: 4
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
   _canSmash: 0
+  _shootDirectionController: 0
+  _shotDirection: {x: 0, y: 0, z: 0}
 --- !u!95 &2492067642450663289
 Animator:
   serializedVersion: 5
@@ -2067,16 +2071,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firstPersonCamera: {fileID: 4992412559491024541}
-  _ballInstance: {fileID: 0}
-  _player: {fileID: 7146410963481921543}
-  _ballSpawnPoint: {fileID: 778372898433563948}
-  _rotationSpeed: 400
+  _ballSmashPosition: {fileID: 778372898433563948}
+  _rotationSpeed: 50
   _zoomFOV: 40
   _normalFOV: 60
   _zoomDuration: 0.5
-  _canSmash: 0
-  _distanceToBall: 5
-  _isFirstPersonView: 0
 --- !u!1 &2887134000137616205
 GameObject:
   m_ObjectHideFlags: 0

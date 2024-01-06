@@ -23,6 +23,13 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
     }
+
+    private void Start()
+    {
+        Character.PlayerController.SetDirectionController(_playerInput.devices[0] is Keyboard ? 
+                ShootDirectionController.MOUSE : ShootDirectionController.STICK);
+    }
+
     #endregion
 
     #region UI ACTION MAP LISTENERS
@@ -59,6 +66,11 @@ public class PlayerInputHandler : MonoBehaviour
     
     #region GAME ACTION MAP LISTENERS
 
+    public void OnAimShot(InputAction.CallbackContext context)
+    {
+        Character.PlayerController.AimShot(context);
+    }
+    
     public void OnCharacterMove(InputAction.CallbackContext context)
     {
         Character.PlayerController.Move(context);
@@ -140,6 +152,11 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (context.performed)
             Character.PlayerController.PrepareSmash(context);
+    }
+    
+    public void OnAimSmash(InputAction.CallbackContext context)
+    {
+        Character.PlayerController.PlayerCameraController.AimSmashTarget(context);
     }
     
     public void OnSmash(InputAction.CallbackContext context)

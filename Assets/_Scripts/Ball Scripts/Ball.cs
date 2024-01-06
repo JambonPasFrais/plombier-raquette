@@ -127,7 +127,7 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount = 0;
 
-        Debug.Log($"Direction {actualNormalizedHorizontalDirection} - Force {actualHorizontalForce}");
+        //Debug.Log($"Direction {actualNormalizedHorizontalDirection} - Force {actualHorizontalForce}");
 
         _rigidBody.AddForce(actualNormalizedHorizontalDirection * actualHorizontalForce);
         _rigidBody.AddForce(Vector3.up * _shotParameters.RisingForce * _risingForceFactor);
