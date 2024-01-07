@@ -9,18 +9,13 @@ public class ScoreDisplay : MonoBehaviour
     [SerializeField] private Image _background;
     [SerializeField] private TextMeshProUGUI _score;
 
-	public void Initialize(Color color, int score)
+	public void Initialize(Color color, string score)
 	{
 		_background.color = color;
-		_score.text = score.ToString();
+        SetScore(score);
 	}
 
-	public void SetColor(Color color)
-    {
-        _background.color = color;
-    }
-
-    public void SetScore(int score)
+    public void SetScore(string score)
     {
         _score.text = score.ToString();
     }
