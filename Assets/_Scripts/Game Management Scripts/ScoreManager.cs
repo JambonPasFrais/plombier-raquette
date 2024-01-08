@@ -134,8 +134,8 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-		Debug.Log(GetScore());
-	}
+		GetScore();
+    }
 
 	public void AddGame(Teams winnerTeam)
     {
@@ -241,20 +241,43 @@ public class ScoreManager : MonoBehaviour
 
 	public string GetScore()
 	{
-		string score = "";
-
-		for (int i = 0; i < _currentSetIndex + 1; i++)
+		if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
 		{
-			score += $"{_score[i].Item1}/{_score[i].Item2} ";
-		}
+            string score = "";
 
-		if (!_isTieBreak)
-			score += $"{_possiblePoints[_currentGameScore.Item1]} - {_possiblePoints[_currentGameScore.Item2]} ";
-		else
-			score += $"{_currentGameScore.Item1} - {_currentGameScore.Item2}";
+            for (int i = 0; i < _currentSetIndex + 1; i++)
+            {
+                score += $"{_score[i].Item1}/{_score[i].Item2} ";
+            }
 
-		_scoreText.text = score;
+            if (!_isTieBreak)
+                score += $"{_possiblePoints[_currentGameScore.Item1]} - {_possiblePoints[_currentGameScore.Item2]} ";
+            else
+                score += $"{_currentGameScore.Item1} - {_currentGameScore.Item2}";
 
-		return score;
+            _scoreText.text = score;
+
+            return score;
+        }
+		else if (PhotonNetwork.IsConnected)
+		{
+            string score = "";
+
+            for (int i = 0; i < _currentSetIndex + 1; i++)
+            {
+                score += $"{_score[i].Item2}/{_score[i].Item1} ";
+            }
+
+            if (!_isTieBreak)
+                score += $"{_possiblePoints[_currentGameScore.Item2]} - {_possiblePoints[_currentGameScore.Item1]} ";
+            else
+                score += $"{_currentGameScore.Item2} - {_currentGameScore.Item1}";
+
+            _scoreText.text = score;
+
+            return score;
+        }
+
+		return null;
 	}
 }
