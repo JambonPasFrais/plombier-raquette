@@ -26,10 +26,11 @@ public class Ball : MonoBehaviour
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
+    private SphereCollider _sphereCollider;
 
     #endregion
 
-    #region ACCESSORS
+    #region GETTERS
 
     public int ReboundsCount { get { return _reboundsCount; } }
     public ControllersParent LastPlayerToApplyForce { get { return _lastPlayerToApplyForce; } }
@@ -43,6 +44,7 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         _reboundsCount = 0;
+        _sphereCollider = GetComponent<SphereCollider>();
     }
 
     private void Update()
@@ -79,9 +81,9 @@ public class Ball : MonoBehaviour
 
     public void InitializePhysicsMaterial(PhysicMaterial physicMaterial)
     {
-        if (gameObject.GetComponent<SphereCollider>().material != physicMaterial)
+        if (_sphereCollider.material != physicMaterial)
         {
-            gameObject.GetComponent<SphereCollider>().sharedMaterial = physicMaterial;
+            _sphereCollider.sharedMaterial = physicMaterial;
         }
     }
 
@@ -90,7 +92,7 @@ public class Ball : MonoBehaviour
         _shotParameters = shotParameters;
     }
 
-    public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedHorizontalDirection, ControllersParent playerToApplyForce)
+    public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
     {
         _rigidBody.velocity = Vector3.zero;
 
@@ -108,17 +110,17 @@ public class Ball : MonoBehaviour
         float actualHorizontalForce = _shotParameters.ShotForceFactor * force;
 
         Vector3 curvingDirection = Vector3.Project(playerToApplyForce.gameObject.transform.position - transform.position, Vector3.right);
-        Vector3 actualHorizontalDirection;
-        if (playerToApplyForce is PlayerController) 
+        Vector3 actualNormalizedDirection;
+        if (playerToApplyForce is PlayerController && _shotParameters.ForceToDistanceFactor != 0) 
         {
-            actualHorizontalDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedHorizontalDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
+            actualNormalizedDirection = playerToApplyForce.CalculateActualShootingDirection(normalizedDirection, _shotParameters.ForceToDistanceFactor, actualHorizontalForce);
         }
         else
         {
-            actualHorizontalDirection = normalizedHorizontalDirection;
+            actualNormalizedDirection = normalizedDirection;
         }
 
-        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualHorizontalDirection.normalized, curvingDirection));
+        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
     }
@@ -127,7 +129,7 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount = 0;
 
-        Debug.Log($"Direction {actualNormalizedHorizontalDirection} - Force {actualHorizontalForce}");
+        //Debug.Log($"Direction {actualNormalizedHorizontalDirection} - Force {actualHorizontalForce}");
 
         _rigidBody.AddForce(actualNormalizedHorizontalDirection * actualHorizontalForce);
         _rigidBody.AddForce(Vector3.up * _shotParameters.RisingForce * _risingForceFactor);
@@ -175,13 +177,6 @@ public class Ball : MonoBehaviour
     public void Rebound()
     {
         _reboundsCount++;
-
-        /*if (_reboundsCount == 1)
-        {
-            Vector3 horizontalDistanceVector = Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.forward) +
-                Vector3.Project(transform.position - _lastPlayerToApplyForce.transform.position, Vector3.right);
-            //Debug.Log($"Real distance travelled until first rebound : {horizontalDistanceVector.magnitude}");
-        }*/
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
         _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
@@ -251,7 +246,6 @@ public class Ball : MonoBehaviour
 
     public void DestroyTarget()
     {
-
         if (_targetInstance != null)
         {
             Destroy(_targetInstance);

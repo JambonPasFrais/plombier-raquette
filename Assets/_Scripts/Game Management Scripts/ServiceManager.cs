@@ -25,7 +25,7 @@ public class ServiceManager : MonoBehaviour
     #region GETTERS & SETTERS
 
     public bool ServeRight { get { return _serveRight; } }
-	public int GlobalGamesCount { set { _globalGamesCount = value; } }
+	public int GlobalGamesCount { set => _globalGamesCount = value; }
 
     #endregion
 

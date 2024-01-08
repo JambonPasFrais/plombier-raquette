@@ -20,6 +20,8 @@ public class PlayerController : ControllersParent
     
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
+
+    [SerializeField] private float _chargingMoveSpeed;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
@@ -29,6 +31,8 @@ public class PlayerController : ControllersParent
     private Vector2 _movementVector;
     private float _currentSpeed;
     private Ball _ballInstance;
+    private ShootDirectionController _shootDirectionController;
+    private Vector3 _shotDirection;
 
     #endregion
 
@@ -37,6 +41,8 @@ public class PlayerController : ControllersParent
     public List<NamedPhysicMaterials> PossiblePhysicMaterials { get { return _possiblePhysicMaterials; } }
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
 
+    public PlayerCameraController PlayerCameraController => _playerCameraController;
+
     #endregion
 
     #region SETTERS
@@ -44,6 +50,11 @@ public class PlayerController : ControllersParent
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
+    }
+
+    public void SetDirectionController(ShootDirectionController shootDirectionController)
+    {
+        _shootDirectionController = shootDirectionController;
     }
 
     #endregion
@@ -81,9 +92,6 @@ public class PlayerController : ControllersParent
         if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
             && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && _playerCameraController.IsFirstPersonView == false) 
         {
-            //TODO : known issue: there is no ActiveCameraTransform when split screen enabled coz both camera are used. 
-            // We need to add for each player there "sideIndex" and the vectors will be set using a List<Transform>[sideIndex]
-            
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         
@@ -117,6 +125,7 @@ public class PlayerController : ControllersParent
         {
             _hitKeyPressedTime = 0f;
             _isCharging = false;
+            _currentSpeed = _movementSpeed;
             return;
         }
 
@@ -128,6 +137,7 @@ public class PlayerController : ControllersParent
         // Hit charging variables are reset.
         _hitKeyPressedTime = 0f;
         _isCharging = false;
+        _currentSpeed = _movementSpeed;
 
         // Reseting smash and target states.
         _canSmash = false;
@@ -151,17 +161,40 @@ public class PlayerController : ControllersParent
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
             GameManager.Instance.GameState = GameState.PLAYING;
 
+        #region Shoot Direction
+        
         Vector3 horizontalDirection;
 
-        // The hit direction is set according to the mouse position on the screen.
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+        if (_shootDirectionController == ShootDirectionController.MOUSE)
         {
-            horizontalDirection = Vector3.Project(hit.point - transform.position, Vector3.forward) + Vector3.Project(hit.point - transform.position, Vector3.right);
+            // The hit direction is set according to the mouse position on the screen.
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(_shotDirection), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+            {
+                Vector3 position = transform.position;
+                horizontalDirection = Vector3.Project(hit.point - position, Vector3.forward) + Vector3.Project(hit.point - position, Vector3.right);
+            }
+            else
+            {
+                horizontalDirection = Vector3.forward;
+            }
         }
-        else
+        else // player uses a controller
         {
-            horizontalDirection = Vector3.forward;
+            // The _shotDirection will have different values depending on the side and the orientation of the character
+            // The global player directions depend on the side he is on and its forward movement depends on the game phase.
+            Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
+            Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
+
+            Vector3 shotForwardDir = rightVector.normalized * _shotDirection.x + forwardVector.normalized * _shotDirection.y;
+            
+            // EXPLANATION
+            // if player's joystick is in neutral position, we still need a direction and this is Vector3.forward
+            // if player's joystick is not in neutral position, _shotDirection will take values in x and y, HOWEVER the direction of the shot is in x and z in the game.
+            // So we need to adapt it by doing do following "new Vector3(_shotDirection.x, 0, _shotDirection.y)"
+            horizontalDirection = shotForwardDir == Vector3.zero ? Vector3.forward : shotForwardDir;
         }
+        
+        #endregion
 
         // Initialization of the correct ball physic material.
         _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
@@ -175,6 +208,11 @@ public class PlayerController : ControllersParent
         _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
     }
 
+    public void AimShot(InputAction.CallbackContext context)
+    {
+        _shotDirection = context.ReadValue<Vector2>();
+    }
+
     public void Move(InputAction.CallbackContext context)
     {
         _movementVector = context.ReadValue<Vector2>();
@@ -185,6 +223,7 @@ public class PlayerController : ControllersParent
         if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             _isCharging = true;
+            _currentSpeed = _chargingMoveSpeed;
         }
     }
 
@@ -307,8 +346,6 @@ public class PlayerController : ControllersParent
             
             _playerCameraController.ToggleFirstPersonView();
             
-            //GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(false); // TODO: Try to simplify it
-            
             GameManager.Instance.CameraManager.ToggleGameCamerasForSmash();
             
             _ballInstance.gameObject.transform.rotation = Quaternion.identity;
@@ -332,13 +369,10 @@ public class PlayerController : ControllersParent
             _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
 
             Vector3 playerCameraTransformForward = _playerCameraController.FirstPersonCamera.transform.forward;
-            Vector3 horizontalDirection = Vector3.Project(playerCameraTransformForward, Vector3.forward) + Vector3.Project(playerCameraTransformForward, Vector3.right);
             
-            _ballInstance.ApplyForce(_maximumShotForce, 0f, horizontalDirection.normalized, this);
+            _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
-            //GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(true); // TODO: Try to simplify it
-
         }
     }
 

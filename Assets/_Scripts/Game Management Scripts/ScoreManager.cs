@@ -26,8 +26,8 @@ public class ScoreManager : MonoBehaviour
 	};
 	private int _currentSetIndex = 0;
 	private Tuple<int, int> _nbOfSets = new Tuple<int, int>(0, 0);
-	[SerializeField] private int _nbOfSetsToWin = 3;
-	[SerializeField] private int _nbOfGamesToWin = 6;
+	[SerializeField] private int _nbOfSetsToWin;
+	[SerializeField] private int _nbOfGamesToWin;
 	[SerializeField] private bool _isTieBreak = false;
 	[SerializeField] private TextMeshProUGUI _scoreText;
 
@@ -36,6 +36,13 @@ public class ScoreManager : MonoBehaviour
 	private void Start()
 	{
 		_score.Add(new Tuple<int, int>(0, 0));
+	}
+
+	public void InitGameLoop(int nbSetToWin, int nbGamesToWin, bool isTieBreak)
+	{
+		_nbOfSetsToWin = nbSetToWin;
+		_nbOfGamesToWin = nbGamesToWin;
+		_isTieBreak = isTieBreak;
 	}
 
 	public void AddPoint(Teams winnerTeam)

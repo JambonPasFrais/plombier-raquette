@@ -33,3 +33,9 @@ public enum CharacterCategory
 	MEDIUM,
 	BIG
 }
+
+public enum ShootDirectionController
+{
+	MOUSE,
+	STICK
+}
