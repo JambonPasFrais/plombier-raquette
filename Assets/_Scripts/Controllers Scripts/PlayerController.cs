@@ -119,10 +119,10 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
-        
+
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
-        if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
+        if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic
             || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
             _hitKeyPressedTime = 0f;
@@ -160,11 +160,11 @@ public class PlayerController : ControllersParent
         }
 
         // The game enters in playing phase when the ball is hit by the other player after the service.
-        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
             GameManager.Instance.GameState = GameState.PLAYING;
 
         #region Shoot Direction
-        
+
         Vector3 horizontalDirection;
 
         if (_shootDirectionController == ShootDirectionController.MOUSE)
@@ -188,19 +188,19 @@ public class PlayerController : ControllersParent
             Vector3 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
 
             Vector3 shotForwardDir = rightVector.normalized * _shotDirection.x + forwardVector.normalized * _shotDirection.y;
-            
+
             // EXPLANATION
             // if player's joystick is in neutral position, we still need a direction and this is Vector3.forward
             // if player's joystick is not in neutral position, _shotDirection will take values in x and y, HOWEVER the direction of the shot is in x and z in the game.
             // So we need to adapt it by doing do following "new Vector3(_shotDirection.x, 0, _shotDirection.y)"
             horizontalDirection = shotForwardDir == Vector3.zero ? Vector3.forward : shotForwardDir;
         }
-        
+
         #endregion
 
         if (PhotonNetwork.IsConnected)
         {
-            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
+            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
         }
         else
         {
@@ -208,22 +208,23 @@ public class PlayerController : ControllersParent
             _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Drop") :
                 NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Normal"));
 
-        if (PhotonNetwork.IsConnected)
-        {
-            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
-        }
-        else
-        {
-            // Initialization of the correct ball physic material.
-            _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Drop") :
-                NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Normal"));
-                
-            // Initialization of the other ball physic parameters
-            _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+            if (PhotonNetwork.IsConnected)
+            {
+                GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
+            }
+            else
+            {
+                // Initialization of the correct ball physic material.
+                _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Drop") :
+                    NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Normal"));
 
-            //Applying a specific force in a specific direction and with a specific rising force factor.
-            // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-            _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+                // Initialization of the other ball physic parameters
+                _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+
+                //Applying a specific force in a specific direction and with a specific rising force factor.
+                // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
+                _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, this);
+            }
         }
     }
 

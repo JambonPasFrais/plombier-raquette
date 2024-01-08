@@ -58,9 +58,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region GETTERS
 
-    public GameObject BallInstance {  get { return _ballInstance; } }
-    public GameObject Net {  get { return _net; } }
-    public List<ControllersParent> Controllers {  get { return _controllers; } }
+    public GameObject BallInstance { get { return _ballInstance; } }
+    public GameObject Net { get { return _net; } }
+    public List<ControllersParent> Controllers { get { return _controllers; } }
     public int ServerIndex { get { return _serverIndex; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
@@ -68,14 +68,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject SmashTargetGo => _smashTargetGo;
 
     #endregion
-    
+
     #region SETTERS
 
     public void AddControllers(ControllersParent controller)
     {
         _controllers.Add(controller);
     }
-    
+
     #endregion
 
     #region UNITY METHODS
@@ -86,17 +86,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Instance = this;
         }
-        
+
         if (PhotonNetwork.IsConnected)
         {
             InstantiatePlayer();
-            
+
             if (PhotonNetwork.IsMasterClient == false)
             {
                 photonView.RPC("AskFindController", RpcTarget.MasterClient);
             }
         }
-        
+
         _ballInstance = Instantiate(BallPrefab);
     }
 
@@ -109,29 +109,30 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             ServiceOnOriginalSide = true;
 
-        _serverIndex = 0;
-        _controllers[_serverIndex].IsServing = true;
+            _serverIndex = 0;
+            _controllers[_serverIndex].IsServing = true;
 
-        // Double
-        if (_controllers.Count > 2 )
-        {
-            CameraManager.InitSplitScreenCameras();
-        }else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count) // Simple with 2 locals
-        {
-            CameraManager.InitSplitScreenCameras();
-        }
-        else // Simple vs bot
-        {
-            CameraManager.InitSoloCamera();
-        }
-        
-        SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
-        
-        ServiceManager.SetServiceBoxCollider(false);
-        
-        ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, false); //TODO : can't play just a tiebreak ?
-        
-        _ballInstance.GetComponent<Ball>().ResetBall();
+            // Double
+            if (_controllers.Count > 2)
+            {
+                CameraManager.InitSplitScreenCameras();
+            }
+            else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count) // Simple with 2 locals
+            {
+                CameraManager.InitSplitScreenCameras();
+            }
+            else // Simple vs bot
+            {
+                CameraManager.InitSoloCamera();
+            }
+
+            SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
+
+            ServiceManager.SetServiceBoxCollider(false);
+
+            ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, false); //TODO : can't play just a tiebreak ?
+
+            _ballInstance.GetComponent<Ball>().ResetBall();
 
             _serverIndex = 0;
             _controllers[_serverIndex].IsServing = true;
@@ -140,18 +141,19 @@ public class GameManager : MonoBehaviourPunCallbacks
             _ballInstance.GetComponent<Ball>().ResetBall();
             _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
 
-        int i = 0;
-        foreach (ControllersParent controller in _controllers)
-        {
-            Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
-            _teamControllersAssociated.Add(controller, team);
-            i++;
+            int i = 0;
 
-            if (i > 1)
-            {
-                i %= 2;
-            }
-        }
+            //foreach (ControllersParent controller in _controllers)
+            //{
+                Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
+                _teamControllersAssociated.Add(controller, team);
+                i++;
+
+                if (i > 1)
+                {
+                    i %= 2;
+                }
+            //}
 
             _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
 
@@ -167,7 +169,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
         };
     }
-    
+
     private void Update()
     {
         if (PhotonNetwork.IsConnected && GameState == GameState.BEFOREGAME && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount)
@@ -203,7 +205,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
     }
-    
+
     #endregion
 
     /*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
@@ -254,7 +256,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void ChangeFaultLinesXByTeamValues()
     {
-        for(int i = 0; i < _faultLinesXByTeam.Count; i++)
+        for (int i = 0; i < _faultLinesXByTeam.Count; i++)
         {
             Teams team = _faultLinesXByTeam.Keys.ToList()[i];
             float[] formerFaultLinesX = _faultLinesXByTeam[team];
@@ -326,118 +328,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
         _ballInstance.transform.position = _serviceBallInitializationPoint.position;
     }
-    
-    public void DesactivateAllServiceDetectionVolumes()
+
+    public void DeactivateAllServiceDetectionVolumes()
     {
         foreach (ControllersParent controller in _controllers)
         {
             controller.BallServiceDetectionArea.gameObject.SetActive(false);
         }
     }
-    
-    private void InstantiatePlayer()
-    {
-        GameObject go = PhotonNetwork.Instantiate(this._playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
-        _controllers.Add(go.GetComponent<PlayerController>());
-    }
-    
-    private void FindController()
-    {
-        ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
-        foreach (ControllersParent controller in controllers)
-        {
-            if (!_controllers.Contains(controller))
-            {
-                _controllers.Add(controller);
-            }
-        }
-        if (PhotonNetwork.IsMasterClient && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount && GameState == GameState.BEFOREGAME)
-        {
-            photonView.RPC("AskFindController", RpcTarget.Others);
-        }
-        if (PhotonNetwork.IsMasterClient == false)
-        {
-            _ballInstance = FindObjectOfType<Ball>().gameObject;
-            _controllers.Reverse();
-            photonView.RPC("StartGame", RpcTarget.All);
-        }
-    }
-  
-    private void StartOnlineGame()
-    {
-        ServiceOnOriginalSide = true;
-
-        GameState = GameState.SERVICE;
-        foreach (ControllersParent controller in _controllers)
-        {
-            controller.PlayerState = PlayerStates.IDLE;
-        }
-
-        _serverIndex = 0;
-        _controllers[_serverIndex].IsServing = true;
-        BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
-        GameManager.Instance.SideManager.SetSideOnline(true, ServiceOnOriginalSide);
-        //GameManager.Instance.ServiceManager.SetServiceOnline(false);
-        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-        _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
-        _ballInstance.GetComponent<Ball>().ResetBall();
-        int i = 0;
-        foreach (ControllersParent controller in _controllers)
-        {
-            Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
-            _teamControllersAssociated.Add(controller, team);
-            i++;
-        }
-
-        _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
-
-        foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
-        {
-            _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
-        }
-    }
-    
-    [PunRPC]
-    private void AskFindController()
-    {
-        FindController();
-    }
-    
-    [PunRPC]
-    private void StartGame()
-    {
-        StartOnlineGame();
-    }
-     
-    [PunRPC]
-    private void Served()
-    {
-        BallInstance.GetComponent<Rigidbody>().isKinematic = false;
-        BallInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-    }
-    
-    [PunRPC]
-    private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, int controllerIndex)
-    {
-        BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
-        BallInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
-            NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
-        BallInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, Controllers[controllerIndex]);
-    }
-    
-    [PunRPC]
-    private void EndPoint(bool fault)
-    {
-        Teams team = BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam;
-        if (fault)
-        {
-            BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.ServicesCount = 0;
-           team = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-        }
-        GameManager.Instance.EndOfPoint();
-        GameManager.Instance.ScoreManager.AddPoint(team);
-        BallInstance.GetComponent<Ball>().ResetBall();
-    }
 
     private void InstantiatePlayer()
     {
@@ -466,7 +364,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             photonView.RPC("StartGame", RpcTarget.All);
         }
     }
-  
+
     private void StartOnlineGame()
     {
         ServiceOnOriginalSide = true;
@@ -479,7 +377,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
-        BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
+        _serviceBallInitializationPoint = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
         GameManager.Instance.SideManager.SetSideOnline(true, ServiceOnOriginalSide);
         //GameManager.Instance.ServiceManager.SetServiceOnline(false);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
@@ -500,23 +398,26 @@ public class GameManager : MonoBehaviourPunCallbacks
             _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
         }
     }
-  
+
     [PunRPC]
     private void AskFindController()
     {
         FindController();
     }
+
     [PunRPC]
     private void StartGame()
     {
         StartOnlineGame();
     }
+
     [PunRPC]
     private void Served()
     {
         BallInstance.GetComponent<Rigidbody>().isKinematic = false;
         BallInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
     }
+
     [PunRPC]
     private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, int controllerIndex)
     {
@@ -525,6 +426,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
         BallInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, Controllers[controllerIndex]);
     }
+
     [PunRPC]
     private void EndPoint(bool fault)
     {
@@ -532,10 +434,110 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (fault)
         {
             BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.ServicesCount = 0;
-           team = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+            team = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
         }
         GameManager.Instance.EndOfPoint();
         GameManager.Instance.ScoreManager.AddPoint(team);
         BallInstance.GetComponent<Ball>().ResetBall();
     }
+
+    //private void InstantiatePlayer()
+    //{
+    //    GameObject go = PhotonNetwork.Instantiate(this._playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+    //    _controllers.Add(go.GetComponent<PlayerController>());
+    //}
+
+    //private void FindController()
+    //{
+    //    ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
+    //    foreach (ControllersParent controller in controllers)
+    //    {
+    //        if (!_controllers.Contains(controller))
+    //        {
+    //            _controllers.Add(controller);
+    //        }
+    //    }
+    //    if (PhotonNetwork.IsMasterClient && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount && GameState == GameState.BEFOREGAME)
+    //    {
+    //        photonView.RPC("AskFindController", RpcTarget.Others);
+    //    }
+    //    if (PhotonNetwork.IsMasterClient == false)
+    //    {
+    //        _ballInstance = FindObjectOfType<Ball>().gameObject;
+    //        _controllers.Reverse();
+    //        photonView.RPC("StartGame", RpcTarget.All);
+    //    }
+    //}
+
+    //private void StartOnlineGame()
+    //{
+    //    ServiceOnOriginalSide = true;
+
+    //    GameState = GameState.SERVICE;
+    //    foreach (ControllersParent controller in _controllers)
+    //    {
+    //        controller.PlayerState = PlayerStates.IDLE;
+    //    }
+
+    //    _serverIndex = 0;
+    //    _controllers[_serverIndex].IsServing = true;
+    //    BallInstantiationtransform = _controllers[_serverIndex].GetComponentInChildren<BallInitialisationPoint>().gameObject.transform;
+    //    GameManager.Instance.SideManager.SetSideOnline(true, ServiceOnOriginalSide);
+    //    //GameManager.Instance.ServiceManager.SetServiceOnline(false);
+    //    GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+    //    _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
+    //    _ballInstance.GetComponent<Ball>().ResetBall();
+    //    int i = 0;
+    //    foreach (ControllersParent controller in _controllers)
+    //    {
+    //        Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
+    //        _teamControllersAssociated.Add(controller, team);
+    //        i++;
+    //    }
+
+    //    _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
+
+    //    foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
+    //    {
+    //        _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
+    //    }
+    //}
+
+    //[PunRPC]
+    //private void AskFindController()
+    //{
+    //    FindController();
+    //}
+    //[PunRPC]
+    //private void StartGame()
+    //{
+    //    StartOnlineGame();
+    //}
+    //[PunRPC]
+    //private void Served()
+    //{
+    //    BallInstance.GetComponent<Rigidbody>().isKinematic = false;
+    //    BallInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+    //}
+    //[PunRPC]
+    //private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, int controllerIndex)
+    //{
+    //    BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
+    //    BallInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
+    //        NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
+    //    BallInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, Controllers[controllerIndex]);
+    //}
+    //[PunRPC]
+    //private void EndPoint(bool fault)
+    //{
+    //    Teams team = BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam;
+    //    if (fault)
+    //    {
+    //        BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.ServicesCount = 0;
+    //       team = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+    //    }
+    //    GameManager.Instance.EndOfPoint();
+    //    GameManager.Instance.ScoreManager.AddPoint(team);
+    //    BallInstance.GetComponent<Ball>().ResetBall();
+    //}
 }

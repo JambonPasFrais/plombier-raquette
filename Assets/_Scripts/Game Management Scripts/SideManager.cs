@@ -13,18 +13,18 @@ public class SideManager : MonoBehaviour
 	[SerializeField] private Transform _serviceNodesSecondSideContainer;
 	[SerializeField] private GameObject _firstSideCollidersParentObject;
 	[SerializeField] private GameObject _secondSideCollidersParentObject;
-	//SerializeField] private Transform _cameraParent;
-	//[SerializeField] private List<GameObject> _cameras;
+	[SerializeField] private Transform _cameraParent;
+	[SerializeField] private List<GameObject> _cameras;
 
 	private Dictionary<string, List<Transform>> _servicePointsFirstSide = new Dictionary<string, List<Transform>>();
 	private Dictionary<string, List<Transform>> _servicePointsSecondSide = new Dictionary<string, List<Transform>>();
-	//private Transform _activeCameraTransform;
+	private Transform _activeCameraTransform;
 
     #endregion
 
     #region GETTERS
 
-	//public Transform ActiveCameraTransform { get { return GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(); } }
+	public Transform ActiveCameraTransform { get { return GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(GameManager.Instance.ServiceOnOriginalSide); } }
 
     #endregion
 
@@ -70,7 +70,7 @@ public class SideManager : MonoBehaviour
 	/// <param name="players"></param>
 	/// <param name="serveRight"></param>
 	/// <param name="originalSides"></param>
-	private void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
+	public void SetSidesInSimpleMatch(List<ControllersParent> players, bool serveRight, bool originalSides)
 	{
         string side = "";
 
@@ -235,16 +235,16 @@ public class SideManager : MonoBehaviour
                 _activeCameraTransform = _cameras[0].transform;
                 _cameras[0].SetActive(true);
                 _cameras[1].SetActive(false);
-                players[0].transform.position = _servicePointsFirstSide[side].position;
-                players[0].transform.rotation = _servicePointsFirstSide[side].rotation;
+                players[0].transform.position = _servicePointsFirstSide[side][0].position;
+                players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
             }
             else if(PhotonNetwork.IsMasterClient == false)
             {
                 _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
                 _cameras[1].SetActive(true);
-                players[1].transform.position = _servicePointsSecondSide[side].position;
-                players[1].transform.rotation = _servicePointsSecondSide[side].rotation;
+                players[1].transform.position = _servicePointsSecondSide[side][1].position;
+                players[1].transform.rotation = _servicePointsSecondSide[side][1].rotation;
             }
         }
         else
@@ -255,16 +255,16 @@ public class SideManager : MonoBehaviour
                 _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
                 _cameras[1].SetActive(true);
-                players[0].transform.position = _servicePointsSecondSide[side].position;
-                players[0].transform.rotation = _servicePointsSecondSide[side].rotation;
+                players[0].transform.position = _servicePointsSecondSide[side][1].position;
+                players[0].transform.rotation = _servicePointsSecondSide[side][1].rotation;
             }
             else if(PhotonNetwork.IsMasterClient == false)
             {
                 _activeCameraTransform = _cameras[0].transform;
                 _cameras[0].SetActive(true);
                 _cameras[1].SetActive(false);
-                players[1].transform.position = _servicePointsFirstSide[side].position;
-                players[1].transform.rotation = _servicePointsFirstSide[side].rotation;
+                players[1].transform.position = _servicePointsFirstSide[side][0].position;
+                players[1].transform.rotation = _servicePointsFirstSide[side][0].rotation;
             }
         }
 

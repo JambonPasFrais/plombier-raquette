@@ -75,7 +75,7 @@ public class BotBehavior : ControllersParent
         {
             if (PlayerState == PlayerStates.SERVE)
             {
-                GameManager.Instance.DeactivateAllServiceDetectionVolumes();
+               // GameManager.Instance.DeactivateAllServiceDetectionVolumes();
                 GameManager.Instance.ServiceManager.DisableLockServiceColliders();
             }
 
@@ -87,7 +87,7 @@ public class BotBehavior : ControllersParent
 
         _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
         _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
-        _ballInstance.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), _ballDetectionArea.GetRisingForceFactor(), direction.normalized, this);
+        //_ballInstance.ApplyForce(Random.Range(_minimumHitForce, _maximumHitForce), _ballDetectionArea.GetRisingForceFactor(), direction.normalized, this);
     }
 
     private void MoveTowardsBallX()
