@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class CharacterUI : MonoBehaviour
 {
+    #region PRIVATE FIELDS
+
     [SerializeField] private Image _charactersFace;
     [SerializeField] private Image _backgroundColor;
     [SerializeField] private GameObject _isSelectedImage;
@@ -14,17 +16,25 @@ public class CharacterUI : MonoBehaviour
     private CharacterData _character;
     private bool _isSelected;
 
-    public bool IsSelected => _isSelected;
+    #endregion
 
+    #region GETTERS
+
+    public bool IsSelected => _isSelected;
     public CharacterData Character => _character;
+
+    #endregion
+
     public void setCharacterSelectionMenu(CharacterSelectionMenu characterSelectionMenu)
     {
         _characterSelectionMenu = characterSelectionMenu;
-    }    
+    }   
+    
     public void setCharacterSelectionSoloMenu(CharacterSelectionSoloMenu characterSelectionSoloMenu)
     {
         _characterSelectionSoloMenu = characterSelectionSoloMenu;
     }
+
     public void SetVisual(CharacterData character)
     {
         _character = character;

@@ -30,8 +30,8 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		_charactersModel = MenuManager.CharactersModel;
 		_availableCharacters = new List<CharacterData>(_characters);
 
-		VerifyCharacters();
-		GameObject go;
+        _playButton.interactable = false;
+        GameObject go;
 
 		foreach (var item in _characters)
 		{
@@ -74,7 +74,6 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 				if (characterUI == _selectableCharacters.Last())
 					_charactersModel.TryGetValue(characterUI.Character.Name + "0", out go);
-
 				else
 					_charactersModel.TryGetValue(characterUI.Character.Name, out go);
 
@@ -85,16 +84,16 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				go.SetActive(true);
 				_selectedCharacterUIs = characterUI;
 				_playerCharacter = characterUI.Character;
-				VerifyCharacters();
 			}
-		}
+
+            VerifyCharacters();
+        }
 	}
 
 	private void VerifyCharacters()
 	{
 		if (_playerCharacter)
 			_playButton.interactable = true;
-
 		else
 			_playButton.interactable = false;
 	}

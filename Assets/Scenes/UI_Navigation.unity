@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3375,7 +3375,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b838a0b046da7448c19fc3279589b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tournamentName: 
+  _numberOfPlayers: 0
+  _tournamentInfos: {fileID: 0}
 --- !u!4 &2031256156
 Transform:
   m_ObjectHideFlags: 0
@@ -6354,7 +6355,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a670560a0381a84bb58f4a0a82f82ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visitedMenus: []
+  _characters: []
+  _charactersModelsParent: {fileID: 0}
+  _eventSystem: {fileID: 0}
 --- !u!1 &1016660536940872733
 GameObject:
   m_ObjectHideFlags: 0
@@ -7173,9 +7176,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e93701e4a6bcb464e8f9fef2d052c81e, type: 2}
   - {fileID: 11400000, guid: 5a143107a4855774195bdbd31eeb15f0, type: 2}
   _charactersListTransform: {fileID: 8111026571399842528}
-  _selectedCharactersNameSimple:
-  - {fileID: 2121232750}
-  - {fileID: 301166216}
+  _selectedCharactersNameSingle: []
   _selectedCharactersNameDouble:
   - {fileID: 3883471568751593894}
   - {fileID: 2568910924281354623}
@@ -7189,9 +7190,7 @@ MonoBehaviour:
   - {fileID: 1503631639331680017}
   - {fileID: 2367422267363219363}
   - {fileID: 7493936033485593904}
-  _selectedCharacterBackgroundSimple:
-  - {fileID: 1139014736}
-  - {fileID: 1621820545}
+  _selectedCharacterBackgroundSingle: []
   _selectedCharacterBackgroundDouble:
   - {fileID: 453923376743966228}
   - {fileID: 32950345903190096}
@@ -7202,8 +7201,10 @@ MonoBehaviour:
     m_Bits: 128
   _charactersModelsParent: {fileID: 5743142112829123866}
   _playButton: {fileID: 674785785611108684}
-  _playersShowRoomSimple: {fileID: 434912103}
+  _playersShowRoomSingle: {fileID: 0}
   _playersShowRoomDouble: {fileID: 684062047897570510}
+  _playersInfoSingle: []
+  _playersInfoDouble: []
 --- !u!224 &1387296846367193007
 RectTransform:
   m_ObjectHideFlags: 0

@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 public class OnlineManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Button _connectButton;
-    [SerializeField] private Button _playButton;
     [SerializeField] private Button _startButton;
     [SerializeField] private GameObject MainMenu;
     [SerializeField] private GameObject CharacterSelection;
@@ -53,18 +52,17 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.AutomaticallySyncScene = true;
     }
+
     private void Start()
     {
         foreach (CharacterData cd in CharDataList)
         {
             CharDataDic.Add(cd.Name, cd);
         }
+
         _startButton.interactable = false;
     }
-    private void Update()
-    {
-        _playButton.interactable = _Connected;
-    }
+
     IEnumerator Connect()
     {
         _isConnecting = true;
@@ -73,7 +71,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-
             yield return null;
         }
         else
@@ -81,9 +78,9 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LocalPlayer.NickName = "Player " + UnityEngine.Random.Range(0, 21);
             PhotonNetwork.ConnectUsingSettings();
         }
+
         yield return null;
     }
-
 
     public override void OnConnectedToMaster()
     {
@@ -92,6 +89,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             _Connected = true;
             _isConnecting = false;
         }
+
+        ChangeActivePanel(CharacterSelection.name);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -102,7 +101,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-
         _isConnecting = false;
         _connectButton.interactable = true;
     }
@@ -110,6 +108,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         ChangeActivePanel(RoomPanel.name);
+
         if (!PhotonNetwork.IsMasterClient)
         {
             GetOtherPlayersInRoomInformation();
@@ -126,38 +125,45 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
             _startButton.gameObject.SetActive(false);
         }
-
     }
+
     public void OnStartButtonClicked()
     {
         PhotonNetwork.LoadLevel("OnlineScene");
     }
+
     public void ReadyButtonClicked()
     {
         photonView.RPC("PlayerClickedOnReadyButton", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer, _localPlayerCard.IsReady);
     }
+
     public void OnOnlineButtonClicked()
     {
         StartCoroutine(Connect());
-        ChangeActivePanel(CharacterSelection.name);
     }
+
     public void OnPlayButtonClicked()
     {
         PhotonNetwork.JoinRandomRoom();
     }
+
     public void OnBackButtonClicked()
     {
         PhotonNetwork.Disconnect();
     }
+
     public void OnLeaveButtonClicked()
     {
         PhotonNetwork.LeaveRoom();
+
         for (int i = 0; i < PlayersContainer.transform.childCount; i++)
         {
             Destroy(PlayersContainer.transform.GetChild(i).gameObject);
         }
+
         ChangeActivePanel(CharacterSelection.name);
     }
+
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         for (int i = 0; i < PlayersContainer.transform.childCount; i++)
@@ -178,6 +184,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         CharacterSelection.SetActive(menuName.Equals(CharacterSelection.name));
         RoomPanel.SetActive(menuName.Equals(RoomPanel.name));
     }
+
     private void GetOtherPlayersInRoomInformation()
     {
         photonView.RPC("InstantiateOtherPlayerCard", RpcTarget.Others, GameParameters.Instance.GetCharactersPlayers().Name, PhotonNetwork.LocalPlayer.NickName);
