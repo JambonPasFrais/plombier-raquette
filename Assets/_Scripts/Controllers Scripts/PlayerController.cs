@@ -346,8 +346,6 @@ public class PlayerController : ControllersParent
             
             _playerCameraController.ToggleFirstPersonView();
             
-            //GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(false); // TODO: Try to simplify it
-            
             GameManager.Instance.CameraManager.ToggleGameCamerasForSmash();
             
             _ballInstance.gameObject.transform.rotation = Quaternion.identity;
@@ -375,8 +373,6 @@ public class PlayerController : ControllersParent
             _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
-            //GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).gameObject.SetActive(true); // TODO: Try to simplify it
-
         }
     }
 

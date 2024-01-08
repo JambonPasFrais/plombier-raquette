@@ -84,10 +84,7 @@ public class PlayerCameraController : MonoBehaviour
         _firstPersonCamera.transform.forward = cameraLookingDirection;
         
         _isFirstPersonView = !_isFirstPersonView;
-        
-        // TODO : fix it for 2v2
-        //GameManager.Instance.SideManager.ActiveCameraTransform.gameObject.SetActive(!_isFirstPersonView);
-        
+
         _firstPersonCamera.SetActive(_isFirstPersonView);
         _smashTargetGo.SetActive(_isFirstPersonView);
         

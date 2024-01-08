@@ -60,7 +60,7 @@ public class ControllerManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        CreateControllersDict();//TODO : comment when finish testing
+        //CreateControllersDict();//TODO : comment when finish testing
     }
     #endregion
 
@@ -132,10 +132,12 @@ public class ControllerManager : MonoBehaviour
 
     public void ChangeCtrlersActMapToGame()
     {
-        foreach (var playerInputHandler in Controllers.Values)
+        foreach (var playerInputHandler in _controllers.Values)
         {
             playerInputHandler.ChangeInputActionMap(_gameActionMapName);
+            Destroy(playerInputHandler.gameObject);
         }
+        _controllers.Clear();
     }
 
     // TODO : use this function at the end of a game OR destroy the controllers (also works)
@@ -144,7 +146,7 @@ public class ControllerManager : MonoBehaviour
         foreach (var playerInputHandler in Controllers.Values)
         {
             playerInputHandler.ChangeInputActionMap(_menuActionMapName);
-        }   
+        }
     }
     
     #endregion
@@ -230,7 +232,7 @@ public class ControllerManager : MonoBehaviour
     
     #region LocalMultiplayer implementation test simplification
     //TODO : comment when local multiplayer implementation is finished
-
+    /*
     public List<PlayerInputHandler> _playerInputHandlers;
 
     public void CreateControllersDict()
@@ -243,7 +245,7 @@ public class ControllerManager : MonoBehaviour
                 continue;
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
         }
-    }
+    }*/
         
     
     #endregion

@@ -11,8 +11,7 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
 
     [SerializeField] private CharacterCreator _characterCreator;
-
-    [SerializeField] private Transform[] _playerOriginalPositions;
+    
     // Singleton
     private static GameManagerLocalMultiplayer _instance;
 

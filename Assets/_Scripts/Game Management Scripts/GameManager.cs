@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
@@ -248,6 +249,9 @@ public class GameManager : MonoBehaviour
 
     public void EndOfGame()
     {
+        //TODO : uncomment when finished
+        //SceneManager.LoadScene("MainScene");
+        //ControllerManager.Instance.ChangeCtrlersActMapToGame();
         Debug.Log("End of game !");
     }
 
