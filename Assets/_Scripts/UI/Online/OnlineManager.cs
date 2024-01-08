@@ -116,6 +116,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 			_playCharacterSelectionButton.interactable = true;
 			_isConnecting = false;
         }
+
+        ChangeActivePanel(CharacterSelection.name);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)

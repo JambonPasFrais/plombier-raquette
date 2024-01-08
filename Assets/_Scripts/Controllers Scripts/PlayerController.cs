@@ -198,9 +198,15 @@ public class PlayerController : ControllersParent
         
         #endregion
 
-        // Initialization of the correct ball physic material.
-        _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
-            NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
+        if (PhotonNetwork.IsConnected)
+        {
+            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
+        }
+        else
+        {
+            // Initialization of the correct ball physic material.
+            _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Drop") :
+                NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Normal"));
 
         if (PhotonNetwork.IsConnected)
         {
