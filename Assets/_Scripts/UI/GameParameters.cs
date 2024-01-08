@@ -68,7 +68,7 @@ public class GameParameters : MonoBehaviour
 
     public void SetCharactersPlayers(List<CharacterData> playersCharacters)
     {
-        _playersCharacters = playersCharacters;
+        _playersCharacters = new List<CharacterData>(playersCharacters);
     }
 
     public CharacterData GetCharactersPlayers()

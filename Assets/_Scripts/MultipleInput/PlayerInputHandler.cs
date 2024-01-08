@@ -24,12 +24,6 @@ public class PlayerInputHandler : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
     }
 
-    private void Start()
-    {
-        Character.PlayerController.SetDirectionController(_playerInput.devices[0] is Keyboard ? 
-                ShootDirectionController.MOUSE : ShootDirectionController.STICK);
-    }
-
     #endregion
 
 	#region UI ACTION MAP LISTENERS
@@ -175,6 +169,12 @@ public class PlayerInputHandler : MonoBehaviour
 	public void ChangeInputActionMap(string inputActionMapName)
 	{
 		_playerInput.SwitchCurrentActionMap(inputActionMapName);
+	}
+
+	public void InitDirectionController()
+	{
+		Character.PlayerController.SetDirectionController(_playerInput.devices[0] is Keyboard ? 
+			ShootDirectionController.MOUSE : ShootDirectionController.STICK);
 	}
 
 	#endregion

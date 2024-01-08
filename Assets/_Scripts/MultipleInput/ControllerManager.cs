@@ -140,9 +140,7 @@ public class ControllerManager : MonoBehaviour
         foreach (var playerInputHandler in _controllers.Values)
         {
             playerInputHandler.ChangeInputActionMap(_gameActionMapName);
-            Destroy(playerInputHandler.gameObject);
         }
-        _controllers.Clear();
     }
 
     // TODO : use this function at the end of a game OR destroy the controllers (also works)
@@ -151,7 +149,9 @@ public class ControllerManager : MonoBehaviour
         foreach (var playerInputHandler in Controllers.Values)
         {
             playerInputHandler.ChangeInputActionMap(_menuActionMapName);
+            Destroy(playerInputHandler.gameObject);
         }
+        _controllers.Clear();
     }
     
     #endregion

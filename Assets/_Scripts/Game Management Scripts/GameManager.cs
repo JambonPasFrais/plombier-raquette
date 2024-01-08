@@ -250,9 +250,9 @@ public class GameManager : MonoBehaviour
     public void EndOfGame()
     {
         //TODO : uncomment when finished
-        //SceneManager.LoadScene("MainScene");
-        //ControllerManager.Instance.ChangeCtrlersActMapToGame();
-        Debug.Log("End of game !");
+        ControllerManager.Instance.ChangeCtrlersActMapToMenu();
+        SceneManager.LoadScene("Clean_UI_Final");
+        //Debug.Log("End of game !");
     }
 
     public void ChangeServer()

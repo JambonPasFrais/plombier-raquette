@@ -61,6 +61,9 @@ public class CharacterCreator : MonoBehaviour
 
                     playerInputHandler.Character.PlayerController.PlayerTeam =
                         playerInTeamOne ? Teams.TEAM1 : Teams.TEAM2;
+                    
+                    playerInputHandler.InitDirectionController();
+                    
                     playerInTeamOne = !playerInTeamOne;
 
                     nbCharInstantiated++;

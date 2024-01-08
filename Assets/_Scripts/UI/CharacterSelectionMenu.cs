@@ -152,11 +152,11 @@ public class CharacterSelectionMenu : MonoBehaviour
 		
 		_aceItWindow.SetActive(false);
 
-		Debug.Log("Let's Ace It !");
+		//Debug.Log("Let's Ace It !");
 
-		//ControllerManager.Instance.ChangeCtrlersActMapToGame();
+		ControllerManager.Instance.ChangeCtrlersActMapToGame();
 		
-		//SceneManager.LoadScene("Local_Multiplayer");
+		SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
 	// Display right number of showrooms whether it is a single or double match
