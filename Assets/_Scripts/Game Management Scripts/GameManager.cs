@@ -414,6 +414,8 @@ public class GameManager : MonoBehaviour
     private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, int controllerIndex)
     {
         BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
+        BallInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
+            NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
         BallInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, Controllers[controllerIndex]);
     }
     

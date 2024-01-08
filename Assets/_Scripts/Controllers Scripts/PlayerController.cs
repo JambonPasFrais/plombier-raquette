@@ -34,11 +34,7 @@ public class PlayerController : ControllersParent
     private Ball _ballInstance;
     private ShootDirectionController _shootDirectionController;
     private Vector3 _shotDirection;
-
-    public List<NamedActions> PossibleActions { get => _possibleActions; }
-
-
-
+    
     #endregion
 
     #region GETTERS
@@ -206,13 +202,23 @@ public class PlayerController : ControllersParent
         _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
             NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
-        // Initialization of the other ball physic parameters.
-        GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
-        //_ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+        if (PhotonNetwork.IsConnected)
+        {
+            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(), hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
+        }
+        else
+        {
+            // Initialization of the correct ball physic material.
+            _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Drop") :
+                NamedPhysicMaterials.GetPhysicMaterialByName(PossiblePhysicMaterials, "Normal"));
+                
+            // Initialization of the other ball physic parameters
+            _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
-        // Applying a specific force in a specific direction and with a specific rising force factor.
-        // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-        _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
+            //Applying a specific force in a specific direction and with a specific rising force factor.
+            // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
+            _ballDetectionArea.Ball.ApplyForce(hitForce, hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(), horizontalDirection.normalized, this);
+        }
     }
 
     public void AimShot(InputAction.CallbackContext context)
