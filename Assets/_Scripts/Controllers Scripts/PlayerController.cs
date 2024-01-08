@@ -106,13 +106,32 @@ public class PlayerController : ControllersParent
             // The player moves according to the movement inputs.
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
             
+            //_rigidBody.MovePosition();
+            
             #region Animations
 
             if (!_isShooting && !_isSmashing)
             {
                 if (movementDirection.normalized != Vector3.zero)
                 {
-                    _playerAnimator.RunAnimation();
+                    // Type of walks
+                    if (movementDirection.normalized.x >= 0.5) //left
+                        if (IsInOriginalSide)
+                            _playerAnimator.MoveLeftAnimation();
+                        else
+                            _playerAnimator.MoveRightAnimation();  
+                    
+                    else if (movementDirection.normalized.x <= -0.5) //right
+                        if (IsInOriginalSide)
+                            _playerAnimator.MoveRightAnimation();
+                        else
+                            _playerAnimator.MoveLeftAnimation();
+                    
+                    else if(movementDirection.normalized.z >= 0.5) // front
+                        _playerAnimator.MoveFrontAnimation();
+                    
+                    else if (movementDirection.normalized.z <= -0.5) //back
+                        _playerAnimator.MoveBackwardAnimation();
                 }
                 else
                 {

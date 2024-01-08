@@ -1,13 +1,20 @@
 public enum PlayerAnimations
 {
     Idle,
-    Walk,
-    Run,
+    
+    Victory,
+    
     Backhand,
     RotateBackhand1,
     RotateBackhand2,
     Smash,
     Strike1,
     Strike2,
-    Service
+    Service,
+    
+    Run,
+    ForwardMove,
+    BackwardMove,
+    LeftStrafe,
+    RightStrafe
 }
