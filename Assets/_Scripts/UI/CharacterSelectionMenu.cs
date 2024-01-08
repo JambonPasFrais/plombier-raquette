@@ -29,6 +29,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 	[SerializeField] private Transform _charactersModelsContainer;
 	[SerializeField] private Button _playButton;
 	[SerializeField] private GameObject _confirmPlayButton;
+	[Header("Other Menus References")]
+	[SerializeField] private ControllerSelectionMenu _controllerSelectionMenu;
 	
 	// All Characters Data
 	private List<CharacterData> _characters = new List<CharacterData>();
@@ -125,6 +127,12 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_aceItWindow.SetActive(false);
 			MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
 		}
+		else
+		{
+			OnMenuDisabled();
+			_controllerSelectionMenu.OnBackToControllerSelection();
+			MenuManager.Instance.GoToPreviousMenu();
+		}
 	}
 
 	#region Listeners
@@ -132,10 +140,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Button "play"
 	public void Play()
 	{
-		//TransformRandomSelectionInCharacter();
+		TransformRandomSelectionInCharacter();
 		_aceItWindow.SetActive(true);
-		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
-		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
+		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"
@@ -145,15 +152,17 @@ public class CharacterSelectionMenu : MonoBehaviour
 		
 		_aceItWindow.SetActive(false);
 
-		ControllerManager.Instance.ChangeCtrlersActMapToGame();
+		Debug.Log("Let's Ace It !");
+
+		//ControllerManager.Instance.ChangeCtrlersActMapToGame();
 		
-		SceneManager.LoadScene("Local_Multiplayer");
+		//SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
-	// Button "validation" from the rules menu
-	public void SetNumberOfShowrooms(bool isDouble)
+	// Display right number of showrooms whether it is a single or double match
+	public void SetNumberOfShowrooms(int numberOfPlayerBySide)
 	{
-		if (isDouble)
+		if (numberOfPlayerBySide == 2)
 		{
 			_matchDoubleWindow.SetActive(true);
 			_matchSingleWindow.SetActive(false);
@@ -165,7 +174,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_matchDoubleWindow.SetActive(false);
 			_matchSingleWindow.SetActive(true);
 			_totalNbPlayers = 2;
-			_currentShowroomList = _characterShowroomsDouble;
+			_currentShowroomList = _characterShowroomsSingle;
 		}
 
 		_playersCharacter = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
@@ -179,7 +188,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_availableCharacters = new List<CharacterData>(_characters);
 		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
 		_charactersModel = MenuManager.Instance.CharactersModel;
+		_aceItWindow.SetActive(false);
 
+		SetNumberOfShowrooms(GameParameters.Instance.NumberOfPlayerBySide + 1);
 		SetPlayerInfos();
 		_playButton.interactable = false;
 
@@ -261,10 +272,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 		// players who selected "Random" have a question mark model so we remove it first
 		RemoveCharacterFromPlayerSelectionUi(playerIndex);
 		
-		_charactersUI[playerIndex].SetSelected(true);
+		//_charactersUI[playerIndex].SetSelected(true);
 		CharacterData cd = ReturnRandomCharacter();
+		_charactersUI.Where(x => x.Character.Name == cd.Name).FirstOrDefault().SetSelected(true);
 		_currentShowroomList[playerIndex].CharacterName.text = cd.Name;
 		_currentShowroomList[playerIndex].Background.color = cd.CharacterPrimaryColor;
+		_currentShowroomList[playerIndex].NameBackground.color = cd.CharacterSecondaryColor;
+		_currentShowroomList[playerIndex].CharacterEmblem.gameObject.SetActive(true);
+		_currentShowroomList[playerIndex].CharacterEmblem.sprite = cd.CharactersLogo;
 
 		if (!_charactersModel.TryGetValue(cd.Name, out GameObject go))
 			return;
@@ -272,6 +287,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		go.transform.SetParent(_currentShowroomList[playerIndex].ModelLocation);
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+		go.transform.localScale = new Vector3(20, 20, 20);
 		go.SetActive(true);
 			
 		_playersCharacter[playerIndex] = cd;
@@ -290,6 +306,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			
 			_currentShowroomList[i].CharacterName.text = characterUI.Character.Name;
 			_currentShowroomList[i].Background.color = characterUI.Character.CharacterPrimaryColor;
+			_currentShowroomList[i].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
 
 			characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
 			characterModel.transform.localPosition = Vector3.zero;
@@ -342,7 +359,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Check if every local player selected his 
 	private bool IsEveryCharSelectedByLocals()
 	{
-		for (int i = 0; i < /*GameParameters.LocalNbPlayers*/2; i++)
+		for (int i = 0; i < GameParameters.Instance.LocalNbPlayers; i++)
 		{
 			if (_playersCharacter[i] == null)
 				return false;
@@ -460,6 +477,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 			_currentShowroomList[playerIndex].CharacterName.text = characterUI.Character.Name;
 			_currentShowroomList[playerIndex].Background.color = characterUI.Character.CharacterPrimaryColor;
+			_currentShowroomList[playerIndex].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
 
 			if (characterUI.Character.Name != "Random") 
 			{
@@ -469,13 +487,14 @@ public class CharacterSelectionMenu : MonoBehaviour
 			else
 				_currentShowroomList[playerIndex].CharacterEmblem.gameObject.SetActive(false);
 
-			string charNameToLookFor = characterUI.Character.Name == "Random" ? characterUI.Character.Name+playerIndex : characterUI.Character.Name;
+			string charNameToLookFor = characterUI.Character.Name == "Random" ? characterUI.Character.Name+ playerIndex : characterUI.Character.Name;
 
 			if (_charactersModel.TryGetValue(charNameToLookFor, out var characterModel))
 			{
 				characterModel.transform.SetParent(_currentShowroomList[playerIndex].ModelLocation);
 				characterModel.transform.localPosition = Vector3.zero;
 				characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
+				characterModel.transform.localScale = new Vector3(20, 20, 20);
 				characterModel.SetActive(true);
 				_selectedCharacterUIs[playerIndex] = characterUI;
 				_playersCharacter[playerIndex] = characterUI.Character;

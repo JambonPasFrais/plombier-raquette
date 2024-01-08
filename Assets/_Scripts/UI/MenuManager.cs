@@ -58,10 +58,12 @@ public class MenuManager : MonoBehaviour
         _visitedMenus.Add(nextMenu);
         SetDefaultSelected(nextMenu);
     }
+
     public void SetFirstSelectedButton(GameObject Button)
-    {
+	{
 		_eventSystem.SetSelectedGameObject(Button);
     }
+
     public void GoToPreviousMenu()
     {
         _visitedMenus.Last().SetActive(false);

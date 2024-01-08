@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine.UI;
-
+using System.Linq;
 
 public class OnlineManager : MonoBehaviourPunCallbacks
 {
@@ -162,9 +162,9 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Game");
     }
 
-    public void ReadyButtonClicked()
+    public void OnReadyButtonClicked()
     {
-        //photonView.RPC("PlayerClickedOnReadyButton", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer, _localPlayerCard.IsReady);
+        photonView.RPC("PlayerClickedOnReadyButton", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer);
     }
 
     public void OnOnlineButtonClicked()
@@ -192,15 +192,12 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             showroom.ResetShowroom();
         }
 
-		_playerShowrooms[1].Container.SetActive(false);
-
-		ChangeActivePanel(_characterSelection.name);
+        ChangeActivePanel(_characterSelection.name);
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         _playerShowrooms[1].ResetShowroom();
-        _playerShowrooms[1].Container.SetActive(false);
     }
 
     public void ChangeActivePanel(string menuName)
@@ -216,13 +213,17 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void PlayerClickedOnReadyButton(Photon.Realtime.Player player, bool isReady)
+    private void PlayerClickedOnReadyButton(Photon.Realtime.Player player)
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            _inRoomPlayersReadyState[player.NickName] = isReady;
+            if(!_inRoomPlayersReadyState.Keys.Contains(player.NickName))
+                _inRoomPlayersReadyState[player.NickName] = true;
 
-            if (_inRoomPlayersReadyState[player.NickName])
+            else
+                _inRoomPlayersReadyState[player.NickName] = !_inRoomPlayersReadyState[player.NickName];
+
+			if (_inRoomPlayersReadyState[player.NickName])
             {
                 _readyPlayersCount++;
             }
@@ -259,7 +260,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
     {
-
         _playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
 
 		photonView.RPC("InstantiatePresentPlayers", RpcTarget.Others, GameParameters.Instance.GetCharactersPlayers().Name, nickname, PhotonNetwork.LocalPlayer.NickName);

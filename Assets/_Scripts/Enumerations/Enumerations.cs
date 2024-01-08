@@ -17,8 +17,7 @@ public enum PlayerStates
 public enum Teams
 {
 	TEAM1,
-	TEAM2,
-	DEFAULT
+	TEAM2
 }
 
 public enum FieldSide

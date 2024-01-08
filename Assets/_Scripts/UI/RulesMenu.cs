@@ -14,7 +14,7 @@ public class RulesMenu : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _gameModeText;
 	[SerializeField] private TextMeshProUGUI _comDifficultyText;
 	[SerializeField] private TextMeshProUGUI _explanationText;
-	private int _currentGameType;
+	[SerializeField] private int _currentGameType;
 	private int _currentGameMode;
 	private int _currentCOMDifficulty;
 	private List<string> _gameTypes = new List<string>()

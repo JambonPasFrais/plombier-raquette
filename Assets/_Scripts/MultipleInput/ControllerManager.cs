@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -20,6 +21,7 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private GameObject _playerInputHandlerPrefab;
     [SerializeField] private string _menuActionMapName;
     [SerializeField] private string _gameActionMapName;
+    [SerializeField] private TextMeshProUGUI _numberOfControllersConnectedOnMenu;
 
     [SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
@@ -39,13 +41,13 @@ public class ControllerManager : MonoBehaviour
     private void OnEnable()
     {
         // Enable the input action
-        //_joinPlayerAction.Enable();
+        _joinPlayerAction.Enable();
     }
 
     private void OnDisable()
     {
         // Disable the input action
-        //_joinPlayerAction.Disable();
+        _joinPlayerAction.Disable();
     }
 
     private void Awake()
@@ -78,7 +80,8 @@ public class ControllerManager : MonoBehaviour
         _characterSelectionMenu = characterSelectionMenuRef;
         _controllerSelectionMenu = controllerSelectionMenu;
         _controllers = new Dictionary<int, PlayerInputHandler>();
-    }
+        _numberOfControllersConnectedOnMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
+	}
     
     public void SwitchCtrlersToCharSelectMode(Transform charSelectionContainer)
     {
@@ -95,7 +98,8 @@ public class ControllerManager : MonoBehaviour
         {
             controller.Value.Controller.gameObject.transform.SetParent(cltrSelectionContainer);
 			controller.Value.Controller.ControllerSelectionMode();
-        }
+            controller.Value.Controller.ReturnOnControllerSelectionMenu();
+		}
     }
     
     public void ControllerCanBeAdded()
@@ -120,6 +124,7 @@ public class ControllerManager : MonoBehaviour
         }
         
         _controllers.Clear();
+        _numberOfControllersConnectedOnMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
     }
 
     public void ResetControllers()
@@ -168,6 +173,8 @@ public class ControllerManager : MonoBehaviour
         }
         
         _controllerSelectionMenu.MakeValidationButtonNotInteractable();
+
+        _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
     }
     
     #endregion
@@ -202,19 +209,18 @@ public class ControllerManager : MonoBehaviour
         {
             case Joystick:
                 playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-                playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
                 break;
             case Gamepad:
                 playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-				playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
 				break;
             case Keyboard:
                 playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-				playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
 				break;
         }
 
-        playerInputHandler.Controller.ControllerSelectionMode();
+		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
+		playerInputHandler.Controller.SetColorVisual(_controllers.Count);
+		playerInputHandler.Controller.ControllerSelectionMode();
         playerInputHandler.Controller.PlayerInput = playerInput;
         
         //UI Stuff of the controller prefab
@@ -223,11 +229,12 @@ public class ControllerManager : MonoBehaviour
         
         // Save of the playerInputHandler base on his device id
         _controllers.Add(inputDevice.deviceId, playerInputHandler);
-        
+
         if (_controllers.Count >= _maxPlayerCount)
             _controllerSelectionMenu.MakeValidationButtonInteractable();
-
-    }
+		
+        _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
+	}
     #endregion
     
     #region LocalMultiplayer implementation test simplification
@@ -249,4 +256,5 @@ public class ControllerManager : MonoBehaviour
         
     
     #endregion
+
 }

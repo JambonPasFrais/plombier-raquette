@@ -135,7 +135,7 @@ MonoBehaviour:
   _matchSingleWindow: {fileID: 7589267267707594115}
   _matchDoubleWindow: {fileID: 3041447365644817787}
   _characterUIPrefab: {fileID: 2994260158086343618, guid: 51f47967f66d70d4493d49dd1d748caa, type: 3}
-  _characterUiContainer: {fileID: 1961013911621602353}
+  _characterUIContainer: {fileID: 0}
   _characterUILayerMask:
     serializedVersion: 2
     m_Bits: 32
@@ -146,12 +146,14 @@ MonoBehaviour:
     ModelLocation: {fileID: 6326676756074069366}
     Background: {fileID: 1662884402875796981}
     CharacterEmblem: {fileID: 984697013911836733}
+    Container: {fileID: 0}
   - PlayerInfo: {fileID: 8309401088391970974}
     CharacterName: {fileID: 7041615139639731646}
     NameBackground: {fileID: 3704874724470291402}
     ModelLocation: {fileID: 8736687963937609557}
     Background: {fileID: 4770576613669673829}
     CharacterEmblem: {fileID: 9087120569243398425}
+    Container: {fileID: 0}
   _characterShowroomsDouble:
   - PlayerInfo: {fileID: 1161034459801535844}
     CharacterName: {fileID: 213051655393992772}
@@ -159,29 +161,33 @@ MonoBehaviour:
     ModelLocation: {fileID: 1905811650792051375}
     Background: {fileID: 2411748883261382303}
     CharacterEmblem: {fileID: 2114386081423668451}
+    Container: {fileID: 0}
   - PlayerInfo: {fileID: 7116063197022105081}
     CharacterName: {fileID: 8082112145499588825}
     NameBackground: {fileID: 2520857367667365549}
     ModelLocation: {fileID: 7543330294238820914}
     Background: {fileID: 6027443175842625026}
     CharacterEmblem: {fileID: 8037317327563742334}
-  - PlayerInfo: {fileID: 1379410277795262897}
-    CharacterName: {fileID: 129651921364866193}
-    NameBackground: {fileID: 5989244327925418725}
-    ModelLocation: {fileID: 1822472954701014650}
-    Background: {fileID: 2468029987598002762}
-    CharacterEmblem: {fileID: 2193176147317915702}
+    Container: {fileID: 0}
   - PlayerInfo: {fileID: 389398365853125695}
     CharacterName: {fileID: 1697663728850250015}
     NameBackground: {fileID: 4998393522702645099}
     ModelLocation: {fileID: 1083525733377940468}
     Background: {fileID: 3748113799526422468}
     CharacterEmblem: {fileID: 588977047111990712}
+    Container: {fileID: 0}
+  - PlayerInfo: {fileID: 1379410277795262897}
+    CharacterName: {fileID: 129651921364866193}
+    NameBackground: {fileID: 5989244327925418725}
+    ModelLocation: {fileID: 1822472954701014650}
+    Background: {fileID: 2468029987598002762}
+    CharacterEmblem: {fileID: 2193176147317915702}
+    Container: {fileID: 0}
   _charactersModelsContainer: {fileID: 0}
   _playButton: {fileID: 2278834623258850343}
   _confirmPlayButton: {fileID: 2292711548050055872}
+  _controllerSelectionMenu: {fileID: 0}
   _playersCharacter: []
-  _eventSystem: {fileID: 0}
 --- !u!1 &883987662596887858
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,8 +384,8 @@ RectTransform:
   m_Children:
   - {fileID: 3587409155913277206}
   - {fileID: 4833645428098414475}
-  - {fileID: 3670853128078945219}
   - {fileID: 2644370469323511373}
+  - {fileID: 3670853128078945219}
   m_Father: {fileID: 4951955398158782848}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -686,7 +692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6588603027632268724, guid: f4ed289081aecf8489daafcc14def479, type: 3}
       propertyPath: m_Name
-      value: Player3Showroom
+      value: Player4Showroom
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -852,7 +858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6588603027632268724, guid: f4ed289081aecf8489daafcc14def479, type: 3}
       propertyPath: m_Name
-      value: Player4Showroom
+      value: Player3Showroom
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -11,7 +11,6 @@ public class CharacterData : ScriptableObject
     public string Name;
     public Sprite Picture;
     public Sprite CharactersLogo;
-    public Color CharacterColor;
     public Color CharacterPrimaryColor;
     public Color CharacterSecondaryColor;
     
