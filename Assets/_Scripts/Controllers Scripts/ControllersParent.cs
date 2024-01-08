@@ -36,10 +36,11 @@ public class ControllersParent : MonoBehaviour
     protected bool _isCharging;
 
     #region Animations
-
-    protected PlayerAnimator _playerAnimator;
-    protected bool _isShooting;
-    protected bool _isSmashing;
+    // TODO : comment serializeField and Header after tests
+    [Header("Tests")]
+    [SerializeField] protected PlayerAnimator _playerAnimator;
+    [SerializeField] protected bool _isShooting;
+    [SerializeField] protected bool _isSmashing;
 
     #endregion
 
