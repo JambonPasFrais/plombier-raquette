@@ -29,7 +29,6 @@ public class ScoreManager : MonoBehaviour
 	[SerializeField] private int _nbOfSetsToWin;
 	[SerializeField] private int _nbOfGamesToWin;
 	[SerializeField] private bool _isTieBreak = false;
-	[SerializeField] private TextMeshProUGUI _scoreText;
 	[SerializeField] private ScoreDisplayingUI _scoreDisplaying;
 
 	#endregion
@@ -60,8 +59,8 @@ public class ScoreManager : MonoBehaviour
 			else if (winnerPoints == 3 && loserPoints == 4)
 			{
 				_currentGameScore = new Tuple<int, int>(3, 3);
-				//_scoreDisplaying.UpdateGameScore(0, _possiblePoints[_currentGameScore.Item1]);
-				//_scoreDisplaying.UpdateGameScore(1, _possiblePoints[_currentGameScore.Item2]);
+				_scoreDisplaying.UpdateGameScore(0, _possiblePoints[_currentGameScore.Item1]);
+				_scoreDisplaying.UpdateGameScore(1, _possiblePoints[_currentGameScore.Item2]);
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 				GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
@@ -71,12 +70,12 @@ public class ScoreManager : MonoBehaviour
 				if (winnerTeam == Teams.TEAM1)
 				{
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1 + 1, _currentGameScore.Item2);
-					//_scoreDisplaying.UpdateGameScore(0, _possiblePoints[_currentGameScore.Item1]);
+					_scoreDisplaying.UpdateGameScore(0, _possiblePoints[_currentGameScore.Item1]);
 				}
 				else
 				{
 					_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
-					//_scoreDisplaying.UpdateGameScore(1, _possiblePoints[_currentGameScore.Item2]);
+					_scoreDisplaying.UpdateGameScore(1, _possiblePoints[_currentGameScore.Item2]);
 				}
 
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
@@ -89,13 +88,13 @@ public class ScoreManager : MonoBehaviour
 			if(winnerTeam == Teams.TEAM1)
 			{
 				_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1 + 1, _currentGameScore.Item2);
-				//_scoreDisplaying.UpdateGameScore(0, _currentGameScore.Item1.ToString());
+				_scoreDisplaying.UpdateGameScore(0, _currentGameScore.Item1.ToString());
 				winnerPoints++;
             }
 			else
 			{
 				_currentGameScore = new Tuple<int, int>(_currentGameScore.Item1, _currentGameScore.Item2 + 1);
-				//_scoreDisplaying.UpdateGameScore(1, _currentGameScore.Item2.ToString());
+				_scoreDisplaying.UpdateGameScore(1, _currentGameScore.Item2.ToString());
 				winnerPoints++;
             }
 
@@ -118,8 +117,6 @@ public class ScoreManager : MonoBehaviour
 					!GameManager.Instance.ServiceManager.ChangeSides);
 			}
         }
-
-		GetScore();
     }
 
 	public void AddGame(Teams winnerTeam)
@@ -127,20 +124,20 @@ public class ScoreManager : MonoBehaviour
 		GameManager.Instance.ChangeServer();
 
 		_currentGameScore = new Tuple<int, int>(0, 0);
-		//_scoreDisplaying.UpdateGameScore(0, _currentGameScore.Item1.ToString());
-		//_scoreDisplaying.UpdateGameScore(1, _currentGameScore.Item2.ToString());
+		_scoreDisplaying.UpdateGameScore(0, _currentGameScore.Item1.ToString());
+		_scoreDisplaying.UpdateGameScore(1, _currentGameScore.Item2.ToString());
 
 		Tuple<int, int> newScore = _score[^1];
 
 		if (winnerTeam == Teams.TEAM1)
 		{
 			newScore = new Tuple<int, int>(newScore.Item1 + 1, newScore.Item2);
-			//_scoreDisplaying.UpdateSetScore(0, _currentSetIndex, newScore.Item1.ToString());
+			_scoreDisplaying.UpdateSetScore(0, _currentSetIndex, newScore.Item1.ToString());
 		}
 		else 
 		{
 			newScore = new Tuple<int, int>(newScore.Item1, newScore.Item2 + 1);
-			//_scoreDisplaying.UpdateSetScore(1, _currentSetIndex, newScore.Item2.ToString());
+			_scoreDisplaying.UpdateSetScore(1, _currentSetIndex, newScore.Item2.ToString());
 		}
 
 		_score[_currentSetIndex] = newScore;
@@ -183,7 +180,7 @@ public class ScoreManager : MonoBehaviour
 	public void ChangeSet(int player)
     {
 		_currentSetIndex++;
-		//_scoreDisplaying.NewSet();
+		_scoreDisplaying.NewSet();
 
 		GameManager.Instance.ServiceManager.ChangeSides = false;
 		GameManager.Instance.ServiceManager.NbOfGames = 0;
@@ -236,24 +233,5 @@ public class ScoreManager : MonoBehaviour
 		}
 		else
 			_score.Add(new Tuple<int, int>(0, 0));
-	}
-
-	public string GetScore()
-	{
-		string score = "";
-
-		for (int i = 0; i < _currentSetIndex + 1; i++)
-		{
-			score += $"{_score[i].Item1}/{_score[i].Item2} ";
-		}
-
-		if (!_isTieBreak)
-			score += $"{_possiblePoints[_currentGameScore.Item1]} - {_possiblePoints[_currentGameScore.Item2]} ";
-		else
-			score += $"{_currentGameScore.Item1} - {_currentGameScore.Item2}";
-
-		_scoreText.text = score;
-
-		return score;
 	}
 }
