@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Serialization;
 
+[RequireComponent(typeof(PlayerAnimator))]
 public class ControllersParent : MonoBehaviour
 {
     #region PUBLIC FIELDS
@@ -33,8 +35,25 @@ public class ControllersParent : MonoBehaviour
     protected float _hitKeyPressedTime;
     protected bool _isCharging;
 
+    #region Animations
+
+    protected PlayerAnimator _playerAnimator;
+    protected bool _isShooting;
+    protected bool _isSmashing;
+
     #endregion
 
+    #endregion
+    
+    #region UNITY FUNCTIONS
+
+    private void Awake()
+    {
+        _playerAnimator = GetComponent<PlayerAnimator>();
+    }
+    
+    #endregion
+    
     #region GETTERS
     
     public ActionParameters ActionParameters { get { return _actionParameters; } }

@@ -105,6 +105,22 @@ public class PlayerController : ControllersParent
 
             // The player moves according to the movement inputs.
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
+            
+            #region Animations
+
+            if (!_isShooting && !_isSmashing)
+            {
+                if (movementDirection.normalized != Vector3.zero)
+                {
+                    _playerAnimator.RunAnimation();
+                }
+                else
+                {
+                    _playerAnimator.IdleAnimation();
+                }
+            }
+
+            #endregion
         }
         else
         {
@@ -118,6 +134,9 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
+        _playerAnimator.StrikeAnimation();
+        _isShooting = true;
+        
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
@@ -373,8 +392,27 @@ public class PlayerController : ControllersParent
             _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
+            
+            #region Animations
+            _playerAnimator.SmashAnimation();
+            _isSmashing = true; 
+            #endregion
         }
     }
 
+    #endregion
+    
+    #region ANIMATIONS
+
+    public void ShootingAnimationEnd()
+    {
+        _isShooting = false;
+    }
+
+    public void SmashAnimationEnd()
+    {
+        _isSmashing = false;
+    }
+    
     #endregion
 }
