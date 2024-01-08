@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
 
+    [SerializeField] private EndMatchUI _endOfMatchUI;
+
     #endregion
 
     #region GETTERS
@@ -86,6 +88,8 @@ public class GameManager : MonoBehaviour
 
     public void Init()
     {
+        _endOfMatchUI.gameObject.SetActive(false);
+
         ServiceOnOriginalSide = true;
 
         GameState = GameState.SERVICE;
@@ -247,11 +251,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndOfGame()
+    public void EndOfGame(int playerIndex)
     {
         //TODO : uncomment when finished
         ControllerManager.Instance.ChangeCtrlersActMapToMenu();
-        SceneManager.LoadScene("Clean_UI_Final");
+        _endOfMatchUI.Init(playerIndex);
+        //SceneManager.LoadScene("Clean_UI_Final");
         //Debug.Log("End of game !");
     }
 

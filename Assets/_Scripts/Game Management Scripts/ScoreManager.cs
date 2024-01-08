@@ -204,7 +204,7 @@ public class ScoreManager : MonoBehaviour
 
 			Debug.Log($"Player1 wins with the score of : {score}");
 
-			GameManager.Instance.EndOfGame();
+			GameManager.Instance.EndOfGame(0);
 
 			if (GameParameters.IsTournamentMode)
 			{
@@ -229,7 +229,7 @@ public class ScoreManager : MonoBehaviour
 				SceneManager.LoadScene(0);
 			}
 
-			GameManager.Instance.EndOfGame();
+			GameManager.Instance.EndOfGame(1);
 		}
 		else
 			_score.Add(new Tuple<int, int>(0, 0));

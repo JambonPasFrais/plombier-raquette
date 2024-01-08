@@ -46,16 +46,16 @@ public class ScoreDisplayingUI : MonoBehaviour
 
 		for (int i = 0; i < 2; i++)
 		{
-			_playersColors.Add(GameParameters.Instance.PlayersCharacter[i * 2].CharacterPrimaryColor);
-
 			if (GameParameters.Instance.NumberOfPlayerBySide == 0)
 			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
 				_charactersFacesParentSingle[i].gameObject.SetActive(true);
 				_charactersFacesBackground[i].color = _playersColors[i];
 				_charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
 			}
 			else
 			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i * 2].CharacterPrimaryColor);
 				_charactersFacesParentDouble[i].gameObject.SetActive(true);
 				_charactersFacesParentDouble[i].gameObject.SetActive(true);
 				_charactersFacesBackground[i].color = _playersColors[i];
