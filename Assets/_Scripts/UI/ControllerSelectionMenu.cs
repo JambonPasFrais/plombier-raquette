@@ -21,8 +21,8 @@ public class ControllerSelectionMenu : MonoBehaviour
     {   
         ControllerManager.Instance.Init(_characterSelectionMenu, this);
         ControllerManager.Instance.ControllerCanBeAdded();
+        MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
         MakeValidationButtonNotInteractable();
-
 	}
 
     public void OnBackToControllerSelection()
