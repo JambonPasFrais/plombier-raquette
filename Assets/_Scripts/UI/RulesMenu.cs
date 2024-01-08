@@ -64,7 +64,7 @@ public class RulesMenu : MonoBehaviour
 		_gameTypeText.text = _gameTypes[_currentGameType];
 		_explanationText.text = $"Play in a {_gameTypes[_currentGameType]} match";
 
-		if (_currentGameType == 0)
+		if (_currentGameType == 0 && _currentNumberOfPlayers > 2)
 		{
 			_currentNumberOfPlayers = 2;
 			_playerNumberText.text = _currentNumberOfPlayers.ToString();
