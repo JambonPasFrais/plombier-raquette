@@ -14964,7 +14964,7 @@ GameObject:
   - component: {fileID: 5988766840551096850}
   - component: {fileID: 2774219130795907442}
   m_Layer: 0
-  m_Name: Daisy
+  m_Name: Daisy(done)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15149,9 +15149,9 @@ MonoBehaviour:
   IsInOriginalSide: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 6082157626424082180}
-  _serviceBallInitializationPoint: {fileID: 0}
-  _minimumShotForce: 0
-  _maximumShotForce: 0
+  _serviceBallInitializationPoint: {fileID: 5039192808340017798}
+  _minimumShotForce: 350
+  _maximumShotForce: 450
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
@@ -15175,9 +15175,9 @@ MonoBehaviour:
   - {fileID: 0}
   _ballDetectionArea: {fileID: 7548727493114811435}
   _speed: 7.5
-  _timeBeforeThrowingBallDuringService: 0
-  _timeBeforeShootingBallDuringService: 0
-  _serviceForce: 0
+  _timeBeforeThrowingBallDuringService: 1
+  _timeBeforeShootingBallDuringService: 0.35
+  _serviceForce: 400
 --- !u!1001 &4353729838461545534
 PrefabInstance:
   m_ObjectHideFlags: 0
