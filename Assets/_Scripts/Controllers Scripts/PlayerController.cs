@@ -102,11 +102,17 @@ public class PlayerController : ControllersParent
             }
 
             Vector3 movementDirection = rightVector.normalized * _movementVector.x + forwardVector.normalized * _movementVector.y;
-
+            
+            // The player rotates according to the movement inputs
+            if (movementDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+                // Smoothly rotate towards the target rotation with a speed of 6.0f;
+                _avatarVisual.rotation = Quaternion.Slerp(_avatarVisual.rotation, targetRotation, 6.0f * Time.deltaTime);
+            }
+            
             // The player moves according to the movement inputs.
             _rigidBody.velocity = movementDirection.normalized * _currentSpeed + new Vector3(0, _rigidBody.velocity.y, 0);
-            
-            //_rigidBody.MovePosition();
             
             #region Animations
 
@@ -115,6 +121,7 @@ public class PlayerController : ControllersParent
                 if (movementDirection.normalized != Vector3.zero)
                 {
                     // Type of walks
+                    /*
                     if (movementDirection.normalized.x >= 0.5) //left
                         if (IsInOriginalSide)
                             _playerAnimator.MoveLeftAnimation();
@@ -131,7 +138,8 @@ public class PlayerController : ControllersParent
                         _playerAnimator.MoveFrontAnimation();
                     
                     else if (movementDirection.normalized.z <= -0.5) //back
-                        _playerAnimator.MoveBackwardAnimation();
+                        _playerAnimator.MoveBackwardAnimation();*/
+                    _playerAnimator.RunAnimation();
                 }
                 else
                 {
@@ -168,6 +176,9 @@ public class PlayerController : ControllersParent
         _playerAnimator.StrikeAnimation();
         _isShooting = true;
         #endregion
+        
+        // Look Front (feels weird to not look forward when you shoot)
+        _avatarVisual.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);;
         
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);

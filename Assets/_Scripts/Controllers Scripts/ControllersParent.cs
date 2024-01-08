@@ -21,6 +21,7 @@ public class ControllersParent : MonoBehaviour
 
     #region PROTECTED FIELDS
 
+    [SerializeField] protected Transform _avatarVisual;
     [SerializeField] protected ActionParameters _actionParameters;
     [SerializeField] protected BallServiceDetection _ballServiceDetectionArea;
     [SerializeField] protected Transform _serviceBallInitializationPoint;
