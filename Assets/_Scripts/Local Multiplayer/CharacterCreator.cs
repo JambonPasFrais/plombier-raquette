@@ -10,23 +10,27 @@ using UnityEngine;
 /// </summary>
 public class CharacterCreator : MonoBehaviour
 {
+    #region PRIVATE FIELDS
+
     [Header("Instances")]
     [SerializeField] private Transform _charContainer;
-    
+
     [Header("Bot Variables")]
     [SerializeField] private Transform[] _targets;
     [SerializeField] private Transform[] _firstSideTargetsPositions;
     [SerializeField] private Transform[] _secondSideTargetsPositions;
-    
+
     [Header("GA")]
     [SerializeField] private Vector3 _characterLocalScaleModified;
-    
-    #region PRIVATE FIELDS
+
     private List<GameObject> _characters;
+
     #endregion
     
     #region GETTERS
+
     public List<GameObject> Characters => _characters;
+
     #endregion
 
     private void OnEnable()

@@ -240,9 +240,11 @@ public class ControllerManager : MonoBehaviour
         _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
         _numberOfControllersConnectedOnOnlineMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
 	}
+
     #endregion
     
     #region LocalMultiplayer implementation test simplification
+
     //TODO : comment when local multiplayer implementation is finished
     /*
     public List<PlayerInputHandler> _playerInputHandlers;

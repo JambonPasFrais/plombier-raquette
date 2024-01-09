@@ -6,16 +6,22 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerController))]
 public class Character : MonoBehaviour
 {
+    #region PRIVATE FIELDS
+
     // Variables may be set tup automatically
-    
+
     [Header("Instances")] [SerializeField] private CharacterParameters _parameters;
     
     [Header("Components")]
     [SerializeField] private PlayerAnimator _playerAnimator; // Component for animations
     [SerializeField] private PlayerController _playerController; // Component for controls
-    
+
+    #endregion
+
     #region GETTERS
+
     public PlayerController PlayerController => _playerController;
+
     #endregion
 
     #region UNITY METHODES

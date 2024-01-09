@@ -46,11 +46,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private float _leftFaultLineXFromFirstSide;
     [SerializeField] private GameObject _playerPrefab;
 
+    [Header("Other Objects")]
+    // Temporary variable.
+    [SerializeField] private CharacterParameters _classicCharacterParameters;
+
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
     private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
-    [SerializeField] private GameObject _ballInstance;
+    private GameObject _ballInstance;
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
 
@@ -98,6 +102,20 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         _ballInstance = Instantiate(BallPrefab);
+    }
+
+    private void Start()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            PlayerInputHandler playerInputHandler = ControllerManager.Controllers.Values.ToList()[0];
+
+            playerInputHandler.Character = _controllers[0].gameObject.GetComponent<Character>();
+            /*playerInputHandler.Character.SetCharParameters(GameParameters.Instance.PlayersCharacter[0].CharacterParameter);*/
+            // Temporary, while the correct characters are not instantiated on the field.
+            playerInputHandler.Character.SetCharParameters(_classicCharacterParameters);
+            playerInputHandler.PlayerInput.defaultActionMap = "Game";
+        }
     }
 
     public void Init()
@@ -339,7 +357,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void InstantiatePlayer()
     {
-        GameObject go = PhotonNetwork.Instantiate(this._playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject go = PhotonNetwork.Instantiate(_playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
         _controllers.Add(go.GetComponent<PlayerController>());
     }
 

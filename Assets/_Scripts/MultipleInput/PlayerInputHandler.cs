@@ -10,23 +10,19 @@ public class PlayerInputHandler : MonoBehaviour
 	// TODO : change this variable for private with getter and setter
 	[HideInInspector] public Controller Controller;
 	[HideInInspector] public Character Character;
-	[SerializeField] private PlayerInput _playerInput; // TODO : comment when finishing localmultiplayer implementation
-
-	#region GETTERS
-
-	public PlayerInput PlayerInput => _playerInput;
-    
-    #endregion
+	public PlayerInput PlayerInput; // TODO : comment when finishing localmultiplayer implementation
     
     #region UNITY FUNCTIONS 
+
     private void Awake()
     {
-        _playerInput = GetComponent<PlayerInput>();
+        PlayerInput = GetComponent<PlayerInput>();
     }
 
     #endregion
 
 	#region UI ACTION MAP LISTENERS
+
 	public void OnCursorMove(InputAction.CallbackContext context)
 	{
 		Controller.TryMove(context.ReadValue<Vector2>());
@@ -168,12 +164,12 @@ public class PlayerInputHandler : MonoBehaviour
 
 	public void ChangeInputActionMap(string inputActionMapName)
 	{
-		_playerInput.SwitchCurrentActionMap(inputActionMapName);
+		PlayerInput.SwitchCurrentActionMap(inputActionMapName);
 	}
 
 	public void InitDirectionController()
 	{
-		Character.PlayerController.SetDirectionController(_playerInput.devices[0] is Keyboard ? 
+		Character.PlayerController.SetDirectionController(PlayerInput.devices[0] is Keyboard ? 
 			ShootDirectionController.MOUSE : ShootDirectionController.STICK);
 	}
 
