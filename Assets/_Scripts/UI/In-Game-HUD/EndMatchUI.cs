@@ -8,6 +8,9 @@ public class EndMatchUI : MonoBehaviour
 	[SerializeField] private Transform _singleMatchParent;
 	[SerializeField] private Transform _doubleMatchParent;
 
+	[SerializeField] private Transform _scoreLocation;
+	[SerializeField] private GameObject _scoreDisplayReference;
+
 	private List<Transform> _modelLocationsSingle = new List<Transform>();
 	private List<Transform> _modelLocationsDouble = new List<Transform>();
 
@@ -37,11 +40,6 @@ public class EndMatchUI : MonoBehaviour
 		}
 		else
 		{
-			/*InstantiateCharacter(winnerIndex * 2, _modelLocationsDouble[0]);
-			InstantiateCharacter(winnerIndex * 2 + 1, _modelLocationsDouble[1]);
-			InstantiateCharacter(((winnerIndex + 1) % 2) * 2, _modelLocationsDouble[2]);
-			InstantiateCharacter(((winnerIndex + 1) % 2) * 2 + 1, _modelLocationsDouble[3]);*/
-
 			int winnerSideCpt = 0;
 			int loserSideCpt = 2;
 
@@ -62,6 +60,11 @@ public class EndMatchUI : MonoBehaviour
 
 			_doubleMatchParent.gameObject.SetActive(true);
 		}
+
+		_scoreDisplayReference.transform.SetParent(_scoreLocation);
+		_scoreDisplayReference.transform.localPosition = Vector3.zero;
+		_scoreDisplayReference.transform.localScale = new Vector3(2, 2, 2);
+		_scoreDisplayReference.transform.localRotation = Quaternion.identity;
 
 		StartCoroutine(WaitBeforeGoingBackToMainMenu());
 	}
