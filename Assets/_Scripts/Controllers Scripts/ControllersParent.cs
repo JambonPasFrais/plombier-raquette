@@ -42,6 +42,7 @@ public class ControllersParent : MonoBehaviour
     [SerializeField] protected PlayerAnimator _playerAnimator;
     [SerializeField] protected bool _isShooting;
     [SerializeField] protected bool _isSmashing;
+    [SerializeField] protected bool _isCommunicating;
 
     #endregion
 
@@ -62,6 +63,8 @@ public class ControllersParent : MonoBehaviour
     public BallServiceDetection BallServiceDetectionArea { get { return _ballServiceDetectionArea; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public float MaximumShotForce { get { return _maximumShotForce; } }
+    
+    public PlayerAnimator PlayerAnimator => _playerAnimator;
 
     #endregion
 
@@ -191,4 +194,48 @@ public class ControllersParent : MonoBehaviour
             ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
         }*/
     }
+    
+    #region ANIMATIONS
+
+    protected void EndALlAnims()
+    {
+        ShootingAnimationEnd();
+        SmashAnimationEnd();
+        ComAnimationEnd();
+    }
+    
+    public void ShootingAnimationEnd()
+    {
+        _isShooting = false;
+    }
+
+    public void SmashAnimationEnd()
+    {
+        _isSmashing = false;
+    }
+
+    public void LaunchCelebration()
+    {
+        EndALlAnims();
+        
+        _isCommunicating = true;
+        _playerAnimator.VictoryAnimation();
+    }
+
+    public void LaunchDepreciation()
+    {
+        EndALlAnims();
+
+        _isCommunicating = true;
+        _playerAnimator.DefeatAnimation();
+    }
+    
+    public void ComAnimationEnd()
+    {
+        _isCommunicating = false;
+        // Explanation : since "Victory" and "Defeat" animations are loops, when they are finished, we start another anim
+        //_playerAnimator.IdleAnimation();
+    }
+    
+    #endregion
 }

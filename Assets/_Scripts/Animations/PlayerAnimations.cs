@@ -2,8 +2,13 @@ public enum PlayerAnimations
 {
     Idle,
     
-    Victory,
-    
+    Victory_1,
+    Victory_2,
+    Victory_3,
+    Defeat_1,
+    Defeat_2,
+    Defeat_3,
+
     Backhand,
     RotateBackhand1,
     RotateBackhand2,

@@ -28,8 +28,40 @@ public class PlayerAnimator : MonoBehaviour
     }
     
     #region COMMUNICATIONS
-    
-    
+
+    public void VictoryAnimation()
+    {
+        int random = Random.Range(0, 3);
+        switch (random)
+        {
+            case 0:
+                ChangeAnimationState(PlayerAnimations.Victory_1.ToString());
+                break;
+            case 1:
+                ChangeAnimationState(PlayerAnimations.Victory_2.ToString());
+                break;
+            case 2:
+                ChangeAnimationState(PlayerAnimations.Victory_3.ToString());
+                break;
+        }
+    }
+
+    public void DefeatAnimation()
+    {
+        int random = Random.Range(0, 3);
+        switch (random)
+        {
+            case 0:
+                ChangeAnimationState(PlayerAnimations.Defeat_1.ToString());
+                break;
+            case 1:
+                ChangeAnimationState(PlayerAnimations.Defeat_2.ToString());
+                break;
+            case 2:
+                ChangeAnimationState(PlayerAnimations.Defeat_3.ToString());
+                break;
+        }
+    }
     
     #endregion
     

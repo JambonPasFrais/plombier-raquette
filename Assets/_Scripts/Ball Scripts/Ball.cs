@@ -51,7 +51,7 @@ public class Ball : MonoBehaviour
     {
         if (transform.position.y < -1)
         {
-            GameManager.Instance.EndOfPoint();
+            GameManager.Instance.EndOfPointWithoutPointWinner();
             ResetBall();
         }
 
@@ -69,7 +69,7 @@ public class Ball : MonoBehaviour
     {
         if(collision.gameObject.GetComponent<ControllersParent>() && !_rigidBody.isKinematic)
         {
-            GameManager.Instance.EndOfPoint();
+            GameManager.Instance.EndOfPoint(_lastPlayerToApplyForce.PlayerTeam);
             GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
             ResetBall();
         }

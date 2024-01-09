@@ -237,7 +237,22 @@ public class GameManager : MonoBehaviour
         return 0f;
     }
 
-    public void EndOfPoint()
+    public void EndOfPoint(Teams teamWhoWonPoint)
+    {
+        GameState = GameState.ENDPOINT;
+
+        foreach (var player in _controllers)
+        {
+            if (player.PlayerTeam == teamWhoWonPoint)
+                player.LaunchCelebration();
+            else
+                player.LaunchDepreciation();
+            
+            player.ResetAtService();
+        }
+    }
+
+    public void EndOfPointWithoutPointWinner()
     {
         GameState = GameState.ENDPOINT;
 

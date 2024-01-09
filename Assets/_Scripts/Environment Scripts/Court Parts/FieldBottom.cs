@@ -14,7 +14,7 @@ public class FieldBottom : FieldGroundPart
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
-                GameManager.Instance.EndOfPoint();
+                GameManager.Instance.EndOfPoint(ball.LastPlayerToApplyForce.PlayerTeam);
                 GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
                 ball.ResetBall();
             }
@@ -38,8 +38,8 @@ public class FieldBottom : FieldGroundPart
                     }
                     else
                     {
-                        GameManager.Instance.EndOfPoint();
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
+                        GameManager.Instance.EndOfPoint(otherTeam);
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                         ball.ResetBall();
                     }

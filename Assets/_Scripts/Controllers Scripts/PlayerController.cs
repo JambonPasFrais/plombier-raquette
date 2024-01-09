@@ -116,7 +116,7 @@ public class PlayerController : ControllersParent
             
             #region Animations
 
-            if (!_isShooting && !_isSmashing)
+            if (!_isShooting && !_isSmashing && !_isCommunicating)
             {
                 if (movementDirection.normalized != Vector3.zero)
                 {
@@ -173,6 +173,7 @@ public class PlayerController : ControllersParent
         }
         
         #region ANIMATIONS
+        EndALlAnims();
         _playerAnimator.StrikeAnimation();
         _isShooting = true;
         #endregion
@@ -426,25 +427,12 @@ public class PlayerController : ControllersParent
             _playerCameraController.ToggleFirstPersonView();
             
             #region Animations
+            EndALlAnims();
             _playerAnimator.SmashAnimation();
             _isSmashing = true; 
             #endregion
         }
     }
 
-    #endregion
-    
-    #region ANIMATIONS
-
-    public void ShootingAnimationEnd()
-    {
-        _isShooting = false;
-    }
-
-    public void SmashAnimationEnd()
-    {
-        _isSmashing = false;
-    }
-    
     #endregion
 }
