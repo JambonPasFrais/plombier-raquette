@@ -229,7 +229,6 @@ public class SideManager : MonoBehaviour
 
         if (originalSides)
         {
-            
             if (PhotonNetwork.IsMasterClient)
             {
                 _activeCameraTransform = _cameras[0].transform;
@@ -243,20 +242,19 @@ public class SideManager : MonoBehaviour
                 _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
                 _cameras[1].SetActive(true);
-                players[1].transform.position = _servicePointsSecondSide[side][1].position;
-                players[1].transform.rotation = _servicePointsSecondSide[side][1].rotation;
+                players[1].transform.position = _servicePointsSecondSide[side][0].position;
+                players[1].transform.rotation = _servicePointsSecondSide[side][0].rotation;
             }
         }
         else
         {
-         
             if (PhotonNetwork.IsMasterClient)
             {
                 _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
                 _cameras[1].SetActive(true);
-                players[0].transform.position = _servicePointsSecondSide[side][1].position;
-                players[0].transform.rotation = _servicePointsSecondSide[side][1].rotation;
+                players[0].transform.position = _servicePointsSecondSide[side][0].position;
+                players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
             }
             else if(PhotonNetwork.IsMasterClient == false)
             {

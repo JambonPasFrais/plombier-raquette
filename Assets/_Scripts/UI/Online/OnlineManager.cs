@@ -161,6 +161,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public void OnStartButtonClicked()
     {
+        GameParameters.Instance.SetGameParameters(1, 1, new GameMode("Online", 1, 6), 0);
+
         PhotonNetwork.LoadLevel("OnlineScene");
     }
 

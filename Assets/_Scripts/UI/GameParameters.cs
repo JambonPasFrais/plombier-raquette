@@ -57,9 +57,9 @@ public class GameParameters : MonoBehaviour
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, GameMode gameMode, int COMDifficulty)
+    public void SetGameParameters(int nbOfLocalPlayers, int numberOfPlayerBySide, GameMode gameMode, int COMDifficulty)
     {
-        _numberOfPlayerBySide = isDouble;
+        _numberOfPlayerBySide = numberOfPlayerBySide;
         _COMDifficulty = COMDifficulty;
         _localNbPlayers = nbOfLocalPlayers;
         _isTournamentMode = false;

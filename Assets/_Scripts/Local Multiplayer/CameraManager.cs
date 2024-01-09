@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
@@ -32,17 +33,20 @@ public class CameraManager : MonoBehaviour
         {
             _soloCameras.Add(_soloCamerasContainer.GetChild(i).gameObject.GetComponent<Camera>());
         }
-        
-        for (int i = 0; i < _splitScreenCamerasContainer.childCount; i++)
-        {
-            List<Camera> cameraListForCurrentSide = new List<Camera>();
-            
-            for (int j = 0; j < _splitScreenCamerasContainer.GetChild(i).childCount; j++)
-            {
-                cameraListForCurrentSide.Add(_splitScreenCamerasContainer.GetChild(i).GetChild(j).GetComponent<Camera>());
-            }
 
-            _splitScreenCamerasBySide.Add(i == 0 ? "Left" : "Right", cameraListForCurrentSide);
+        if (!PhotonNetwork.IsConnected)
+        {
+            for (int i = 0; i < _splitScreenCamerasContainer.childCount; i++)
+            {
+                List<Camera> cameraListForCurrentSide = new List<Camera>();
+
+                for (int j = 0; j < _splitScreenCamerasContainer.GetChild(i).childCount; j++)
+                {
+                    cameraListForCurrentSide.Add(_splitScreenCamerasContainer.GetChild(i).GetChild(j).GetComponent<Camera>());
+                }
+
+                _splitScreenCamerasBySide.Add(i == 0 ? "Left" : "Right", cameraListForCurrentSide);
+            }
         }
     }
 

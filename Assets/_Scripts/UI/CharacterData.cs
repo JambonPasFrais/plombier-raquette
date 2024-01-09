@@ -23,5 +23,4 @@ public class CharacterData : ScriptableObject
     [Header("GD")]
     public CharacterParameters CharacterParameter;
     public CharacterCategory Category;
-
 }
