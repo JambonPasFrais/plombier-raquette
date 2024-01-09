@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndMatchUI : MonoBehaviour
 {
@@ -65,8 +66,6 @@ public class EndMatchUI : MonoBehaviour
 		_scoreDisplayReference.transform.localPosition = Vector3.zero;
 		_scoreDisplayReference.transform.localScale = new Vector3(2, 2, 2);
 		_scoreDisplayReference.transform.localRotation = Quaternion.identity;
-
-		StartCoroutine(WaitBeforeGoingBackToMainMenu());
 	}
 
 	private void InstantiateCharacter(int characterIndex, Transform location)
@@ -75,11 +74,5 @@ public class EndMatchUI : MonoBehaviour
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localRotation = Quaternion.Euler(0, 180, 0);
-	}
-
-	private IEnumerator WaitBeforeGoingBackToMainMenu()
-	{
-		yield return new WaitForSeconds(10);
-		//SceneManager.LoadScene("Clean_UI_Final");
 	}
 }
