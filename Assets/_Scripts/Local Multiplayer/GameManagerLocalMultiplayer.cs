@@ -49,6 +49,7 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
 
     public void TestScene()
     {
-        SceneManager.LoadScene("Local_Multiplayer");
+        //SceneManager.LoadScene("Local_Multiplayer");
+        GameManager.Instance.EndOfGame(1);
     }
 }

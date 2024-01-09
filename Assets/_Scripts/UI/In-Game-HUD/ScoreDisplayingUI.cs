@@ -1,14 +1,20 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 
 public class ScoreDisplayingUI : MonoBehaviour
 {
 	[SerializeField] private GameObject _setScorePrefab;
 	[SerializeField] private GameObject _currentGameScorePrefab;
-	[SerializeField] private List<GameObject> _charactersFaces = new List<GameObject>();
+	[SerializeField] private List<Image> _charactersFacesBackground = new List<Image>();
+	[SerializeField] private List<Transform> _charactersFacesParentSingle = new List<Transform>();
+	[SerializeField] private List<Transform> _charactersFacesParentDouble = new List<Transform>();
+	[SerializeField] private List<Image> _charactersFacesSingle = new List<Image>();
+	[SerializeField] private List<Image> _charactersFacesDouble = new List<Image>();
 	[SerializeField] private List<Transform> _scoreContainers = new List<Transform>();
 
 	private List<Color> _playersColors = new List<Color>();
@@ -18,12 +24,98 @@ public class ScoreDisplayingUI : MonoBehaviour
 
 	private void Start()
 	{
+		foreach (var item in _charactersFacesParentSingle)
+		{
+			foreach(Transform child in item)
+			{
+				_charactersFacesSingle.Add(child.GetComponent<Image>());
+			}
+
+			item.gameObject.SetActive(false);
+		}
+		
+		foreach(var item in _charactersFacesParentDouble)
+		{
+			foreach(Transform child in item)
+			{
+				_charactersFacesDouble.Add(child.GetComponent<Image>());
+			}
+			
+			item.gameObject.SetActive(false);
+		}
+
+		/*for (int i = 0; i < 2; i++)
+		{
+			if (GameParameters.Instance.NumberOfPlayerBySide == 0)
+			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
+				_charactersFacesParentSingle[i].gameObject.SetActive(true);
+				_charactersFacesBackground[i].color = _playersColors[i];
+				_charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+			}
+			else
+			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i * 2].CharacterPrimaryColor);
+				_charactersFacesParentDouble[i].gameObject.SetActive(true);
+				_charactersFacesParentDouble[i].gameObject.SetActive(true);
+				_charactersFacesBackground[i].color = _playersColors[i];
+				_charactersFacesDouble[i * 2].sprite = GameParameters.Instance.PlayersCharacter[i * 2].Picture;
+				_charactersFacesDouble[i * 2 + 1].sprite = GameParameters.Instance.PlayersCharacter[i * 2 + 1].Picture;
+			}
+			
+			GameObject go = Instantiate(_setScorePrefab, _scoreContainers[i]);
+			go.GetComponent<ScoreDisplay>().Initialize(_playersColors[i], "0");
+
+			if (i == 0)
+				_team1Sets.Add(go);
+			else
+				_team2Sets.Add(go);
+
+			go = Instantiate(_currentGameScorePrefab, _scoreContainers[i]);
+			go.GetComponent<ScoreDisplay>().Initialize(_playersColors[i], "0");
+			_currentGamesScore.Add(go);
+		}*/
+
+		if (GameParameters.Instance.NumberOfPlayerBySide == 0)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
+				_charactersFacesParentSingle[i].gameObject.SetActive(true);
+				_charactersFacesBackground[i].color = _playersColors[i];
+				_charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+			}
+		}
+
+		else
+		{
+			for(int i = 0; i < 2; i++)
+			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
+				_charactersFacesParentDouble[i].gameObject.SetActive(true);
+				_charactersFacesBackground[i].color = _playersColors[i];
+			}
+
+			int firstSideCpt = 0;
+			int secondSideCpt = 2;
+
+			for (int i = 0; i < 4; i++)
+			{
+				if(i % 2 == 0)
+				{
+					_charactersFacesDouble[firstSideCpt].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+					firstSideCpt++;
+				}
+				else
+				{
+					_charactersFacesDouble[secondSideCpt].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+					secondSideCpt++;
+				}
+			}
+		}
+
 		for(int i = 0; i < 2; i++)
 		{
-			_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
-			_charactersFaces[i].GetComponent<Image>().color = GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor;
-			_charactersFaces[i].transform.GetChild(0).GetComponent<Image>().sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
-			
 			GameObject go = Instantiate(_setScorePrefab, _scoreContainers[i]);
 			go.GetComponent<ScoreDisplay>().Initialize(_playersColors[i], "0");
 

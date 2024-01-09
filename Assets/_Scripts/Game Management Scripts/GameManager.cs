@@ -40,7 +40,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
     [SerializeField] private float _leftFaultLineXFromFirstSide;
 
-    private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
+	[Header("Canvas References")]
+	[SerializeField] private GameObject _inGameUI;
+	[SerializeField] private GameObject _endGameUI;
+
+	private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
     private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
@@ -86,6 +90,8 @@ public class GameManager : MonoBehaviour
 
     public void Init()
     {
+        _endGameUI.SetActive(false);
+
         ServiceOnOriginalSide = true;
 
         GameState = GameState.SERVICE;
@@ -247,11 +253,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndOfGame()
+    public void EndOfGame(int playerIndex)
     {
         //TODO : uncomment when finished
         ControllerManager.Instance.ChangeCtrlersActMapToMenu();
-        SceneManager.LoadScene("Clean_UI_Final");
+        _inGameUI.SetActive(false);
+        _endGameUI.SetActive(true);
+        CameraManager.EndGameCameraMode();
+        _endGameUI.transform.GetChild(0).GetComponent<EndMatchUI>().Init(playerIndex);
+        //SceneManager.LoadScene("Clean_UI_Final");
         //Debug.Log("End of game !");
     }
 

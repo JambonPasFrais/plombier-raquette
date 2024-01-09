@@ -25,7 +25,7 @@ public class Controller : MonoBehaviour
 	};
 	[SerializeField] private TextMeshProUGUI _characterSelectionIndex;
 
-	[HideInInspector] public PlayerInput PlayerInput;// TODO : change this variable for private with getter and setter
+	[HideInInspector] public PlayerInput PlayerInput; // TODO : change this variable for private with getter and setter
 
 	[Header("Game Feel")]
 	[SerializeField] private float _speed;
@@ -131,7 +131,6 @@ public class Controller : MonoBehaviour
 	public void ResetView()
 	{
 		_characterSelected = false;
-		_imgCharSelectionIcon.color = Color.white;
 	}
 
 	public void SetPlayerIndex(int index)
