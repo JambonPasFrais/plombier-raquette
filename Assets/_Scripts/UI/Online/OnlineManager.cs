@@ -27,6 +27,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [Header("Other Menus Reference")]
     // Main Menu Reference
 	[SerializeField] private GameObject _mainMenu;
+    // Online Controller Selection Menu
+	[SerializeField] private GameObject _controllerSelectionMenu;
     // Online Character Selection Menu
     [SerializeField] private GameObject _characterSelection;
     // Online Room Menu Reference
@@ -117,7 +119,9 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 			_isConnecting = false;
         }
 
-        ChangeActivePanel(_characterSelection.name);
+        GameParameters.Instance.SetGameParameters(1, 1, new GameMode("Online", 1, 6), 0);
+        
+        ChangeActivePanel(_controllerSelectionMenu.name);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -159,10 +163,18 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnControllerSelected()
+    {
+        ChangeActivePanel(_characterSelection.name);
+    }
+
+    public void OnQuitCharactersSelection()
+    {
+        ChangeActivePanel(_controllerSelectionMenu.name);
+    }
+
     public void OnStartButtonClicked()
     {
-        GameParameters.Instance.SetGameParameters(1, 1, new GameMode("Online", 1, 6), 0);
-
         PhotonNetwork.LoadLevel("OnlineScene");
     }
 
@@ -206,6 +218,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public void ChangeActivePanel(string menuName)
     {
         _mainMenu.SetActive(menuName.Equals(_mainMenu.name));
+        _controllerSelectionMenu.SetActive(menuName.Equals(_controllerSelectionMenu.name));
         _characterSelection.SetActive(menuName.Equals(_characterSelection.name));
         _roomPanel.SetActive(menuName.Equals(_roomPanel.name));
     }

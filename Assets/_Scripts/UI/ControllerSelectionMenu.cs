@@ -17,6 +17,7 @@ public class ControllerSelectionMenu : MonoBehaviour
     #endregion
 
     #region Listeners
+
     public void OnControllerSelectionLoad()
     {   
         ControllerManager.Instance.Init(_characterSelectionMenu, this);
