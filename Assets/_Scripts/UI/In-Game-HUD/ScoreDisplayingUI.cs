@@ -76,7 +76,7 @@ public class ScoreDisplayingUI : MonoBehaviour
 			_currentGamesScore.Add(go);
 		}*/
 
-		if (GameParameters.Instance.NumberOfPlayerBySide == 0)
+		if (!GameParameters.Instance.IsDouble)
 		{
 			for (int i = 0; i < 2; i++)
 			{

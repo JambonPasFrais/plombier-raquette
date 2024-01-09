@@ -160,9 +160,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 	}
 	
 	// Display right number of showrooms whether it is a single or double match
-	public void SetNumberOfShowrooms(int numberOfPlayerBySide)
+	public void SetNumberOfShowrooms(bool isDouble)
 	{
-		if (numberOfPlayerBySide == 2)
+		if (isDouble)
 		{
 			_matchDoubleWindow.SetActive(true);
 			_matchSingleWindow.SetActive(false);
@@ -190,7 +190,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		_charactersModel = MenuManager.Instance.CharactersModel;
 		_aceItWindow.SetActive(false);
 
-		SetNumberOfShowrooms(GameParameters.Instance.NumberOfPlayerBySide + 1);
+		SetNumberOfShowrooms(GameParameters.Instance.IsDouble);
 		SetPlayerInfos();
 		_playButton.interactable = false;
 

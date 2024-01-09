@@ -33,7 +33,7 @@ public class EndMatchUI : MonoBehaviour
 
 		gameObject.SetActive(true);
 
-		if(GameParameters.Instance.NumberOfPlayerBySide == 0)
+		if(!GameParameters.Instance.IsDouble)
 		{
 			_singleMatchParent.gameObject.SetActive(true);
 			InstantiateCharacter(winnerIndex, _modelLocationsSingle[0]);

@@ -14,7 +14,7 @@ public class RulesMenu : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _gameModeText;
 	[SerializeField] private TextMeshProUGUI _comDifficultyText;
 	[SerializeField] private TextMeshProUGUI _explanationText;
-	[SerializeField] private int _currentGameType;
+	private int _currentGameType;
 	private int _currentGameMode;
 	private int _currentCOMDifficulty;
 	private List<string> _gameTypes = new List<string>()
@@ -113,6 +113,7 @@ public class RulesMenu : MonoBehaviour
 
 	public void ValidateRules()
 	{
-		GameParameters.Instance.SetGameParameters(_currentNumberOfPlayers, _currentGameType, _gameModes[_currentGameMode], _currentCOMDifficulty);
+		bool isDouble = _currentGameType == 1;
+		GameParameters.Instance.SetGameParameters(_currentNumberOfPlayers, isDouble, _gameModes[_currentGameMode], _currentCOMDifficulty);
 	}
 }

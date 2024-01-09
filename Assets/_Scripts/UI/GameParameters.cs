@@ -8,7 +8,7 @@ public class GameParameters : MonoBehaviour
 {
 	[SerializeField] private int _localNbPlayers;
 	private bool _isOnline;
-	[SerializeField] private int _numberOfPlayerBySide;
+	[SerializeField] private bool _isDouble;
 	[SerializeField] private GameMode _currentGameMode;
 	[SerializeField] private int _COMDifficulty;
 	[SerializeField] private List<CharacterData> _playersCharacters = new List<CharacterData>(); // TODO : delete [serializeField] after tests
@@ -36,7 +36,7 @@ public class GameParameters : MonoBehaviour
         get { return _instance._isTournamentMode; }
         set { _instance._isTournamentMode = value; }
     }
-    public int NumberOfPlayerBySide => _numberOfPlayerBySide;
+    public bool IsDouble => _isDouble;
     
     #endregion
 
@@ -57,9 +57,9 @@ public class GameParameters : MonoBehaviour
         _isOnline = isOnline;
     }
 
-    public void SetGameParameters(int nbOfLocalPlayers, int isDouble, GameMode gameMode, int COMDifficulty)
+    public void SetGameParameters(int nbOfLocalPlayers, bool isDouble, GameMode gameMode, int COMDifficulty)
     {
-        _numberOfPlayerBySide = isDouble;
+        _isDouble = isDouble;
         _COMDifficulty = COMDifficulty;
         _localNbPlayers = nbOfLocalPlayers;
         _isTournamentMode = false;
