@@ -66,6 +66,7 @@ public class PlayerController : ControllersParent
         ServicesCount = 0;
         _hitKeyPressedTime = 0f;
         _isCharging = false;
+        _chargingShotGo.SetActive(false);
         _currentSpeed = _movementSpeed;
         if (_playerCameraController == null)
             _playerCameraController = GetComponent<PlayerCameraController>();
@@ -80,6 +81,9 @@ public class PlayerController : ControllersParent
             if (_hitKeyPressedTime < _maximumHitKeyPressTime)
             {
                 _hitKeyPressedTime += Time.deltaTime;
+                if (_hitKeyPressedTime >= 0.1f)
+                    if (!_chargingShotGo.activeSelf)
+                        _chargingShotGo.SetActive(true);
             }
         }
     }
@@ -168,6 +172,7 @@ public class PlayerController : ControllersParent
         {
             _hitKeyPressedTime = 0f;
             _isCharging = false;
+            _chargingShotGo.SetActive(false);
             _currentSpeed = _movementSpeed;
             return;
         }
@@ -189,6 +194,7 @@ public class PlayerController : ControllersParent
         // Hit charging variables are reset.
         _hitKeyPressedTime = 0f;
         _isCharging = false;
+        _chargingShotGo.SetActive(false);
         _currentSpeed = _movementSpeed;
 
         // Reseting smash and target states.
