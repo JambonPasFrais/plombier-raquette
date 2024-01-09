@@ -179,7 +179,7 @@ public class PlayerController : ControllersParent
         #endregion
         
         // Look Front (feels weird to not look forward when you shoot)
-        _avatarVisual.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);;
+        _avatarVisual.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);

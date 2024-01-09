@@ -55,6 +55,10 @@ public class BotBehavior : ControllersParent
             {
                 MoveTowardsBallX();
             }
+            else
+            {
+                _playerAnimator.IdleAnimation();
+            }
 
             if (_ballDetectionArea.IsBallInHitZone && _ballDetectionArea.Ball.LastPlayerToApplyForce != this && PlayerState != PlayerStates.SERVE)
             {
@@ -119,6 +123,12 @@ public class BotBehavior : ControllersParent
     
     private void HitBall()
     {
+        #region ANIMATIONS
+        EndALlAnims();
+        _isShooting = true;
+        _playerAnimator.StrikeAnimation();
+        #endregion
+        
         float force;
         Vector3 direction;
 
@@ -138,10 +148,7 @@ public class BotBehavior : ControllersParent
             direction = Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.forward) + Vector3.Project(targetPoint - _ballInstance.gameObject.transform.position, Vector3.right);
             force = Random.Range(_minimumShotForce, _maximumShotForce);
 
-            if (PlayerState != PlayerStates.PLAY)
-            {
-                PlayerState = PlayerStates.PLAY;
-            }
+            PlayerState = PlayerStates.PLAY;
         }
 
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
@@ -154,7 +161,23 @@ public class BotBehavior : ControllersParent
 
     private void MoveTowardsBallX()
     {
+        // Target pos in X
         _targetPosVector3.x = _ballInstance.gameObject.transform.position.x;
+
+        // Tolerance of 1f difference between the two
+        if (Math.Abs(transform.position.x - _targetPosVector3.x) < 0.0000000000001)
+        {
+            // Animation
+            if (!_isShooting && !_isSmashing && !_isCommunicating)
+                _playerAnimator.IdleAnimation();
+            return;
+        }
+        
+        // Animation
+        if (!_isShooting && !_isSmashing && !_isCommunicating)
+            _playerAnimator.RunAnimation();
+        
+        // Position
         transform.position = Vector3.MoveTowards(transform.position, _targetPosVector3, _speed * Time.deltaTime);
     }
 
