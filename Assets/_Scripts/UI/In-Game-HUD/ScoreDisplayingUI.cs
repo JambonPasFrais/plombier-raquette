@@ -99,7 +99,7 @@ public class ScoreDisplayingUI : MonoBehaviour
 			int firstSideCpt = 0;
 			int secondSideCpt = 2;
 
-			for (int i = 0; i < 4; i++)
+			/*for (int i = 0; i < 4; i++)
 			{
 				if(i % 2 == 0)
 				{
@@ -111,7 +111,7 @@ public class ScoreDisplayingUI : MonoBehaviour
 					_charactersFacesDouble[secondSideCpt].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
 					secondSideCpt++;
 				}
-			}
+			}*/
 		}
 
 		for(int i = 0; i < 2; i++)
