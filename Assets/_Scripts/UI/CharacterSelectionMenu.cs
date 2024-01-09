@@ -276,8 +276,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 		CharacterData cd = ReturnRandomCharacter();
 		_charactersUI.Where(x => x.Character.Name == cd.Name).FirstOrDefault().SetSelected(true);
 		_currentShowroomList[playerIndex].CharacterName.text = cd.Name;
-		_currentShowroomList[playerIndex].Background.color = cd.CharacterPrimaryColor;
-		_currentShowroomList[playerIndex].NameBackground.color = cd.CharacterSecondaryColor;
+		_currentShowroomList[playerIndex].Background.color = cd.CharacterBackgroundColor;
+		_currentShowroomList[playerIndex].NameBackground.color = cd.CharacterNameBackgroundColor;
 		_currentShowroomList[playerIndex].CharacterEmblem.gameObject.SetActive(true);
 		_currentShowroomList[playerIndex].CharacterEmblem.sprite = cd.CharactersLogo;
 
@@ -305,8 +305,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 				return;
 			
 			_currentShowroomList[i].CharacterName.text = characterUI.Character.Name;
-			_currentShowroomList[i].Background.color = characterUI.Character.CharacterPrimaryColor;
-			_currentShowroomList[i].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
+			_currentShowroomList[i].Background.color = characterUI.Character.CharacterBackgroundColor;
+			_currentShowroomList[i].NameBackground.color = characterUI.Character.CharacterNameBackgroundColor;
 
 			characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
 			characterModel.transform.localPosition = Vector3.zero;
@@ -476,8 +476,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 				characterUI.SetSelected(true);
 
 			_currentShowroomList[playerIndex].CharacterName.text = characterUI.Character.Name;
-			_currentShowroomList[playerIndex].Background.color = characterUI.Character.CharacterPrimaryColor;
-			_currentShowroomList[playerIndex].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
+			_currentShowroomList[playerIndex].Background.color = characterUI.Character.CharacterBackgroundColor;
+			_currentShowroomList[playerIndex].NameBackground.color = characterUI.Character.CharacterNameBackgroundColor;
 
 			if (characterUI.Character.Name != "Random") 
 			{

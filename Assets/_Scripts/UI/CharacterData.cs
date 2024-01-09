@@ -11,8 +11,9 @@ public class CharacterData : ScriptableObject
     public string Name;
     public Sprite Picture;
     public Sprite CharactersLogo;
-    public Color CharacterPrimaryColor;
-    public Color CharacterSecondaryColor;
+    public Color CharacterBackgroundColor;
+    public Color CharacterNameBackgroundColor;
+    public Color CharacterNameTextColor;
     
     [Header("Instance")]
     public GameObject HumanControllerPrefab;

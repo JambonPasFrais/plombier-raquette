@@ -20,8 +20,8 @@ public class ScoreDisplayingUI : MonoBehaviour
 	{
 		for(int i = 0; i < 2; i++)
 		{
-			_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
-			_charactersFaces[i].GetComponent<Image>().color = GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor;
+			_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterBackgroundColor);
+			_charactersFaces[i].GetComponent<Image>().color = GameParameters.Instance.PlayersCharacter[i].CharacterBackgroundColor;
 			_charactersFaces[i].transform.GetChild(0).GetComponent<Image>().sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
 			
 			GameObject go = Instantiate(_setScorePrefab, _scoreContainers[i]);

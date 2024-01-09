@@ -21,12 +21,13 @@ public class PlayerShowroom
         Container.SetActive(true);
         PlayerInfo.text = username;
         CharacterName.text = data.Name;
-        NameBackground.color = data.CharacterSecondaryColor;
+        CharacterName.color = data.CharacterNameTextColor;
+        NameBackground.color = data.CharacterNameBackgroundColor;
         GameObject model = GameObject.Instantiate(data.BasicModel, ModelLocation);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		model.transform.localScale = new Vector3(20, 20, 20);
-        Background.color = data.CharacterPrimaryColor;
+        Background.color = data.CharacterBackgroundColor;
         CharacterEmblem.sprite = data.CharactersLogo;
 	}
 

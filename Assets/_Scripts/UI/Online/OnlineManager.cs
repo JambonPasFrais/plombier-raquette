@@ -117,7 +117,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 			_isConnecting = false;
         }
 
-        ChangeActivePanel(CharacterSelection.name);
+        ChangeActivePanel(_characterSelection.name);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -141,7 +141,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
             GetOtherPlayersInRoomInformation();
         }
-
+            
         _playerShowrooms[0].InitializeOnlineShowroom(GameParameters.Instance.GetCharactersPlayers(), PhotonNetwork.LocalPlayer.NickName);
 
         if (PhotonNetwork.IsMasterClient)
@@ -172,7 +172,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public void OnOnlineButtonClicked()
     {
         StartCoroutine(Connect());
-        ChangeActivePanel(_characterSelection.name);
     }
 
     public void OnPlayButtonClicked()

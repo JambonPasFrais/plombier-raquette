@@ -15,7 +15,7 @@ public class FieldFrontRight : FieldGroundPart
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
-                if (PhotonNetwork.IsConnected && _ownerPlayer.GetComponent<PhotonView>().IsMine)
+                if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, false);
                 }
@@ -55,7 +55,7 @@ public class FieldFrontRight : FieldGroundPart
                     }
                     else
                     {
-                        if (PhotonNetwork.IsConnected && _ownerPlayer.GetComponent<PhotonView>().IsMine)
+                        if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
                         {
                             GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, true);
                         }

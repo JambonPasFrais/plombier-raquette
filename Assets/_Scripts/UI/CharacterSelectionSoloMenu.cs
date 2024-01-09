@@ -25,9 +25,9 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 
 	private void Start()
 	{
-		_characters = MenuManager.Characters;
-		_charactersModelsParent = MenuManager.CharactersModelsParent;
-		_charactersModel = MenuManager.CharactersModel;
+		_characters = MenuManager.Instance.Characters;
+		_charactersModelsParent = MenuManager.Instance.CharactersModelsParent;
+		_charactersModel = MenuManager.Instance.CharactersModel;
 		_availableCharacters = new List<CharacterData>(_characters);
 
         _playButton.interactable = false;
@@ -37,7 +37,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _charactersListTransform);
 			go.GetComponent<CharacterUI>().SetVisual(item);
-            go.GetComponent<CharacterUI>().setCharacterSelectionSoloMenu(this);
+            go.GetComponent<CharacterUI>().SetCharacterSelectionSoloMenu(this);
             _selectableCharacters.Add(go.GetComponent<CharacterUI>());
 		}
 	}
@@ -57,7 +57,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 				if (characterUI != _selectableCharacters.Last())
 					characterUI.SetSelected(true);
 				_selectedCharactersName.text = characterUI.Character.Name;
-				_selectedCharacterBackground.color = characterUI.Character.CharacterColor;
+				_selectedCharacterBackground.color = characterUI.Character.CharacterBackgroundColor;
 
 				if (_characterModelLocation.childCount > 0)
 				{
