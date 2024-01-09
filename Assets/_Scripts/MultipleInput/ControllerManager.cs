@@ -22,17 +22,18 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private string _menuActionMapName;
     [SerializeField] private string _gameActionMapName;
     [SerializeField] private TextMeshProUGUI _numberOfControllersConnectedOnMenu;
+    [SerializeField] private TextMeshProUGUI _numberOfControllersConnectedOnOnlineMenu;
 
     [SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
-    private CharacterSelectionMenu _characterSelectionMenu;
+    private GeneralCharacterSelectionMenu _characterSelectionMenu;
     private ControllerSelectionMenu _controllerSelectionMenu;
     private Coroutine _currentDeleteCtrlCoroutine;
 
     #region Getters
 
-    public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
+    public GeneralCharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
     public static Dictionary<int, PlayerInputHandler> Controllers => _instance._controllers;
     
     #endregion
@@ -74,13 +75,14 @@ public class ControllerManager : MonoBehaviour
         _currentDeleteCtrlCoroutine = StartCoroutine(DeleteControllerCoroutine(playerInput.devices[0].deviceId));
     }
     
-    public void Init(CharacterSelectionMenu characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
+    public void Init(GeneralCharacterSelectionMenu characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
         _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
         _characterSelectionMenu = characterSelectionMenuRef;
         _controllerSelectionMenu = controllerSelectionMenu;
         _controllers = new Dictionary<int, PlayerInputHandler>();
         _numberOfControllersConnectedOnMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
+        _numberOfControllersConnectedOnOnlineMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
 	}
     
     public void SwitchCtrlersToCharSelectMode(Transform charSelectionContainer)
@@ -125,6 +127,7 @@ public class ControllerManager : MonoBehaviour
         
         _controllers.Clear();
         _numberOfControllersConnectedOnMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
+        _numberOfControllersConnectedOnOnlineMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
     }
 
     public void ResetControllers()
@@ -175,6 +178,7 @@ public class ControllerManager : MonoBehaviour
         _controllerSelectionMenu.MakeValidationButtonNotInteractable();
 
         _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
+        _numberOfControllersConnectedOnOnlineMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
     }
     
     #endregion
@@ -234,6 +238,7 @@ public class ControllerManager : MonoBehaviour
             _controllerSelectionMenu.MakeValidationButtonInteractable();
 		
         _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
+        _numberOfControllersConnectedOnOnlineMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
 	}
     #endregion
     

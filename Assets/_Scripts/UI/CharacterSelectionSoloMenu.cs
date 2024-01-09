@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CharacterSelectionSoloMenu : MonoBehaviour
+public class CharacterSelectionSoloMenu : GeneralCharacterSelectionMenu
 {
 	[SerializeField] private GameObject _characterUIPrefab;
 	[SerializeField] private List<CharacterData> _characters = new List<CharacterData>();

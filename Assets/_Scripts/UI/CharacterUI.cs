@@ -17,14 +17,17 @@ public class CharacterUI : MonoBehaviour
     public bool IsSelected => _isSelected;
 
     public CharacterData Character => _character;
+
     public void SetCharacterSelectionMenu(CharacterSelectionMenu characterSelectionMenu)
     {
         _characterSelectionMenu = characterSelectionMenu;
     }
+
     public void SetCharacterSelectionSoloMenu(CharacterSelectionSoloMenu characterSelectionSoloMenu)
     {
         _characterSelectionSoloMenu = characterSelectionSoloMenu;
     }
+
     public void SetVisual(CharacterData character)
     {
         _character = character;
@@ -38,6 +41,7 @@ public class CharacterUI : MonoBehaviour
         _isSelected = isSelected;
         _isSelectedImage.SetActive(isSelected);
     }
+
     public void Select()
     {
         if (_characterSelectionSoloMenu != null)

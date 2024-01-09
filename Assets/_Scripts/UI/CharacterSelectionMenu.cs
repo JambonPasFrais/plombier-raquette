@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class CharacterSelectionMenu : MonoBehaviour
+public class CharacterSelectionMenu : GeneralCharacterSelectionMenu
 {
 	[Header("Instances")] 
 	// Windows

@@ -54,8 +54,6 @@ public class Controller : MonoBehaviour
 		if (_isSelectingCharacter)
 			return;
 
-		Debug.Log(PlayerInput.playerIndex);
-
 		transform.DOComplete();
 		transform.DOPunchScale(Vector3.one * .1f, .2f);
 	}
@@ -81,7 +79,8 @@ public class Controller : MonoBehaviour
 
 		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
 
-		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterSelectionInput(ray, PlayerInput.playerIndex))
+		if (ControllerManager.Instance.CharacterSelectionMenu is CharacterSelectionMenu &&
+			((CharacterSelectionMenu)ControllerManager.Instance.CharacterSelectionMenu).HandleCharacterSelectionInput(ray, PlayerInput.playerIndex)) 
 		{
 			_characterSelected = true;
 			_imgCharSelectionIcon.color /= 2;
@@ -96,7 +95,8 @@ public class Controller : MonoBehaviour
 		if (!_characterSelected)
 			return;
 
-		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))
+		if (ControllerManager.Instance.CharacterSelectionMenu is CharacterSelectionMenu &&
+			((CharacterSelectionMenu)ControllerManager.Instance.CharacterSelectionMenu).HandleCharacterDeselectionInput(PlayerInput.playerIndex)) 
 		{
 			_characterSelected = false;
 			_imgCharSelectionIcon.color = Color.white;

@@ -108,6 +108,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             PhotonNetwork.ConnectUsingSettings();
         }
 
+        GameParameters.Instance.SetGameParameters(1, 1, new GameMode("Online", 1, 6), 0);
+
         yield return null;
     }
 
@@ -117,11 +119,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
 			_playCharacterSelectionButton.interactable = true;
 			_isConnecting = false;
+            ChangeActivePanel(_controllerSelectionMenu.name);
         }
-
-        GameParameters.Instance.SetGameParameters(1, 1, new GameMode("Online", 1, 6), 0);
-        
-        ChangeActivePanel(_controllerSelectionMenu.name);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -163,7 +162,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void OnControllerSelected()
+    public void OnControllersSelectionButtonPressed()
     {
         ChangeActivePanel(_characterSelection.name);
     }

@@ -225,6 +225,10 @@ PrefabInstance:
       propertyPath: _numberOfControllersConnectedOnMenu
       value: 
       objectReference: {fileID: 1759942138}
+    - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
+      propertyPath: _numberOfControllersConnectedOnOnlineMenu
+      value: 
+      objectReference: {fileID: 1754299300}
     - target: {fileID: 4253818265338514160, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -696,6 +700,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7270638419825421073, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
   m_PrefabInstance: {fileID: 7094326376046864619}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1754299300 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2688604654392111425, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
+  m_PrefabInstance: {fileID: 7094326376046864619}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1759942138 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1947825613542658684, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
@@ -1311,7 +1326,7 @@ PrefabInstance:
       objectReference: {fileID: 1091813754}
     - target: {fileID: 1690947426273747572, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OnControllerSelected
+      value: OnControllersSelectionButtonPressed
       objectReference: {fileID: 0}
     - target: {fileID: 1690947426273747572, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -1525,6 +1540,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2965871308218426434, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
+      propertyPath: _characterSelectionMenu
+      value: 
+      objectReference: {fileID: 622852958}
     - target: {fileID: 2979178913064208112, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -2096,6 +2115,10 @@ PrefabInstance:
     - target: {fileID: 6185415535981547471, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369429423511902987, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
+      propertyPath: m_Name
+      value: CharactersSelectionButton
       objectReference: {fileID: 0}
     - target: {fileID: 6398465963792190206, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_fontAsset

@@ -7,7 +7,7 @@ public class ControllerSelectionMenu : MonoBehaviour
 {
     [SerializeField] private Transform _controllerSelectionContainer;
     [SerializeField] private Transform _characterSelectionContainer;
-    [SerializeField] private CharacterSelectionMenu _characterSelectionMenu;
+    [SerializeField] private GeneralCharacterSelectionMenu _characterSelectionMenu;
     [SerializeField] private Button _validationButton;
     
     #region Getters
