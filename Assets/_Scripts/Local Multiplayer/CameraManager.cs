@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [Header("Instances")] [SerializeField] private Transform _soloCamerasContainer;
+    [Header("Instances")] 
+    [SerializeField] private Transform _soloCamerasContainer;
     [SerializeField] private Transform _splitScreenCamerasContainer;
+    [SerializeField] private GameObject _endGameUICamera;
     //[SerializeField] private List<Transform> _activeCameraTransformsBySide;
 
     private bool _splitScreenCameraIsOn;
@@ -44,6 +46,8 @@ public class CameraManager : MonoBehaviour
 
             _splitScreenCamerasBySide.Add(i == 0 ? "Left" : "Right", cameraListForCurrentSide);
         }
+
+        _endGameUICamera.SetActive(false);
     }
 
     public void InitSplitScreenCameras()
@@ -162,4 +166,18 @@ public class CameraManager : MonoBehaviour
             }
         }
     }
+
+    public void EndGameCameraMode()
+    {
+        foreach(var soloCamera in _soloCameras)
+            soloCamera.gameObject.SetActive(false);
+
+		foreach (var splitScreenCamera in _splitScreenCamerasBySide.Values)
+		{
+			splitScreenCamera[0].gameObject.SetActive(false);
+			splitScreenCamera[1].gameObject.SetActive(false);
+		}
+
+        _endGameUICamera.SetActive(true);
+	}
 }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,7 +24,6 @@ public class ScoreDisplayingUI : MonoBehaviour
 
 	private void Start()
 	{
-		
 		foreach (var item in _charactersFacesParentSingle)
 		{
 			foreach(Transform child in item)
@@ -44,7 +44,7 @@ public class ScoreDisplayingUI : MonoBehaviour
 			item.gameObject.SetActive(false);
 		}
 
-		for (int i = 0; i < 2; i++)
+		/*for (int i = 0; i < 2; i++)
 		{
 			if (GameParameters.Instance.NumberOfPlayerBySide == 0)
 			{
@@ -63,6 +63,59 @@ public class ScoreDisplayingUI : MonoBehaviour
 				_charactersFacesDouble[i * 2 + 1].sprite = GameParameters.Instance.PlayersCharacter[i * 2 + 1].Picture;
 			}
 			
+			GameObject go = Instantiate(_setScorePrefab, _scoreContainers[i]);
+			go.GetComponent<ScoreDisplay>().Initialize(_playersColors[i], "0");
+
+			if (i == 0)
+				_team1Sets.Add(go);
+			else
+				_team2Sets.Add(go);
+
+			go = Instantiate(_currentGameScorePrefab, _scoreContainers[i]);
+			go.GetComponent<ScoreDisplay>().Initialize(_playersColors[i], "0");
+			_currentGamesScore.Add(go);
+		}*/
+
+		if (GameParameters.Instance.NumberOfPlayerBySide == 0)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
+				_charactersFacesParentSingle[i].gameObject.SetActive(true);
+				_charactersFacesBackground[i].color = _playersColors[i];
+				_charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+			}
+		}
+
+		else
+		{
+			for(int i = 0; i < 2; i++)
+			{
+				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
+				_charactersFacesParentDouble[i].gameObject.SetActive(true);
+				_charactersFacesBackground[i].color = _playersColors[i];
+			}
+
+			int firstSideCpt = 0;
+			int secondSideCpt = 2;
+
+			for (int i = 0; i < 4; i++)
+			{
+				if(i % 2 == 0)
+				{
+					_charactersFacesDouble[firstSideCpt].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+					firstSideCpt++;
+				}
+				else
+				{
+					_charactersFacesDouble[secondSideCpt].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+					secondSideCpt++;
+				}
+			}
+		}
+
+		for(int i = 0; i < 2; i++)
+		{
 			GameObject go = Instantiate(_setScorePrefab, _scoreContainers[i]);
 			go.GetComponent<ScoreDisplay>().Initialize(_playersColors[i], "0");
 
