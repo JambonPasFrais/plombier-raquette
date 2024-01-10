@@ -237,7 +237,7 @@ MonoBehaviour:
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   _smashTargetGo: {fileID: 571886968}
   ServiceOnOriginalSide: 0
-  _net: {fileID: 367314914}
+  _net: {fileID: 0}
   _controllers: []
   _borderPointsContainers:
   - {fileID: 7493242006341393620}
@@ -607,6 +607,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tennis Stadium
       objectReference: {fileID: 0}
+    - target: {fileID: 7856735087204898706, guid: f0dcf41327d38de42b5b8f74ecd842fa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4009776673596494971, guid: f0dcf41327d38de42b5b8f74ecd842fa, type: 3}
@@ -618,11 +622,6 @@ PrefabInstance:
 --- !u!4 &367314913 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7250993189568247187, guid: f0dcf41327d38de42b5b8f74ecd842fa, type: 3}
-  m_PrefabInstance: {fileID: 367314912}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &367314914 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2314928016930835791, guid: f0dcf41327d38de42b5b8f74ecd842fa, type: 3}
   m_PrefabInstance: {fileID: 367314912}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &395453400
