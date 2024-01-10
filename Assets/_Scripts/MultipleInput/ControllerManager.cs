@@ -239,7 +239,7 @@ public class ControllerManager : MonoBehaviour
     
     #region LocalMultiplayer implementation test simplification
     //TODO : comment when local multiplayer implementation is finished
-    /*
+   /* 
     public List<PlayerInputHandler> _playerInputHandlers;
 
     public void CreateControllersDict()
