@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 
 public class Ball : MonoBehaviour
@@ -25,10 +27,17 @@ public class Ball : MonoBehaviour
     [SerializeField] private int _reboundsCount;
     [SerializeField] private GameObject _smashStarInstance;
 
+    [Header("GA")] [SerializeField] private Gradient _dropColor;
+    [SerializeField] private Gradient _lobColor;
+    [SerializeField] private Gradient _topSpinColor;
+    [SerializeField] private Gradient _sliceColor;
+    [SerializeField] private Gradient _flatColor;
+
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
     private SphereCollider _sphereCollider;
+    private Dictionary<HitType, Gradient> _colorGradientByHitType;
 
     #endregion
 
@@ -49,6 +58,7 @@ public class Ball : MonoBehaviour
         _sphereCollider = GetComponent<SphereCollider>();
         _trailRenderer = GetComponent<TrailRenderer>();
         _rigidBody = GetComponent<Rigidbody>();
+        _colorGradientByHitType = new Dictionary<HitType, Gradient>();
     }
 
     private void Update()
@@ -270,6 +280,28 @@ public class Ball : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region ART
+
+    private void ModifyTrailRendererColorByHitType(HitType hitType)
+    {
+        switch (hitType)
+        {
+            case HitType.Drop:
+                _trailRenderer.colorGradient = _colorGradientByHitType[hitType];
+                break;
+            case HitType.Lob:
+                break;
+            case HitType.Slice:
+                break;
+            case HitType.Flat:
+                break;
+            case HitType.TopSpin:
+                break;
+        }
+    }
+    
     #endregion
 }
 
