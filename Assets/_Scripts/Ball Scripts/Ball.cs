@@ -33,12 +33,14 @@ public class Ball : MonoBehaviour
     [SerializeField] private Gradient _sliceColor;
     [SerializeField] private Gradient _flatColor;
     [SerializeField] private Gradient _smashColor;
+    [SerializeField] private ParticleSystem _hitEffect;
 
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
     private SphereCollider _sphereCollider;
     private Dictionary<HitType, Gradient> _colorGradientByHitType;
+    private Coroutine _currentHitEffectCoroutine;
 
     #endregion
 
@@ -60,6 +62,7 @@ public class Ball : MonoBehaviour
         _trailRenderer = GetComponent<TrailRenderer>();
         _rigidBody = GetComponent<Rigidbody>();
         CreateColorGradientByHitTypeDict();
+        _hitEffect.Stop();
     }
 
     private void Update()
@@ -300,6 +303,23 @@ public class Ball : MonoBehaviour
     private void ModifyTrailRendererColorByHitType(HitType hitType)
     {
         _trailRenderer.colorGradient = _colorGradientByHitType[hitType];
+    }
+
+    public void PlayHitEffect()
+    {
+        if (_currentHitEffectCoroutine != null)
+            StopCoroutine(_currentHitEffectCoroutine);
+        
+        _currentHitEffectCoroutine = StartCoroutine(HitEffectCoroutine());
+    }
+
+    private IEnumerator HitEffectCoroutine()
+    {
+        _hitEffect.Play();
+        
+        yield return new WaitForSeconds(_hitEffect.main.duration);
+        
+        _hitEffect.Stop();
     }
     
     #endregion

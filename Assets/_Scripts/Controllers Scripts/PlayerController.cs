@@ -171,6 +171,8 @@ public class PlayerController : ControllersParent
             _playerAnimator.StrikeAnimation();
             _isShooting = true;
         }
+        
+        _ballInstance.PlayHitEffect();
         #endregion
         
         // Look Front (feels weird to not look forward when you shoot)
