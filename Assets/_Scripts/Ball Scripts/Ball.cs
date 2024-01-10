@@ -113,6 +113,8 @@ public class Ball : MonoBehaviour
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
     {
+        PlayHitEffect();
+        
         _rigidBody.velocity = Vector3.zero;
 
         if (_currentMovementCoroutine != null)
