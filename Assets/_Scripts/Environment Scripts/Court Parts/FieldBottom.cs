@@ -17,9 +17,10 @@ public class FieldBottom : FieldGroundPart
             {
                 if(PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine) 
                 {
-                    GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, false);
+                    Teams winningPointTeam = ball.LastPlayerToApplyForce.PlayerTeam;
+                    GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
                 }
-                if(!PhotonNetwork.IsConnected)
+                if (!PhotonNetwork.IsConnected)
                 {
                     GameManager.Instance.EndOfPoint();
                     GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
@@ -40,7 +41,7 @@ public class FieldBottom : FieldGroundPart
                         ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                         ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
                         
-                        if (PhotonNetwork.IsConnected)
+                        if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
                         {
                             GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
@@ -57,12 +58,13 @@ public class FieldBottom : FieldGroundPart
                     {
                         if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
                         {
-                            GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, true);
+                            Teams winningPointTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                            GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
                         }
                         else if(!PhotonNetwork.IsConnected)
                         {
                             GameManager.Instance.EndOfPoint();
-                            Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
+                            Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                             GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                         }
                     }

@@ -119,7 +119,6 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
-
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic
@@ -130,6 +129,7 @@ public class PlayerController : ControllersParent
             _currentSpeed = _movementSpeed;
             return;
         }
+        
         //_ballDetectionArea.Ball.GetComponent<PhotonView>().RequestOwnership();
         // The force to apply to the ball is calculated considering how long the player pressed the key and where is the player compared to the net position.
         float hitKeyPressTime = hitType == HitType.Lob ? _minimumHitKeyPressTimeToIncrementForce : Mathf.Clamp(_hitKeyPressedTime, _minimumHitKeyPressTimeToIncrementForce, _maximumHitKeyPressTime);

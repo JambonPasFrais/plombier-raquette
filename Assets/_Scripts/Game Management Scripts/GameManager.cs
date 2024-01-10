@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            InstantiatePlayer();
+            InstantiatePlayer(PhotonNetwork.IsMasterClient);
 
             if (PhotonNetwork.IsMasterClient == false)
             {
@@ -166,12 +166,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
             }
         }
-
-        _faultLinesXByTeam = new Dictionary<Teams, float[]>()
-        {
-            {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
-            {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
-        };
     }
 
     private void Update()
@@ -207,6 +201,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
             }
+
+            _faultLinesXByTeam = new Dictionary<Teams, float[]>()
+            {   
+                {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
+                {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
+            };
         }
     }
 
@@ -341,10 +341,21 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void InstantiatePlayer()
+    private void InstantiatePlayer(bool isMasterClient)
     {
-        GameObject go = PhotonNetwork.Instantiate(_playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
-        _controllers.Add(go.GetComponent<PlayerController>());
+        GameObject playerObject = PhotonNetwork.Instantiate(_playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+        PlayerController playerController = playerObject.GetComponent<PlayerController>();
+
+        if (isMasterClient)
+        {
+            playerController.PlayerTeam = Teams.TEAM1;
+        }
+        else
+        {
+            playerController.PlayerTeam = Teams.TEAM2;
+        }
+
+        _controllers.Add(playerController);
     }
 
     private void FindController()
@@ -386,7 +397,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         _controllers[_serverIndex].IsServing = true;
         _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
         GameManager.Instance.SideManager.SetSideOnline(true, ServiceOnOriginalSide);
-        //GameManager.Instance.ServiceManager.SetServiceOnline(false);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
         _ballInstance.GetComponent<Ball>().ResetBall();
@@ -435,16 +445,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void EndPoint(bool fault)
+    public void SetSidesInOnlineMatch(bool serveRight, bool originalSides)
     {
-        Teams team = BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam;
-        if (fault)
-        {
-            BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.ServicesCount = 0;
-            team = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)BallInstance.GetComponent<Ball>().LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-        }
+        SideManager.SetSidesInOnlineMatch(serveRight, originalSides, PhotonNetwork.IsMasterClient);
+    }
+
+    [PunRPC]
+    private void EndPoint(Teams winningPointTeam)
+    {
         GameManager.Instance.EndOfPoint();
-        GameManager.Instance.ScoreManager.AddPoint(team);
+        GameManager.Instance.ScoreManager.AddPoint(winningPointTeam);
         BallInstance.GetComponent<Ball>().ResetBall();
     }
 }

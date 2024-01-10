@@ -217,11 +217,10 @@ public class SideManager : MonoBehaviour
 
     public void SetSideOnline(bool serveRight, bool originalSides)
     {
-        GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.All, serveRight, originalSides);
+        GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.AllViaServer, serveRight, originalSides);
     }
 
-    [PunRPC]
-    public void SetSidesInOnlineMatch(bool serveRight, bool originalSides)
+    public void SetSidesInOnlineMatch(bool serveRight, bool originalSides, bool isMasterClient)
     {
         string side = "";
         List<ControllersParent> players = GameManager.Instance.Controllers;
@@ -229,7 +228,7 @@ public class SideManager : MonoBehaviour
 
         if (originalSides)
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (isMasterClient)
             {
                 _activeCameraTransform = _cameras[0].transform;
                 _cameras[0].SetActive(true);
@@ -237,18 +236,7 @@ public class SideManager : MonoBehaviour
                 players[0].transform.position = _servicePointsFirstSide[side][0].position;
                 players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
             }
-            else if(PhotonNetwork.IsMasterClient == false)
-            {
-                _activeCameraTransform = _cameras[1].transform;
-                _cameras[0].SetActive(false);
-                _cameras[1].SetActive(true);
-                players[1].transform.position = _servicePointsSecondSide[side][0].position;
-                players[1].transform.rotation = _servicePointsSecondSide[side][0].rotation;
-            }
-        }
-        else
-        {
-            if (PhotonNetwork.IsMasterClient)
+            else
             {
                 _activeCameraTransform = _cameras[1].transform;
                 _cameras[0].SetActive(false);
@@ -256,13 +244,24 @@ public class SideManager : MonoBehaviour
                 players[0].transform.position = _servicePointsSecondSide[side][0].position;
                 players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
             }
-            else if(PhotonNetwork.IsMasterClient == false)
+        }
+        else
+        {
+            if (isMasterClient)
+            {
+                _activeCameraTransform = _cameras[1].transform;
+                _cameras[0].SetActive(false);
+                _cameras[1].SetActive(true);
+                players[0].transform.position = _servicePointsSecondSide[side][0].position;
+                players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+            }
+            else
             {
                 _activeCameraTransform = _cameras[0].transform;
                 _cameras[0].SetActive(true);
                 _cameras[1].SetActive(false);
-                players[1].transform.position = _servicePointsFirstSide[side][0].position;
-                players[1].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+                players[0].transform.position = _servicePointsFirstSide[side][0].position;
+                players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
             }
         }
 

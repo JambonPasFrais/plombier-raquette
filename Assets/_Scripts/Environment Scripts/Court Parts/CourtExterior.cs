@@ -15,9 +15,10 @@ public class CourtExterior : MonoBehaviour
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
-                if (PhotonNetwork.IsConnected && ball.LastPlayerToApplyForce.GetComponent<PhotonView>().IsMine)
+                if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
                 {
-                    GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, false);
+                    Teams winningPointTeam = ball.LastPlayerToApplyForce.PlayerTeam;
+                    GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
                 }
                 if (!PhotonNetwork.IsConnected)
                 {
@@ -29,6 +30,9 @@ public class CourtExterior : MonoBehaviour
             // If the player hits a part of the exterior court on the first rebound, it is fault.
             else if (ball.ReboundsCount == 1)
             {
+                ControllersParent otherController = GameManager.Instance.Controllers[0] == ball.LastPlayerToApplyForce ?
+                    GameManager.Instance.Controllers[1] : GameManager.Instance.Controllers[0];
+
                 // If it was the first service, the player can proceed to his second service.
                 // Otherwise it is counted as a fault.
                 if (ball.LastPlayerToApplyForce.ServicesCount == 0 && GameManager.Instance.GameState == GameState.SERVICE)
@@ -37,10 +41,10 @@ public class CourtExterior : MonoBehaviour
                     ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                     ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
                     
-                    if (PhotonNetwork.IsConnected)
+                    if (PhotonNetwork.IsConnected && otherController.gameObject.GetPhotonView().IsMine)
                     {
                         GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
-             !GameManager.Instance.ServiceManager.ChangeSides);
+                        !GameManager.Instance.ServiceManager.ChangeSides);
                     }
                     else
                     {
@@ -52,15 +56,15 @@ public class CourtExterior : MonoBehaviour
                 }
                 else
                 {
-                    if (PhotonNetwork.IsConnected && ball.LastPlayerToApplyForce.GetComponent<PhotonView>().IsMine)
+                    if (PhotonNetwork.IsConnected && otherController.gameObject.GetPhotonView().IsMine)
                     {
-                        GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, true);
+                        Teams winningPointTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                        GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
                     }
                     if (!PhotonNetwork.IsConnected)
                     {
                         GameManager.Instance.EndOfPoint();
-                        Teams otherTeam = ball.LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
-                        //Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
+                        Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
                     }
                 }
