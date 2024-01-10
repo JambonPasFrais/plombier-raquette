@@ -2,26 +2,28 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class Ball : MonoBehaviour
 {
     #region PRIVATE FIELDS
-
+    
     [Header("Target Parameters")]
-    [SerializeField] private GameObject _targetPrefab;
+    [SerializeField] private GameObject _starPrefab;
     [SerializeField] private float _raycastLength;
     [SerializeField] private float _horizontalOffset;
     [SerializeField] private float _verticalOffsetFromGround;
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
+    [SerializeField] private TrailRenderer _trailRenderer;
 
     [Header("Observed Variables")]
     [SerializeField] private ShotParameters _shotParameters;
     [SerializeField] private ControllersParent _lastPlayerToApplyForce;
     [SerializeField] private int _reboundsCount;
-    [SerializeField] private GameObject _targetInstance;
+    [SerializeField] private GameObject _smashStarInstance;
 
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
@@ -45,6 +47,8 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount = 0;
         _sphereCollider = GetComponent<SphereCollider>();
+        _trailRenderer = GetComponent<TrailRenderer>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -61,7 +65,7 @@ public class Ball : MonoBehaviour
         }
         else if (!_rigidBody.isKinematic) 
         {
-            DrawTarget();
+            DrawSmashStar();
         }
     }
 
@@ -199,15 +203,15 @@ public class Ball : MonoBehaviour
         _lastPlayerToApplyForce = null;
         _rigidBody.velocity = Vector3.zero;
         _rigidBody.isKinematic = true;
-        DestroyTarget();
+        DestroySmashStar();
 
         GameManager.Instance.GameState = GameState.SERVICE;
         GameManager.Instance.BallServiceInitialization();
     }
 
-    #region SMASH TARGET MANAGEMENT
+    #region SMASH STAR MANAGEMENT
 
-    private void DrawTarget()
+    private void DrawSmashStar()
     {
         if (_lastPlayerToApplyForce != null)
         {
@@ -220,49 +224,49 @@ public class Ball : MonoBehaviour
                 if (fieldGroundPart.OwnerPlayer != _lastPlayerToApplyForce)
                 {
                     Vector3 horizontalBallDirection = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
-                    Vector3 targetPosition = hit.point + Vector3.up * _verticalOffsetFromGround + horizontalBallDirection.normalized * _horizontalOffset;
+                    Vector3 starPosition = hit.point + Vector3.up * _verticalOffsetFromGround + horizontalBallDirection.normalized * _horizontalOffset;
 
-                    if (_targetInstance == null)
+                    if (_smashStarInstance == null)
                     {
-                        InstantiateTarget(targetPosition);
+                        InstantiateSmashStar(starPosition);
                     }
                     else
                     {
-                        MoveTarget(targetPosition);
+                        MoveSmashStar(starPosition);
                     }
                 }
             }
             else
             {
-                DestroyTarget();
+                DestroySmashStar();
             }
         }
     }
 
-    private void MoveTarget(Vector3 position)
+    private void MoveSmashStar(Vector3 position)
     {
-        _targetInstance.transform.position = position;
+        _smashStarInstance.transform.position = position;
     }
 
-    public void DestroyTarget()
+    public void DestroySmashStar()
     {
-        if (_targetInstance != null)
+        if (_smashStarInstance != null)
         {
-            Destroy(_targetInstance);
-            _targetInstance = null;
+            Destroy(_smashStarInstance);
+            _smashStarInstance = null;
         }
     }
 
-    private void InstantiateTarget(Vector3 position)
+    private void InstantiateSmashStar(Vector3 position)
     {
-        if (_targetPrefab != null)
+        if (_starPrefab != null)
         {
-            if (_targetInstance != null)
+            if (_smashStarInstance != null)
             {
-                Destroy(_targetInstance);
+                Destroy(_smashStarInstance);
             }
 
-            _targetInstance = Instantiate(_targetPrefab, position, Quaternion.Euler(90, 0, 0));
+            _smashStarInstance = Instantiate(_starPrefab, position, Quaternion.Euler(90, 0, 0));
         }
     }
 

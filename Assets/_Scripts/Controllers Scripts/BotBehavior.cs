@@ -125,8 +125,17 @@ public class BotBehavior : ControllersParent
     {
         #region ANIMATIONS
         EndALlAnims();
-        _isShooting = true;
-        _playerAnimator.StrikeAnimation();
+        
+        if (PlayerState == PlayerStates.SERVE)
+        {
+            _playerAnimator.ServiceAnimation();
+            _isShooting = true;
+        }
+        else
+        {
+            _playerAnimator.StrikeAnimation();
+            _isShooting = true;
+        }
         #endregion
         
         float force;

@@ -124,25 +124,6 @@ public class PlayerController : ControllersParent
             {
                 if (movementDirection.normalized != Vector3.zero)
                 {
-                    // Type of walks
-                    /*
-                    if (movementDirection.normalized.x >= 0.5) //left
-                        if (IsInOriginalSide)
-                            _playerAnimator.MoveLeftAnimation();
-                        else
-                            _playerAnimator.MoveRightAnimation();  
-                    
-                    else if (movementDirection.normalized.x <= -0.5) //right
-                        if (IsInOriginalSide)
-                            _playerAnimator.MoveRightAnimation();
-                        else
-                            _playerAnimator.MoveLeftAnimation();
-                    
-                    else if(movementDirection.normalized.z >= 0.5) // front
-                        _playerAnimator.MoveFrontAnimation();
-                    
-                    else if (movementDirection.normalized.z <= -0.5) //back
-                        _playerAnimator.MoveBackwardAnimation();*/
                     _playerAnimator.RunAnimation();
                 }
                 else
@@ -179,8 +160,17 @@ public class PlayerController : ControllersParent
         
         #region ANIMATIONS
         EndALlAnims();
-        _playerAnimator.StrikeAnimation();
-        _isShooting = true;
+
+        if (PlayerState == PlayerStates.SERVE)
+        {
+            _playerAnimator.ServiceAnimation();
+            _isShooting = true;
+        }
+        else
+        {
+            _playerAnimator.StrikeAnimation();
+            _isShooting = true;
+        }
         #endregion
         
         // Look Front (feels weird to not look forward when you shoot)
@@ -200,7 +190,7 @@ public class PlayerController : ControllersParent
         // Reseting smash and target states.
         _canSmash = false;
         //_cameraController.SetCanSmash(false);
-        _ballDetectionArea.Ball.DestroyTarget();
+        _ballDetectionArea.Ball.DestroySmashStar();
 
         // The player enters in the PLAY state.
         if (PlayerState != PlayerStates.PLAY)
@@ -421,7 +411,7 @@ public class PlayerController : ControllersParent
             
             _canSmash = false;
 
-            _ballInstance.DestroyTarget();
+            _ballInstance.DestroySmashStar();
             _ballInstance.Rb.isKinematic = false;
             _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
             _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
@@ -431,6 +421,9 @@ public class PlayerController : ControllersParent
             _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
+            
+            // Look Front (feels weird to not look forward when you shoot)
+            _avatarVisual.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
             
             #region Animations
             EndALlAnims();

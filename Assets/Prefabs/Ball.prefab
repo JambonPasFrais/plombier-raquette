@@ -147,15 +147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b86e002dc382daf45bae2ae1fcfaf03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetPrefab: {fileID: 7464988122079295246, guid: c8a960f2eab56b244a9ea4cd9ec9f54a, type: 3}
+  _starPrefab: {fileID: 7464988122079295246, guid: c8a960f2eab56b244a9ea4cd9ec9f54a, type: 3}
   _raycastLength: 10
   _horizontalOffset: 2
   _verticalOffsetFromGround: 0.2
   _rigidBody: {fileID: 7965401428493319483}
+  _trailRenderer: {fileID: 0}
   _shotParameters: {fileID: 0}
   _lastPlayerToApplyForce: {fileID: 0}
   _reboundsCount: 0
-  _targetInstance: {fileID: 0}
+  _smashStarInstance: {fileID: 0}
 --- !u!96 &-6051615263287570558
 TrailRenderer:
   serializedVersion: 3
