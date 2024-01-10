@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[Serializable, CreateAssetMenu(fileName = "SoundData", menuName = "ScriptableObjects/Audio/SoundData")]
-public class SoundData : ScriptableObject
+[Serializable]
+public class SoundData
 {
     public string Name;
     public AudioType AudioType;

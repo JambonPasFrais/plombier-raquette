@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 2881712671860293360}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4888668802575313060
 MonoBehaviour:
@@ -76,9 +76,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be8731c0c2c88146b00e407f136c9a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _everySound:
+  - Name: MainMenuMusics
+    AudioType: 0
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: MatchMusic
+    AudioType: 0
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: ButtonPressed
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: LoadingScreenTransition
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: EndPointCrowd
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: OnSmashJump
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: OnSmashShot
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: ReboundSound
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
+  - Name: Shot
+    AudioType: 1
+    Clips: []
+    CurrentClipIndex: 0
   _audioMixer: {fileID: 24100000, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMaster: {fileID: 24300002, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerSFX: {fileID: -3420754664742212623, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMusic: {fileID: 2122255937615189126, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
-  _everySound: []
   _audioContainer: {fileID: 2881712671860293360}

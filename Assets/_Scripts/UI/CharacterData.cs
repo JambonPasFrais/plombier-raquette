@@ -23,4 +23,6 @@ public class CharacterData : ScriptableObject
     public CharacterParameters CharacterParameter;
     public CharacterCategory Category;
 
+    [Header("Sounds")]
+    public List<SoundData> CharacterSounds = new List<SoundData>();
 }
