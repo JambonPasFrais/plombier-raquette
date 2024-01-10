@@ -201,16 +201,16 @@ public class SideManager : MonoBehaviour
         {
             for (int i = 0; i < _firstSideCollidersParentObject.transform.childCount; i++)
             {
-                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[0];
-                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[1];
+                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[PhotonNetwork.IsMasterClient ? 0 : 1];
+                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[PhotonNetwork.IsMasterClient ? 1 : 0];
             }
         }
         else
         {
             for (int i = 0; i < _firstSideCollidersParentObject.transform.childCount; i++)
             {
-                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[1];
-                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[0];
+                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[PhotonNetwork.IsMasterClient ? 1 : 0];
+                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[PhotonNetwork.IsMasterClient ? 0 : 1];
             }
         }
     }
@@ -235,6 +235,8 @@ public class SideManager : MonoBehaviour
                 _cameras[1].SetActive(false);
                 players[0].transform.position = _servicePointsFirstSide[side][0].position;
                 players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+                players[0].IsInOriginalSide = true;
+                players[1].IsInOriginalSide = false;
             }
             else
             {
@@ -243,6 +245,8 @@ public class SideManager : MonoBehaviour
                 _cameras[1].SetActive(true);
                 players[0].transform.position = _servicePointsSecondSide[side][0].position;
                 players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+                players[0].IsInOriginalSide = false;
+                players[1].IsInOriginalSide = true;
             }
         }
         else
@@ -254,6 +258,8 @@ public class SideManager : MonoBehaviour
                 _cameras[1].SetActive(true);
                 players[0].transform.position = _servicePointsSecondSide[side][0].position;
                 players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+                players[0].IsInOriginalSide = false;
+                players[1].IsInOriginalSide = true;
             }
             else
             {
@@ -262,8 +268,12 @@ public class SideManager : MonoBehaviour
                 _cameras[1].SetActive(false);
                 players[0].transform.position = _servicePointsFirstSide[side][0].position;
                 players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+                players[0].IsInOriginalSide = true;
+                players[1].IsInOriginalSide = false;
             }
         }
+
+        GameManager.Instance.CameraManager.ChangeCameraSide(originalSides);
 
         SetCollidersOwnerPlayers(players, originalSides);
     }

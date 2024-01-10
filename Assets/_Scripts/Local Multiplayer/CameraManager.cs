@@ -91,38 +91,36 @@ public class CameraManager : MonoBehaviour
 
             _splitScreenCamerasBySide[isOriginalSide ? "Right" : "Left"][0].gameObject.SetActive(false);
             _splitScreenCamerasBySide[isOriginalSide ? "Right" : "Left"][1].gameObject.SetActive(false);
-
-            /*
-            foreach (var splitScreenCameraFromSide in _splitScreenCamerasBySide.Values)
-            {               
-                splitScreenCameraFromSide[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
-                splitScreenCameraFromSide[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
-            }*/
         }
         else
         {
-            //_activeCameraTransform = _soloCameras[isOriginalSide ? 0 : 1].transform;
-            _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
-            _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
+            if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected) 
+            {
+                _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
+                _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
+            }
+            else
+            {
+                _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(true);
+                _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(false);
+            }
         }
     }
 
-    public Transform GetActiveCameraTransformBySide(bool isOriginalSide)
+    public Transform GetActiveCameraTransformBySide(bool isOnOriginalSide)
     {
         if (_splitScreenCameraIsOn)
         {
-            var cameraBySide = _splitScreenCamerasBySide[isOriginalSide ? "Left" : "Right"];
+            var cameraBySide = _splitScreenCamerasBySide[isOnOriginalSide ? "Left" : "Right"];
             
             for (int i = 0; i < cameraBySide.Count; i++)
             {
                 if (cameraBySide[i].gameObject.activeSelf)
                     return cameraBySide[i].transform;
             }
-
-            //throw new SyntaxErrorException("No Camera active for side: " + isOriginalSide);
         }
 
-        return _soloCameras[isOriginalSide ? 0 : 1].transform;
+        return _soloCameras[isOnOriginalSide ? 0 : 1].transform;
     }
 
     public void ToggleGameCamerasForSmash()
