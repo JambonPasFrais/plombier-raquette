@@ -32,6 +32,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private Gradient _topSpinColor;
     [SerializeField] private Gradient _sliceColor;
     [SerializeField] private Gradient _flatColor;
+    [SerializeField] private Gradient _smashColor;
 
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
@@ -58,7 +59,7 @@ public class Ball : MonoBehaviour
         _sphereCollider = GetComponent<SphereCollider>();
         _trailRenderer = GetComponent<TrailRenderer>();
         _rigidBody = GetComponent<Rigidbody>();
-        _colorGradientByHitType = new Dictionary<HitType, Gradient>();
+        CreateColorGradientByHitTypeDict();
     }
 
     private void Update()
@@ -104,6 +105,7 @@ public class Ball : MonoBehaviour
     public void InitializeActionParameters(ShotParameters shotParameters)
     {
         _shotParameters = shotParameters;
+        ModifyTrailRendererColorByHitType(shotParameters.HitType);
     }
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
@@ -284,22 +286,20 @@ public class Ball : MonoBehaviour
     
     #region ART
 
+    private void CreateColorGradientByHitTypeDict()
+    {
+        _colorGradientByHitType = new Dictionary<HitType, Gradient>();
+        _colorGradientByHitType.Add(HitType.Drop, _dropColor);
+        _colorGradientByHitType.Add(HitType.Lob, _lobColor);
+        _colorGradientByHitType.Add(HitType.TopSpin, _topSpinColor);
+        _colorGradientByHitType.Add(HitType.Slice, _sliceColor);
+        _colorGradientByHitType.Add(HitType.Flat, _flatColor);
+        _colorGradientByHitType.Add(HitType.Smash, _smashColor);
+    }
+    
     private void ModifyTrailRendererColorByHitType(HitType hitType)
     {
-        switch (hitType)
-        {
-            case HitType.Drop:
-                _trailRenderer.colorGradient = _colorGradientByHitType[hitType];
-                break;
-            case HitType.Lob:
-                break;
-            case HitType.Slice:
-                break;
-            case HitType.Flat:
-                break;
-            case HitType.TopSpin:
-                break;
-        }
+        _trailRenderer.colorGradient = _colorGradientByHitType[hitType];
     }
     
     #endregion

@@ -8,5 +8,6 @@ public enum HitType
     Slice,
     Flat,
     Lob,
-    Drop
+    Drop,
+    Smash
 }

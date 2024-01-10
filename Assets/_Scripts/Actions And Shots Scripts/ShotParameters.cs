@@ -5,7 +5,8 @@ public class ShotParameters : ScriptableObject
 {
     #region PRIVATE FIELDS
 
-    [Header("Ball Physical Parameters")]
+    [Header("Ball Physical Parameters")] 
+    [SerializeField] private HitType _hitType;
     [SerializeField] private float _shotForceFactor;
     [SerializeField] private float _risingForce;
     [SerializeField] private float _timeBeforeGoingDown;
@@ -21,6 +22,7 @@ public class ShotParameters : ScriptableObject
 
     #region GETTERS
 
+    public HitType HitType => _hitType;
     public float ShotForceFactor { get { return _shotForceFactor; } }
     public float RisingForce { get { return _risingForce; } }
     public float TimeBeforeGoingDown { get { return _timeBeforeGoingDown; } }
