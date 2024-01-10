@@ -84,7 +84,6 @@ public class CharacterSelectionSoloMenu : GeneralCharacterSelectionMenu
 				go.SetActive(true);
 				_selectedCharacterUIs = characterUI;
 				_playerCharacter = characterUI.Character;
-
 			}
 
             VerifyCharacters();

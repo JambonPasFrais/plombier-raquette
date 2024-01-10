@@ -106,11 +106,19 @@ public class PlayerInputHandler : MonoBehaviour
 		}
 	}
 
-	public void OnSlowTime(InputAction.CallbackContext context)
+	public void OnSliceShot(InputAction.CallbackContext context)
 	{
 		if (context.performed)
 		{
 			Character.PlayerController.Slice(context);
+		}
+	}
+	
+	public void OnSlowTime(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Character.PlayerController.SlowTime(context);
 		}
 	}
 

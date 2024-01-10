@@ -216,10 +216,10 @@ public class ControllerManager : MonoBehaviour
                 break;
             case Gamepad:
                 playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-				break;
+                break;
             case Keyboard:
                 playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
-				break;
+                break;
         }
 
 		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);

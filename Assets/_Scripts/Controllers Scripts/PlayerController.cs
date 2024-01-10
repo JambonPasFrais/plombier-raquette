@@ -371,6 +371,11 @@ public class PlayerController : ControllersParent
         }
     }
 
+    public void OnAimSmash(InputAction.CallbackContext context)
+    {
+        _playerCameraController.AimSmashTarget(context);
+    }
+
     public void Smash(InputAction.CallbackContext context)
     {
         if (!_playerCameraController.IsFirstPersonView)

@@ -104,20 +104,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         _ballInstance = Instantiate(BallPrefab);
     }
 
-    private void Start()
-    {
-        if (PhotonNetwork.IsConnected)
-        {
-            PlayerInputHandler playerInputHandler = ControllerManager.Controllers.Values.ToList()[0];
-
-            playerInputHandler.Character = _controllers[0].gameObject.GetComponent<Character>();
-            /*playerInputHandler.Character.SetCharParameters(GameParameters.Instance.PlayersCharacter[0].CharacterParameter);*/
-            // Temporary, while the correct characters are not instantiated on the field.
-            playerInputHandler.Character.SetCharParameters(_classicCharacterParameters);
-            playerInputHandler.PlayerInput.defaultActionMap = "Game";
-        }
-    }
-
     public void Init()
     {
         ServiceOnOriginalSide = true;
@@ -368,6 +354,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (!_controllers.Contains(controller))
             {
+                controller.gameObject.GetComponent<PlayerInput>().enabled = false;
                 _controllers.Add(controller);
             }
         }

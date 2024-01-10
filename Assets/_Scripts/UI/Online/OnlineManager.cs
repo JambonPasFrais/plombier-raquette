@@ -27,8 +27,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [Header("Other Menus Reference")]
     // Main Menu Reference
 	[SerializeField] private GameObject _mainMenu;
-    // Online Controller Selection Menu
-	[SerializeField] private GameObject _controllerSelectionMenu;
     // Online Character Selection Menu
     [SerializeField] private GameObject _characterSelection;
     // Online Room Menu Reference
@@ -119,7 +117,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         {
 			_playCharacterSelectionButton.interactable = true;
 			_isConnecting = false;
-            ChangeActivePanel(_controllerSelectionMenu.name);
+            ChangeActivePanel(_characterSelection.name);       
         }
     }
 
@@ -160,16 +158,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             MenuManager.Instance.SetButtonNavigation(_readyButton, _leaveButton, null, null, null);
             MenuManager.Instance.SetButtonNavigation(_leaveButton, null, _readyButton, null, null);
         }
-    }
-
-    public void OnControllersSelectionButtonPressed()
-    {
-        ChangeActivePanel(_characterSelection.name);
-    }
-
-    public void OnQuitCharactersSelection()
-    {
-        ChangeActivePanel(_controllerSelectionMenu.name);
     }
 
     public void OnStartButtonClicked()
@@ -217,7 +205,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public void ChangeActivePanel(string menuName)
     {
         _mainMenu.SetActive(menuName.Equals(_mainMenu.name));
-        _controllerSelectionMenu.SetActive(menuName.Equals(_controllerSelectionMenu.name));
         _characterSelection.SetActive(menuName.Equals(_characterSelection.name));
         _roomPanel.SetActive(menuName.Equals(_roomPanel.name));
     }
