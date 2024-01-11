@@ -1,6 +1,9 @@
 public enum AnimationNames
 {
     Idle,
+    StandingFightIdle,
+    TennisIdle,
+    
     
     Victory_1,
     Victory_2,
@@ -9,6 +12,9 @@ public enum AnimationNames
     Defeat_2,
     Defeat_3,
     TakeTheL,
+    Cheering,
+    Clapping,
+    ShakingHeadNo,
 
     Backhand,
     RotateBackhand1,

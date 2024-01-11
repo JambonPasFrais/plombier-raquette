@@ -4,8 +4,27 @@ using UnityEngine;
 
 public class PlayerUIAnimator : PlayerAnimator
 {
-    #region COMMUNICATIONS
+    #region "Neutral"
 
+    public void ClappingAnimation()
+    {
+        ChangeAnimationState(AnimationNames.Clapping.ToString());
+    }
+
+    public void CheeringAnimation()
+    {
+        ChangeAnimationState(AnimationNames.Cheering.ToString());
+    }
+
+    #endregion
+    
+    #region Positive
+
+    public void TakeTheLAnimation()
+    {
+        ChangeAnimationState(AnimationNames.TakeTheL.ToString());
+    }
+    
     public void VictoryAnimation()
     {
         int random = Random.Range(0, 3);
@@ -23,6 +42,15 @@ public class PlayerUIAnimator : PlayerAnimator
         }
     }
 
+    #endregion
+    
+    #region Negative
+
+    public void ShakingHeadAnimation()
+    {
+        ChangeAnimationState(AnimationNames.ShakingHeadNo.ToString());
+    }
+    
     public void DefeatAnimation()
     {
         int random = Random.Range(0, 3);
@@ -40,14 +68,5 @@ public class PlayerUIAnimator : PlayerAnimator
         }
     }
     
-    #endregion
-
-    #region Taunt
-
-    public void TakeTheLAnimation()
-    {
-        ChangeAnimationState(AnimationNames.TakeTheL.ToString());
-    }
-
     #endregion
 }
