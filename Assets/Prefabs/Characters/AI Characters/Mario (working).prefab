@@ -638,10 +638,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9117340231532037011}
   - component: {fileID: 792168496379109262}
-  - component: {fileID: 7854429094963610365}
   - component: {fileID: -6727901989790092007}
   - component: {fileID: 4910283810038914496}
   - component: {fileID: -7229802311374205141}
+  - component: {fileID: 2545968851264185116}
   m_Layer: 0
   m_Name: Mario (working)
   m_TagString: Untagged
@@ -718,18 +718,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7854429094963610365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413760489067164524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-6727901989790092007
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -833,6 +821,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &2545968851264185116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413760489067164524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &448722317929891980
 GameObject:
   m_ObjectHideFlags: 0

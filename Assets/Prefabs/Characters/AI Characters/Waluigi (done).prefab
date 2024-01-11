@@ -8082,10 +8082,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2040833768720266002}
   - component: {fileID: 3449655397722844188}
-  - component: {fileID: 4849737360559182944}
   - component: {fileID: -1728353020053366535}
   - component: {fileID: 1988107887252557044}
   - component: {fileID: -505949283861951252}
+  - component: {fileID: 2655076716793033111}
   m_Layer: 0
   m_Name: Waluigi (done)
   m_TagString: Untagged
@@ -8170,18 +8170,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4849737360559182944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7436364401671008865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-1728353020053366535
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8285,6 +8273,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &2655076716793033111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436364401671008865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7436515045811748544
 GameObject:
   m_ObjectHideFlags: 0

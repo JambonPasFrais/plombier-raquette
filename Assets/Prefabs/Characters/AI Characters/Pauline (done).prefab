@@ -17877,10 +17877,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7319099543661927948}
   - component: {fileID: 273201742234341932}
-  - component: {fileID: 7726760203527676266}
   - component: {fileID: -8216835509827789171}
   - component: {fileID: 4131244333134083431}
   - component: {fileID: 3439604771216641799}
+  - component: {fileID: 1543855283656427736}
   m_Layer: 0
   m_Name: Pauline (done)
   m_TagString: Untagged
@@ -17992,18 +17992,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7726760203527676266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8755148475403186160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-8216835509827789171
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18107,6 +18095,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &1543855283656427736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755148475403186160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8784156846576595000
 GameObject:
   m_ObjectHideFlags: 0

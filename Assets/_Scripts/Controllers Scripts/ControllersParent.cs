@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(PlayerGameAnimator))]
 public class ControllersParent : MonoBehaviour
 {
     #region PUBLIC FIELDS
@@ -39,7 +39,7 @@ public class ControllersParent : MonoBehaviour
     #region Animations
     // TODO : comment serializeField and Header after tests
     [Header("Tests")]
-    [SerializeField] protected PlayerAnimator _playerAnimator;
+    [SerializeField] protected PlayerGameAnimator _playerAnimator;
     [SerializeField] protected bool _isShooting;
     [SerializeField] protected bool _isSmashing;
     [SerializeField] protected bool _isCommunicating;
@@ -52,7 +52,7 @@ public class ControllersParent : MonoBehaviour
 
     private void Awake()
     {
-        _playerAnimator = GetComponent<PlayerAnimator>();
+        _playerAnimator = GetComponent<PlayerGameAnimator>();
     }
     
     #endregion
@@ -64,7 +64,7 @@ public class ControllersParent : MonoBehaviour
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public float MaximumShotForce { get { return _maximumShotForce; } }
     
-    public PlayerAnimator PlayerAnimator => _playerAnimator;
+    public PlayerGameAnimator PlayerAnimator => _playerAnimator;
 
     #endregion
 

@@ -175,10 +175,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6587300590189151809}
   - component: {fileID: 7295521072189492452}
-  - component: {fileID: 1934576260862698133}
   - component: {fileID: -6794937430948822226}
   - component: {fileID: 6210740536948638232}
   - component: {fileID: 318871462602476029}
+  - component: {fileID: 5407987836770322621}
   m_Layer: 0
   m_Name: Diddy Kong (done)
   m_TagString: Untagged
@@ -254,18 +254,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1934576260862698133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 240279157399951061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-6794937430948822226
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -369,6 +357,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &5407987836770322621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240279157399951061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &248451155879260509
 GameObject:
   m_ObjectHideFlags: 0

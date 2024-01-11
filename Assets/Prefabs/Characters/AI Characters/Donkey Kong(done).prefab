@@ -3413,10 +3413,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4371691223988169044}
   - component: {fileID: 632252110921315011}
-  - component: {fileID: 4925656351022511141}
   - component: {fileID: -7121655909647753769}
   - component: {fileID: 5954054556994547157}
   - component: {fileID: 5711410306595949506}
+  - component: {fileID: 3407375359155474387}
   m_Layer: 0
   m_Name: Donkey Kong(done)
   m_TagString: Untagged
@@ -3479,18 +3479,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4925656351022511141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4318388248946029059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-7121655909647753769
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3594,6 +3582,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &3407375359155474387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4318388248946029059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4344385674724439415
 GameObject:
   m_ObjectHideFlags: 0

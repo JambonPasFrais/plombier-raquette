@@ -2829,10 +2829,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2650028196760467136}
   - component: {fileID: 4762943450681025044}
-  - component: {fileID: 8922335085520353341}
   - component: {fileID: -5581388407977002926}
   - component: {fileID: 8521463650920734636}
   - component: {fileID: -7603107172756351998}
+  - component: {fileID: 2043065019066448389}
   m_Layer: 0
   m_Name: Spike (done)
   m_TagString: Untagged
@@ -2905,18 +2905,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8922335085520353341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2978305101491869558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-5581388407977002926
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3020,6 +3008,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &2043065019066448389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2978305101491869558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3029727273763463652
 GameObject:
   m_ObjectHideFlags: 0

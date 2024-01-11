@@ -5362,10 +5362,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7957494855676478881}
   - component: {fileID: 6823466185795692533}
-  - component: {fileID: 5715416969947839468}
   - component: {fileID: 7052599523701980170}
   - component: {fileID: 3470927626818380467}
   - component: {fileID: 232565899453931042}
+  - component: {fileID: 2115575290049257190}
   m_Layer: 0
   m_Name: Bowser Jr (done)
   m_TagString: Untagged
@@ -5431,18 +5431,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5715416969947839468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6538050665251992175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7052599523701980170
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5546,6 +5534,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &2115575290049257190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6538050665251992175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6599833746187166375
 GameObject:
   m_ObjectHideFlags: 0

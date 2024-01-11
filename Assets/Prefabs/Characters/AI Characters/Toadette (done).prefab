@@ -7936,10 +7936,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4069016572870078952}
   - component: {fileID: 6513239188088119777}
-  - component: {fileID: 8825753325272604583}
   - component: {fileID: 7880534827093724786}
   - component: {fileID: 451943617495380010}
   - component: {fileID: 4005543108652253044}
+  - component: {fileID: 7016676451126210192}
   m_Layer: 0
   m_Name: Toadette (done)
   m_TagString: Untagged
@@ -8014,18 +8014,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8825753325272604583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7997884546542723201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7880534827093724786
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8129,6 +8117,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &7016676451126210192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7997884546542723201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8016073970012673948
 GameObject:
   m_ObjectHideFlags: 0

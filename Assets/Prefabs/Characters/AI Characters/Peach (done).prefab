@@ -3392,10 +3392,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5203610417846263969}
   - component: {fileID: 5461649165237735168}
-  - component: {fileID: 3833374264246482146}
   - component: {fileID: -6311773586170652594}
   - component: {fileID: 6806292637185703388}
   - component: {fileID: -8796031753864110675}
+  - component: {fileID: 6137608835198930161}
   m_Layer: 0
   m_Name: Peach (done)
   m_TagString: Untagged
@@ -3504,18 +3504,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3833374264246482146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662535320025591779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-6311773586170652594
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3619,6 +3607,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &6137608835198930161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662535320025591779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1670767271712010687
 GameObject:
   m_ObjectHideFlags: 0

@@ -1864,10 +1864,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4580448572046846012}
   - component: {fileID: 2492067642450663289}
-  - component: {fileID: 3950159987820724853}
   - component: {fileID: 6656433339225851837}
   - component: {fileID: 4930501403640221118}
   - component: {fileID: 3390290437691331744}
+  - component: {fileID: 6865706179074594525}
   m_Layer: 0
   m_Name: Birdo (working)
   m_TagString: Untagged
@@ -1926,18 +1926,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3950159987820724853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793691165080735929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &6656433339225851837
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2005,7 +1993,7 @@ MonoBehaviour:
   ServicesCount: 0
   PlayerTeam: 0
   IsInOriginalSide: 0
-  _avatarVisual: {fileID: 0}
+  _chargingShotGo: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 7182724276727742458}
   _serviceBallInitializationPoint: {fileID: 2892811633527063335}
@@ -2041,6 +2029,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &6865706179074594525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793691165080735929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2887134000137616205
 GameObject:
   m_ObjectHideFlags: 0

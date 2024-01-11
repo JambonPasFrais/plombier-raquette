@@ -73,10 +73,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5829330929190470150}
   - component: {fileID: 4785825156292287752}
-  - component: {fileID: 6095481312143036636}
   - component: {fileID: 252164706804462371}
   - component: {fileID: 4494511783649874779}
   - component: {fileID: 3348332287441472961}
+  - component: {fileID: 4389947741314349085}
   m_Layer: 0
   m_Name: Shy Guy(done)
   m_TagString: Untagged
@@ -136,18 +136,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6095481312143036636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377035027854219527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &252164706804462371
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -251,6 +239,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &4389947741314349085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377035027854219527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &511616033544668318
 GameObject:
   m_ObjectHideFlags: 0

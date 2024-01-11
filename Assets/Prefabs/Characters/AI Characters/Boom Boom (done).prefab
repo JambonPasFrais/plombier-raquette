@@ -5167,10 +5167,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3573312666705401272}
   - component: {fileID: 5498628733333436242}
-  - component: {fileID: 5641436944799023045}
   - component: {fileID: 8845909247454240470}
   - component: {fileID: 5477298622497992335}
   - component: {fileID: -4264300032376552875}
+  - component: {fileID: 6027190137349488651}
   m_Layer: 0
   m_Name: Boom Boom (done)
   m_TagString: Untagged
@@ -5244,18 +5244,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5641436944799023045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6767445705901988085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &8845909247454240470
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5359,6 +5347,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &6027190137349488651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6767445705901988085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6785548887398825227
 GameObject:
   m_ObjectHideFlags: 0
