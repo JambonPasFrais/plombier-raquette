@@ -56,7 +56,7 @@ public class Ball : MonoBehaviour
 
     #region UNITY METHODS
 
-    private void Start()
+    private void Awake()
     {
         _reboundsCount = 0;
         _sphereCollider = GetComponent<SphereCollider>();
