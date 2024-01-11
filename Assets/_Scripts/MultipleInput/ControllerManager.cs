@@ -253,7 +253,6 @@ public class ControllerManager : MonoBehaviour
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
         }
     }*/
-        
     
     #endregion
 
