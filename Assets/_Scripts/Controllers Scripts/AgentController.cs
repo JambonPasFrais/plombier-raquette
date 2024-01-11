@@ -288,7 +288,10 @@ public class AgentController : ControllersParent
 
     private void Slice()
     {
-        Shoot(HitType.Slice);
+        if (PlayerState != PlayerStates.SERVE)
+        {
+            Shoot(HitType.Slice);
+        }
     }
 
     public void Lob(InputAction.CallbackContext context)
