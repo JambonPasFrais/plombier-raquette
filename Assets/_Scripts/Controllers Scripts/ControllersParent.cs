@@ -4,8 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Serialization;
+using Photon.Pun;
 
-public class ControllersParent : MonoBehaviour
+public class ControllersParent : MonoBehaviourPunCallbacks
 {
     #region PUBLIC FIELDS
 
@@ -66,7 +67,6 @@ public class ControllersParent : MonoBehaviour
     private Vector3 CalculateExtremeShootingDirection(bool rightSideIsTargeted, float forceToDistanceFactor, float actualForce, Vector3 forwardVector)
     {
         float distanceToFirstReboundPosition = forceToDistanceFactor * actualForce;
-        //Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
         Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         float maximumLateralDistance;
 
@@ -79,7 +79,7 @@ public class ControllersParent : MonoBehaviour
             maximumLateralDistance = Mathf.Abs(GameManager.Instance.FaultLinesXByTeam[PlayerTeam][0] - transform.position.x);
         }
 
-        float maximumForwardDistance = Mathf.Sqrt(Mathf.Pow(distanceToFirstReboundPosition, 2) + Mathf.Pow(maximumLateralDistance, 2));
+        float maximumForwardDistance = Mathf.Sqrt(Mathf.Pow(distanceToFirstReboundPosition, 2) - Mathf.Pow(maximumLateralDistance, 2));
         return (rightVector.normalized * ((rightSideIsTargeted ? 1 : -1) * maximumLateralDistance) + forwardVector.normalized * maximumForwardDistance).normalized;
     }
 
@@ -159,8 +159,14 @@ public class ControllersParent : MonoBehaviour
 
         if (!ballRigidBody.isKinematic)
             return;
-        
-        ballRigidBody.isKinematic = false;
-        ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+
+        if (PhotonNetwork.IsConnected)
+        {
+            GameManager.Instance.photonView.RPC("BallThrown", RpcTarget.All);
+        }
+        else
+        {
+            GameManager.Instance.BallThrown();
+        }
     }
 }

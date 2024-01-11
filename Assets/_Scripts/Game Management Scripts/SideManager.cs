@@ -215,9 +215,10 @@ public class SideManager : MonoBehaviour
         }
     }
 
-    public void SetSideOnline(bool serveRight, bool originalSides)
+    public void OnlineWrongFirstService(bool serveRight, bool originalSides)
     {
         GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.AllViaServer, serveRight, originalSides);
+        GameManager.Instance.photonView.RPC("ServingPlayerResetAfterWrongFirstService", RpcTarget.AllViaServer);
     }
 
     public void SetSidesInOnlineMatch(bool serveRight, bool originalSides, bool isMasterClient)

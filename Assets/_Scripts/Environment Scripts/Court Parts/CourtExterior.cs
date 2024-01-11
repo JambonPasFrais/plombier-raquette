@@ -36,23 +36,18 @@ public class CourtExterior : MonoBehaviour
                 // If it was the first service, the player can proceed to his second service.
                 // Otherwise it is counted as a fault.
                 if (ball.LastPlayerToApplyForce.ServicesCount == 0 && GameManager.Instance.GameState == GameState.SERVICE)
-                {
-                    ball.LastPlayerToApplyForce.ServicesCount++;
-                    ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
-                    ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
-                    
+                {                    
                     if (PhotonNetwork.IsConnected && otherController.gameObject.GetPhotonView().IsMine)
                     {
-                        GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
+                        GameManager.Instance.SideManager.OnlineWrongFirstService(GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
                     }
-                    else
+                    else if (!PhotonNetwork.IsConnected)
                     {
                         GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                         !GameManager.Instance.ServiceManager.ChangeSides);
+                        GameManager.Instance.ServingPlayerResetAfterWrongFirstService();
                     }
-                    
-                    GameManager.Instance.ServiceManager.EnableLockServiceColliders();
                 }
                 else
                 {
@@ -66,10 +61,9 @@ public class CourtExterior : MonoBehaviour
                         GameManager.Instance.EndOfPoint();
                         Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                         GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                        ball.ResetBall();
                     }
                 }
-                
-                ball.ResetBall();
             }
         }
     }

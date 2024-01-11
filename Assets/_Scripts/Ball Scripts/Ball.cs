@@ -92,10 +92,6 @@ public class Ball : MonoBehaviourPunCallbacks
     {
         _shotParameters = shotParameters;
     }
-    public void InitializeLastPlayerToApplyForce(ControllersParent playerToApplyForce)
-    {
-        _lastPlayerToApplyForce = playerToApplyForce;
-    }
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
     {
@@ -133,8 +129,6 @@ public class Ball : MonoBehaviourPunCallbacks
     private IEnumerator BallMovement(float actualHorizontalForce, Vector3 actualNormalizedHorizontalDirection, Vector3 curvingDirection)
     {
         _reboundsCount = 0;
-
-        //Debug.Log($"Direction {actualNormalizedHorizontalDirection} - Force {actualHorizontalForce}");
 
         _rigidBody.AddForce(actualNormalizedHorizontalDirection * actualHorizontalForce);
         _rigidBody.AddForce(Vector3.up * _shotParameters.RisingForce * _risingForceFactor);

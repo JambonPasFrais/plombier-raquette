@@ -12,6 +12,7 @@ using UnityEngine.UIElements;
 using Photon.Realtime;
 using System.Linq;
 using System.Globalization;
+using UnityEngine.Playables;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [Header("Ball Management")]
     public GameObject BallPrefab;
-    public GameObject OnlineBallPrefab;
 
     [SerializeField] private GameObject _smashTargetGo;
 
@@ -322,7 +322,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient == false)
         {
-            _ballInstance = FindObjectOfType<Ball>().gameObject;
             photonView.RPC("StartGame", RpcTarget.AllViaServer);
         }
     }
@@ -339,7 +338,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         _serverIndex = PhotonNetwork.IsMasterClient ? 0 : 1;
         _controllers[_serverIndex].IsServing = true;
-        _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
         _ballInstance.GetComponent<Ball>().ResetBall();
 
@@ -389,18 +387,51 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, int controllerIndex)
+    public void BallThrown()
     {
-        BallInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
-        BallInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
+        _ballInstance.GetComponent<Rigidbody>().isKinematic = false;
+        _ballInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+    }
+
+    [PunRPC]
+    private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, Player shootingPlayer)
+    {
+        PlayerController shootingPlayerController;
+
+        if (Instance.Controllers[0].gameObject.GetPhotonView().Owner == shootingPlayer)
+        {
+            shootingPlayerController = (PlayerController)Instance.Controllers[0];
+        }
+        else
+        {
+            shootingPlayerController = (PlayerController)Instance.Controllers[1];
+            shootingPlayerController.PlayerAndGameStatesUpdating();
+        }
+
+        _ballInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
+        _ballInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
             NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
-        BallInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, Controllers[controllerIndex]);
+        _ballInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, shootingPlayerController);
     }
 
     [PunRPC]
     public void SetSidesInOnlineMatch(bool serveRight, bool originalSides)
     {
         SideManager.SetSidesInOnlineMatch(serveRight, originalSides, PhotonNetwork.IsMasterClient);
+    }
+
+    [PunRPC]
+    public void ServingPlayerResetAfterWrongFirstService()
+    {
+        Ball ball = _ballInstance.GetComponent<Ball>();
+
+        ball.LastPlayerToApplyForce.ServicesCount++;
+        ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
+        ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
+
+        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
+
+        ball.ResetBall();
     }
 
     [PunRPC]

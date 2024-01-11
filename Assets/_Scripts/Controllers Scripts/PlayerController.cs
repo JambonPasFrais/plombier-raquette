@@ -117,6 +117,26 @@ public class PlayerController : ControllersParent
 
     #region ACTION METHODS
 
+    public void PlayerAndGameStatesUpdating()
+    {
+        // The player enters in the PLAY state.
+        if (PlayerState != PlayerStates.PLAY)
+        {
+            // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
+            if (PlayerState == PlayerStates.SERVE)
+            {
+                GameManager.Instance.DeactivateAllServiceDetectionVolumes();
+                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
+            }
+
+            PlayerState = PlayerStates.PLAY;
+        }
+
+        // The game enters in playing phase when the ball is hit by the other player after the service.
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
+            GameManager.Instance.GameState = GameState.PLAYING;
+    }
+
     private void Shoot(HitType hitType)
     {
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
@@ -146,22 +166,9 @@ public class PlayerController : ControllersParent
         //_cameraController.SetCanSmash(false);
         _ballDetectionArea.Ball.DestroyTarget();
 
-        // The player enters in the PLAY state.
-        if (PlayerState != PlayerStates.PLAY)
-        {
-            // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
-            if (PlayerState == PlayerStates.SERVE)
-            {
-                GameManager.Instance.DeactivateAllServiceDetectionVolumes();
-                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
-            }
-
-            PlayerState = PlayerStates.PLAY;
-        }
-
-        // The game enters in playing phase when the ball is hit by the other player after the service.
-        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
-            GameManager.Instance.GameState = GameState.PLAYING;
+        // If this shoot is part of the service phase, the player and game state are accordingly updated.
+        // If it was the service shot, service colliders are disabled.
+        PlayerAndGameStatesUpdating();
 
         #region Shoot Direction
 
@@ -201,7 +208,7 @@ public class PlayerController : ControllersParent
         if (PhotonNetwork.IsConnected)
         {
             GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(),
-                hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, GameManager.Instance.Controllers.IndexOf(this));
+                hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, gameObject.GetPhotonView().Owner);
         }
         else
         {

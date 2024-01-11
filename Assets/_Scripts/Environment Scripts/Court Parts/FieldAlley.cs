@@ -36,50 +36,32 @@ public class FieldAlley : FieldGroundPart
                     // Otherwise it is counted as a fault.
                     if (ball.LastPlayerToApplyForce.ServicesCount == 0 && GameManager.Instance.GameState == GameState.SERVICE)
                     {
-                        GameManager.Instance.EndOfPoint();
-                        GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
-                        ball.ResetBall();
+                        if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
+                        {
+                            GameManager.Instance.SideManager.OnlineWrongFirstService(GameManager.Instance.ServiceManager.ServeRight,
+                            !GameManager.Instance.ServiceManager.ChangeSides);
+                        }
+                        else if(!PhotonNetwork.IsConnected)
+                        {
+                            GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                            !GameManager.Instance.ServiceManager.ChangeSides);
+                            GameManager.Instance.ServingPlayerResetAfterWrongFirstService();
+                        }
                     }
-                    // If the player hits an alley on the first rebound, it is fault.
-                    else if (ball.ReboundsCount == 1)
+                    else
                     {
-                        // If it was the first service, the player can proceed to his second service.
-                        // Otherwise it is counted as a fault.
-                        if (ball.LastPlayerToApplyForce.ServicesCount == 0 && GameManager.Instance.GameState == GameState.SERVICE)
+                        if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
                         {
-                            ball.LastPlayerToApplyForce.ServicesCount++;
-                            ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
-                            ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
-
-                            if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
-                            {
-                                GameManager.Instance.SideManager.SetSideOnline(GameManager.Instance.ServiceManager.ServeRight,
-                                !GameManager.Instance.ServiceManager.ChangeSides);
-                            }
-                            else
-                            {
-                                GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-                                !GameManager.Instance.ServiceManager.ChangeSides);
-                            }
-
-                            GameManager.Instance.ServiceManager.EnableLockServiceColliders();
+                            Teams winningPointTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                            GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
                         }
-                        else
+                        else if (!PhotonNetwork.IsConnected)
                         {
-                            if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
-                            {
-                                Teams winningPointTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-                                GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
-                            }
-                            else if (!PhotonNetwork.IsConnected)
-                            {
-                                GameManager.Instance.EndOfPoint();
-                                Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
-                                GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                            }
+                            GameManager.Instance.EndOfPoint();
+                            Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
+                            GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                            ball.ResetBall();
                         }
-
-                        ball.ResetBall();
                     }
                 }
             }

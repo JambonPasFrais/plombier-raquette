@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -280,7 +280,7 @@ Transform:
   - {fileID: 1712340657}
   - {fileID: 6916557748594714510}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &159828289 stripped
 MonoBehaviour:
@@ -306,6 +306,7 @@ GameObject:
   - component: {fileID: 175529524}
   - component: {fileID: 175529523}
   - component: {fileID: 175529522}
+  - component: {fileID: 175529525}
   m_Layer: 0
   m_Name: _Scripts
   m_TagString: Untagged
@@ -326,7 +327,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &175529521
 MonoBehaviour:
@@ -344,7 +345,9 @@ MonoBehaviour:
   SideManager: {fileID: 175529523}
   ServiceManager: {fileID: 175529522}
   ScoreManager: {fileID: 175529524}
+  CameraManager: {fileID: 175529525}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
+  _smashTargetGo: {fileID: 0}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1335233997}
   _controllers:
@@ -354,7 +357,8 @@ MonoBehaviour:
   - {fileID: 159828289}
   - {fileID: 348428141}
   _leftFaultLineXFromFirstSide: -4.11
-  _ballInstance: {fileID: 0}
+  _playerPrefab: {fileID: 0}
+  _classicCharacterParameters: {fileID: 0}
 --- !u!114 &175529522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,8 +389,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba485812c5157464e8f0cd2378219847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _servicePointsFirstSideParent: {fileID: 1024644284}
-  _servicePointsSecondSideParent: {fileID: 382264786}
+  _serviceNodesFirstSideContainer: {fileID: 1024644284}
+  _serviceNodesSecondSideContainer: {fileID: 382264786}
   _firstSideCollidersParentObject: {fileID: 1818065720}
   _secondSideCollidersParentObject: {fileID: 25859450}
   _cameraParent: {fileID: 2006872489}
@@ -407,6 +411,21 @@ MonoBehaviour:
   _nbOfGamesToWin: 6
   _isTieBreak: 0
   _scoreText: {fileID: 714526697}
+  _scoreDisplaying: {fileID: 0}
+--- !u!114 &175529525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175529518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a378ec36524f04419b1125f6d281bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soloCamerasContainer: {fileID: 2006872489}
+  _splitScreenCamerasContainer: {fileID: 667978610}
 --- !u!1 &330511882
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,6 +616,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 25, y: 4, z: 17}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!1 &667978609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 667978610}
+  m_Layer: 0
+  m_Name: SplitCameras
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &667978610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667978609}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.262, y: 1.3939997, z: -11.64}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1162,7 +1212,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1243780555 stripped
 GameObject:
@@ -1477,7 +1527,7 @@ Transform:
   - {fileID: 10320971}
   - {fileID: 1949092066}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1949092065
 GameObject:
@@ -1630,7 +1680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2006872489}
   m_Layer: 0
-  m_Name: Cameras
+  m_Name: SoloCameras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1750,7 +1800,7 @@ RectTransform:
   - {fileID: 714526696}
   - {fileID: 779330568}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -13400,8 +13450,9 @@ MonoBehaviour:
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
+  PlayerTeam: 0
+  IsInOriginalSide: 0
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 2
   _ballServiceDetectionArea: {fileID: 571791135}
   _serviceBallInitializationPoint: {fileID: 1112847464240904049}
   _minimumShotForce: 350
