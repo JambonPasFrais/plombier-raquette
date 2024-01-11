@@ -206,7 +206,10 @@ public class PlayerController : ControllersParent
         // Applying a specific force in a specific direction and with a specific rising force factor.
         // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
         _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
-    }
+
+
+		AudioManager.Instance.PlaySfx("ShotSound");
+	}
 
     public void AimShot(InputAction.CallbackContext context)
     {
@@ -349,7 +352,9 @@ public class PlayerController : ControllersParent
             GameManager.Instance.CameraManager.ToggleGameCamerasForSmash();
             
             _ballInstance.gameObject.transform.rotation = Quaternion.identity;
-        }
+
+			AudioManager.Instance.PlaySfx("OnSmashPreparation");
+		}
     }
 
     public void Smash(InputAction.CallbackContext context)
@@ -373,8 +378,10 @@ public class PlayerController : ControllersParent
             _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
             
             _playerCameraController.ToggleFirstPersonView();
-        }
-    }
+
+			AudioManager.Instance.PlaySfx("OnSmashShot");
+		}
+	}
 
     #endregion
 }

@@ -96,8 +96,6 @@ public class Ball : MonoBehaviour
     {
         _rigidBody.velocity = Vector3.zero;
 
-        AudioManager.Instance.PlaySfx("ShotSound");
-
         if (_currentMovementCoroutine != null)
         {
             StopCoroutine(_currentMovementCoroutine);
