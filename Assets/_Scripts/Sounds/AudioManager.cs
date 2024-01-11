@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -127,6 +128,11 @@ public class AudioManager : MonoBehaviour
 	public void PlaySfx(string sfxName)
 	{
 		PlaySound(_sfxSounds[sfxName][UnityEngine.Random.Range(0, _sfxSounds[sfxName].Count)], sfxName, _audioMixerSFX, false);
+	}
+
+	public void PlaySfx(AudioClip clip)
+	{
+		PlaySound(clip, clip.name, _audioMixerSFX, false);
 	}
 
 	private AudioSource PlaySound(AudioClip clip, string musicName, AudioMixerGroup audioMixerGroup, bool isLooping)

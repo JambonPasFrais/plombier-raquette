@@ -475,6 +475,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			if (characterUI.Character.Name != "Random")
 				characterUI.SetSelected(true);
 
+			AudioManager.Instance.PlaySfx(characterUI.Character.CharacterSounds.Where(x => x.Name == "Selected").FirstOrDefault().Clips[0]);
 			_currentShowroomList[playerIndex].CharacterName.text = characterUI.Character.Name;
 			_currentShowroomList[playerIndex].Background.color = characterUI.Character.CharacterPrimaryColor;
 			_currentShowroomList[playerIndex].NameBackground.color = characterUI.Character.CharacterSecondaryColor;

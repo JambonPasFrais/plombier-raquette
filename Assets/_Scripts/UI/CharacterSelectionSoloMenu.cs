@@ -68,6 +68,8 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			{
 				if (characterUI != _charactersUI.Last())
 					characterUI.SetSelected(true);
+
+				AudioManager.Instance.PlaySfx(characterUI.Character.CharacterSounds.Where(x => x.Name == "Selected").FirstOrDefault().Clips[0]);
 				_playerShowroom.CharacterName.text = characterUI.Character.Name;
 				_playerShowroom.Background.color = characterUI.Character.CharacterPrimaryColor;
 				_playerShowroom.NameBackground.color = characterUI.Character.CharacterSecondaryColor;
