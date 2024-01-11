@@ -143,7 +143,6 @@ public class ControllerManager : MonoBehaviour
         }
     }
 
-    // TODO : use this function at the end of a game OR destroy the controllers (also works)
     public void ChangeCtrlersActMapToMenu()
     {
         foreach (var playerInputHandler in Controllers.Values)

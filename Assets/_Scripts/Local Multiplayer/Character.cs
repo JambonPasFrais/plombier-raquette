@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerAnimator), typeof(PlayerController))]
+[RequireComponent(typeof(PlayerController))]
 public class Character : MonoBehaviour
 {
     // Variables may be set tup automatically
@@ -11,18 +11,18 @@ public class Character : MonoBehaviour
     [Header("Instances")] [SerializeField] private CharacterParameters _parameters;
     
     [Header("Components")]
-    [SerializeField] private PlayerAnimator _playerAnimator; // Component for animations
     [SerializeField] private PlayerController _playerController; // Component for controls
     
     #region GETTERS
+    
     public PlayerController PlayerController => _playerController;
+    
     #endregion
 
     #region UNITY METHODES
 
     private void Awake()
     {
-        _playerAnimator = GetComponent<PlayerAnimator>();
         _playerController = GetComponent<PlayerController>();
     }
 
