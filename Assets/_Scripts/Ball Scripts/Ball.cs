@@ -42,7 +42,6 @@ public class Ball : MonoBehaviour
     private Coroutine _currentCurvingEffectCoroutine;
     private Dictionary<HitType, Gradient> _colorGradientByHitType;
     private Coroutine _currentEffectCoroutine;
-    private Coroutine _currentEffectCoroutine2;
 
     #endregion
 
@@ -206,7 +205,7 @@ public class Ball : MonoBehaviour
     {
         _reboundsCount++;
         
-        PlayEffect(_reboundEffect);
+        //PlayEffect(_reboundEffect);
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
         _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
