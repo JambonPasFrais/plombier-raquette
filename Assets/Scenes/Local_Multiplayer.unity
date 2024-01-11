@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -237,7 +237,7 @@ MonoBehaviour:
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
   _smashTargetGo: {fileID: 571886968}
   ServiceOnOriginalSide: 0
-  _net: {fileID: 0}
+  _net: {fileID: 8765839553454529616}
   _controllers: []
   _borderPointsContainers:
   - {fileID: 7663527703948051056}
@@ -1112,98 +1112,11 @@ Transform:
   m_Father: {fileID: 381791677}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1459584809
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1459584810}
-  - component: {fileID: 1459584812}
-  - component: {fileID: 1459584811}
-  m_Layer: 0
-  m_Name: EndGameCamera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1459584810
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1459584809}
-  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 99, z: -116.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 725020315321684906}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
---- !u!81 &1459584811
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1459584809}
-  m_Enabled: 1
---- !u!20 &1459584812
+--- !u!20 &1459584812 stripped
 Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 176144263047950941, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
+  m_PrefabInstance: {fileID: 1680453166124844363}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1459584809}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 5
-  m_Depth: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
 --- !u!1 &1598844800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1562,7 +1475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1810692342}
   m_Layer: 0
-  m_Name: ----TESTS BELOW----- (delete when finish)
+  m_Name: ----TESTS ENVIRONMENT BELOW----- (delete when finish)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1828,11 +1741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a378ec36524f04419b1125f6d281bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &725020315321684906 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5947675055976103548, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
-  m_PrefabInstance: {fileID: 1680453166124844363}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1680453166124844363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1844,14 +1752,6 @@ PrefabInstance:
     - target: {fileID: 712040886748068244, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
       propertyPath: m_Name
       value: Cameras
-      objectReference: {fileID: 0}
-    - target: {fileID: 5068091477253163409, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5832882771389731531, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5947675055976103548, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
       propertyPath: m_RootOrder
@@ -1897,16 +1797,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9171816291661774771, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
-      propertyPath: _endGameUICamera
-      value: 
-      objectReference: {fileID: 1459584809}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5947675055976103548, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1459584810}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
 --- !u!4 &2520489491286275693 stripped
@@ -2204,6 +2097,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+--- !u!1 &8765839553454529616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8811847718307954502, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+  m_PrefabInstance: {fileID: 8765839553454529615}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8967177160711208243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5613290838759717001, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
