@@ -41,7 +41,9 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
         {
             _gameManager.AddControllers(t.GetComponent<ControllersParent>());
         }
-        
+
+        AudioManager.Instance.LaunchGameMusicCoroutine();
+
         _gameManager.Init();
     }
 

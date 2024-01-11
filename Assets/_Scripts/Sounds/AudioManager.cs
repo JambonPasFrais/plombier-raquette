@@ -125,6 +125,7 @@ public class AudioManager : MonoBehaviour
 
 		_currentSoundData.CurrentClipIndex = (_currentSoundData.CurrentClipIndex + 1) % _currentSoundData.Clips.Count;
 	}
+
 	public void PlaySfx(string sfxName)
 	{
 		PlaySound(_sfxSounds[sfxName][UnityEngine.Random.Range(0, _sfxSounds[sfxName].Count)], sfxName, _audioMixerSFX, false);
