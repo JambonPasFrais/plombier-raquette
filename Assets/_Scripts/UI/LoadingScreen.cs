@@ -29,6 +29,7 @@ public class LoadingScreen : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			AudioManager.Instance.PlaySfx("LoadingScreenTransition");
 			gameObject.SetActive(false);
 			_menusContainer.SetActive(true);
 		}

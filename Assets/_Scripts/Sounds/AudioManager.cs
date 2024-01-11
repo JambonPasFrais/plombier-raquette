@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
 
 	public static AudioMixer AudioMixer => _instance._audioMixer;
 
-	//public static AudioManager Instance => _instance;
+	public static AudioManager Instance => _instance;
 
 	#endregion
 
