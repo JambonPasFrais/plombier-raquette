@@ -96,6 +96,8 @@ public class Ball : MonoBehaviour
     {
         _rigidBody.velocity = Vector3.zero;
 
+        AudioManager.Instance.PlaySfx("ShotSound");
+
         if (_currentMovementCoroutine != null)
         {
             StopCoroutine(_currentMovementCoroutine);
@@ -176,6 +178,8 @@ public class Ball : MonoBehaviour
 
     public void Rebound()
     {
+        AudioManager.Instance.PlaySfx("ReboundSound");
+
         _reboundsCount++;
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);

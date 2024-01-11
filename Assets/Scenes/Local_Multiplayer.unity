@@ -596,7 +596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2980775141109284816, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: _playerInputHandlers.Array.size
@@ -978,7 +978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6026168360290022309, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1205,6 +1205,14 @@ PrefabInstance:
     - target: {fileID: 4663932790302699888, guid: fd9ec72e3101edd4fb60f686036061b3, type: 3}
       propertyPath: m_Name
       value: AudioManager (DDOL)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4663932790302699888, guid: fd9ec72e3101edd4fb60f686036061b3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4888668802575313060, guid: fd9ec72e3101edd4fb60f686036061b3, type: 3}
+      propertyPath: _everySound.Array.data[8].Name
+      value: ShotSound
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
