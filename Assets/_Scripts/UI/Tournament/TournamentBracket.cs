@@ -34,7 +34,7 @@ public class TournamentBracket : MonoBehaviour
 	[SerializeField] private GameObject _tournamentWinner = null;
 	private Dictionary<int, List<GameObject>> _playersAtRound = new Dictionary<int, List<GameObject>>();
 
-	private GameObject _playersCharacter;
+	[SerializeField] private GameObject _playersCharacter;
 
 	private void Awake()
 	{
@@ -173,6 +173,8 @@ public class TournamentBracket : MonoBehaviour
 			go.GetComponent<CharacterUI>().SetVisual(_selectedCharacters[i]);
 			_firstRoundPlayers.Add(go);
 		}
+
+		_playersCharacter = _firstRoundPlayers[0];
 
 		GameParameters.Instance.CurrentTournamentInfos.PlayersCharacter = _firstRoundPlayers[0].GetComponent<CharacterUI>().Character;
 	}
@@ -342,26 +344,22 @@ public class TournamentBracket : MonoBehaviour
 
 	public void Forfait()
 	{
-		ResetBracket();
-		GameParameters.Instance.CurrentTournamentInfos.Reset();
-		MenuManager.Instance.GoBackToMainMenu();
+		StartCoroutine(WaitBeforeShowingLoserMenu());
 	}
 
 	private IEnumerator WaitBeforeShowingWinnerMenu()
 	{
 		_playMatchButton.interactable = false;
 		yield return new WaitForSeconds(1);
-		ResetBracket();
-		_tournamentEndMenu.gameObject.SetActive(true);
 		_tournamentEndMenu.SetWinnerMenu(_playersCharacter.GetComponent<CharacterUI>().Character.BasicModel, _cupImage.sprite);
+		ResetBracket();
 	}
 
 	private IEnumerator WaitBeforeShowingLoserMenu()
 	{
 		_playMatchButton.interactable = false;
 		yield return new WaitForSeconds(1);
-		ResetBracket();
-		_tournamentEndMenu.gameObject.SetActive(true);
 		_tournamentEndMenu.SetLoserMenu(_playersCharacter.GetComponent<CharacterUI>().Character.BasicModel);
+		ResetBracket();
 	}
 }

@@ -864,6 +864,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1976444500 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5666783500287040982, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
+  m_PrefabInstance: {fileID: 7094326376046864619}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2005698618 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5169323836729819224, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
@@ -2031,6 +2036,10 @@ PrefabInstance:
       value: AudioManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3562793578116387467, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1976444500}
+    - target: {fileID: 3562793578116387467, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_StringArgument
       value: ButtonPressed
       objectReference: {fileID: 0}
@@ -2884,7 +2893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330260695295701181, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6349130623050613388, guid: d6e70a1624362bb4dac82638d9478a7e, type: 3}
       propertyPath: m_AnchorMax.y

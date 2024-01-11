@@ -42,6 +42,7 @@ public class TournamentEndMenu : MonoBehaviour
         go.transform.localPosition = Vector3.zero;
 		go.transform.localScale = new Vector3(30, 30, 30);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+		gameObject.SetActive(true);
 		StartCoroutine(WaitBeforeCanReturn());
 	}
 
@@ -57,6 +58,7 @@ public class TournamentEndMenu : MonoBehaviour
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+		gameObject.SetActive(true);
 		StartCoroutine(WaitBeforeCanReturn());
     }
 
