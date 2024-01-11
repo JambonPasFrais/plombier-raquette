@@ -22,6 +22,7 @@ public class ProgressBar : MonoBehaviour
 		if(_progressBarSlider.value >= 1)
 		{
 			SceneManager.LoadScene("Clean_UI_Final");
+			AudioManager.Instance.StartMainMenuMusicCoroutine();
 		}
 	}
 }
