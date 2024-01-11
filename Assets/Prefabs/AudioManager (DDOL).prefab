@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 2881712671860293360}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4888668802575313060
 MonoBehaviour:
@@ -79,39 +79,53 @@ MonoBehaviour:
   _everySound:
   - Name: MainMenuMusics
     AudioType: 0
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 16d2f5d78b7bcef4f9037bca7e952d9f, type: 3}
+    - {fileID: 8300000, guid: f9a857a2dd42db146adc54d7332950c7, type: 3}
     CurrentClipIndex: 0
-  - Name: MatchMusic
+  - Name: MatchMusics
     AudioType: 0
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: c62426aae7fd8944a9dd64ed6749a4f1, type: 3}
+    - {fileID: 8300000, guid: 1c0f079a60b4df64d96f9b4b4de22eb2, type: 3}
+    - {fileID: 8300000, guid: d7498c62a480a2147ac692e212e6b101, type: 3}
+    - {fileID: 8300000, guid: fab01ae4f4d08e349bca93101797756c, type: 3}
+    - {fileID: 8300000, guid: ec5955f222bb583488ff8f05fa322b70, type: 3}
     CurrentClipIndex: 0
   - Name: ButtonPressed
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: b3486ba3ea00bd34cbf982ea862335b4, type: 3}
     CurrentClipIndex: 0
   - Name: LoadingScreenTransition
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: b2bf47ce53d8c5f468ab7edba9a8e5cd, type: 3}
     CurrentClipIndex: 0
   - Name: EndPointCrowd
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 41f38e977b350664d8de6c086ed446ff, type: 3}
     CurrentClipIndex: 0
   - Name: OnSmashJump
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 0b29bff38b97d5341bfabf9ef80400f7, type: 3}
     CurrentClipIndex: 0
   - Name: OnSmashShot
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 94836b2dd0e05e741a4def047c6d5e45, type: 3}
     CurrentClipIndex: 0
   - Name: ReboundSound
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 1900c20aa28aeda42b5635fcf3722d1b, type: 3}
     CurrentClipIndex: 0
   - Name: Shot
     AudioType: 1
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 98c9c9b41a041e14e803ec0f8c10d87f, type: 3}
     CurrentClipIndex: 0
   _audioMixer: {fileID: 24100000, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMaster: {fileID: 24300002, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}

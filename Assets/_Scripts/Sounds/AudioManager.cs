@@ -156,7 +156,7 @@ public class AudioManager : MonoBehaviour
 
 	private IEnumerator MainMenuMusicLoop()
 	{
-		PlayMusic("mainMenuMix");
+		PlayMusic("MainMenuMusics");
 		yield return new WaitForSeconds(_currentMusic.clip.length);
 
 		StartCoroutine(MainMenuMusicLoop());
@@ -164,7 +164,7 @@ public class AudioManager : MonoBehaviour
 	
 	private IEnumerator GameMusicLoop()
 	{
-		PlayMusic("gameMix");
+		PlayMusic("MatchMusics");
 		yield return new WaitForSeconds(_currentMusic.clip.length);
 
 		StartCoroutine(GameMusicLoop());
