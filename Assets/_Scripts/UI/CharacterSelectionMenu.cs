@@ -141,7 +141,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	public void Play()
 	{
 		TransformRandomSelectionInCharacter();
-		_aceItWindow.SetActive(true);
+		StartCoroutine(WaitBeforeDisplayingAceItMenu());
 		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
@@ -184,6 +184,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Any button that loads the menu
 	public void OnMenuLoaded()
 	{
+		AudioManager.Instance.PlaySfx("ChooseYourCharacter");
 		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
 		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
@@ -417,9 +418,20 @@ public class CharacterSelectionMenu : MonoBehaviour
 		
 		_charactersUI.Clear();
 		_charactersUI = new List<CharacterUI>();
-
 	}
-	
+
+	#region COROUTINES
+
+	private IEnumerator WaitBeforeDisplayingAceItMenu()
+	{
+		yield return new WaitForSeconds(1f);
+
+		_aceItWindow.SetActive(true);
+		AudioManager.Instance.PlaySfx("AceItSound");
+	}
+
+	#endregion
+
 	// Potentially useless
 	/*
 	public void HandleCharacterSelectionInput(CharacterUI characterUI)
