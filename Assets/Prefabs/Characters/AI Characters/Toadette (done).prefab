@@ -8093,6 +8093,7 @@ MonoBehaviour:
   ServicesCount: 0
   PlayerTeam: 0
   IsInOriginalSide: 0
+  _chargingShotGo: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 5005008561536974603}
   _serviceBallInitializationPoint: {fileID: 1333095917592830761}
@@ -8101,12 +8102,16 @@ MonoBehaviour:
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
+  _playerAnimator: {fileID: 0}
+  _isShooting: 0
+  _isSmashing: 0
+  _isCommunicating: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: a976e007628d1a9499cb5876fa7255a1, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
   _targets:
   - {fileID: 0}
   - {fileID: 0}

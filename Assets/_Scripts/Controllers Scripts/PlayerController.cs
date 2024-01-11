@@ -20,13 +20,15 @@ public class PlayerController : ControllersParent
     
     [Header("Movements and Hit Parameters")]
     [SerializeField] private float _movementSpeed;
-
     [SerializeField] private float _chargingMoveSpeed;
     [SerializeField] private float _minimumHitKeyPressTimeToIncrementForce;
     [SerializeField] private float _maximumHitKeyPressTime;
 
     [Header("Smash Parameters")]
     [SerializeField] private bool _canSmash;
+    
+    [Header("Rotation")] [SerializeField] private Transform _avatarVisual;
+    [SerializeField] private float _rotationSpeed = 6.0f;
     
     private Vector2 _movementVector;
     private float _currentSpeed;
@@ -81,7 +83,7 @@ public class PlayerController : ControllersParent
             if (_hitKeyPressedTime < _maximumHitKeyPressTime)
             {
                 _hitKeyPressedTime += Time.deltaTime;
-                if (_hitKeyPressedTime >= 0.1f)
+                if (_hitKeyPressedTime >= _minimumHitKeyPressTimeToIncrementForce)
                     if (!_chargingShotGo.activeSelf)
                         _chargingShotGo.SetActive(true);
             }
@@ -112,7 +114,7 @@ public class PlayerController : ControllersParent
             {
                 Quaternion targetRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
                 // Smoothly rotate towards the target rotation with a speed of 6.0f;
-                _avatarVisual.rotation = Quaternion.Slerp(_avatarVisual.rotation, targetRotation, 6.0f * Time.deltaTime);
+                _avatarVisual.rotation = Quaternion.Slerp(_avatarVisual.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
             }
             
             // The player moves according to the movement inputs.

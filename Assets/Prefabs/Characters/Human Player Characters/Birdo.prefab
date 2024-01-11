@@ -1903,7 +1903,7 @@ GameObject:
   - component: {fileID: 4930501403640221118}
   - component: {fileID: -8994089751683610411}
   m_Layer: 0
-  m_Name: Birdo (working)
+  m_Name: Birdo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1936,7 +1936,6 @@ Transform:
   - {fileID: 8536300556708153666}
   - {fileID: 7985332278146382068}
   - {fileID: 4469755899741748917}
-  - {fileID: 5064224086842580510}
   - {fileID: 4116028892454254625}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1972,7 +1971,6 @@ MonoBehaviour:
   ServicesCount: 0
   PlayerTeam: 0
   IsInOriginalSide: 0
-  _avatarVisual: {fileID: 8297893639016459951}
   _chargingShotGo: {fileID: 3836776555429734388}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 7182724276727742458}
@@ -2012,6 +2010,8 @@ MonoBehaviour:
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
   _canSmash: 0
+  _avatarVisual: {fileID: 8297893639016459951}
+  _rotationSpeed: 6
 --- !u!95 &2492067642450663289
 Animator:
   serializedVersion: 5
@@ -5116,76 +5116,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 569501134635987748, guid: ab19a9259daf04f4b93824d131cb2cbe, type: 3}
   m_PrefabInstance: {fileID: 948588561341648392}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3544846873685057566
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4580448572046846012}
-    m_Modifications:
-    - target: {fileID: 8514642721281404853, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_Name
-      value: ChargingUpAnim
-      objectReference: {fileID: 0}
-    - target: {fileID: 8514642721281404853, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c2826f04692842943867e25f50e989fa, type: 3}
---- !u!4 &5064224086842580510 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8608190380524731904, guid: c2826f04692842943867e25f50e989fa, type: 3}
-  m_PrefabInstance: {fileID: 3544846873685057566}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4536743759844231361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5273,11 +5203,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
       propertyPath: m_Name
-      value: Buff
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      value: ChargeShotAnim
       objectReference: {fileID: 0}
     - target: {fileID: 8029142899459995171, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
       propertyPath: m_RootOrder
