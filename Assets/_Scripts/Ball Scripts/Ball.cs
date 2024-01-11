@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
 {
     #region PRIVATE FIELDS
     
-    [Header("Target Parameters")]
+    [Header("Star Parameters")]
     [SerializeField] private GameObject _starPrefab;
     [SerializeField] private float _raycastLength;
     [SerializeField] private float _horizontalOffset;
@@ -20,6 +20,7 @@ public class Ball : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private TrailRenderer _trailRenderer;
+    [SerializeField] private SphereCollider _sphereCollider;
 
     [Header("Observed Variables")]
     [SerializeField] private ShotParameters _shotParameters;
@@ -34,13 +35,14 @@ public class Ball : MonoBehaviour
     [SerializeField] private Gradient _flatColor;
     [SerializeField] private Gradient _smashColor;
     [SerializeField] private ParticleSystem _hitEffect;
+    [SerializeField] private ParticleSystem _reboundEffect;
 
     private float _risingForceFactor;
     private Coroutine _currentMovementCoroutine;
     private Coroutine _currentCurvingEffectCoroutine;
-    private SphereCollider _sphereCollider;
     private Dictionary<HitType, Gradient> _colorGradientByHitType;
-    private Coroutine _currentHitEffectCoroutine;
+    private Coroutine _currentEffectCoroutine;
+    private Coroutine _currentEffectCoroutine2;
 
     #endregion
 
@@ -61,8 +63,13 @@ public class Ball : MonoBehaviour
         _sphereCollider = GetComponent<SphereCollider>();
         _trailRenderer = GetComponent<TrailRenderer>();
         _rigidBody = GetComponent<Rigidbody>();
+        
         CreateColorGradientByHitTypeDict();
+        
+        #region Effects
         _hitEffect.Stop();
+        _reboundEffect.Stop();
+        #endregion
     }
 
     private void Update()
@@ -113,7 +120,7 @@ public class Ball : MonoBehaviour
 
     public void ApplyForce(float force, float risingForceFactor, Vector3 normalizedDirection, ControllersParent playerToApplyForce)
     {
-        PlayHitEffect();
+        PlayEffect(_hitEffect);
         
         _rigidBody.velocity = Vector3.zero;
 
@@ -198,6 +205,8 @@ public class Ball : MonoBehaviour
     public void Rebound()
     {
         _reboundsCount++;
+        
+        PlayEffect(_reboundEffect);
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
         _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
@@ -215,7 +224,14 @@ public class Ball : MonoBehaviour
         {
             StopCoroutine(_currentCurvingEffectCoroutine);
         }
-
+        if (_currentEffectCoroutine != null)
+        {
+            StopCoroutine(_currentEffectCoroutine);
+        }
+        
+        _hitEffect.Stop();
+        _reboundEffect.Stop();
+        
         _reboundsCount = 0;
         _lastPlayerToApplyForce = null;
         _rigidBody.velocity = Vector3.zero;
@@ -293,13 +309,15 @@ public class Ball : MonoBehaviour
 
     private void CreateColorGradientByHitTypeDict()
     {
-        _colorGradientByHitType = new Dictionary<HitType, Gradient>();
-        _colorGradientByHitType.Add(HitType.Drop, _dropColor);
-        _colorGradientByHitType.Add(HitType.Lob, _lobColor);
-        _colorGradientByHitType.Add(HitType.TopSpin, _topSpinColor);
-        _colorGradientByHitType.Add(HitType.Slice, _sliceColor);
-        _colorGradientByHitType.Add(HitType.Flat, _flatColor);
-        _colorGradientByHitType.Add(HitType.Smash, _smashColor);
+        _colorGradientByHitType = new Dictionary<HitType, Gradient>
+        {
+            { HitType.Drop, _dropColor },
+            { HitType.Lob, _lobColor },
+            { HitType.TopSpin, _topSpinColor },
+            { HitType.Slice, _sliceColor },
+            { HitType.Flat, _flatColor },
+            { HitType.Smash, _smashColor }
+        };
     }
     
     private void ModifyTrailRendererColorByHitType(HitType hitType)
@@ -307,21 +325,21 @@ public class Ball : MonoBehaviour
         _trailRenderer.colorGradient = _colorGradientByHitType[hitType];
     }
 
-    public void PlayHitEffect()
+    private void PlayEffect(ParticleSystem effect)
     {
-        if (_currentHitEffectCoroutine != null)
-            StopCoroutine(_currentHitEffectCoroutine);
+        /*if (_currentEffectCoroutine != null)
+            StopCoroutine(_currentEffectCoroutine);*/
         
-        _currentHitEffectCoroutine = StartCoroutine(HitEffectCoroutine());
+        _currentEffectCoroutine = StartCoroutine(EffectCoroutine(effect));
     }
-
-    private IEnumerator HitEffectCoroutine()
+    
+    private IEnumerator EffectCoroutine(ParticleSystem effect)
     {
-        _hitEffect.Play();
+        effect.Play();
+
+        yield return new WaitForSeconds(effect.main.duration);
         
-        yield return new WaitForSeconds(_hitEffect.main.duration);
-        
-        _hitEffect.Stop();
+        effect.Stop();
     }
     
     #endregion
