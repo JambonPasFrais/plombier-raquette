@@ -15,6 +15,8 @@ public class SupporterManager : MonoBehaviour
     
     private void Start()
     {
+        AddSupporters();
+        
         _internClock = 0;
         RandomlyAnimateSupporters();
     }
@@ -30,14 +32,31 @@ public class SupporterManager : MonoBehaviour
         }    
     }
 
+    private void AddSupporters()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            for (int j = 0; j < transform.GetChild(i).childCount; j++)
+            {
+                for (int k = 0; k < transform.GetChild(i).GetChild(j).childCount; k++)
+                {
+                    for (int l = 0; l < transform.GetChild(i).GetChild(j).GetChild(k).childCount; l++)
+                    {
+                        _supporters.Add(transform.GetChild(i).GetChild(j).GetChild(k).GetChild(l).gameObject.GetComponent<PlayerUIAnimator>());
+                    }
+                }
+            }
+        }
+    }
+    
     private void RandomlyAnimateSupporters()
     {
         foreach (var supporter in _supporters)
         {
-            float randomValue = Random.Range(0, 1);
-            if (randomValue >= 0.5f)
+            int randomValue = Random.Range(0, 4);
+            if (randomValue >= 2)
             {
-                if(randomValue is >= 0.75f)
+                if(randomValue >= 3)
                 {
                     supporter.CheeringAnimation();
                 }
@@ -54,13 +73,13 @@ public class SupporterManager : MonoBehaviour
         }
     }
 
-    private void AnimateSupportersAfterPoint()
+    public void AnimateSupportersAfterPoint()
     {
         foreach (var supporter in _supporters)
         {
-            if (Random.Range(0, 1) >= 0.5f)
+            if (Random.Range(0, 2) >= 1)
             {
-                if (Random.Range(0, 1) >= 0.5f)
+                if (Random.Range(0, 2) >= 1)
                 {
                     supporter.DefeatAnimation();
                 }
@@ -71,7 +90,7 @@ public class SupporterManager : MonoBehaviour
             }
             else
             {
-                if (Random.Range(0, 1) >= 0.5f)
+                if (Random.Range(0, 2) >= 1)
                 {
                     supporter.VictoryAnimation();
                 }
@@ -79,8 +98,6 @@ public class SupporterManager : MonoBehaviour
                 {
                     supporter.TakeTheLAnimation();
                 }
-                
-                
             }
         }
 
