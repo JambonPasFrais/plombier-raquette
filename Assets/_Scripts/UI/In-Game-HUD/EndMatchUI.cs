@@ -38,8 +38,8 @@ public class EndMatchUI : MonoBehaviour
 		if(!GameParameters.Instance.IsDouble)
 		{
 			_singleMatchParent.gameObject.SetActive(true);
-			InstantiateCharacter(winnerIndex, _modelLocationsSingle[0]);
-			InstantiateCharacter((winnerIndex + 1) % 2, _modelLocationsSingle[1]);
+			InstantiateCharacter(winnerIndex, _modelLocationsSingle[0], true);
+			InstantiateCharacter((winnerIndex + 1) % 2, _modelLocationsSingle[1], false);
 		}
 		else
 		{
@@ -50,13 +50,13 @@ public class EndMatchUI : MonoBehaviour
 			{
 				if (i % 2 == winnerIndex)
 				{
-					InstantiateCharacter(i, _modelLocationsDouble[winnerSideCpt]);
+					InstantiateCharacter(i, _modelLocationsDouble[winnerSideCpt], true);
 					winnerSideCpt++;
 				}
 
 				else
 				{
-					InstantiateCharacter(i, _modelLocationsDouble[loserSideCpt]);
+					InstantiateCharacter(i, _modelLocationsDouble[loserSideCpt], false);
 					loserSideCpt++;
 				}
 			}
@@ -70,9 +70,15 @@ public class EndMatchUI : MonoBehaviour
 		_scoreDisplayReference.transform.localRotation = Quaternion.identity;
 	}
 
-	private void InstantiateCharacter(int characterIndex, Transform location)
+	private void InstantiateCharacter(int characterIndex, Transform location, bool hasWonMatch)
 	{
 		GameObject go = Instantiate(GameParameters.Instance.PlayersCharacter[characterIndex].BasicModel, location);
+
+		if (hasWonMatch)
+			go.GetComponent<PlayerUIAnimator>().CharacterVictoryAnimation();
+		else
+			go.GetComponent<PlayerUIAnimator>().CharacterDefeatAnimation();
+
 		go.transform.localScale = new Vector3(20, 20, 20);
 		go.transform.localPosition = Vector3.zero;
 		go.transform.localRotation = Quaternion.Euler(0, 180, 0);

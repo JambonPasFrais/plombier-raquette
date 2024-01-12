@@ -75,7 +75,7 @@ public class SupporterManager : MonoBehaviour
             {
                 if (Random.Range(0, 2) >= 1)
                 {
-                    supporter.DefeatAnimation();
+                    supporter.CrowdDefeatAnimation();
                 }
                 else
                 {
@@ -86,7 +86,7 @@ public class SupporterManager : MonoBehaviour
             {
                 if (Random.Range(0, 2) >= 1)
                 {
-                    supporter.VictoryAnimation();
+                    supporter.CrowdVictoryAnimation();
                 }
                 else
                 {
