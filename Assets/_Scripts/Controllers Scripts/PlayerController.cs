@@ -220,7 +220,7 @@ public class PlayerController : ControllersParent
         if (_shootDirectionController == ShootDirectionController.MOUSE)
         {
             // The hit direction is set according to the mouse position on the screen.
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(_shotDirection), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(_shotDirection), out var hit, float.MaxValue, ~LayerMask.GetMask("Player", "InvisibleWall")))
             {
                 Vector3 position = transform.position;
                 horizontalDirection = Vector3.Project(hit.point - position, Vector3.forward) + Vector3.Project(hit.point - position, Vector3.right);

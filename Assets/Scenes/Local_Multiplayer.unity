@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -527,7 +527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: _playerInputHandlers.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3345858834921888544, guid: 767955f86c3c93c459b16c24e3537873, type: 3}
       propertyPath: _playerInputHandlers.Array.data[0]
@@ -899,7 +899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 887026200301164258, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: _localNbPlayers
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 887026200301164258, guid: 171c30426301a674d908c55eaa13ccea, type: 3}
       propertyPath: _numberOfPlayerBySide
@@ -1234,6 +1234,10 @@ PrefabInstance:
     - target: {fileID: 2992191248066274806, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
       propertyPath: m_Name
       value: Player Input Handler (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2992191248066274806, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5089189695655052442, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
       propertyPath: m_RootOrder
@@ -2376,9 +2380,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1877488717}
     m_Modifications:
+    - target: {fileID: 28672600996834939, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1281976036305501708, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2721838299373888524, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3153106250089834196, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
       propertyPath: m_Name
       value: Tennis Stadium
+      objectReference: {fileID: 0}
+    - target: {fileID: 3296184396203224828, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917942958342920758, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5153483707160501195, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
       propertyPath: m_RootOrder
@@ -2423,6 +2447,26 @@ PrefabInstance:
     - target: {fileID: 5153483707160501195, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6171307177211800417, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556293904106311501, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096936308898176724, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027990234193502858, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8313353188411525059, guid: e88038b3e2ce408468fddf8fa2e53518, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
