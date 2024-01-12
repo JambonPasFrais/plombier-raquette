@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
     private System.Random random = new System.Random();
+    private Coroutine _lastCoroutineStarted;
 
     #endregion
 
@@ -153,7 +154,7 @@ public class GameManager : MonoBehaviour
             {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
         };
 
-        StartCoroutine(CharactersSoundsPlayer(random.Next(3, 12)));
+        _lastCoroutineStarted = StartCoroutine(CharactersSoundsPlayer(random.Next(3, 12)));
 	}
 
     #endregion
@@ -276,6 +277,7 @@ public class GameManager : MonoBehaviour
     public void EndOfGame(int playerIndex)
     {
         //TODO : uncomment when finished
+        StopCoroutine(_lastCoroutineStarted);
         ControllerManager.Instance.ChangeCtrlersActMapToMenu();
         _inGameUI.SetActive(false);
         _endGameUI.SetActive(true);
@@ -312,6 +314,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         GameParameters.Instance.PlayersCharacter[random.Next(0, GameParameters.Instance.PlayersCharacter.Count())].PlaySound("VariousSounds");
-        StartCoroutine(CharactersSoundsPlayer(random.Next(4, 12)));
+		_lastCoroutineStarted = StartCoroutine(CharactersSoundsPlayer(random.Next(4, 12)));
     }
 }
