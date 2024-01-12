@@ -312,7 +312,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_currentShowroomList[i].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
 
 			characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
-			characterModel.transform.localPosition = Vector3.zero;
+			characterModel.transform.localPosition = new Vector3(0, 200, 0);
 			characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
 			characterModel.SetActive(true);
 			_selectedCharacterUIs[i] = characterUI;
