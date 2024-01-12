@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator CharactersSoundsPlayer(int time)
     {
         yield return new WaitForSeconds(time);
-        GameParameters.Instance.PlayersCharacter[random.Next(0, GameParameters.Instance.PlayersCharacter.Count())].PlaySound("VariousSound");
+        GameParameters.Instance.PlayersCharacter[random.Next(0, GameParameters.Instance.PlayersCharacter.Count())].PlaySound("VariousSounds");
         StartCoroutine(CharactersSoundsPlayer(random.Next(4, 12)));
     }
 }
