@@ -92,7 +92,7 @@ public class TournamentBracket : MonoBehaviour
 
 		GameParameters.Instance.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
 		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
-		SceneManager.LoadScene(10);
+		SceneManager.LoadScene("Local_Multiplayer");
 	}
 
 	public void GetMatchResults()

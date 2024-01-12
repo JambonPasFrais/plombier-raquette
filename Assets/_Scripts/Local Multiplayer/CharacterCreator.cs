@@ -29,11 +29,6 @@ public class CharacterCreator : MonoBehaviour
     public List<GameObject> Characters => _characters;
     #endregion
 
-    private void OnEnable()
-    {
-        //InitCharacters();
-    }
-
     public void InitCharacters()
     {
         _characters = new List<GameObject>();
@@ -87,8 +82,6 @@ public class CharacterCreator : MonoBehaviour
             
             nbCharInstantiated++;
         }
-        
-        //TODO : Place them in the right spot (handled by side manager) with the right parameters (Teams, serve order)
     }
 
     
