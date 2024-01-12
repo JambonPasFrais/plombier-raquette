@@ -207,7 +207,7 @@ public class PlayerController : ControllersParent
 
         if (PhotonNetwork.IsConnected)
         {
-            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, hitForce, hitType.ToString(),
+            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, _ballDetectionArea.Ball.transform.position, hitForce, hitType.ToString(),
                 hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, gameObject.GetPhotonView().Owner);
         }
         else

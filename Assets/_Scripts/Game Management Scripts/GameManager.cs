@@ -50,6 +50,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Temporary variable.
     [SerializeField] private CharacterParameters _classicCharacterParameters;
 
+    [Header("Debug Objects")]
+    [SerializeField] private Transform _debugMessagesPanel;
+    [SerializeField] private GameObject _debugMessagePrefab;
+
     private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
     private Dictionary<Teams, float[]> _faultLinesXByTeam;
@@ -57,6 +61,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GameObject _ballInstance;
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
+
+    private Coroutine _onlineShootingCoroutine;
 
     #endregion
 
@@ -68,8 +74,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int ServerIndex { get { return _serverIndex; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
-
     public GameObject SmashTargetGo => _smashTargetGo;
+
+    public Transform DebugMessagesPanel { get { return _debugMessagesPanel; } }
+    public GameObject DebugMessagePrefab { get { return _debugMessagePrefab; } }
 
     #endregion
 
@@ -310,6 +318,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (!_controllers.Contains(controller))
             {
+                controller.PlayerTeam = _controllers[0].PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
                 controller.gameObject.GetComponent<PlayerInput>().enabled = false;
                 _controllers.Add(controller);
             }
@@ -394,8 +403,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void ShootOnline(float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, Player shootingPlayer)
+    private void ShootOnline(Vector3 ballPosition, float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, Player shootingPlayer)
     {
+        Debug.Log(Instance.Controllers[0].PlayerTeam);
+        
         PlayerController shootingPlayerController;
 
         if (Instance.Controllers[0].gameObject.GetPhotonView().Owner == shootingPlayer)
@@ -408,10 +419,36 @@ public class GameManager : MonoBehaviourPunCallbacks
             shootingPlayerController.PlayerAndGameStatesUpdating();
         }
 
+        /*        _ballInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
+                _ballInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
+                    NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
+                _ballInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, shootingPlayerController);*/
+
+        if (_onlineShootingCoroutine == null)
+        {
+            _onlineShootingCoroutine = StartCoroutine(OnlineBallShootingCoroutine(ballPosition, force, hitType, risingForceFactor, normalizedHorizontalDirection, shootingPlayerController));
+        }
+    }
+
+    /*    [PunRPC]
+        public void BallPositionSynchronization(Vector3 serverBallPosition)
+        {
+            _ballInstance.transform.position = serverBallPosition;
+            Debug.Log("Ball position synchronized");
+        }*/
+
+    private IEnumerator OnlineBallShootingCoroutine(Vector3 ballPosition, float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, PlayerController shootingPlayerController)
+    {
+        _ballInstance.transform.position = ballPosition;
+
+        yield return new WaitForSeconds(Time.deltaTime);
+
         _ballInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
         _ballInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
             NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
         _ballInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, shootingPlayerController);
+
+        _onlineShootingCoroutine = null;
     }
 
     [PunRPC]

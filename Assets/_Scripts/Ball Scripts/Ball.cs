@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System;
 using System.Collections;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -64,6 +65,11 @@ public class Ball : MonoBehaviourPunCallbacks
         {
             DrawTarget();
         }
+
+/*        if (PhotonNetwork.IsConnected && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].gameObject.GetPhotonView().IsMine)
+        {
+            GameManager.Instance.photonView.RPC("BallPositionSynchronization", RpcTarget.Others, transform.position);
+        }*/
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -124,6 +130,18 @@ public class Ball : MonoBehaviourPunCallbacks
             actualNormalizedDirection = normalizedDirection;
         }
 
+        for (int i = 0; i < GameManager.Instance.DebugMessagesPanel.childCount; i++)
+        {
+            Destroy(GameManager.Instance.DebugMessagesPanel.GetChild(i).gameObject);
+        }
+
+        GameObject startingPositionDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
+        startingPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{transform.position}";
+        GameObject actualForceDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
+        actualForceDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{actualHorizontalForce}";
+        GameObject horizontalDirectionPositionDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
+        horizontalDirectionPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{actualNormalizedDirection}";
+
         _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
 
         _lastPlayerToApplyForce = playerToApplyForce;
@@ -178,6 +196,12 @@ public class Ball : MonoBehaviourPunCallbacks
 
     public void Rebound()
     {
+        if (_reboundsCount == 0)
+        {
+            GameObject reboundPositionDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
+            reboundPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{transform.position}";
+        }
+
         _reboundsCount++;
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
