@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -29,7 +30,7 @@ public class AudioManager : MonoBehaviour
 
 	public static AudioMixer AudioMixer => _instance._audioMixer;
 
-	//public static AudioManager Instance => _instance;
+	public static AudioManager Instance => _instance;
 
 	#endregion
 
@@ -99,14 +100,14 @@ public class AudioManager : MonoBehaviour
 		_musicCoroutine = StartCoroutine(GameMusicLoop());
 	}
 
-	public void LaunchEndGameMusic()
+	public void LaunchResultsMusicCoroutine(int winnerIndex)
 	{
 		if (_musicCoroutine != null)
 		{
 			StopCoroutine(_musicCoroutine);
 		}
 
-		_musicCoroutine = StartCoroutine(EndGameMusicLoop());
+		_musicCoroutine = StartCoroutine(ResultsMusicLoop(winnerIndex));
 	}
 
 	#endregion
@@ -124,9 +125,15 @@ public class AudioManager : MonoBehaviour
 
 		_currentSoundData.CurrentClipIndex = (_currentSoundData.CurrentClipIndex + 1) % _currentSoundData.Clips.Count;
 	}
+
 	public void PlaySfx(string sfxName)
 	{
 		PlaySound(_sfxSounds[sfxName][UnityEngine.Random.Range(0, _sfxSounds[sfxName].Count)], sfxName, _audioMixerSFX, false);
+	}
+
+	public void PlaySfx(AudioClip clip)
+	{
+		PlaySound(clip, clip.name, _audioMixerSFX, false);
 	}
 
 	private AudioSource PlaySound(AudioClip clip, string musicName, AudioMixerGroup audioMixerGroup, bool isLooping)
@@ -156,7 +163,7 @@ public class AudioManager : MonoBehaviour
 
 	private IEnumerator MainMenuMusicLoop()
 	{
-		PlayMusic("mainMenuMix");
+		PlayMusic("MainMenuMusics");
 		yield return new WaitForSeconds(_currentMusic.clip.length);
 
 		StartCoroutine(MainMenuMusicLoop());
@@ -164,18 +171,22 @@ public class AudioManager : MonoBehaviour
 	
 	private IEnumerator GameMusicLoop()
 	{
-		PlayMusic("gameMix");
+		PlayMusic("MatchMusics");
 		yield return new WaitForSeconds(_currentMusic.clip.length);
 
 		StartCoroutine(GameMusicLoop());
 	}
 	
-	private IEnumerator EndGameMusicLoop()
+	private IEnumerator ResultsMusicLoop(int winnerIndex)
 	{
-		PlayMusic("win");
+		if (winnerIndex == 0)
+			PlayMusic("WinnerResults");
+		else
+			PlayMusic("LoserResults");
+		
 		yield return new WaitForSeconds(_currentMusic.clip.length);
 
-		StartCoroutine(EndGameMusicLoop());
+		StartCoroutine(ResultsMusicLoop(winnerIndex));
 	}
 
 	#endregion

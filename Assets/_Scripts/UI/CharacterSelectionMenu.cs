@@ -141,7 +141,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	public void Play()
 	{
 		TransformRandomSelectionInCharacter();
-		_aceItWindow.SetActive(true);
+		StartCoroutine(WaitBeforeDisplayingAceItMenu());
 		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
@@ -184,6 +184,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Any button that loads the menu
 	public void OnMenuLoaded()
 	{
+		AudioManager.Instance.PlaySfx("ChooseYourCharacter");
 		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
 		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
@@ -209,6 +210,8 @@ public class CharacterSelectionMenu : MonoBehaviour
 			CharacterUI charUI = Instantiate(_characterUIPrefab, _characterUIContainer).GetComponent<CharacterUI>();
 
 			charUI.SetVisual(item);
+
+			charUI.GetComponent<CharacterUI>().Character.Init();
 
 			charUI.SetCharacterSelectionMenu(this);
 
@@ -417,9 +420,20 @@ public class CharacterSelectionMenu : MonoBehaviour
 		
 		_charactersUI.Clear();
 		_charactersUI = new List<CharacterUI>();
-
 	}
-	
+
+	#region COROUTINES
+
+	private IEnumerator WaitBeforeDisplayingAceItMenu()
+	{
+		yield return new WaitForSeconds(1f);
+
+		_aceItWindow.SetActive(true);
+		AudioManager.Instance.PlaySfx("AceItSound");
+	}
+
+	#endregion
+
 	// Potentially useless
 	/*
 	public void HandleCharacterSelectionInput(CharacterUI characterUI)
@@ -475,6 +489,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			if (characterUI.Character.Name != "Random")
 				characterUI.SetSelected(true);
 
+			characterUI.Character.PlaySound("Selected");
 			_currentShowroomList[playerIndex].CharacterName.text = characterUI.Character.Name;
 			_currentShowroomList[playerIndex].Background.color = characterUI.Character.CharacterPrimaryColor;
 			_currentShowroomList[playerIndex].NameBackground.color = characterUI.Character.CharacterSecondaryColor;

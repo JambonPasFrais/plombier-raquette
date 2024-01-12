@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Birdo
   Picture: {fileID: 1696139984, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: -828168023, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0, g: 0, b: 0, a: 0}
   CharacterPrimaryColor: {r: 1, g: 0.46274513, b: 0.9803922, a: 1}
   CharacterSecondaryColor: {r: 0.8117648, g: 0.13725491, b: 0.16862746, a: 1}
   HumanControllerPrefab: {fileID: 2793691165080735929, guid: 59432c5cddc7348468cee25ec025db10, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 2793691165080735929, guid: f1c70442cd22bdb4db60122098b7b98f, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 1
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 1ab1684ebe40f854fa246362444a03dd, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: db927085a0a199545a5eb9398d53d611, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 2138dc8fdf3161d44871bb7eb8c207ba, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: ca103eeaef340af44a901b67ea4145e3, type: 3}
+    - {fileID: 8300000, guid: 8c3691395c8a4e34797653e72aa15504, type: 3}
+    - {fileID: 8300000, guid: 387c4012ef18fb64b87396ea08c63ec0, type: 3}
+    - {fileID: 8300000, guid: 18207ebcbd01f4540ad059e89264274c, type: 3}
+    - {fileID: 8300000, guid: ddb2d35f3009b8d47ba1093ce5e0846f, type: 3}
+    CurrentClipIndex: 0

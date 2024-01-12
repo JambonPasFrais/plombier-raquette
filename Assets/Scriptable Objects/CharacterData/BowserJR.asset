@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Bowser Jr
   Picture: {fileID: -817406780, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: 91300511, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.59607846, g: 0.76470596, b: 0.18431373, a: 1}
   CharacterPrimaryColor: {r: 0.59607846, g: 0.76470596, b: 0.18431373, a: 1}
   CharacterSecondaryColor: {r: 0.7803922, g: 0.34509805, b: 0.23529413, a: 1}
   HumanControllerPrefab: {fileID: 6538050665251992175, guid: e04e89362caeffd41aaf80b410a9fda5, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 6538050665251992175, guid: ec02b7ffca54eed4993f3b4fcf9215af, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 0
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 87baa2e9e7744594a8102344ab321eb9, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 3bb8635efab0fe848b7b654fd12cfea2, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 605a8fc4f72fe824facb56ce947cef9f, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 4a44ee9314224e447b809b1040f22e02, type: 3}
+    - {fileID: 8300000, guid: 8ae6a8700f4de9c46bcaaabad20e1b4e, type: 3}
+    - {fileID: 8300000, guid: bec5ac7628e2e6947b97795498263ce7, type: 3}
+    - {fileID: 8300000, guid: be777462740e2674f9df67079f5f8959, type: 3}
+    - {fileID: 8300000, guid: ce87cf5f26e0c7040953ccafc9a33a8d, type: 3}
+    CurrentClipIndex: 0

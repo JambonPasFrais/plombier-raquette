@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Shy Guy
   Picture: {fileID: -1988007422, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: -1687128436, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.7490196, g: 0.1764706, b: 0.28235295, a: 1}
   CharacterPrimaryColor: {r: 0.16078432, g: 0.6745098, b: 0.9568628, a: 1}
   CharacterSecondaryColor: {r: 0.7490196, g: 0.1764706, b: 0.28235295, a: 1}
   HumanControllerPrefab: {fileID: 377035027854219527, guid: 4d0d56c37bfc5074288c6ac2fbe13325, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 377035027854219527, guid: 99517a8137936b0489d82969cea84863, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 0
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 6fa2c214e50a27b439506ac759e10a4e, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 023769f06f8550c4b9d8ade687896c5c, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: d89e7a90d39b6954883f56e9b636f0b8, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 8c8413c444bbe2549b3114ecfb170af1, type: 3}
+    - {fileID: 8300000, guid: 4576279f9cf733c4a921e7bc48127fbf, type: 3}
+    - {fileID: 8300000, guid: d9364945d200b8a47bad6d165870ebef, type: 3}
+    - {fileID: 8300000, guid: 35a1341971ba898498d8f9f6ec658200, type: 3}
+    - {fileID: 8300000, guid: a435a68d26eb87447bd95ad1b9caff91, type: 3}
+    CurrentClipIndex: 0

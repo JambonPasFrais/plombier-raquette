@@ -138,10 +138,21 @@ public class OptionsMenu : MonoBehaviour
 
 	private void UpdateSliders()
 	{
+		float volume;
+
+		_audioMixer.GetFloat("Master_Volume", out volume);
+		_globalVolumeSlider.value = Mathf.Pow(10, volume / 20f);
+
+		_audioMixer.GetFloat("SFX_Volume", out volume);
+		_sfxVolumeSlider.value = Mathf.Pow(10, volume / 20f);
+		_sfxVolumeSlider.value = Mathf.Pow(10, volume / 20f);
+
+		_audioMixer.GetFloat("Music_Volume", out volume);
+		_musicVolumeSlider.value = Mathf.Pow(10, volume / 20f);
+
 		_globalVolumeText.text = $"{Math.Round(_globalVolumeSlider.value, 2) * 100}";
 		_sfxVolumeText.text = $"{Math.Round(_sfxVolumeSlider.value, 2) * 100}";
 		_musicVolumeText.text = $"{Math.Round(_musicVolumeSlider.value, 2) * 100}";
-
 	}
 
 	#endregion

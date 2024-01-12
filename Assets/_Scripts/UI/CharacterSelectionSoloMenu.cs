@@ -48,6 +48,7 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 		{
 			go = Instantiate(_characterUIPrefab, _characterUIContainer);
 			go.GetComponent<CharacterUI>().SetVisual(item);
+			go.GetComponent<CharacterUI>().Character.Init();
             go.GetComponent<CharacterUI>().SetCharacterSelectionSoloMenu(this);
             _charactersUI.Add(go.GetComponent<CharacterUI>());
 		}
@@ -68,6 +69,8 @@ public class CharacterSelectionSoloMenu : MonoBehaviour
 			{
 				if (characterUI != _charactersUI.Last())
 					characterUI.SetSelected(true);
+
+				characterUI.Character.PlaySound("Selected");
 				_playerShowroom.CharacterName.text = characterUI.Character.Name;
 				_playerShowroom.Background.color = characterUI.Character.CharacterPrimaryColor;
 				_playerShowroom.NameBackground.color = characterUI.Character.CharacterSecondaryColor;

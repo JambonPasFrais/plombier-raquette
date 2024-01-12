@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Donkey Kong
   Picture: {fileID: -1977149275, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: -656264637, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.4528302, g: 0.26128525, b: 0, a: 1}
   CharacterPrimaryColor: {r: 0.45098042, g: 0.2627451, b: 0, a: 1}
   CharacterSecondaryColor: {r: 0.7803922, g: 0.34509805, b: 0.3254902, a: 1}
   HumanControllerPrefab: {fileID: 4318388248946029059, guid: 385c3dd43a624bb49aae442cc8e09e33, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 4318388248946029059, guid: e7cf130a31883754d9158f5500732006, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 2
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 0111f6d77fe88d04d88787e132616dc3, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: cdf494e9a8d991248924377db05985b2, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: a264d7fb0ea36f146932f3855c24d211, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 052c023822cd84d47a7625f36c1d0ac5, type: 3}
+    - {fileID: 8300000, guid: 575c951ab70c7ca42a904508c5bf42d6, type: 3}
+    - {fileID: 8300000, guid: 208f51fde88dad4459b959b184e54eb9, type: 3}
+    - {fileID: 8300000, guid: a6cc0d79ac450f0439d2ca292cb4cd25, type: 3}
+    - {fileID: 8300000, guid: 728e33ec5dfdd6148a7cb8198abaa698, type: 3}
+    CurrentClipIndex: 0

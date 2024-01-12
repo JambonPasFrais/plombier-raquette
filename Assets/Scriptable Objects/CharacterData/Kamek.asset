@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Kamek
   Picture: {fileID: 360039718, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: 293868819, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.2, g: 0.61960787, b: 1, a: 1}
   CharacterPrimaryColor: {r: 0.20000002, g: 0.61960787, b: 1, a: 1}
   CharacterSecondaryColor: {r: 0.7960785, g: 0.6392157, b: 0.227451, a: 1}
   HumanControllerPrefab: {fileID: 8623519626615161019, guid: d769a0ed838580d479e85e92f5eb5a17, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 8623519626615161019, guid: 1eba82fd2ebb14040a06d555a9a18f90, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 0
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 96c9be1a6835ab14a8e1b2319fd5fc13, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: b4526c6a0ae611f44b790b40803b3bb2, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: d40454f705b555d4f940a3c3c6c18bab, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: d64311f9380e802439396dac4519e263, type: 3}
+    - {fileID: 8300000, guid: 0170e29699e3cd444a6173ce1c18a9d3, type: 3}
+    - {fileID: 8300000, guid: 9408038655e8f5e45a4a9761c5768c62, type: 3}
+    - {fileID: 8300000, guid: 3dfbd860f55f038458253ff89a3f7214, type: 3}
+    - {fileID: 8300000, guid: 661b0ba7e6545794fb7a3d3332e1e976, type: 3}
+    CurrentClipIndex: 0

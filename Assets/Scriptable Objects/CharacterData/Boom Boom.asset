@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Boom Boom
   Picture: {fileID: 560069012, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: 1545807940, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 1, g: 0.44313726, b: 0.019607844, a: 1}
   CharacterPrimaryColor: {r: 1, g: 0.4431373, b: 0.019607844, a: 1}
   CharacterSecondaryColor: {r: 0.74509805, g: 0.72156864, b: 0.5647059, a: 1}
   HumanControllerPrefab: {fileID: 6767445705901988085, guid: fef82d0b3911c7447b585078e3075b6a, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 6767445705901988085, guid: c22636e65b581da4cac9561b72a4e632, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 2
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 8ab2abde4ce2da740bb70fb8132c3a55, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: ec2bb9f33cf908241b3f70c06b2e7212, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 58cce0187865ebe42bf538f3170e352d, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: d66752fb37aff3a409bf1c2862413e11, type: 3}
+    - {fileID: 8300000, guid: 8442822ffa52ef449a3de6dc6b73166d, type: 3}
+    - {fileID: 8300000, guid: ecde5217626a8264a98adaf5df2c9f73, type: 3}
+    - {fileID: 8300000, guid: 68c7464ba4b1a3e42a102c8fae83a0ea, type: 3}
+    - {fileID: 8300000, guid: 19878570331ae584cb847b2abf283e33, type: 3}
+    CurrentClipIndex: 0

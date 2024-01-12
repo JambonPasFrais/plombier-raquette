@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Dry Bones
   Picture: {fileID: -1378535883, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: 1990345323, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.5529412, g: 0.20392157, b: 0.07058824, a: 1}
   CharacterPrimaryColor: {r: 1, g: 1, b: 1, a: 1}
   CharacterSecondaryColor: {r: 0.70980394, g: 0.69803923, b: 0.6156863, a: 1}
   HumanControllerPrefab: {fileID: 2832411926272835039, guid: f9f83719c5e5d76428d1faea900bc491, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 2832411926272835039, guid: ea9bc71935b1967418b95922fd7a7c0a, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 0
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: ac5039ba4c980f54299e75399fb00485, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 7b75dc8f84342cf4e95c1b33380a5a5c, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 147bd4881dcd59e42891c5d7d55d8c5b, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 7b643a349ffe9b545854efbbe8f12311, type: 3}
+    - {fileID: 8300000, guid: b32fd8b79483a034f842236ab6f94a22, type: 3}
+    - {fileID: 8300000, guid: 9b432b87ced7b89498d1ad899ac8cf16, type: 3}
+    - {fileID: 8300000, guid: 9ed1da6bad92e1e439fdf8755e81591a, type: 3}
+    - {fileID: 8300000, guid: 2d604ec854bdc4444b65f621d57f8415, type: 3}
+    CurrentClipIndex: 0

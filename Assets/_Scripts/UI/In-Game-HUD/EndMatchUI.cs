@@ -31,6 +31,8 @@ public class EndMatchUI : MonoBehaviour
 	{
 		InitPositions();
 
+		AudioManager.Instance.LaunchResultsMusicCoroutine(winnerIndex);
+
 		gameObject.SetActive(true);
 
 		if(!GameParameters.Instance.IsDouble)

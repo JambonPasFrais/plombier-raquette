@@ -149,4 +149,9 @@ public class MenuManager : MonoBehaviour
 	{
 		Application.Quit();
 	}
+
+	public void PlaySound(string soundName)
+	{
+		AudioManager.Instance.PlaySfx(soundName);
+	}
 }

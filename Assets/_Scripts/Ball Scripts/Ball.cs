@@ -203,6 +203,8 @@ public class Ball : MonoBehaviour
 
     public void Rebound()
     {
+        AudioManager.Instance.PlaySfx("ReboundSound");
+
         _reboundsCount++;
         
         //PlayEffect(_reboundEffect);

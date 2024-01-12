@@ -47,7 +47,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &133060067357042310
 Transform:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 2881712671860293360}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4888668802575313060
 MonoBehaviour:
@@ -76,9 +76,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be8731c0c2c88146b00e407f136c9a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _everySound:
+  - Name: MainMenuMusics
+    AudioType: 0
+    Clips:
+    - {fileID: 8300000, guid: 622852d2a63c9564b9fa62171b97dcd1, type: 3}
+    - {fileID: 8300000, guid: 22120f0736b8e2a4c9fd7079b444f4d2, type: 3}
+    CurrentClipIndex: 0
+  - Name: MatchMusics
+    AudioType: 0
+    Clips:
+    - {fileID: 8300000, guid: 246350443f259e340924c926b5fa13e9, type: 3}
+    - {fileID: 8300000, guid: f55ea9d098ca480409357432e3db8779, type: 3}
+    - {fileID: 8300000, guid: f8776e81f09efc245bcae84752e00e49, type: 3}
+    - {fileID: 8300000, guid: 98a4315924282444fa26fef0607ead3c, type: 3}
+    - {fileID: 8300000, guid: 1678efb45bd4d844d87d984729d652cb, type: 3}
+    CurrentClipIndex: 0
+  - Name: ButtonPressed
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: b3486ba3ea00bd34cbf982ea862335b4, type: 3}
+    CurrentClipIndex: 0
+  - Name: LoadingScreenTransition
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: b2bf47ce53d8c5f468ab7edba9a8e5cd, type: 3}
+    CurrentClipIndex: 0
+  - Name: EndPointCrowd
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 41f38e977b350664d8de6c086ed446ff, type: 3}
+    CurrentClipIndex: 0
+  - Name: OnSmashPreparation
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 0b29bff38b97d5341bfabf9ef80400f7, type: 3}
+    CurrentClipIndex: 0
+  - Name: OnSmashShot
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 94836b2dd0e05e741a4def047c6d5e45, type: 3}
+    CurrentClipIndex: 0
+  - Name: ReboundSound
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 1900c20aa28aeda42b5635fcf3722d1b, type: 3}
+    - {fileID: 8300000, guid: 17e7199db58e6fe4abffbbc752004c2b, type: 3}
+    CurrentClipIndex: 0
+  - Name: ShotSound
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 2fc2f12bbc4318d4f8b2fc56a05d539b, type: 3}
+    - {fileID: 8300000, guid: d793e3a5621532f4598cd00d148b00a1, type: 3}
+    - {fileID: 8300000, guid: 9063164eccafb68428fb26662d4865da, type: 3}
+    - {fileID: 8300000, guid: fe808ec3ae1bec94dbace60e00d6b81e, type: 3}
+    CurrentClipIndex: 0
+  - Name: AceItSound
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 2282cd07602d88143929036a696aadaf, type: 3}
+    CurrentClipIndex: 0
+  - Name: ControllerConnected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: e6d143e774305aa41be1af789445ced1, type: 3}
+    CurrentClipIndex: 0
+  - Name: ControllerDisconnected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 8f472d6148c82d14c839afd0e3257135, type: 3}
+    CurrentClipIndex: 0
+  - Name: PlayMatch
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 4518113b01a6a3a4682835db16d7f58a, type: 3}
+    CurrentClipIndex: 0
+  - Name: ChooseYourCharacter
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: c219c03290adb164ba1549a3fdd01bd6, type: 3}
+    CurrentClipIndex: 0
+  - Name: WinnerResults
+    AudioType: 0
+    Clips:
+    - {fileID: 8300000, guid: 672a20bb114e693499dc489408574913, type: 3}
+    CurrentClipIndex: 0
+  - Name: LoserResults
+    AudioType: 0
+    Clips:
+    - {fileID: 8300000, guid: 33b5495c7cb095f44b4ecc01d9b3d37d, type: 3}
+    CurrentClipIndex: 0
   _audioMixer: {fileID: 24100000, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMaster: {fileID: 24300002, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerSFX: {fileID: -3420754664742212623, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMusic: {fileID: 2122255937615189126, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
-  _everySound: []
   _audioContainer: {fileID: 2881712671860293360}

@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Wario
   Picture: {fileID: 1081954361, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: -521931859, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.99607843, g: 0.8039216, b: 0.11372549, a: 1}
   CharacterPrimaryColor: {r: 0.9960785, g: 0.80392164, b: 0.1137255, a: 1}
   CharacterSecondaryColor: {r: 0.48235297, g: 0.19215688, b: 0.50980395, a: 1}
   HumanControllerPrefab: {fileID: 5130325294765744543, guid: 6d9d08d5b4e3be947b2e586cd0d8dfe2, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 5130325294765744543, guid: 5ecd38b7b7bf21e4092a6405bdd96972, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 1
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: ce5bf4072ad3bf2408433ab00d1fdb27, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 7322bbaca08045a4bab46d780f59fa05, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 6609dae8233655442ac2e95ace1546cc, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 8a709c11b2991c942916c5021f87e8f7, type: 3}
+    - {fileID: 8300000, guid: ef68b10e7080a0c49ba0c2c17057164b, type: 3}
+    - {fileID: 8300000, guid: 22ddd9072ac4d3146a84a8eef53a6222, type: 3}
+    - {fileID: 8300000, guid: 819cf2299505a0b41a057990c3bcef32, type: 3}
+    - {fileID: 8300000, guid: a344b8ddda4d6c140a8ab79f6153dac5, type: 3}
+    CurrentClipIndex: 0

@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Mario
   Picture: {fileID: -1148036119, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: -2071184670, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 1, g: 0.19215687, b: 0.19215687, a: 1}
   CharacterPrimaryColor: {r: 1, g: 0.19215688, b: 0.19215688, a: 1}
   CharacterSecondaryColor: {r: 0.2392157, g: 0.38431376, b: 0.6901961, a: 1}
   HumanControllerPrefab: {fileID: 413760489067164524, guid: 018b17b3aba68ff49a77081feac492bd, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 413760489067164524, guid: 91f40e263e9f2a24fbb11946f16edb62, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 1
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 203eddab026992348835cc171147fb0e, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: bc845f2429d54074ba683426a76f3998, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 06eb7e36e19e89349aff87243400ed30, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 80b2f99ca623183449c378f8e117deb3, type: 3}
+    - {fileID: 8300000, guid: e5fef55df991a294494884d85ade5036, type: 3}
+    - {fileID: 8300000, guid: 4c2a5a9bf1ab14146b708d770b0ae594, type: 3}
+    - {fileID: 8300000, guid: f60a66c2022ca5048afd43ac318b7190, type: 3}
+    - {fileID: 8300000, guid: 8f6d689bd42bdf9478867a940f72fe73, type: 3}
+    CurrentClipIndex: 0

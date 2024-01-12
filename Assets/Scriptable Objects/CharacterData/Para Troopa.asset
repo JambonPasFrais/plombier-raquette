@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Para Troopa
   Picture: {fileID: -558204501, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: -1958854089, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 0.79607844, g: 0.5568628, b: 0, a: 1}
   CharacterPrimaryColor: {r: 0.7960785, g: 0.5568628, b: 0, a: 1}
   CharacterSecondaryColor: {r: 0.7843138, g: 0.7019608, b: 0.43529415, a: 1}
   HumanControllerPrefab: {fileID: 8700133874293538312, guid: 1f15cf2d197e9c1439546b7b0ea539d9, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 8700133874293538312, guid: 0da72c3a2080ad7418cde331bee6a826, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 0
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 22bd5456238015644a684db1a9ddf1ca, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: e954d3a3e0fab2b4c9b5c523a367400c, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 496ace08834b6084c920990879907d52, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: cf558e6c5778d384989f602c34d841d0, type: 3}
+    - {fileID: 8300000, guid: fe6a2554769e7c84cbc59e6cf226da1d, type: 3}
+    - {fileID: 8300000, guid: 3e11716bb9e2a1f42bcbe82ef7558040, type: 3}
+    - {fileID: 8300000, guid: b29545b5e8c1c0140b2f384d7f90fa77, type: 3}
+    - {fileID: 8300000, guid: 78823482f77c2a14ea12746520091e4b, type: 3}
+    CurrentClipIndex: 0

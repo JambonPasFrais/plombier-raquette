@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _ballInstance;
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
+    private System.Random random = new System.Random();
 
     #endregion
 
@@ -151,7 +152,9 @@ public class GameManager : MonoBehaviour
             {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
             {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
         };
-    }
+
+        StartCoroutine(CharactersSoundsPlayer(random.Next(3, 12)));
+	}
 
     #endregion
 
@@ -262,6 +265,8 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameState.ENDPOINT;
 
+        AudioManager.Instance.PlaySfx("EndPointCrowd");
+
         foreach (var player in _controllers)
         {
             player.ResetAtService();
@@ -301,5 +306,12 @@ public class GameManager : MonoBehaviour
         {
             controller.BallServiceDetectionArea.gameObject.SetActive(false);
         }
+    }
+
+    private IEnumerator CharactersSoundsPlayer(int time)
+    {
+        yield return new WaitForSeconds(time);
+        GameParameters.Instance.PlayersCharacter[random.Next(0, GameParameters.Instance.PlayersCharacter.Count())].PlaySound("VariousSounds");
+        StartCoroutine(CharactersSoundsPlayer(random.Next(4, 12)));
     }
 }

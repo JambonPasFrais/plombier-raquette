@@ -15,7 +15,6 @@ MonoBehaviour:
   Name: Peach
   Picture: {fileID: 959079538, guid: abfea74b784e8c94296517644ffb1e8a, type: 3}
   CharactersLogo: {fileID: 1936904175, guid: 178b903ada4d3c64c85adb92dd70ebd8, type: 3}
-  CharacterColor: {r: 1, g: 0.70980394, b: 0.8745099, a: 1}
   CharacterPrimaryColor: {r: 1, g: 0.70980394, b: 0.8745099, a: 1}
   CharacterSecondaryColor: {r: 0.9333334, g: 0.94117653, b: 0.52156866, a: 1}
   HumanControllerPrefab: {fileID: 1662535320025591779, guid: 5c2ae3dc69a0d754d90e342fa58ea751, type: 3}
@@ -23,3 +22,28 @@ MonoBehaviour:
   BasicModel: {fileID: 1662535320025591779, guid: 969aca71d71f0ef42a5eb3e36e0e538d, type: 3}
   CharacterParameter: {fileID: 11400000, guid: 9c6833debd6230b4eb45bf8879830ba4, type: 2}
   Category: 1
+  CharacterSounds:
+  - Name: Selected
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: a0099c58e37f0bf4d969cb47752b3971, type: 3}
+    CurrentClipIndex: 0
+  - Name: Happy
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 92f9e56514404de42875b532165b8896, type: 3}
+    CurrentClipIndex: 0
+  - Name: Sad
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 766b8d1707df72a41b9518286343c733, type: 3}
+    CurrentClipIndex: 0
+  - Name: VariousSounds
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: ab0ed84bb71608c418b1cf242d0c67ee, type: 3}
+    - {fileID: 8300000, guid: 0e08c1cdc8f211443962a18cf30f8571, type: 3}
+    - {fileID: 8300000, guid: 24903a1616225a7448414bb012af1f82, type: 3}
+    - {fileID: 8300000, guid: 4082c863371a7b448bb4059a5a1e6444, type: 3}
+    - {fileID: 8300000, guid: 0f24a88e84dff7c45bfd2168f0c5b725, type: 3}
+    CurrentClipIndex: 0
