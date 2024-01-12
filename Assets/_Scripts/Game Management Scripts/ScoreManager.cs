@@ -45,44 +45,8 @@ public class ScoreManager : MonoBehaviour
 		_isTieBreak = isTieBreak;
 	}
 
-	public void PlayEndPointsSounds(Teams winnerTeam)
-	{
-		if(winnerTeam == Teams.TEAM1)
-		{
-			if (GameParameters.Instance.IsDouble)
-			{
-				GameParameters.Instance.PlayersCharacter[0].PlaySound("Happy");
-				GameParameters.Instance.PlayersCharacter[1].PlaySound("Happy");
-				GameParameters.Instance.PlayersCharacter[2].PlaySound("Sad");
-				GameParameters.Instance.PlayersCharacter[3].PlaySound("Sad");
-			}
-			else
-			{
-				GameParameters.Instance.PlayersCharacter[0].PlaySound("Happy");
-				GameParameters.Instance.PlayersCharacter[1].PlaySound("Sad");
-			}
-		}
-		else
-		{
-			if (GameParameters.Instance.IsDouble)
-			{
-				GameParameters.Instance.PlayersCharacter[0].PlaySound("Sad");
-				GameParameters.Instance.PlayersCharacter[1].PlaySound("Sad");
-				GameParameters.Instance.PlayersCharacter[2].PlaySound("Happy");
-				GameParameters.Instance.PlayersCharacter[3].PlaySound("Happy");
-			}
-			else
-			{
-				GameParameters.Instance.PlayersCharacter[0].PlaySound("Sad");
-				GameParameters.Instance.PlayersCharacter[1].PlaySound("Happy");
-			}
-		}
-	}
-
 	public void AddPoint(Teams winnerTeam)
 	{
-		PlayEndPointsSounds(winnerTeam);
-
 		int winnerPoints = winnerTeam == Teams.TEAM1 ? _currentGameScore.Item1 : _currentGameScore.Item2;
 		int loserPoints = winnerTeam == Teams.TEAM1 ? _currentGameScore.Item2 : _currentGameScore.Item1;
 

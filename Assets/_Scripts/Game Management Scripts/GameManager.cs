@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -251,14 +252,20 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameState.ENDPOINT;
 
-        foreach (var player in _controllers)
+        for(int i = 0; i < _controllers.Count; i++)
         {
-            if (player.PlayerTeam == teamWhoWonPoint)
-                player.LaunchCelebration();
+            if (_controllers[i].PlayerTeam == teamWhoWonPoint)
+            {
+				_controllers[i].LaunchCelebration();
+                GameParameters.Instance.PlayersCharacter[i].PlaySound("Happy");
+			}
             else
-                player.LaunchDepreciation();
-            
-            player.ResetAtService();
+            {
+				_controllers[i].LaunchCelebration();
+				GameParameters.Instance.PlayersCharacter[i].PlaySound("Sad");
+			}
+
+            _controllers[i].ResetAtService();
         }
     }
 
