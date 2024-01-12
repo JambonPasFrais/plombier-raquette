@@ -14993,10 +14993,10 @@ GameObject:
   - component: {fileID: -3384300178549709760}
   - component: {fileID: 8785612064310195893}
   - component: {fileID: 8898508893999670451}
-  - component: {fileID: 7097861388390694961}
   - component: {fileID: 5547356898917663912}
   - component: {fileID: 5988766840551096850}
   - component: {fileID: 3845500030139937786}
+  - component: {fileID: 4491604316154665439}
   m_Layer: 0
   m_Name: Daisy
   m_TagString: Untagged
@@ -15176,18 +15176,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7097861388390694961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9205795999412782022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &5547356898917663912
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15256,6 +15244,18 @@ MonoBehaviour:
   _zoomFOV: 40
   _normalFOV: 60
   _zoomDuration: 0.5
+--- !u!114 &4491604316154665439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205795999412782022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &444172350799857236
 PrefabInstance:
   m_ObjectHideFlags: 0

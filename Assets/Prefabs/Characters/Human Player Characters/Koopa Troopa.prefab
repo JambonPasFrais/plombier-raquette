@@ -3613,10 +3613,10 @@ GameObject:
   - component: {fileID: -5345164697887524051}
   - component: {fileID: -4464042796114480838}
   - component: {fileID: 7570685528441665044}
-  - component: {fileID: 8571067387288612495}
   - component: {fileID: 4712584548301048895}
   - component: {fileID: 5015879663488411531}
   - component: {fileID: 7117207324596024740}
+  - component: {fileID: 476262024906409523}
   m_Layer: 0
   m_Name: Koopa Troopa
   m_TagString: Untagged
@@ -3757,18 +3757,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8571067387288612495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6068045979497476300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4712584548301048895
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3837,6 +3825,18 @@ MonoBehaviour:
   _zoomFOV: 40
   _normalFOV: 60
   _zoomDuration: 0.5
+--- !u!114 &476262024906409523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6068045979497476300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6128259103799799804
 GameObject:
   m_ObjectHideFlags: 0

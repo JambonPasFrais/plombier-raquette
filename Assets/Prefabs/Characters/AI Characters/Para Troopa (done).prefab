@@ -6155,10 +6155,10 @@ GameObject:
   m_Component:
   - component: {fileID: 197759457301263717}
   - component: {fileID: 5716719976667451551}
-  - component: {fileID: 6622419424667426017}
   - component: {fileID: -3421775689963587557}
   - component: {fileID: 771696388313544605}
   - component: {fileID: -4512499616810439054}
+  - component: {fileID: 3239728657709976683}
   m_Layer: 0
   m_Name: Para Troopa (done)
   m_TagString: Untagged
@@ -6226,18 +6226,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6622419424667426017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8700133874293538312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-3421775689963587557
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6341,6 +6329,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &3239728657709976683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8700133874293538312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8753052030126516774
 GameObject:
   m_ObjectHideFlags: 0

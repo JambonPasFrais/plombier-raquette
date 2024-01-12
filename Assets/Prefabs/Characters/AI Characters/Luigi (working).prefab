@@ -3787,10 +3787,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1332438041796467229}
   - component: {fileID: 1819106038946207351}
-  - component: {fileID: 3573373802759050705}
   - component: {fileID: -1584607563151463824}
   - component: {fileID: 5962522241361225335}
   - component: {fileID: -8802549185527419068}
+  - component: {fileID: 723747238543462023}
   m_Layer: 0
   m_Name: Luigi (working)
   m_TagString: Untagged
@@ -3884,18 +3884,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3573373802759050705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2559753925550116736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-1584607563151463824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3962,6 +3950,8 @@ MonoBehaviour:
   PlayerState: 0
   ServicesCount: 0
   PlayerTeam: 0
+  IsInOriginalSide: 0
+  _chargingShotGo: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 8642139629764695327}
   _serviceBallInitializationPoint: {fileID: 7829016367837994453}
@@ -3970,6 +3960,10 @@ MonoBehaviour:
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
+  _playerAnimator: {fileID: 0}
+  _isShooting: 0
+  _isSmashing: 0
+  _isCommunicating: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -3993,6 +3987,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &723747238543462023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2559753925550116736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2602300957486344323
 GameObject:
   m_ObjectHideFlags: 0

@@ -3428,10 +3428,10 @@ GameObject:
   - component: {fileID: -4923538640559876698}
   - component: {fileID: 5715952988867097173}
   - component: {fileID: 7327719435924199311}
-  - component: {fileID: 2692826112229954351}
   - component: {fileID: 4336439142414158483}
   - component: {fileID: 8360788805049589271}
   - component: {fileID: 4132314890917617131}
+  - component: {fileID: 3625352657404215071}
   m_Layer: 0
   m_Name: Yoshi
   m_TagString: Untagged
@@ -3578,18 +3578,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2692826112229954351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4592799989613112777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4336439142414158483
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3658,6 +3646,18 @@ MonoBehaviour:
   _zoomFOV: 40
   _normalFOV: 60
   _zoomDuration: 0.5
+--- !u!114 &3625352657404215071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4592799989613112777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4669811034990927631
 GameObject:
   m_ObjectHideFlags: 0

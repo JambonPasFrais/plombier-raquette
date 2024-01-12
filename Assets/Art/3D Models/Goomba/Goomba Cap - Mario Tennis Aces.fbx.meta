@@ -3,7 +3,22 @@ guid: 0cca1ab4c916f444abed3287c05fb5a4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goomba_Body.000
+    second: {fileID: 2100000, guid: 6225583ecadc21443bf1984ad2c842bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goomba_Cap.000
+    second: {fileID: 2100000, guid: fa70a73dd11b5644391551fb6f094352, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goomba_Wings.000
+    second: {fileID: 2100000, guid: 673db42dd4586cf468dc97379f27cf4f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -24,7 +39,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -81,8 +96,444 @@ ModelImporter:
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
-    human: []
-    skeleton: []
+    human:
+    - boneName: Root.000
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thigh.000.L
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thigh.000.R
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe.000.L
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe.000.R
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe.000.L_end
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe.000.R_end
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Root.001
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Spine.000
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.000.L
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.000.R
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.001.L
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.001.R
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.002.L
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.002.R
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.003.R
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Wing.003.L
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Neck.000
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Face.000
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Eye_Brow.000.L
+      humanName: LeftEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Eye_Brow.000.R
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mouth_Root.000
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Goomba Cap - Mario Tennis Aces(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Goomba | Mario_Tennis_Aces
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Root.000
+      parentName: Goomba | Mario_Tennis_Aces
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Root.001
+      parentName: Root.000
+      position: {x: -5.684345e-16, y: 0.017244063, z: -5.684342e-16}
+      rotation: {x: -1.5246595e-20, y: -0.70710665, z: -1.524659e-20, w: 0.7071069}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hips.000
+      parentName: Root.001
+      position: {x: 1.406285e-10, y: -0.002359346, z: -4.921974e-10}
+      rotation: {x: 4.019437e-14, y: 0.70710665, z: -4.019436e-14, w: 0.7071069}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh.000.L
+      parentName: Hips.000
+      position: {x: -0.00286897, y: 0.0034364413, z: -0.0000025027084}
+      rotation: {x: -7.244794e-18, y: 0.763786, z: -7.244794e-18, w: 0.64546955}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Toe.000.L
+      parentName: Thigh.000.L
+      position: {x: -0.00194234, y: -0.012496111, z: -0.0070652696}
+      rotation: {x: -0.000000023515971, y: -0.6526233, z: -0.000000027301567, w: 0.75768256}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: Toe.000.L_end
+      parentName: Toe.000.L
+      position: {x: -0, y: 0.0020677112, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh.000.R
+      parentName: Hips.000
+      position: {x: 0.0028689709, y: 0.003436483, z: -0.000002503566}
+      rotation: {x: 1.4375008e-21, y: -0.10622042, z: 6.6617508e-21, w: 0.9943426}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Toe.000.R
+      parentName: Thigh.000.R
+      position: {x: 0.0072249477, y: -0.012295371, z: 0.0025322102}
+      rotation: {x: 0.00000007206426, y: 0.0068812366, z: 4.959008e-10, w: 0.99997634}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Toe.000.R_end
+      parentName: Toe.000.R
+      position: {x: -0, y: 0.0020677112, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Spine.000
+      parentName: Root.001
+      position: {x: -1.2324547e-10, y: 0.0020677112, z: 4.313582e-10}
+      rotation: {x: 4.0544694e-22, y: -2.019484e-27, z: -8.526513e-14, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Neck.000
+      parentName: Spine.000
+      position: {x: -5.360236e-10, y: 0.008992971, z: 0.0000000018760795}
+      rotation: {x: 2.1553548e-22, y: 2.019484e-27, z: 2.842171e-14, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Face.000
+      parentName: Neck.000
+      position: {x: -3.685318e-10, y: 0.0061829397, z: 0.0000000012898614}
+      rotation: {x: -3.4363734e-14, y: -2.7992796e-21, z: 2.8421704e-14, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cap.000
+      parentName: Face.000
+      position: {x: 0.0048066974, y: 0.03698824, z: -0.0000000020883961}
+      rotation: {x: -2.7736912e-22, y: 0.70710665, z: 2.7736902e-22, w: 0.7071069}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
+    - name: Cap.000_end
+      parentName: Cap.000
+      position: {x: -0, y: 0.0020677089, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye_Brow.000.L
+      parentName: Face.000
+      position: {x: -0.022268875, y: -0.0044956664, z: 0.0019244995}
+      rotation: {x: -1.1659e-41, y: 0.00000017881393, z: 6.1476063e-21, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye_Brow.001.L
+      parentName: Eye_Brow.000.L
+      position: {x: 0.044060815, y: 0.025438515, z: 0.000000030876524}
+      rotation: {x: -5.6875543e-15, y: -0.8345855, z: 4.57763e-16, w: 0.55087847}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
+    - name: Eye_Brow.002.L
+      parentName: Eye_Brow.001.L
+      position: {x: 0.008576061, y: 0.0065390244, z: 0.0017881253}
+      rotation: {x: -0.00000015800605, y: 0.14121503, z: -0.00000016812974, w: 0.98997897}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: Eye_Brow.003.L
+      parentName: Eye_Brow.002.L
+      position: {x: 0.0079137655, y: 0.0059115184, z: 0.006470385}
+      rotation: {x: -0.00000028591276, y: 0.99987113, z: 0.00000014874203, w: 0.01605652}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: Eye_Brow.003.L_end
+      parentName: Eye_Brow.003.L
+      position: {x: -0, y: 0.0020677089, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye_Brow.000.R
+      parentName: Face.000
+      position: {x: -0.02226891, y: -0.0044956855, z: -0.0019245171}
+      rotation: {x: 0, y: 1.2971951e-21, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye_Brow.001.R
+      parentName: Eye_Brow.000.R
+      position: {x: 0.044060808, y: 0.02543851, z: 0.000000014589442}
+      rotation: {x: -8.6912177e-16, y: 0.84896, z: 2.1893587e-15, w: 0.52845716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye_Brow.002.R
+      parentName: Eye_Brow.001.R
+      position: {x: 0.008659056, y: 0.0065389914, z: -0.0013289229}
+      rotation: {x: 0.00000021441113, y: 0.12830758, z: 0.00000002773985, w: 0.99173445}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: Eye_Brow.003.R
+      parentName: Eye_Brow.002.R
+      position: {x: 0.010179568, y: 0.005911593, z: -0.0009331725}
+      rotation: {x: -0.00000026990912, y: 0.04999078, z: -0.000000013509866, w: 0.9987497}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: Eye_Brow.003.R_end
+      parentName: Eye_Brow.003.R
+      position: {x: -0, y: 0.0020677138, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mouth_Root.000
+      parentName: Face.000
+      position: {x: 0.0050165104, y: 0.006143881, z: 0.0000000025574687}
+      rotation: {x: 6.8727386e-14, y: -0.0000013113022, z: -3.427175e-20, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mouth_Root.000_end
+      parentName: Mouth_Root.000
+      position: {x: -0, y: 0.0020677138, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.000.L
+      parentName: Spine.000
+      position: {x: -0.02427854, y: 0.018797858, z: 0.021705823}
+      rotation: {x: -6.1232336e-17, y: 1, z: 6.1232336e-17, w: -0.0000000754979}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.001.L
+      parentName: Wing.000.L
+      position: {x: 0.003226092, y: 0.019331483, z: -0.0000000062862475}
+      rotation: {x: 0.00000014413209, y: 1, z: 1.2662518e-13, w: 0.0000000754979}
+      scale: {x: 1, y: 0.9999997, z: 1}
+    - name: Wing.002.L
+      parentName: Wing.001.L
+      position: {x: -0.00909658, y: 0.010390279, z: 0.0072621945}
+      rotation: {x: 0, y: 1.4210858e-14, z: -2.6645353e-15, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.003.L
+      parentName: Wing.002.L
+      position: {x: -0.014394654, y: 0.022573225, z: 0.010482627}
+      rotation: {x: 5.673579e-21, y: 0.70710665, z: -5.6735773e-21, w: 0.7071069}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
+    - name: Wing.003.L_end
+      parentName: Wing.003.L
+      position: {x: -0, y: 0.0020677089, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.004.L
+      parentName: Wing.000.L
+      position: {x: 0.008564037, y: 0.0027747483, z: -0.007990479}
+      rotation: {x: 0.00000014413176, y: 1, z: -1.0942878e-14, w: 0.0000000754979}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.005.L
+      parentName: Wing.004.L
+      position: {x: -0.00779003, y: 0.0063838116, z: 0.0074524893}
+      rotation: {x: 4.2351647e-22, y: -2.529504e-21, z: -1.6543612e-24, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.006.L
+      parentName: Wing.005.L
+      position: {x: -0.009254562, y: 0.009839728, z: 0.0064736903}
+      rotation: {x: -2.6858847e-21, y: 0.7071067, z: 2.6858841e-21, w: 0.7071068}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
+    - name: Wing.006.L_end
+      parentName: Wing.006.L
+      position: {x: -0, y: 0.0020677089, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.000.R
+      parentName: Spine.000
+      position: {x: -0.024278501, y: 0.018797826, z: -0.021705799}
+      rotation: {x: 6.1232336e-17, y: 1, z: 6.1232336e-17, w: 0.0000000754979}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.001.R
+      parentName: Wing.000.R
+      position: {x: 0.0032263196, y: 0.019332634, z: 0.0000000044811053}
+      rotation: {x: -3.4363686e-14, y: -0.00000023841856, z: -0.00000014413176, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.002.R
+      parentName: Wing.001.R
+      position: {x: 0.00909639, y: 0.010389168, z: 0.007262197}
+      rotation: {x: 4.2351647e-22, y: -8.864214e-22, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.003.R
+      parentName: Wing.002.R
+      position: {x: 0.014394718, y: 0.022573197, z: 0.010482586}
+      rotation: {x: -5.818639e-21, y: 0.70710665, z: 5.818636e-21, w: 0.70710695}
+      scale: {x: 0.99999994, y: 0.99999976, z: 0.99999994}
+    - name: Wing.003.R_end
+      parentName: Wing.003.R
+      position: {x: -0, y: 0.0020677089, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.004.R
+      parentName: Wing.000.R
+      position: {x: 0.008564095, y: 0.0027747934, z: 0.007990508}
+      rotation: {x: 1.9879445e-11, y: 0.00013792516, z: -0.0000001441321, w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: Wing.005.R
+      parentName: Wing.004.R
+      position: {x: 0.0077879485, y: 0.0063838116, z: 0.0074494835}
+      rotation: {x: -6.420514e-19, y: -0.00028836736, z: -3.559486e-15, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wing.006.R
+      parentName: Wing.005.R
+      position: {x: 0.009257623, y: 0.009837725, z: 0.0064699925}
+      rotation: {x: 2.5167966e-15, y: 0.7071972, z: 5.0289443e-15, w: 0.70701635}
+      scale: {x: 0.9999999, y: 1, z: 0.9999999}
+    - name: Wing.006.R_end
+      parentName: Wing.006.R
+      position: {x: -0, y: 0.0020677138, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Goomba_Body.000
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Goomba_Cap.000
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Goomba_Eye_Brows.000
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Goomba_Eye_Pupils.000
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Goomba_Feet.000
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Goomba_Wings.000
+      parentName: Goomba Cap - Mario Tennis Aces(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -93,13 +544,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

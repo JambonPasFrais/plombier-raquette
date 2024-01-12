@@ -2803,10 +2803,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5245309558617445966}
   - component: {fileID: 4172402948671859811}
-  - component: {fileID: 2664162290485002207}
   - component: {fileID: 4931028284219081848}
   - component: {fileID: 5415593459937413354}
   - component: {fileID: -1697763318877250902}
+  - component: {fileID: 3790627087263688984}
   m_Layer: 0
   m_Name: Dry Bones (done)
   m_TagString: Untagged
@@ -2881,18 +2881,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2664162290485002207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2832411926272835039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93fb71ef92df468ca852a72b8ac6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4931028284219081848
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2996,6 +2984,18 @@ MonoBehaviour:
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
+--- !u!114 &3790627087263688984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2832411926272835039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2863570465282171401
 GameObject:
   m_ObjectHideFlags: 0
