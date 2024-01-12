@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
     [SerializeField] private float _leftFaultLineXFromFirstSide;
+    [SerializeField] private SupporterManager _supporterManager;
 
 	[Header("Canvas References")]
 	[SerializeField] private GameObject _inGameUI;
@@ -267,6 +268,8 @@ public class GameManager : MonoBehaviour
 
             _controllers[i].ResetAtService();
         }
+        
+        _supporterManager.AnimateSupportersAfterPoint();
     }
 
     public void EndOfPointWithoutPointWinner()
