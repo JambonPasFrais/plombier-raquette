@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 2881712671860293360}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4888668802575313060
 MonoBehaviour:
@@ -155,6 +155,16 @@ MonoBehaviour:
     AudioType: 1
     Clips:
     - {fileID: 8300000, guid: c219c03290adb164ba1549a3fdd01bd6, type: 3}
+    CurrentClipIndex: 0
+  - Name: WinnerResults
+    AudioType: 0
+    Clips:
+    - {fileID: 8300000, guid: 672a20bb114e693499dc489408574913, type: 3}
+    CurrentClipIndex: 0
+  - Name: LoserResults
+    AudioType: 0
+    Clips:
+    - {fileID: 8300000, guid: 33b5495c7cb095f44b4ecc01d9b3d37d, type: 3}
     CurrentClipIndex: 0
   _audioMixer: {fileID: 24100000, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMaster: {fileID: 24300002, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}

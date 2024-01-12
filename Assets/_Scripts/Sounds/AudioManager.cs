@@ -100,14 +100,14 @@ public class AudioManager : MonoBehaviour
 		_musicCoroutine = StartCoroutine(GameMusicLoop());
 	}
 
-	public void LaunchEndGameMusic()
+	public void LaunchResultsMusicCoroutine(int winnerIndex)
 	{
 		if (_musicCoroutine != null)
 		{
 			StopCoroutine(_musicCoroutine);
 		}
 
-		_musicCoroutine = StartCoroutine(EndGameMusicLoop());
+		_musicCoroutine = StartCoroutine(ResultsMusicLoop(winnerIndex));
 	}
 
 	#endregion
@@ -177,12 +177,16 @@ public class AudioManager : MonoBehaviour
 		StartCoroutine(GameMusicLoop());
 	}
 	
-	private IEnumerator EndGameMusicLoop()
+	private IEnumerator ResultsMusicLoop(int winnerIndex)
 	{
-		PlayMusic("win");
+		if (winnerIndex == 0)
+			PlayMusic("WinnerResults");
+		else
+			PlayMusic("LoserResults");
+		
 		yield return new WaitForSeconds(_currentMusic.clip.length);
 
-		StartCoroutine(EndGameMusicLoop());
+		StartCoroutine(ResultsMusicLoop(winnerIndex));
 	}
 
 	#endregion
