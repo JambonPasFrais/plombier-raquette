@@ -38,13 +38,7 @@ public class SupporterManager : MonoBehaviour
         {
             for (int j = 0; j < transform.GetChild(i).childCount; j++)
             {
-                for (int k = 0; k < transform.GetChild(i).GetChild(j).childCount; k++)
-                {
-                    for (int l = 0; l < transform.GetChild(i).GetChild(j).GetChild(k).childCount; l++)
-                    {
-                        _supporters.Add(transform.GetChild(i).GetChild(j).GetChild(k).GetChild(l).gameObject.GetComponent<PlayerUIAnimator>());
-                    }
-                }
+                _supporters.Add(transform.GetChild(i).GetChild(j).gameObject.GetComponent<PlayerUIAnimator>());
             }
         }
     }
