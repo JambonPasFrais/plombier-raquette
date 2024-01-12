@@ -247,6 +247,8 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameState.ENDPOINT;
 
+        AudioManager.Instance.PlaySfx("EndPointCrowd");
+
         foreach (var player in _controllers)
         {
             player.ResetAtService();
