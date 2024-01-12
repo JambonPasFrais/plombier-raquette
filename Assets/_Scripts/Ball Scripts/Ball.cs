@@ -59,24 +59,26 @@ public class Ball : MonoBehaviourPunCallbacks
 
         if (_rigidBody.isKinematic && GameManager.Instance.GameState == GameState.SERVICE)
         {
-            transform.position = GameManager.Instance.ServiceBallInitializationPoint.position;
+            if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
+            {
+                transform.position = GameManager.Instance.ServiceBallInitializationPoint.position;
+            }
         }
         else if (!_rigidBody.isKinematic) 
         {
             DrawTarget();
         }
-
-/*        if (PhotonNetwork.IsConnected && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].gameObject.GetPhotonView().IsMine)
-        {
-            GameManager.Instance.photonView.RPC("BallPositionSynchronization", RpcTarget.Others, transform.position);
-        }*/
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.TryGetComponent<ControllersParent>(out ControllersParent player) && !_rigidBody.isKinematic)
         {
-            if ((PhotonNetwork.IsConnected && player.gameObject.GetPhotonView().IsMine) || !PhotonNetwork.IsConnected) 
+            if (PhotonNetwork.IsConnected && player.gameObject.GetPhotonView().IsMine) 
+            {
+                GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, _lastPlayerToApplyForce.PlayerTeam);
+            }
+            else if (!PhotonNetwork.IsConnected)
             {
                 GameManager.Instance.EndOfPoint();
                 GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
@@ -142,9 +144,12 @@ public class Ball : MonoBehaviourPunCallbacks
         GameObject horizontalDirectionPositionDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
         horizontalDirectionPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{actualNormalizedDirection}";
 
-        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
-
         _lastPlayerToApplyForce = playerToApplyForce;
+
+        if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
+        {
+            _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
+        }
     }
 
     private IEnumerator BallMovement(float actualHorizontalForce, Vector3 actualNormalizedHorizontalDirection, Vector3 curvingDirection)
@@ -204,8 +209,11 @@ public class Ball : MonoBehaviourPunCallbacks
 
         _reboundsCount++;
 
-        Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
-        _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
+        if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
+        {
+            Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
+            _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
+        }
     }
 
     #endregion

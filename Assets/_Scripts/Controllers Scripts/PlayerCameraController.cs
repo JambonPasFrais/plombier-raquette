@@ -39,13 +39,21 @@ public class PlayerCameraController : MonoBehaviour
     void Start()
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
-        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
         _smashTargetGo = GameManager.Instance.SmashTargetGo;
+    }
+
+    private void Update()
+    {
+        if (_ballInstance == null && GameManager.Instance.BallInstance != null) 
+        {
+            _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
+        }
     }
 
     void FixedUpdate()
     {
-        if (_isFirstPersonView)
+        if (_isFirstPersonView && GameManager.Instance.GameState != GameState.BEFOREGAME &&
+            GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH)
         {
             if (!_ballInstance.Rb.isKinematic)
             {

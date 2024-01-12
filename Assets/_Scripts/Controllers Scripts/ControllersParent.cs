@@ -160,13 +160,6 @@ public class ControllersParent : MonoBehaviourPunCallbacks
         if (!ballRigidBody.isKinematic)
             return;
 
-        if (PhotonNetwork.IsConnected)
-        {
-            GameManager.Instance.photonView.RPC("BallThrown", RpcTarget.All);
-        }
-        else
-        {
-            GameManager.Instance.BallThrown();
-        }
+        GameManager.Instance.photonView.RPC("BallThrown", RpcTarget.AllViaServer);
     }
 }

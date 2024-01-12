@@ -37,22 +37,16 @@ public class PlayerController : ControllersParent
     
     #endregion
 
-    #region GETTERS
+    #region GETTERS & SETTERS
 
     public List<NamedPhysicMaterials> PossiblePhysicMaterials { get { return _possiblePhysicMaterials; } }
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
-
     public PlayerCameraController PlayerCameraController => _playerCameraController;
-
-    #endregion
-
-    #region SETTERS
-
+    public Ball BallInstance { set { _ballInstance = value; } }
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
     }
-
     public void SetDirectionController(ShootDirectionController shootDirectionController)
     {
         _shootDirectionController = shootDirectionController;
@@ -70,7 +64,11 @@ public class PlayerController : ControllersParent
         _currentSpeed = _movementSpeed;
         if (_playerCameraController == null)
             _playerCameraController = GetComponent<PlayerCameraController>();
-        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
+
+        if (!PhotonNetwork.IsConnected)
+        {
+            _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
+        }
     }
 
     void Update()
@@ -90,7 +88,7 @@ public class PlayerController : ControllersParent
         // If the game is in the end of point or the the end of match phase, the player can't move.
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
-        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH && GameManager.Instance.GameState != GameState.BEFOREGAME
             && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && _playerCameraController.IsFirstPersonView == false) 
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
