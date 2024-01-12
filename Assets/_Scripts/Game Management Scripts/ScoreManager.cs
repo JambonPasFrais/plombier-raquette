@@ -287,15 +287,30 @@ public class ScoreManager : MonoBehaviour
 	{
         string score = "";
 
-        for (int i = 0; i < _currentSetIndex + 1; i++)
-        {
-            score += $"{_score[i].Item1}/{_score[i].Item2} ";
-        }
+		if((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
+		{
+            for (int i = 0; i < _currentSetIndex + 1; i++)
+            {
+                score += $"{_score[i].Item1}/{_score[i].Item2} ";
+            }
 
-        if (!_isTieBreak)
-            score += $"{_possiblePoints[_currentGameScore.Item1]} - {_possiblePoints[_currentGameScore.Item2]} ";
-        else
-            score += $"{_currentGameScore.Item1} - {_currentGameScore.Item2}";
+            if (!_isTieBreak)
+                score += $"{_possiblePoints[_currentGameScore.Item1]} - {_possiblePoints[_currentGameScore.Item2]} ";
+            else
+                score += $"{_currentGameScore.Item1} - {_currentGameScore.Item2}";
+        }
+		else
+		{
+            for (int i = 0; i < _currentSetIndex + 1; i++)
+            {
+                score += $"{_score[i].Item2}/{_score[i].Item1} ";
+            }
+
+            if (!_isTieBreak)
+                score += $"{_possiblePoints[_currentGameScore.Item2]} - {_possiblePoints[_currentGameScore.Item1]} ";
+            else
+                score += $"{_currentGameScore.Item2} - {_currentGameScore.Item1}";
+        }
 
         _scoreText.text = score;
 

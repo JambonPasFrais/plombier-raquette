@@ -68,11 +68,14 @@ public class Ball : MonoBehaviourPunCallbacks
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<ControllersParent>() && !_rigidBody.isKinematic)
+        if(collision.gameObject.TryGetComponent<ControllersParent>(out ControllersParent player) && !_rigidBody.isKinematic)
         {
-            GameManager.Instance.EndOfPoint();
-            GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
-            ResetBall();
+            if ((PhotonNetwork.IsConnected && player.gameObject.GetPhotonView().IsMine) || !PhotonNetwork.IsConnected) 
+            {
+                GameManager.Instance.EndOfPoint();
+                GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+                ResetBall();
+            }
         }
     }
 
