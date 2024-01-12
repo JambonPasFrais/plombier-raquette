@@ -46,7 +46,9 @@ public class EndMatchUI : MonoBehaviour
 			int winnerSideCpt = 0;
 			int loserSideCpt = 2;
 
-			for(int i = 0; i < 4; i++)
+			_doubleMatchParent.gameObject.SetActive(true);
+
+			for (int i = 0; i < 4; i++)
 			{
 				if (i % 2 == winnerIndex)
 				{
@@ -60,8 +62,6 @@ public class EndMatchUI : MonoBehaviour
 					loserSideCpt++;
 				}
 			}
-
-			_doubleMatchParent.gameObject.SetActive(true);
 		}
 
 		_scoreDisplayReference.transform.SetParent(_scoreLocation);
@@ -76,6 +76,7 @@ public class EndMatchUI : MonoBehaviour
 
 		if (hasWonMatch)
 			go.GetComponent<PlayerUIAnimator>().CharacterVictoryAnimation();
+
 		else
 			go.GetComponent<PlayerUIAnimator>().CharacterDefeatAnimation();
 

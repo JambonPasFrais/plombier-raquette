@@ -32,10 +32,12 @@ public class CharacterData : ScriptableObject
 
 	public void Init()
 	{
-		foreach(var sound in CharacterSounds)
-        {
-            CharacterSoundsDict.Add(sound.Name, sound);
-        }
+        CharacterSoundsDict.Clear();
+
+		foreach (var sound in CharacterSounds)
+		{
+			CharacterSoundsDict.Add(sound.Name, sound);
+		}
 	}
 
     public void PlaySound(string name)
