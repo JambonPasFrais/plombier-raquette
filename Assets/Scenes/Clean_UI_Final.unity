@@ -175,6 +175,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5960509429689307105, guid: b5db996191d896b4eb36259138440e8f, type: 3}
   m_PrefabInstance: {fileID: 1232172178}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &712506329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 712506330}
+  m_Layer: 5
+  m_Name: ControllerSelection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &712506330
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712506329}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5983365193000709116}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &779773764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -673,11 +709,11 @@ PrefabInstance:
     - target: {fileID: 6512930922109542377, guid: b5db996191d896b4eb36259138440e8f, type: 3}
       propertyPath: _characterSelectionMenu
       value: 
-      objectReference: {fileID: 523915067471159078}
+      objectReference: {fileID: 3244378267300561810}
     - target: {fileID: 6512930922109542377, guid: b5db996191d896b4eb36259138440e8f, type: 3}
       propertyPath: _characterSelectionContainer
       value: 
-      objectReference: {fileID: 3774489238964016627}
+      objectReference: {fileID: 712506330}
     - target: {fileID: 7131694324354526735, guid: b5db996191d896b4eb36259138440e8f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -34234,6 +34270,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8255836123315177986}
+  - {fileID: 712506330}
   - {fileID: 2713381508866982052}
   - {fileID: 630991959726126074}
   m_Father: {fileID: 4293300383063642436}

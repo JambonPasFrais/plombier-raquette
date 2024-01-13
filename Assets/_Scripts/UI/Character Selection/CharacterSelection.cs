@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class CharacterSelection : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public virtual bool HandleCharacterSelectionInput(Ray ray, int playerIndex) => true;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public virtual bool HandleCharacterDeselectionInput(int playerIndex) => true;
 }

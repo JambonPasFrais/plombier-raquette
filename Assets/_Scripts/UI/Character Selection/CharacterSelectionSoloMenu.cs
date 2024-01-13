@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CharacterSelectionSoloMenu : MonoBehaviour
+public class CharacterSelectionSoloMenu : CharacterSelection
 {
 	[Header("Instances")]
 	// Character UI related

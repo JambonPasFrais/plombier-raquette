@@ -26,13 +26,13 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
-    private CharacterSelectionMenu _characterSelectionMenu;
+    private CharacterSelection _characterSelectionMenu;
     private ControllerSelectionMenu _controllerSelectionMenu;
     private Coroutine _currentDeleteCtrlCoroutine;
 
     #region Getters
 
-    public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
+    public CharacterSelection CharacterSelectionMenu => _characterSelectionMenu;
     public static Dictionary<int, PlayerInputHandler> Controllers => _instance._controllers;
     
     #endregion
@@ -74,7 +74,7 @@ public class ControllerManager : MonoBehaviour
         _currentDeleteCtrlCoroutine = StartCoroutine(DeleteControllerCoroutine(playerInput.devices[0].deviceId));
     }
     
-    public void Init(CharacterSelectionMenu characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
+    public void Init(CharacterSelection characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
         _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
         _characterSelectionMenu = characterSelectionMenuRef;

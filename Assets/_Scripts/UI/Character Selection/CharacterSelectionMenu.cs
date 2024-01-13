@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class CharacterSelectionMenu : MonoBehaviour
+public class CharacterSelectionMenu : CharacterSelection
 {
 	[Header("Instances")] 
 	// Windows
@@ -479,7 +479,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	}*/
 
 	#region Called Externally
-	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
+	public override bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
 	{
 		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
 			&& hit.collider.TryGetComponent(out CharacterUI characterUI)
@@ -522,7 +522,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		return false;
 	}
 
-	public bool HandleCharacterDeselectionInput(int playerIndex)
+	public override bool HandleCharacterDeselectionInput(int playerIndex)
 	{
 		return RemoveCharacterFromPlayerSelectionUi(playerIndex);
 	}
