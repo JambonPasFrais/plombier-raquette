@@ -116,10 +116,16 @@ public class AgentController : ControllersParent
             float zMinimumDistance = Mathf.Abs(_borderPointsContainer.FrontPointTransform.position.z - _borderPointsContainer.BackPointTransform.position.z) / 2f - 1f;
             float xMinimumDistance = Mathf.Abs(_borderPointsContainer.RightPointTransform.position.x - _borderPointsContainer.LeftPointTransform.position.x) / 2f - 1f;
 
-            if ((Vector3.Distance(transform.position, _borderPointsContainer.FrontPointTransform.position) < zMinimumDistance) ||
-                (Vector3.Distance(transform.position, _borderPointsContainer.BackPointTransform.position) < zMinimumDistance) ||
-                (Vector3.Distance(transform.position, _borderPointsContainer.RightPointTransform.position) < xMinimumDistance) ||
-                (Vector3.Distance(transform.position, _borderPointsContainer.LeftPointTransform.position) < xMinimumDistance)) 
+            float playerToFrontDistance = Mathf.Abs(transform.position.z - _borderPointsContainer.FrontPointTransform.position.z);
+            float playerToBackDistance = Mathf.Abs(transform.position.z - _borderPointsContainer.BackPointTransform.position.z);
+            float playerToRightDistance = Mathf.Abs(transform.position.x - _borderPointsContainer.RightPointTransform.position.x);
+            float playerToLeftDistance = Mathf.Abs(transform.position.x - _borderPointsContainer.LeftPointTransform.position.x);
+
+            if ((playerToFrontDistance < zMinimumDistance) || (playerToBackDistance < zMinimumDistance) ||
+                (playerToRightDistance < xMinimumDistance) || (playerToLeftDistance < xMinimumDistance) ||
+                (Vector3.Project(transform.position - _borderPointsContainer.BackPointTransform.position, Vector3.forward).normalized != Vector3.Project(_trainingManager.CameraTransform.forward, Vector3.forward).normalized) ||
+                (Vector3.Project(transform.position - _borderPointsContainer.LeftPointTransform.position, Vector3.right).normalized != _trainingManager.CameraTransform.right.normalized) ||
+                (Vector3.Project(_borderPointsContainer.RightPointTransform.position - transform.position, Vector3.right).normalized != _trainingManager.CameraTransform.right.normalized)) 
             {
                 AgentNotInMiddleSquareAfterHittingBall();
             }
@@ -654,7 +660,7 @@ public class AgentController : ControllersParent
 
     private void AgentNotInMiddleSquareAfterHittingBall()
     {
-        AddReward(-0.0025f);
+        AddReward(-0.005f);
     }
 
     #endregion
@@ -670,12 +676,6 @@ public class AgentController : ControllersParent
     {
         AddReward(8f);
     }
-
-/*    public void ProperService()
-    {
-        _wrongServicesCount = 0;
-        AddReward(3f);
-    }*/
 
     private void PointFaughtAfterAgentHitBackTheBall()
     {
