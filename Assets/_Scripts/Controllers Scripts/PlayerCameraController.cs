@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
@@ -61,6 +62,8 @@ public class PlayerCameraController : MonoBehaviour
             }
 
             _ballInstance.gameObject.transform.position = _ballSmashPosition.position;
+
+            GameManager.Instance.photonView.RPC("OnlineBallPositionSettingDuringSmash", RpcTarget.Others, _ballSmashPosition.position);
 
             Vector3 rotation = new Vector3(-_targetMovements.y, _targetMovements.x, 0);
             

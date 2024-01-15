@@ -59,7 +59,7 @@ public class Ball : MonoBehaviourPunCallbacks
 
         if (_rigidBody.isKinematic && GameManager.Instance.GameState == GameState.SERVICE)
         {
-            if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
+            if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected) 
             {
                 transform.position = GameManager.Instance.ServiceBallInitializationPoint.position;
             }
@@ -132,7 +132,7 @@ public class Ball : MonoBehaviourPunCallbacks
             actualNormalizedDirection = normalizedDirection;
         }
 
-        for (int i = 0; i < GameManager.Instance.DebugMessagesPanel.childCount; i++)
+/*        for (int i = 0; i < GameManager.Instance.DebugMessagesPanel.childCount; i++)
         {
             Destroy(GameManager.Instance.DebugMessagesPanel.GetChild(i).gameObject);
         }
@@ -142,7 +142,7 @@ public class Ball : MonoBehaviourPunCallbacks
         GameObject actualForceDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
         actualForceDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{actualHorizontalForce}";
         GameObject horizontalDirectionPositionDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
-        horizontalDirectionPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{actualNormalizedDirection}";
+        horizontalDirectionPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{actualNormalizedDirection}";*/
 
         _lastPlayerToApplyForce = playerToApplyForce;
 
@@ -201,11 +201,11 @@ public class Ball : MonoBehaviourPunCallbacks
 
     public void Rebound()
     {
-        if (_reboundsCount == 0)
+/*        if (_reboundsCount == 0)
         {
             GameObject reboundPositionDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
             reboundPositionDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"{transform.position}";
-        }
+        }*/
 
         _reboundsCount++;
 

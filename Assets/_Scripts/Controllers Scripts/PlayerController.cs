@@ -34,6 +34,7 @@ public class PlayerController : ControllersParent
     private Ball _ballInstance;
     private ShootDirectionController _shootDirectionController;
     private Vector3 _shotDirection;
+    private bool _otherPlayerIsSmashing;
     
     #endregion
 
@@ -43,6 +44,7 @@ public class PlayerController : ControllersParent
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
     public PlayerCameraController PlayerCameraController => _playerCameraController;
     public Ball BallInstance { set { _ballInstance = value; } }
+    public bool OtherPlayerIsSmashing { set { _otherPlayerIsSmashing = value; } }
     public void SetCanSmash(bool canSmash)
     {
         _canSmash = canSmash;
@@ -89,7 +91,7 @@ public class PlayerController : ControllersParent
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
         if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH && GameManager.Instance.GameState != GameState.BEFOREGAME
-            && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && _playerCameraController.IsFirstPersonView == false) 
+            && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && !_playerCameraController.IsFirstPersonView && !_otherPlayerIsSmashing) 
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
@@ -284,7 +286,7 @@ public class PlayerController : ControllersParent
 
     public void SlowTime(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this)
+        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this && !_otherPlayerIsSmashing)
         {
             Time.timeScale = _actionParameters.SlowTimeScaleFactor;
             _currentSpeed = _movementSpeed / Time.timeScale;
@@ -297,7 +299,7 @@ public class PlayerController : ControllersParent
     }
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this) 
+        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this && !_otherPlayerIsSmashing) 
         {
             float tempForwardMovementFactor = 0f;
             float tempRightMovementFactor = 0f;
@@ -389,6 +391,7 @@ public class PlayerController : ControllersParent
             _ballInstance.Rb.isKinematic = false;
             _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
             _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
+            GameManager.Instance.photonView.RPC("SmashShot", RpcTarget.Others);
 
             Vector3 playerCameraTransformForward = _playerCameraController.FirstPersonCamera.transform.forward;
             

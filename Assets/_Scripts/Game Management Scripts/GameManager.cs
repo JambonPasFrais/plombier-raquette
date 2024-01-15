@@ -63,8 +63,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
 
-    private Coroutine _onlineShootingCoroutine;
-
     #endregion
 
     #region GETTERS
@@ -472,4 +470,23 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         _ballInstance.GetComponent<Ball>().ResetBall();
     }
+
+    #region ONLINE SMASH MANAGEMENT
+
+    [PunRPC]
+    public void OnlineBallPositionSettingDuringSmash(Vector3 ballPosition)
+    {
+        _ballInstance.GetComponent<Rigidbody>().isKinematic = true;
+        _ballInstance.transform.position = ballPosition;
+        ((PlayerController)_controllers[0]).OtherPlayerIsSmashing = true;
+    }
+
+    [PunRPC]
+    public void SmashShot()
+    {
+        _ballInstance.GetComponent<Rigidbody>().isKinematic = false;
+        ((PlayerController)_controllers[0]).OtherPlayerIsSmashing = false;
+    }
+
+    #endregion
 }

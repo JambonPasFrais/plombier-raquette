@@ -19,8 +19,6 @@ public class FieldFrontRight : FieldGroundPart
                 {
                     Teams winningPointTeam = ball.LastPlayerToApplyForce.PlayerTeam;
                     GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
-                    GameObject pointDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
-                    pointDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"2 rebounds : {ball.LastPlayerToApplyForce.PlayerTeam.ToString()}";
                 }
                 if (!PhotonNetwork.IsConnected)
                 {
@@ -57,10 +55,6 @@ public class FieldFrontRight : FieldGroundPart
                         {
                             Teams winningPointTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % Enum.GetValues(typeof(Teams)).Length));
                             GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
-                            GameObject lptafDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
-                            lptafDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"Last Team To Apply Force : {ball.LastPlayerToApplyForce.PlayerTeam.ToString()}";
-                            GameObject pointDebugMessage = Instantiate(GameManager.Instance.DebugMessagePrefab, GameManager.Instance.DebugMessagesPanel);
-                            pointDebugMessage.GetComponent<TMPro.TextMeshProUGUI>().text = $"Fault : {winningPointTeam.ToString()}";
                         }
                         if (!PhotonNetwork.IsConnected)
                         {
