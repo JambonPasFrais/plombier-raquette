@@ -54,8 +54,6 @@ public class Controller : MonoBehaviour
 		if (_isSelectingCharacter)
 			return;
 
-		Debug.Log(PlayerInput.playerIndex);
-
 		transform.DOComplete();
 		transform.DOPunchScale(Vector3.one * .1f, .2f);
 	}

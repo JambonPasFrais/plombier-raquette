@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ControllerSelectionMenu : MonoBehaviour
 {
+    [Header("Instances")]
     [SerializeField] private Transform _controllerSelectionContainer;
     [SerializeField] private Transform _characterSelectionContainer;
     [SerializeField] private CharacterSelection _characterSelectionMenu;
     [SerializeField] private Button _validationButton;
+    [SerializeField] private TextMeshProUGUI _controllerCountSentence;
     
     #region Getters
 
@@ -50,6 +53,8 @@ public class ControllerSelectionMenu : MonoBehaviour
     }
     #endregion
 
+    #region CALLED EXTERNALLY
+    
     public void MakeValidationButtonNotInteractable()
     {
         _validationButton.interactable = false;
@@ -59,4 +64,11 @@ public class ControllerSelectionMenu : MonoBehaviour
     {
         _validationButton.interactable = true;
     }
+
+    public void UpdateControllerCountSentence(int nbControllersConnected, int nbControllersTotal)
+    {
+        _controllerCountSentence.text = $"{nbControllersConnected} out of {nbControllersTotal} controllers connected";
+    }
+    
+    #endregion
 }
