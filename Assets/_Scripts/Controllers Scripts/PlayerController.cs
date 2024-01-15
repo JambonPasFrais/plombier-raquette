@@ -344,7 +344,10 @@ public class PlayerController : ControllersParent
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
-        ThrowBall();
+        if (context.performed)
+        {
+            ThrowBall();
+        }
     }
 
     public void PrepareSmash(InputAction.CallbackContext context)
