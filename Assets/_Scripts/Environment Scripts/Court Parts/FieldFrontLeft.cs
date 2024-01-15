@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class FieldFrontLeft : FieldGroundPart
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (other.gameObject.TryGetComponent<Ball>(out Ball ball))
         {
             ball.Rebound();
 
@@ -31,7 +31,7 @@ public class FieldFrontLeft : FieldGroundPart
                         ball.LastPlayerToApplyForce.ServicesCount++;
                         ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
                         ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
-                        GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight, 
+                        GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
                             !GameManager.Instance.ServiceManager.ChangeSides);
                         GameManager.Instance.ServiceManager.EnableLockServiceColliders();
                         ball.ResetBall();

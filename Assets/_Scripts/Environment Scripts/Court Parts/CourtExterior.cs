@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class CourtExterior : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out Ball ball))
+        if (other.gameObject.TryGetComponent(out Ball ball))
         {
             ball.Rebound();
 

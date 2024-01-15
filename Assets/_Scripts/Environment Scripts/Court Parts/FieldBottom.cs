@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class FieldBottom : FieldGroundPart
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (other.gameObject.TryGetComponent<Ball>(out Ball ball))
         {
             ball.Rebound();
 
@@ -22,7 +22,7 @@ public class FieldBottom : FieldGroundPart
             {
                 // This is the first rebound of the ball.
                 // If the player hits its own part of the field or serves in the opposite bottom part, it is a fault.
-                if (OwnerPlayer == ball.LastPlayerToApplyForce || GameManager.Instance.GameState == GameState.SERVICE )
+                if (OwnerPlayer == ball.LastPlayerToApplyForce || GameManager.Instance.GameState == GameState.SERVICE)
                 {
                     // If it was the first service, the player can proceed to his second service.
                     // Otherwise it is counted as a fault.

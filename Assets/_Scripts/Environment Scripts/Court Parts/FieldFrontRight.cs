@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class FieldFrontRight : FieldGroundPart
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out Ball ball))
+        if (other.gameObject.TryGetComponent(out Ball ball))
         {
             ball.Rebound();
 
@@ -18,11 +18,11 @@ public class FieldFrontRight : FieldGroundPart
                 GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
                 ball.ResetBall();
             }
-            else if(ball.ReboundsCount == 1)
+            else if (ball.ReboundsCount == 1)
             {
                 // This is the first rebound of the ball.
                 // If the player hits its own part of the field or serve in the opposite right front part while he should have served in the opposite left front part, it is a fault.
-                if (OwnerPlayer == ball.LastPlayerToApplyForce || (GameManager.Instance.GameState == GameState.SERVICE && !GameManager.Instance.ServiceManager.ServeRight)) 
+                if (OwnerPlayer == ball.LastPlayerToApplyForce || (GameManager.Instance.GameState == GameState.SERVICE && !GameManager.Instance.ServiceManager.ServeRight))
                 {
                     // If it was the first service, the player can proceed to his second service.
                     // Otherwise it is counted as a fault.

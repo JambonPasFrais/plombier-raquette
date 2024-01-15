@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class FieldAlley : FieldGroundPart
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
+        if (other.gameObject.TryGetComponent<Ball>(out Ball ball))
         {
             if (ball.LastPlayerToApplyForce != null)
             {
