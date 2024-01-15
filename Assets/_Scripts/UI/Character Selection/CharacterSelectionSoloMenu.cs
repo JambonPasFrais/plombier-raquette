@@ -110,6 +110,18 @@ public class CharacterSelectionSoloMenu : CharacterSelection
 	// Reset the menu visual and variables when we came back to the this menu to avoid any problem
 	public void ResetMenu()
 	{
+		MenuUiReset();
+	}
+
+	public void OnMenuDisabled()
+	{
+		MenuUiReset();
+		MenuVariablesReset();
+		ControllerManager.Instance.ResetControllers();
+	}
+
+	private void MenuUiReset()
+	{
 		foreach (var item in _charactersModel)
 		{
 			item.Value.transform.SetParent(MenuManager.Instance.CharactersModelsParent);
@@ -132,6 +144,11 @@ public class CharacterSelectionSoloMenu : CharacterSelection
 		_playButton.interactable = false;
 	}
 
+	private void MenuVariablesReset()
+	{
+		
+	}
+	
 	// Button play that will make the random character selection and send player Character to Game Parameters 
 	public void Play()
 	{

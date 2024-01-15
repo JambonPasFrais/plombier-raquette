@@ -4837,7 +4837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1034875752239203454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34325,21 +34325,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7346065529909488869}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: SetFirstSelectedButton
-        m_Mode: 2
+      - m_Target: {fileID: 3244378267300561810}
+        m_TargetAssemblyTypeName: CharacterSelectionSoloMenu, Assembly-CSharp
+        m_MethodName: OnMenuDisabled
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 3229197282370024765}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3244378267300561810}
-        m_TargetAssemblyTypeName: CharacterSelectionSoloMenu, Assembly-CSharp
-        m_MethodName: ResetMenu
+      - m_Target: {fileID: 6512930923058457467}
+        m_TargetAssemblyTypeName: ControllerSelectionMenu, Assembly-CSharp
+        m_MethodName: OnBackToControllerSelection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
