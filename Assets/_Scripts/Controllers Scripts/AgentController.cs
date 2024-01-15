@@ -689,7 +689,7 @@ public class AgentController : ControllersParent
 
     private void AgentInMiddleSquareAfterHittingBall()
     {
-        AddReward(0.005f);
+        AddReward(0.015f);
     }
 
     public void ScoredPoint()
