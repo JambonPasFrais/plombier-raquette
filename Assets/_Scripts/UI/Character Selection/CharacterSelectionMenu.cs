@@ -142,7 +142,6 @@ public class CharacterSelectionMenu : CharacterSelection
 	{
 		TransformRandomSelectionInCharacter();
 		StartCoroutine(WaitBeforeDisplayingAceItMenu());
-		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"
@@ -151,8 +150,6 @@ public class CharacterSelectionMenu : CharacterSelection
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		
 		_aceItWindow.SetActive(false);
-
-		//Debug.Log("Let's Ace It !");
 
 		ControllerManager.Instance.ChangeCtrlersActMapToGame();
 		

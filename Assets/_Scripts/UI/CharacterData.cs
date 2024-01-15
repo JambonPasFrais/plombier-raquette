@@ -26,12 +26,17 @@ public class CharacterData : ScriptableObject
     [Header("Sounds")]
     public List<SoundData> CharacterSounds = new List<SoundData>();
 
-    private Dictionary<string, SoundData> CharacterSoundsDict = new Dictionary<string, SoundData>();
+    private Dictionary<string, SoundData> CharacterSoundsDict;
 
     private System.Random random = new System.Random();
 
 	public void Init()
 	{
+        if (CharacterSoundsDict != null)
+            return;
+
+        CharacterSoundsDict = new Dictionary<string, SoundData>();
+        
 		foreach(var sound in CharacterSounds)
         {
             CharacterSoundsDict.Add(sound.Name, sound);

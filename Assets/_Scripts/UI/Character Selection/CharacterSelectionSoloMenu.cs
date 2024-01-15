@@ -48,7 +48,7 @@ public class CharacterSelectionSoloMenu : CharacterSelection
 		{
 			go = Instantiate(_characterUIPrefab, _characterUIContainer);
 			go.GetComponent<CharacterUI>().SetVisual(item);
-			go.GetComponent<CharacterUI>().Character.Init();
+			//go.GetComponent<CharacterUI>().Character.Init();
             go.GetComponent<CharacterUI>().SetCharacterSelectionSoloMenu(this);
             _charactersUI.Add(go.GetComponent<CharacterUI>());
 		}
@@ -106,16 +106,6 @@ public class CharacterSelectionSoloMenu : CharacterSelection
 			}
 		}
 	}
-
-	// Verify if the player has selected a character -> Useless we only have one player so do it when we know he selected a character
-	/*private void VerifyCharacters()
-	{
-		if (_playerCharacter)
-		{
-			_aceItWindow.SetActive(true);
-			EventSystem.current.SetSelectedGameObject(_playButton);
-		}
-	}*/
 
 	// Reset the menu visual and variables when we came back to the this menu to avoid any problem
 	public void ResetMenu()
