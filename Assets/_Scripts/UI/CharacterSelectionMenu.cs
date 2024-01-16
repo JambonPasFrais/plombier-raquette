@@ -154,9 +154,9 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 		//Debug.Log("Let's Ace It !");
 
-		ControllerManager.Instance.ChangeCtrlersActMapToGame();
+		//ControllerManager.Instance.ChangeCtrlersActMapToGame();   -> A mettre dans le confirmPlay du Transition Menu
 		
-		SceneManager.LoadScene("Local_Multiplayer");
+		//SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
 	// Display right number of showrooms whether it is a single or double match
@@ -426,7 +426,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private IEnumerator WaitBeforeDisplayingAceItMenu()
 	{
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0f);
 
 		_aceItWindow.SetActive(true);
 		AudioManager.Instance.PlaySfx("AceItSound");

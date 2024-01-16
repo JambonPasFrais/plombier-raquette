@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1979262305646330715}
   - component: {fileID: 8698578877214028656}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CharacterName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -258,6 +258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3542743815551174206}
+  - component: {fileID: 4774215985205687299}
   m_Layer: 5
   m_Name: PlayerInfos
   m_TagString: Untagged
@@ -287,6 +288,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4774215985205687299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6825933847089150710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc5bb70120db274bbe1633bf279084f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _background: {fileID: 5769080025890634063}
+  _playerType: {fileID: 89212968967280580}
+  _charactersName: {fileID: 8698578877214028656}
 --- !u!1 &7005016594368629373
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +353,7 @@ GameObject:
   - component: {fileID: 8734903928162088169}
   - component: {fileID: 89212968967280580}
   m_Layer: 5
-  m_Name: Info
+  m_Name: PlayerType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
