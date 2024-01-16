@@ -171,7 +171,7 @@ public class ControllerManager : MonoBehaviour
     private IEnumerator DeleteControllerCoroutine(int deviceId)
     {
         yield return new WaitForSeconds(.1f);
-        AudioManager.Instance.PlaySfx("ControllerDisconnected");
+        MenuManager.Instance.PlaySound("ControllerDisconnected");
         Destroy(_controllers[deviceId].Controller.gameObject);
         Destroy(_controllers[deviceId].gameObject);
         _controllers.Remove(deviceId);
@@ -229,10 +229,10 @@ public class ControllerManager : MonoBehaviour
 				break;
         }
 
-        AudioManager.Instance.PlaySfx("ControllerConnected");
+        MenuManager.Instance.PlaySound("ControllerConnected");
 
 		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
-		playerInputHandler.Controller.SetColorVisual(_controllers.Count, _playerColors[_controllers.Count]);
+		playerInputHandler.Controller.SetColorVisual(_playerColors[_controllers.Count]);
 		playerInputHandler.Controller.ControllerSelectionMode();
         playerInputHandler.Controller.PlayerInput = playerInput;
         

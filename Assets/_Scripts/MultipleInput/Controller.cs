@@ -134,7 +134,7 @@ public class Controller : MonoBehaviour
 		_characterSelectionIndex.text = "P" + _controllerIndex;
 	}
 
-	public void SetColorVisual(int index, Color color)
+	public void SetColorVisual(Color color)
 	{
 		_playerIndexText.color = color;
 		_imgCharSelectionIcon.color = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, 255);
