@@ -9,7 +9,6 @@ public class CharacterUI : MonoBehaviour
     [SerializeField] private Image _charactersFace;
     [SerializeField] private Image _backgroundColor;
     [SerializeField] private GameObject _isSelectedImage;
-    private CharacterSelectionMenu _characterSelectionMenu;
     private CharacterSelectionSoloMenu _characterSelectionSoloMenu;
     private CharacterData _character;
     private bool _isSelected;
@@ -17,10 +16,7 @@ public class CharacterUI : MonoBehaviour
     public bool IsSelected => _isSelected;
 
     public CharacterData Character => _character;
-    public void SetCharacterSelectionMenu(CharacterSelectionMenu characterSelectionMenu)
-    {
-        _characterSelectionMenu = characterSelectionMenu;
-    }    
+
     public void SetCharacterSelectionSoloMenu(CharacterSelectionSoloMenu characterSelectionSoloMenu)
     {
         _characterSelectionSoloMenu = characterSelectionSoloMenu;

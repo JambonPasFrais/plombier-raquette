@@ -8,11 +8,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class CharacterSelectionMenu : CharacterSelection
+public class CharacterSelectionMenu : MonoBehaviour
 {
+	[FormerlySerializedAs("_charactersModelsContainer")]
 	[Header("Instances")] 
 	// Windows
 	[SerializeField] private GameObject _aceItWindow;
@@ -26,7 +28,7 @@ public class CharacterSelectionMenu : CharacterSelection
 	[SerializeField] private List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
 	[SerializeField] private List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
 	// Where the model are in not selected -> pooling optimisation technique
-	[SerializeField] private Transform _charactersModelsContainer;
+	[SerializeField] private Transform _characterModelsPool;
 	[SerializeField] private Button _playButton;
 	[SerializeField] private GameObject _confirmPlayButton;
 	[Header("Other Menus References")]
@@ -184,7 +186,7 @@ public class CharacterSelectionMenu : CharacterSelection
 		AudioManager.Instance.PlaySfx("ChooseYourCharacter");
 		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
-		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
+		_characterModelsPool = MenuManager.Instance.CharactersModelsParent;
 		_charactersModel = MenuManager.Instance.CharactersModel;
 		_aceItWindow.SetActive(false);
 
@@ -209,8 +211,6 @@ public class CharacterSelectionMenu : CharacterSelection
 			charUI.SetVisual(item);
 
 			charUI.GetComponent<CharacterUI>().Character.Init();
-
-			charUI.SetCharacterSelectionMenu(this);
 
 			_charactersUI.Add(charUI);
 		}
@@ -373,7 +373,7 @@ public class CharacterSelectionMenu : CharacterSelection
 	{
 		foreach(var item in _charactersModel)
 		{
-			item.Value.transform.SetParent(_charactersModelsContainer);
+			item.Value.transform.SetParent(_characterModelsPool);
 			item.Value.transform.localPosition = Vector3.zero;
 			item.Value.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 			item.Value.gameObject.SetActive(false);
@@ -406,7 +406,7 @@ public class CharacterSelectionMenu : CharacterSelection
 	{
 		_characters = new List<CharacterData>();
 		_availableCharacters = new List<CharacterData>();
-		_charactersModelsContainer = null;
+		_characterModelsPool = null;
 		_charactersModel = new Dictionary<string, GameObject>();
 
 		for (int i = 0; i < _charactersUI.Count; i++)
@@ -476,7 +476,7 @@ public class CharacterSelectionMenu : CharacterSelection
 	}*/
 
 	#region Called Externally
-	public override bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
+	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
 	{
 		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
 			&& hit.collider.TryGetComponent(out CharacterUI characterUI)
@@ -519,7 +519,7 @@ public class CharacterSelectionMenu : CharacterSelection
 		return false;
 	}
 
-	public override bool HandleCharacterDeselectionInput(int playerIndex)
+	public bool HandleCharacterDeselectionInput(int playerIndex)
 	{
 		return RemoveCharacterFromPlayerSelectionUi(playerIndex);
 	}
