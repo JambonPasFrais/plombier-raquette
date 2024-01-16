@@ -140,14 +140,17 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Button "play"
 	public void Play()
 	{
-		TransformRandomSelectionInCharacter();
-		StartCoroutine(WaitBeforeDisplayingAceItMenu());
+		//StartCoroutine(WaitBeforeDisplayingAceItMenu());
+		_aceItWindow.SetActive(true);
+		AudioManager.Instance.PlaySfx("AceItSound");
 		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"
 	public void OnConfirmPlay()
 	{
+		TransformRandomSelectionInCharacter();
+
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		
 		_aceItWindow.SetActive(false);
@@ -155,7 +158,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 		//Debug.Log("Let's Ace It !");
 
 		//ControllerManager.Instance.ChangeCtrlersActMapToGame();   -> A mettre dans le confirmPlay du Transition Menu
-		
+
 		//SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
