@@ -4,9 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Class containing every references to set visual of player's showroom for character selections
-[System.Serializable]
-public class PlayerShowroom
+// Class conta-ining every references to set visual of player's showroom for character selections
+public class PlayerShowroom : MonoBehaviour
 {
 	public TextMeshProUGUI PlayerInfo;
 	public TextMeshProUGUI CharacterName;
@@ -22,7 +21,7 @@ public class PlayerShowroom
         PlayerInfo.text = username;
         CharacterName.text = data.Name;
         NameBackground.color = data.CharacterSecondaryColor;
-        GameObject model = GameObject.Instantiate(data.BasicModel, ModelLocation);
+        GameObject model = Instantiate(data.BasicModel, ModelLocation);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 		model.transform.localScale = new Vector3(20, 20, 20);

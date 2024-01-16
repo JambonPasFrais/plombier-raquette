@@ -13,23 +13,22 @@ public class CharacterSelection : MonoBehaviour
     #region Serialized Field
     
     [Header("Common Instances")]
-    [SerializeField] protected GameObject _aceItWindow;
-    [SerializeField] protected CharacterUI _characterUIPrefab;
-    [SerializeField] protected Transform _characterUIContainer;
-    [SerializeField] protected LayerMask _characterUILayerMask;
-    [SerializeField] protected Transform _characterModelsPool; //is equivalent to _charactersModelsContainer
-    [SerializeField] protected Button _playButton;
-    [SerializeField] protected ControllerSelectionMenu _controllerSelectionMenu; //INIT WHEN WE LEAVE CONTROLLER SELECTION MENU
+    [SerializeField] private GameObject _aceItWindow;
+    [SerializeField] private CharacterUI _characterUIPrefab;
+    [SerializeField] private Transform _characterUIContainer;
+    [SerializeField] private LayerMask _characterUILayerMask;
+    [SerializeField] private Transform _characterModelsPool; //is equivalent to _charactersModelsContainer
+    [SerializeField] private Button _returnButton;
     
     [Header("Window Types")]
-    [SerializeField] protected GameObject _matchSoloWindow;
-    [SerializeField] protected GameObject _matchSingleWindow;
-    [SerializeField] protected GameObject _matchDoubleWindow;
+    [SerializeField] private GameObject _matchSoloWindow;
+    [SerializeField] private GameObject _matchSingleWindow;
+    [SerializeField] private GameObject _matchDoubleWindow;
     
     [Header("Showrooms Types")] //TODO : rework PlayerShowroom
-    [SerializeField] protected List<PlayerShowroom> _characterShowroomsSolo = new List<PlayerShowroom>();
-    [SerializeField] protected List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
-    [SerializeField] protected List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
+    [SerializeField] private List<PlayerShowroom> _characterShowroomsSolo = new List<PlayerShowroom>();
+    [SerializeField] private List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
+    [SerializeField] private List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
 
     #endregion
     
@@ -60,6 +59,8 @@ public class CharacterSelection : MonoBehaviour
     // Here to manage the selection of a button
     private InputSystemUIInputModule _inputSystemUIInputModule;
     
+    private ControllerSelectionMenu _controllerSelectionMenu;
+    
     #endregion
     
     #region UNITY FUNCTIONS
@@ -72,23 +73,24 @@ public class CharacterSelection : MonoBehaviour
     #endregion
 
     #region LISTENERS
-    public void OnCharacterSelectionMenuLoad()
+    public void OnCharacterSelectionMenuLoad(ControllerSelectionMenu controllerSelectionMenuInstance)
     {
 	    AudioManager.Instance.PlaySfx("ChooseYourCharacter");
 
 	    _allCharactersData = MenuManager.Instance.Characters;
 	    _characterModelsPool = MenuManager.Instance.CharactersModelsParent;
 	    _characterModelsByName = MenuManager.Instance.CharactersModel;
+	    _controllerSelectionMenu = controllerSelectionMenuInstance;
+	    _returnButton.onClick.AddListener(() => _controllerSelectionMenu.OnBackToControllerSelection());
 	    
 	    _aceItWindow.SetActive(false);
-	    _playButton.interactable = false;
 	    
 	    ClearShowroomsCharEmblems();
 	    
 	    SetShowroomType();
 
-	    _selectedCharacters = new List<CharacterData>(_totalNbPlayers);
-	    _selectedCharactersUIs = new List<CharacterUI>(_totalNbPlayers);
+	    _selectedCharacters = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
+	    _selectedCharactersUIs = new List<CharacterUI>(new CharacterUI[_totalNbPlayers]);
 	    
 	    SetPlayerInfos();
 	    
@@ -385,7 +387,7 @@ public class CharacterSelection : MonoBehaviour
 	    _selectedCharactersUIs[playerIndex] = null;
 		
 	    GameObject oldGo = _currentShowroomList[playerIndex].ModelLocation.GetChild(0).gameObject;
-	    oldGo.transform.SetParent(_characterUIContainer);
+	    oldGo.transform.SetParent(_characterModelsPool);
 	    oldGo.transform.localPosition = Vector3.zero;
 	    oldGo.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
 	    oldGo.gameObject.SetActive(false);
