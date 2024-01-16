@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,7 +24,16 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private string _gameActionMapName;
     [SerializeField] private TextMeshProUGUI _numberOfControllersConnectedOnMenu;
 
-    [SerializeField] private int _maxPlayerCount;
+	[SerializeField]
+	private List<Color> _playerColors = new List<Color>()
+	{
+		Color.red,
+		Color.blue,
+		Color.green,
+		Color.yellow
+	};
+
+	[SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
     private CharacterSelectionMenu _characterSelectionMenu;
@@ -221,7 +231,7 @@ public class ControllerManager : MonoBehaviour
         AudioManager.Instance.PlaySfx("ControllerConnected");
 
 		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
-		playerInputHandler.Controller.SetColorVisual(_controllers.Count);
+		playerInputHandler.Controller.SetColorVisual(_controllers.Count, _playerColors[_controllers.Count]);
 		playerInputHandler.Controller.ControllerSelectionMode();
         playerInputHandler.Controller.PlayerInput = playerInput;
         

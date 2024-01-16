@@ -16,13 +16,6 @@ public class Controller : MonoBehaviour
 	[SerializeField] private Image _imgCharSelectionIcon;
 	[SerializeField] private TextMeshProUGUI _playerIndexText;
 	[SerializeField] private RectTransform _rectTransform;
-	[SerializeField] private List<Color> _playerColors = new List<Color>()
-	{
-		Color.red,
-		Color.blue,
-		Color.green,
-		Color.yellow
-	};
 	[SerializeField] private TextMeshProUGUI _characterSelectionIndex;
 
 	[HideInInspector] public PlayerInput PlayerInput; // TODO : change this variable for private with getter and setter
@@ -141,10 +134,10 @@ public class Controller : MonoBehaviour
 		_characterSelectionIndex.text = "P" + _controllerIndex;
 	}
 
-	public void SetColorVisual(int index)
+	public void SetColorVisual(int index, Color color)
 	{
-		_playerIndexText.color = _playerColors[index];
-		_imgCharSelectionIcon.color = _playerColors[index] / .5f;
+		_playerIndexText.color = color;
+		_imgCharSelectionIcon.color = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, 255);
 	}
 
 	public void ReturnOnControllerSelectionMenu()

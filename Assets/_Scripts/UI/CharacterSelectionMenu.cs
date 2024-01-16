@@ -184,7 +184,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Any button that loads the menu
 	public void OnMenuLoaded()
 	{
-		AudioManager.Instance.PlaySfx("ChooseYourCharacter");
+		MenuManager.Instance.PlaySound("ChooseYourCharacter");
 		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
 		_charactersModelsContainer = MenuManager.Instance.CharactersModelsParent;
