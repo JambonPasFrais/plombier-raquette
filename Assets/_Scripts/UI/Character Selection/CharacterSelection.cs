@@ -21,6 +21,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private Transform _characterModelsPool; //is equivalent to _charactersModelsContainer
     [SerializeField] private Button _returnButton;
     [SerializeField] private Button _nextButton;
+    [SerializeField] private Button _createButton;
     
     [Header("Window Types")]
     [SerializeField] private GameObject _matchSoloWindow;
@@ -62,6 +63,8 @@ public class CharacterSelection : MonoBehaviour
     private InputSystemUIInputModule _inputSystemUIInputModule;
     
     private ControllerSelectionMenu _controllerSelectionMenu;
+
+    [SerializeField] private bool _isOnlineMode;
     
     #endregion
     
@@ -104,6 +107,11 @@ public class CharacterSelection : MonoBehaviour
 	    SetModelRandomForBots();
     }
 
+    public void LoadFromOnlineMenu(bool isOnline)
+	{
+	    _isOnlineMode = isOnline;
+	}
+
     public void OnMenuDisabled()
     {
 	    ResetModelPool();
@@ -125,6 +133,11 @@ public class CharacterSelection : MonoBehaviour
     {
 	    GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
     }
+
+    public void OnCreate()
+    {
+	    
+    }
     
     #endregion
 
@@ -132,7 +145,7 @@ public class CharacterSelection : MonoBehaviour
     
     private void SetShowroomType()
     {
-	    if (GameParameters.IsTournamentMode)
+	    if (GameParameters.IsTournamentMode || IsOnlineMode())
 		    SetSoloShowroom();
 	    else if (!GameParameters.Instance.IsDouble)
 		    SetSingleShowroom();
@@ -297,7 +310,8 @@ public class CharacterSelection : MonoBehaviour
     private void InitNavigationButtons()
     {
 	    _returnButton.onClick.AddListener(() => _controllerSelectionMenu.OnBackToControllerSelection());
-	    _nextButton.gameObject.SetActive(IsSoloMode());
+	    _nextButton.gameObject.SetActive(IsSoloMode() && !IsOnlineMode());
+	    _createButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
     }
     
     #endregion
@@ -420,7 +434,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void CheckReadyToPlayStatus()
     {
-	    if (IsSoloMode())
+	    if (IsSoloMode() || IsOnlineMode())
 			return;
 	    
 	    if (IsEveryCharSelectedByLocals())
@@ -434,6 +448,11 @@ public class CharacterSelection : MonoBehaviour
     private bool IsSoloMode()
     {
 	    return _totalNbPlayers == 1;
+    }
+
+    private bool IsOnlineMode()
+    {
+	    return _isOnlineMode;
     }
     
     private bool IsEveryCharSelectedByLocals()

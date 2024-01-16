@@ -169,8 +169,12 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public void OnOnlineButtonClicked()
     {
+        GameParameters.Instance.SetGameParameters(1, false, new GameMode("Online", 1, 6), 0);
+    }
+
+    public void OnCreateButtonClicked()
+    {
         StartCoroutine(Connect());
-        ChangeActivePanel(_characterSelection.name);
     }
 
     public void OnPlayButtonClicked()
@@ -182,6 +186,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Disconnect();
     }
+    
 
     public void OnLeaveButtonClicked()
     {
@@ -192,7 +197,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
             showroom.ResetShowroom();
         }
 
-        ChangeActivePanel(_characterSelection.name);
+        //ChangeActivePanel(_characterSelection.name);
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
