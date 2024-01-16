@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CharacterSelection : MonoBehaviour
@@ -18,15 +19,15 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] protected LayerMask _characterUILayerMask;
     [SerializeField] protected Transform _characterModelsPool; //is equivalent to _charactersModelsContainer
     [SerializeField] protected Button _playButton;
-    [SerializeField] protected ControllerSelectionMenu _controllerSelectionMenu;
+    [SerializeField] protected ControllerSelectionMenu _controllerSelectionMenu; //INIT WHEN WE LEAVE CONTROLLER SELECTION MENU
     
     [Header("Window Types")]
     [SerializeField] protected GameObject _matchSoloWindow;
     [SerializeField] protected GameObject _matchSingleWindow;
     [SerializeField] protected GameObject _matchDoubleWindow;
-
-    [Header("Showrooms Types")] 
-    [SerializeField] protected List<PlayerShowroom> _characterShoroomsSolo = new List<PlayerShowroom>();
+    
+    [Header("Showrooms Types")] //TODO : rework PlayerShowroom
+    [SerializeField] protected List<PlayerShowroom> _characterShowroomsSolo = new List<PlayerShowroom>();
     [SerializeField] protected List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
     [SerializeField] protected List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
 
@@ -40,6 +41,7 @@ public class CharacterSelection : MonoBehaviour
     // All characters UI
     private List<CharacterUI> _allCharactersUi = new List<CharacterUI>(); // _charactersUI
 	
+    //TODO : remove [SerializedField]
     // Every character that are selected
     [SerializeField] private List<CharacterData> _selectedCharacters; // _playersCharacter
 	
@@ -135,7 +137,7 @@ public class CharacterSelection : MonoBehaviour
 	    
 	    _totalNbPlayers = 1;
 	    
-	    _currentShowroomList = _characterShoroomsSolo;
+	    _currentShowroomList = _characterShowroomsSolo;
     }
 
     private void SetSingleShowroom()
@@ -164,7 +166,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void ClearShowroomsCharEmblems()
     {
-	    foreach(var item in _characterShoroomsSolo)
+	    foreach(var item in _characterShowroomsSolo)
 	    {
 		    item.CharacterEmblem.gameObject.SetActive(false);
 	    }
@@ -201,7 +203,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void SetPlayerInfoSolo()
     {
-	    _characterShoroomsSolo[0].PlayerInfo.text = "P1";
+	    _characterShowroomsSolo[0].PlayerInfo.text = "P1";
     }
     
     private void SetPlayerInfoSingle()

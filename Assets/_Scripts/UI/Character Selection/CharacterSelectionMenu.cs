@@ -12,27 +12,27 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class CharacterSelectionMenu : CharacterSelection
+public class CharacterSelectionMenu : MonoBehaviour
 {
 	[FormerlySerializedAs("_charactersModelsContainer")]
 	[Header("Instances")] 
 	// Windows
-	//[SerializeField] private GameObject _aceItWindow;
-	//[SerializeField] private GameObject _matchSingleWindow;
-	//[SerializeField] private GameObject _matchDoubleWindow;
+	[SerializeField] private GameObject _aceItWindow;
+	[SerializeField] private GameObject _matchSingleWindow;
+	[SerializeField] private GameObject _matchDoubleWindow;
 	// Character Ui related
-	//[SerializeField] private GameObject _characterUIPrefab;
-	//[SerializeField] private Transform _characterUIContainer;
-	//[SerializeField] private LayerMask _characterUILayerMask;
+	[SerializeField] private GameObject _characterUIPrefab;
+	[SerializeField] private Transform _characterUIContainer;
+	[SerializeField] private LayerMask _characterUILayerMask;
 	// List of player's visual references
-	//[SerializeField] private List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
-	//[SerializeField] private List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
+	[SerializeField] private List<PlayerShowroom> _characterShowroomsSingle = new List<PlayerShowroom>();
+	[SerializeField] private List<PlayerShowroom> _characterShowroomsDouble = new List<PlayerShowroom>();
 	// Where the model are in not selected -> pooling optimisation technique
-	//[SerializeField] private Transform _characterModelsPool;
-	//[SerializeField] private Button _playButton;
+	[SerializeField] private Transform _characterModelsPool;
+	[SerializeField] private Button _playButton;
 	[SerializeField] private GameObject _confirmPlayButton;
 	[Header("Other Menus References")]
-	//[SerializeField] private ControllerSelectionMenu _controllerSelectionMenu;
+	[SerializeField] private ControllerSelectionMenu _controllerSelectionMenu;
 	
 	// All Characters Data
 	private List<CharacterData> _characters = new List<CharacterData>();
@@ -219,12 +219,12 @@ public class CharacterSelectionMenu : CharacterSelection
 	}
 
 	// Any button that disables the menu
-	/*public void OnMenuDisabled()
+	public void OnMenuDisabled()
 	{
 		MenuUiReset();
 		MenuVariablesReset();
 		ControllerManager.Instance.ResetControllers();
-	}*/
+	}
 
 	#endregion
 
@@ -476,7 +476,7 @@ public class CharacterSelectionMenu : CharacterSelection
 	}*/
 
 	#region Called Externally
-	/*public override bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
+	public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
 	{
 		if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
 			&& hit.collider.TryGetComponent(out CharacterUI characterUI)
@@ -519,9 +519,9 @@ public class CharacterSelectionMenu : CharacterSelection
 		return false;
 	}
 
-	public override bool HandleCharacterDeselectionInput(int playerIndex)
+	public bool HandleCharacterDeselectionInput(int playerIndex)
 	{
 		return RemoveCharacterFromPlayerSelectionUi(playerIndex);
-	}*/
+	}
 	#endregion
 }
