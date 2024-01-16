@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.MLAgents;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PlayerGameAnimator))]
-public class ControllersParent : MonoBehaviour
+public class ControllersParent : Agent
 {
     #region PUBLIC FIELDS
 

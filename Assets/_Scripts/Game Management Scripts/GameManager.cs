@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     public int ServerIndex { get { return _serverIndex; } }
     public Transform ServiceBallInitializationPoint { get { return _serviceBallInitializationPoint; } }
     public Dictionary<Teams, float[]> FaultLinesXByTeam { get { return _faultLinesXByTeam; } }
+    public FieldBorderPointsContainer[] BorderPointsContainers { get { return _borderPointsContainers; } }
 
     public GameObject SmashTargetGo => _smashTargetGo;
 

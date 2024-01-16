@@ -18,6 +18,7 @@ public class BallDetection : MonoBehaviour
 
     public bool IsBallInHitZone { get { return _isBallInHitZone; } }
     public Ball Ball { get { return _ball; } }
+    public BoxCollider BoxCollider { get { return _boxCollider;} }
 
     #endregion
 
