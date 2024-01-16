@@ -51,6 +51,7 @@ public class AIBotBehavior : ControllersParent
     {
         ServicesCount = 0;
         _targetPosVector3 = transform.position;
+        SetTargetsSide(FieldSide.FIRSTSIDE.ToString());
         _ballInstance = _trainingManager.BallInstance.GetComponent<AIBall>();
     }
 

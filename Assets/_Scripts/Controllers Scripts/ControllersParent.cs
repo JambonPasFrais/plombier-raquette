@@ -11,6 +11,7 @@ public class ControllersParent : Agent
     public bool IsServing;
     public PlayerStates PlayerState;
     public int ServicesCount;
+    public bool IsOnOriginalSide;
 
     #endregion
 

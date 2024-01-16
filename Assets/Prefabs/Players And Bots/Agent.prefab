@@ -6622,9 +6622,10 @@ MonoBehaviour:
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
+  IsOnOriginalSide: 0
   _trainingManager: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 1
+  _playerTeam: 0
   _ballServiceDetectionArea: {fileID: 2235423786061844894}
   _serviceBallInitializationPoint: {fileID: 6716864470333118959}
   _minimumShotForce: 325
@@ -6678,7 +6679,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: 7f68c632c7e3c60489cdd7e0ebb5e855, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: TennisPlayerBehavior
   TeamId: 0
   m_UseChildSensors: 1

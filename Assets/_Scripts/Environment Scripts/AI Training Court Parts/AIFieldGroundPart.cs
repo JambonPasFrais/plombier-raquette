@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class AIFieldGroundPart : MonoBehaviour
 {
-    [SerializeField] protected ControllersParent _ownerPlayer;
+    public ControllersParent OwnerPlayer;
     [SerializeField] protected AgentTrainingManager _trainingManager;
 }

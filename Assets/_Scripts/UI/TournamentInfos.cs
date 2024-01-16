@@ -16,7 +16,7 @@ public class TournamentInfos : ScriptableObject
     public int CurrentRound = 0;
     public Sprite CupSprite;
     public CharacterData PlayersCharacter;
-    public Teams HasPlayerWon = Teams.DEFAULT;
+    public Teams? HasPlayerWon = null;
 
 	public void SetRoundPlayers(List<CharacterData> firstRound, List<CharacterData> secondRound, List<CharacterData> thirdRound, CharacterData winner)
     {
@@ -73,6 +73,6 @@ public class TournamentInfos : ScriptableObject
         PlayersCharacter = null;
         CupSprite = null;
         Winner = null;
-        HasPlayerWon = Teams.DEFAULT;
+        HasPlayerWon = null;
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,7 @@ public class AgentTrainingManager : MonoBehaviour
     [Header("Side Management")]
     [SerializeField] private Transform _servicePointsFirstSideParent;
     [SerializeField] private Transform _servicePointsSecondSideParent;
+    [SerializeField] private GameObject _camerasParentObject;
     private Dictionary<string, Transform> _servicePointsFirstSide = new Dictionary<string, Transform>();
     private Dictionary<string, Transform> _servicePointsSecondSide = new Dictionary<string, Transform>();
 
@@ -31,7 +33,8 @@ public class AgentTrainingManager : MonoBehaviour
 
     [Header("Environment Objects")]
     [SerializeField] private GameObject _net;
-    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private GameObject _firstSideGroundCollidersParentObject;
+    [SerializeField] private GameObject _secondSideGroundCollidersParentObject;
     [SerializeField] private List<ControllersParent> _controllers;
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
     [SerializeField] private float _leftFaultLineXFromFirstSide;
@@ -44,6 +47,7 @@ public class AgentTrainingManager : MonoBehaviour
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
     private int _currentPointsCount;
+    private Transform _cameraTransform;
 
     #endregion
 
@@ -85,7 +89,7 @@ public class AgentTrainingManager : MonoBehaviour
 
         _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
 
-        int i = 1;
+        int i = 0;
         foreach (ControllersParent controller in _controllers)
         {
             Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
@@ -114,6 +118,15 @@ public class AgentTrainingManager : MonoBehaviour
 
         foreach (ControllersParent controller in _controllers)
         {
+            if(controller is AgentController)
+            {
+                controller.IsOnOriginalSide = true;
+            }
+            else
+            {
+                controller.IsOnOriginalSide = false;
+            }
+
             controller.PlayerState = PlayerStates.IDLE;
         }
 
@@ -130,20 +143,81 @@ public class AgentTrainingManager : MonoBehaviour
         _serveRight = !_serveRight;
     }
 
+    private void ChangeBorderAndFaultLinePoints()
+    {
+        foreach(float[] values in _faultLinesXByTeam.Values)
+        {
+            for(int i = 0; i < values.Length; i++)
+            {
+                values[i] = -values[i];
+            }
+        }
+
+        foreach(FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
+        {
+            int teamIndex = borderPointsContainer.Team == Teams.TEAM1 ? 0 : 1;
+            Teams newTeam = (Teams)Enum.GetValues(typeof(Teams)).GetValue((teamIndex + 1) % Enum.GetValues(typeof(Teams)).Length);
+            borderPointsContainer.Team = newTeam;
+            _fieldBorderPointsByTeam[newTeam] = borderPointsContainer;
+        }
+    }
+
+    private void SetGroundPartsOwnership(bool isAgentOnOriginalSide)
+    {
+        if (isAgentOnOriginalSide)
+        {
+            for(int i = 0; i < _firstSideGroundCollidersParentObject.transform.childCount; i++)
+            {
+                _firstSideGroundCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<AIFieldGroundPart>().OwnerPlayer = _controllers[0];
+                _secondSideGroundCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<AIFieldGroundPart>().OwnerPlayer = _controllers[1];
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _firstSideGroundCollidersParentObject.transform.childCount; i++)
+            {
+                _firstSideGroundCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<AIFieldGroundPart>().OwnerPlayer = _controllers[1];
+                _secondSideGroundCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<AIFieldGroundPart>().OwnerPlayer = _controllers[0];
+            }
+        }
+    }
+
     /// <summary>
     /// Alternates the player's fields and set the players, the cameras and the bot targets to the correct positions for a 1v1 match.
     /// </summary>
     /// <param name="players"></param>
     /// <param name="serveRight"></param>
     /// <param name="originalSides"></param>
-    public void InitializePlayersPosition()
+    public void SetPlayersPosition()
     {
         string side = _serveRight ? "Right" : "Left";
 
-        _controllers[0].transform.position = _servicePointsFirstSide[side].position;
-        _controllers[0].transform.rotation = _servicePointsFirstSide[side].rotation;
-        _controllers[1].transform.position = _servicePointsSecondSide[side].position;
-        _controllers[1].transform.rotation = _servicePointsSecondSide[side].rotation;
+        if(_controllers[0].IsOnOriginalSide && !_controllers[1].IsOnOriginalSide)
+        {
+            _controllers[0].transform.position = _servicePointsFirstSide[side].position;
+            _controllers[0].transform.rotation = _servicePointsFirstSide[side].rotation;
+            _controllers[1].transform.position = _servicePointsSecondSide[side].position;
+            _controllers[1].transform.rotation = _servicePointsSecondSide[side].rotation;
+
+            _camerasParentObject.transform.GetChild(0).gameObject.SetActive(true);
+            _camerasParentObject.transform.GetChild(1).gameObject.SetActive(false);
+            _cameraTransform = _camerasParentObject.transform.GetChild(0);
+        }
+        else if(!_controllers[0].IsOnOriginalSide && _controllers[1].IsOnOriginalSide)
+        {
+            _controllers[0].transform.position = _servicePointsSecondSide[side].position;
+            _controllers[0].transform.rotation = _servicePointsSecondSide[side].rotation;
+            _controllers[1].transform.position = _servicePointsFirstSide[side].position;
+            _controllers[1].transform.rotation = _servicePointsFirstSide[side].rotation;
+
+            _camerasParentObject.transform.GetChild(0).gameObject.SetActive(false);
+            _camerasParentObject.transform.GetChild(1).gameObject.SetActive(true);
+            _cameraTransform = _camerasParentObject.transform.GetChild(1);
+        }
+
+        SetGroundPartsOwnership(_controllers[0].IsOnOriginalSide);
+
+        ((AIBotBehavior)_controllers[1]).TargetPosVector3 = _controllers[1].transform.position;
     }
 
     /// <summary>
@@ -158,7 +232,7 @@ public class AgentTrainingManager : MonoBehaviour
 
     public void PlacingPlayers()
     {
-        InitializePlayersPosition();
+        SetPlayersPosition();
         EnableLockServiceColliders();
     }
 
@@ -235,7 +309,27 @@ public class AgentTrainingManager : MonoBehaviour
             ChangeServer();
         }
 
-        ChangeServingSide();
+        if (_globalGamesCount % 2 == 0 && _currentPointsCount == 0 && _globalGamesCount != 0) 
+        {
+            foreach(ControllersParent controller in _controllers)
+            {
+                controller.IsOnOriginalSide = !controller.IsOnOriginalSide;
+
+                if(controller is AIBotBehavior)
+                {
+                    ((AIBotBehavior)controller).SetTargetsSide(_controllers[0].IsOnOriginalSide ? FieldSide.FIRSTSIDE.ToString() : FieldSide.SECONDSIDE.ToString());
+                }
+            }
+
+            ChangeBorderAndFaultLinePoints();
+
+            _serveRight = true;
+        }
+        else
+        {
+            ChangeServingSide();
+        }
+
         PlacingPlayers();
     }
 

@@ -26,7 +26,7 @@ public class AIFieldFrontLeft : AIFieldGroundPart
             {
                 // This is the first rebound of the ball.
                 // If the player hits its own part of the field or serve in the opposite left front part while he should have served in the opposite right front part, it is a fault.
-                if (_ownerPlayer == ball.LastPlayerToApplyForce || (_trainingManager.GameState == GameState.SERVICE && _trainingManager.ServeRight))
+                if (OwnerPlayer == ball.LastPlayerToApplyForce || (_trainingManager.GameState == GameState.SERVICE && _trainingManager.ServeRight))
                 {
                     // If it was the first service, the player can proceed to his second service.
                     // Otherwise it is counted as a fault.

@@ -453,7 +453,7 @@ public class AgentController : ControllersParent
         continuousActions[1] = _movementVector.y;
 
         // The hit direction is set according to the mouse position on the screen.
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player")))
+        if (Physics.Raycast(_trainingManager.CameraTransform.gameObject.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out var hit, float.MaxValue, ~LayerMask.GetMask("Player", "DelimitingCollider")))
         {
             continuousActions[2] = Vector3.Project(hit.point - transform.position, Vector3.right).x;
             continuousActions[3] = Vector3.Project(hit.point - transform.position, Vector3.forward).z;

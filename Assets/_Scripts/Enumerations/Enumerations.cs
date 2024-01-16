@@ -20,7 +20,6 @@ public enum PlayerStates
 
 public enum Teams
 {
-	DEFAULT,
 	TEAM1,
 	TEAM2
 }

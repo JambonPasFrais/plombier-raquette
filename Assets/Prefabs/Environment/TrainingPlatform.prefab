@@ -578,13 +578,15 @@ MonoBehaviour:
   BallPrefab: {fileID: 5628292310031842273, guid: f4c41c63613f3ce49a7ef026bb5aec96, type: 3}
   _servicePointsFirstSideParent: {fileID: 7217753867755810753}
   _servicePointsSecondSideParent: {fileID: 6815297537718109294}
+  _camerasParentObject: {fileID: 0}
   _lockServiceMovementColliders:
   - {fileID: 7267485261284527477}
   - {fileID: 4302198979827667501}
   _serveRight: 0
   _consecutiveServicesCount: 0
   _net: {fileID: 8996325718735437649}
-  _cameraTransform: {fileID: 0}
+  _firstSideGroundCollidersParentObject: {fileID: 2370125319890518107}
+  _secondSideGroundCollidersParentObject: {fileID: 2252212448155136138}
   _controllers:
   - {fileID: 8937535989974651397}
   - {fileID: 5300127081461498904}
@@ -4919,9 +4921,10 @@ MonoBehaviour:
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
+  IsOnOriginalSide: 0
   _trainingManager: {fileID: 4200660783388032196}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 2
+  _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 8854371040904173731}
   _serviceBallInitializationPoint: {fileID: 5527854325019828750}
   _minimumShotForce: 300
@@ -12439,6 +12442,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4200660783388032196}
     - target: {fileID: 154275671223802958, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 8937535989974651397}
+    - target: {fileID: 154275671223802958, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 8937535989974651397}
@@ -12459,6 +12466,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4200660783388032196}
     - target: {fileID: 1949023094356357809, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 8937535989974651397}
+    - target: {fileID: 1949023094356357809, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 8937535989974651397}
@@ -12466,6 +12477,18 @@ PrefabInstance:
       propertyPath: _trainingManager
       value: 
       objectReference: {fileID: 4200660783388032196}
+    - target: {fileID: 3126989534019336038, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3167378970763576377, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3289675210418729717, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3423404264746831621, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _trainingManager
       value: 
@@ -12474,6 +12497,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AINewCourt
       objectReference: {fileID: 0}
+    - target: {fileID: 4402065066259018906, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 5300127081461498904}
     - target: {fileID: 4402065066259018906, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -12487,6 +12514,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4200660783388032196}
     - target: {fileID: 4499365965827411046, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 5300127081461498904}
+    - target: {fileID: 4499365965827411046, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 5300127081461498904}
@@ -12494,6 +12525,10 @@ PrefabInstance:
       propertyPath: _trainingManager
       value: 
       objectReference: {fileID: 4200660783388032196}
+    - target: {fileID: 4532459570913032838, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 5300127081461498904}
     - target: {fileID: 4532459570913032838, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -12547,6 +12582,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5352085468772186645, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 5300127081461498904}
+    - target: {fileID: 5352085468772186645, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 5300127081461498904}
@@ -12558,6 +12597,14 @@ PrefabInstance:
       propertyPath: _trainingManager
       value: 
       objectReference: {fileID: 4200660783388032196}
+    - target: {fileID: 5890912274006287429, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6793332090014463948, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 8937535989974651397}
     - target: {fileID: 6793332090014463948, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -12567,6 +12614,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4200660783388032196}
     - target: {fileID: 7471289060527652976, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 8937535989974651397}
+    - target: {fileID: 7471289060527652976, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
       objectReference: {fileID: 8937535989974651397}
@@ -12574,6 +12625,10 @@ PrefabInstance:
       propertyPath: _trainingManager
       value: 
       objectReference: {fileID: 4200660783388032196}
+    - target: {fileID: 7638224999458622620, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 5300127081461498904}
     - target: {fileID: 7638224999458622620, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -12594,10 +12649,22 @@ PrefabInstance:
       propertyPath: _trainingManager
       value: 
       objectReference: {fileID: 4200660783388032196}
+    - target: {fileID: 8577610077169155104, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759399173836370689, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8863283270684499856, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _trainingManager
       value: 
       objectReference: {fileID: 4200660783388032196}
+    - target: {fileID: 8894076614779526057, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+      propertyPath: OwnerPlayer
+      value: 
+      objectReference: {fileID: 8937535989974651397}
     - target: {fileID: 8894076614779526057, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
       propertyPath: _ownerPlayer
       value: 
@@ -12632,6 +12699,16 @@ Transform:
 --- !u!4 &2114993888716735973 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6847280058182223170, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+  m_PrefabInstance: {fileID: 4782712111526838439}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2252212448155136138 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6710060094001508397, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
+  m_PrefabInstance: {fileID: 4782712111526838439}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2370125319890518107 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7114556256777388284, guid: 7216588d9b2dddc44865023b88cc4533, type: 3}
   m_PrefabInstance: {fileID: 4782712111526838439}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2855726647192044699 stripped

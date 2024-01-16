@@ -125,7 +125,7 @@ public class TournamentBracket : MonoBehaviour
 			_thirdRoundPlayers[winnerIndex] = null;
 		}
 
-		GameParameters.CurrentTournamentInfos.HasPlayerWon = Teams.DEFAULT;
+		GameParameters.CurrentTournamentInfos.HasPlayerWon = null;
 
 		if (GameParameters.CurrentTournamentInfos.CurrentRound < 4)
 			PlayCurrentRound();
@@ -259,7 +259,7 @@ public class TournamentBracket : MonoBehaviour
 			}
 		}
 
-		if (GameParameters.CurrentTournamentInfos.HasPlayerWon != Teams.DEFAULT)
+		if (GameParameters.CurrentTournamentInfos.HasPlayerWon != null)
 			GetMatchResults();
 	}
 
