@@ -15,10 +15,12 @@ public class CharacterSelection : MonoBehaviour
     [Header("Common Instances")]
     [SerializeField] private GameObject _aceItWindow;
     [SerializeField] private CharacterUI _characterUIPrefab;
-    [SerializeField] private Transform _characterUIContainer;
+    [SerializeField] private Transform _characterIconsContainerSolo;
+    [SerializeField] private Transform _characterIconsContainerMulti;
     [SerializeField] private LayerMask _characterUILayerMask;
     [SerializeField] private Transform _characterModelsPool; //is equivalent to _charactersModelsContainer
     [SerializeField] private Button _returnButton;
+    [SerializeField] private Button _nextButton;
     
     [Header("Window Types")]
     [SerializeField] private GameObject _matchSoloWindow;
@@ -81,7 +83,6 @@ public class CharacterSelection : MonoBehaviour
 	    _characterModelsPool = MenuManager.Instance.CharactersModelsParent;
 	    _characterModelsByName = MenuManager.Instance.CharactersModel;
 	    _controllerSelectionMenu = controllerSelectionMenuInstance;
-	    _returnButton.onClick.AddListener(() => _controllerSelectionMenu.OnBackToControllerSelection());
 	    
 	    _aceItWindow.SetActive(false);
 	    
@@ -93,6 +94,10 @@ public class CharacterSelection : MonoBehaviour
 	    _selectedCharactersUIs = new List<CharacterUI>(new CharacterUI[_totalNbPlayers]);
 	    
 	    SetPlayerInfos();
+	    
+	    SetIconsContainer();
+	    
+	    InitNavigationButtons();
 	    
 	    CreateCharacterIcons();
 	    
@@ -114,6 +119,11 @@ public class CharacterSelection : MonoBehaviour
 	    ControllerManager.Instance.ChangeCtrlersActMapToGame();
 		
 	    SceneManager.LoadScene("Local_Multiplayer");
+    }
+
+    public void OnNext()
+    {
+	    GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
     }
     
     #endregion
@@ -240,7 +250,7 @@ public class CharacterSelection : MonoBehaviour
     {
 	    foreach (var item in _allCharactersData)
 	    {
-		    CharacterUI charUI = Instantiate(_characterUIPrefab, _characterUIContainer);
+		    CharacterUI charUI = Instantiate(_characterUIPrefab, IsSoloMode() ? _characterIconsContainerSolo : _characterIconsContainerMulti);
 
 		    charUI.SetVisual(item);
 
@@ -276,6 +286,18 @@ public class CharacterSelection : MonoBehaviour
 		    _selectedCharactersUIs[i] = characterUI;
 		    _selectedCharacters[i] = characterUI.Character;
 	    }
+    }
+
+    private void SetIconsContainer()
+    {
+	    _characterIconsContainerSolo.gameObject.SetActive(IsSoloMode());
+	    _characterIconsContainerMulti.gameObject.SetActive(!IsSoloMode());
+    }
+
+    private void InitNavigationButtons()
+    {
+	    _returnButton.onClick.AddListener(() => _controllerSelectionMenu.OnBackToControllerSelection());
+	    _nextButton.gameObject.SetActive(IsSoloMode());
     }
     
     #endregion
@@ -398,12 +420,20 @@ public class CharacterSelection : MonoBehaviour
 
     private void CheckReadyToPlayStatus()
     {
+	    if (IsSoloMode())
+			return;
+	    
 	    if (IsEveryCharSelectedByLocals())
 	    {
 		    TransformRandomSelectionInCharacter();
 		    _aceItWindow.SetActive(true);
 		    AudioManager.Instance.PlaySfx("AceItSound");
 	    }
+    }
+
+    private bool IsSoloMode()
+    {
+	    return _totalNbPlayers == 1;
     }
     
     private bool IsEveryCharSelectedByLocals()
