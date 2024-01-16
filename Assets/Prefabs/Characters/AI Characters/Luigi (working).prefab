@@ -3876,7 +3876,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: a07cf7a598c702546a3eb2987d8a067f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -3962,6 +3962,8 @@ MonoBehaviour:
   PlayerState: 0
   ServicesCount: 0
   PlayerTeam: 0
+  IsInOriginalSide: 0
+  _chargingShotGo: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 8642139629764695327}
   _serviceBallInitializationPoint: {fileID: 7829016367837994453}
@@ -3970,6 +3972,10 @@ MonoBehaviour:
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
+  _playerAnimator: {fileID: 0}
+  _isShooting: 0
+  _isSmashing: 0
+  _isCommunicating: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
