@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -35,6 +36,7 @@ public class PlayerController : ControllersParent
     private Ball _ballInstance;
     private ShootDirectionController _shootDirectionController;
     private Vector3 _shotDirection;
+    private bool _otherPlayerIsSmashing;
 
     #endregion
 
@@ -48,6 +50,9 @@ public class PlayerController : ControllersParent
     #endregion
 
     #region SETTERS
+
+    public Ball BallInstance { set { _ballInstance = value; } }
+    public bool OtherPlayerIsSmashing { set { _otherPlayerIsSmashing = value; } }
 
     public void SetCanSmash(bool canSmash)
     {
@@ -72,7 +77,11 @@ public class PlayerController : ControllersParent
         _currentSpeed = _movementSpeed;
         if (_playerCameraController == null)
             _playerCameraController = GetComponent<PlayerCameraController>();
-        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
+
+        if (!PhotonNetwork.IsConnected)
+        {
+            _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
+        }
     }
 
     void Update()
@@ -95,8 +104,8 @@ public class PlayerController : ControllersParent
         // If the game is in the end of point or the the end of match phase, the player can't move.
         // If the player is serving and threw the ball in the air, he can't move either.
         // Otherwise he can move with at least one liberty axis.
-        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH
-            && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && _playerCameraController.IsFirstPersonView == false) 
+        if (GameManager.Instance.GameState != GameState.ENDPOINT && GameManager.Instance.GameState != GameState.ENDMATCH && GameManager.Instance.GameState != GameState.BEFOREGAME
+            && !(PlayerState == PlayerStates.SERVE && !_ballInstance.Rb.isKinematic) && !_playerCameraController.IsFirstPersonView && !_otherPlayerIsSmashing) 
         {
             // The global player directions depend on the side he is on and its forward movement depends on the game phase.
             Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
@@ -146,6 +155,26 @@ public class PlayerController : ControllersParent
 
     #region ACTION METHODS
 
+    public void PlayerAndGameStatesUpdating()
+    {
+        // The player enters in the PLAY state.
+        if (PlayerState != PlayerStates.PLAY)
+        {
+            // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
+            if (PlayerState == PlayerStates.SERVE)
+            {
+                GameManager.Instance.DisableAllServiceDetectionVolumes();
+                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
+            }
+
+            PlayerState = PlayerStates.PLAY;
+        }
+
+        // The game enters in playing phase when the ball is hit by the other player after the service.
+        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
+            GameManager.Instance.GameState = GameState.PLAYING;
+    }   
+
     private void Shoot(HitType hitType)
     {
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
@@ -161,6 +190,7 @@ public class PlayerController : ControllersParent
         }
         
         #region ANIMATIONS
+
         EndALlAnims();
 
         if (PlayerState == PlayerStates.SERVE)
@@ -175,6 +205,7 @@ public class PlayerController : ControllersParent
         }
         
         //_ballInstance.PlayHitEffect();
+
         #endregion
         
         // Look Front (feels weird to not look forward when you shoot)
@@ -196,22 +227,9 @@ public class PlayerController : ControllersParent
         //_cameraController.SetCanSmash(false);
         _ballDetectionArea.Ball.DestroySmashStar();
 
-        // The player enters in the PLAY state.
-        if (PlayerState != PlayerStates.PLAY)
-        {
-            // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
-            if (PlayerState == PlayerStates.SERVE)
-            {
-                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
-                GameManager.Instance.ServiceManager.DisableLockServiceColliders();
-            }
-
-            PlayerState = PlayerStates.PLAY;
-        }
-
-        // The game enters in playing phase when the ball is hit by the other player after the service.
-        if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE) 
-            GameManager.Instance.GameState = GameState.PLAYING;
+        // If this shoot is part of the service phase, the player and game state are accordingly updated.
+        // If it was the service shot, service colliders are disabled.
+        PlayerAndGameStatesUpdating();
 
         #region Shoot Direction
         
@@ -245,20 +263,27 @@ public class PlayerController : ControllersParent
             // So we need to adapt it by doing do following "new Vector3(_shotDirection.x, 0, _shotDirection.y)"
             horizontalDirection = shotForwardDir == Vector3.zero ? Vector3.forward : shotForwardDir;
         }
-        
+
         #endregion
 
-        // Initialization of the correct ball physic material.
-        _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
-            NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
+        if (PhotonNetwork.IsConnected)
+        {
+            GameManager.Instance.photonView.RPC("ShootOnline", RpcTarget.AllViaServer, _ballDetectionArea.Ball.transform.position, hitForce, hitType.ToString(),
+            hitType == HitType.Lob ? 1f : _ballDetectionArea.GetRisingForceFactor(HitType.Lob), horizontalDirection.normalized, gameObject.GetPhotonView().Owner);
+        }
+        else
+        {
+            // Initialization of the correct ball physic material.
+            _ballDetectionArea.Ball.InitializePhysicsMaterial(hitType == HitType.Drop ? NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Drop") :
+                NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
 
-        // Initialization of the other ball physic parameters.
-        _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
+            // Initialization of the other ball physic parameters.
+            _ballDetectionArea.Ball.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, hitType.ToString()));
 
-        // Applying a specific force in a specific direction and with a specific rising force factor.
-        // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
-        _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
-
+            // Applying a specific force in a specific direction and with a specific rising force factor.
+            // If the player is doing a lob, there is no need to multiply the rising force of the ball by a factor.
+            _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
+        }
 
 		AudioManager.Instance.PlaySfx("ShotSound");
 	}
@@ -324,7 +349,7 @@ public class PlayerController : ControllersParent
 
     public void SlowTime(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this)
+        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this && !_otherPlayerIsSmashing)
         {
             Time.timeScale = _actionParameters.SlowTimeScaleFactor;
             _currentSpeed = _movementSpeed / Time.timeScale;
@@ -338,7 +363,7 @@ public class PlayerController : ControllersParent
 
     public void TechnicalShot(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this) 
+        if (context.performed && PlayerState != PlayerStates.SERVE && _ballInstance.LastPlayerToApplyForce != this && !_otherPlayerIsSmashing) 
         {
             float tempForwardMovementFactor = 0f;
             float tempRightMovementFactor = 0f;
@@ -425,6 +450,11 @@ public class PlayerController : ControllersParent
             _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
             _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
 
+            if (PhotonNetwork.IsMasterClient)
+            {
+                GameManager.Instance.photonView.RPC("SmashShot", RpcTarget.Others);
+            }
+
             Vector3 playerCameraTransformForward = _playerCameraController.FirstPersonCamera.transform.forward;
             
             _ballInstance.ApplyForce(_maximumShotForce, 0f, playerCameraTransformForward.normalized, this);
@@ -435,9 +465,11 @@ public class PlayerController : ControllersParent
             _avatarVisual.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
             
             #region Animations
+
             EndALlAnims();
             _playerAnimator.SmashAnimation();
             _isSmashing = true; 
+
             #endregion
 
 			AudioManager.Instance.PlaySfx("OnSmashShot");

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,9 +15,17 @@ public class FieldFrontRight : FieldGroundPart
             // If it is the second rebound of the ball, then it is point for the hitting player.
             if (ball.ReboundsCount == 2)
             {
-                GameManager.Instance.EndOfPoint(ball.LastPlayerToApplyForce.PlayerTeam);
-                GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
-                ball.ResetBall();
+                if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    Teams winningPointTeam = ball.LastPlayerToApplyForce.PlayerTeam;
+                    GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
+                }
+                else if (!PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.EndOfPoint(ball.LastPlayerToApplyForce.PlayerTeam);
+                    GameManager.Instance.ScoreManager.AddPoint(ball.LastPlayerToApplyForce.PlayerTeam);
+                    ball.ResetBall();
+                }
             }
             else if (ball.ReboundsCount == 1)
             {
@@ -28,20 +37,31 @@ public class FieldFrontRight : FieldGroundPart
                     // Otherwise it is counted as a fault.
                     if (ball.LastPlayerToApplyForce.ServicesCount == 0 && GameManager.Instance.GameState == GameState.SERVICE)
                     {
-                        ball.LastPlayerToApplyForce.ServicesCount++;
-                        ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
-                        ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
-                        GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
-                            !GameManager.Instance.ServiceManager.ChangeSides);
-                        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
-                        ball.ResetBall();
+                        if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
+                        {
+                            GameManager.Instance.SideManager.OnlineWrongFirstService(GameManager.Instance.ServiceManager.ServeRight, !GameManager.Instance.ServiceManager.ChangeSides);
+                        }
+                        else if (!PhotonNetwork.IsConnected)
+                        {
+                            GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+                                !GameManager.Instance.ServiceManager.ChangeSides);
+                            GameManager.Instance.ServingPlayerResetAfterWrongFirstService();
+                        }
                     }
                     else
                     {
-                        Teams otherTeam = (Teams)(Enum.GetValues(typeof(Teams)).GetValue(((int)ball.LastPlayerToApplyForce.PlayerTeam + 1) % 2));
-                        GameManager.Instance.EndOfPoint(otherTeam);
-                        GameManager.Instance.ScoreManager.AddPoint(otherTeam);
-                        ball.ResetBall();
+                        if (PhotonNetwork.IsConnected && OwnerPlayer.GetComponent<PhotonView>().IsMine)
+                        {
+                            Teams winningPointTeam = ball.LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
+                            GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, winningPointTeam);
+                        }
+                        else if (!PhotonNetwork.IsConnected)
+                        {
+                            Teams otherTeam = ball.LastPlayerToApplyForce.PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
+                            GameManager.Instance.EndOfPoint(otherTeam);
+                            GameManager.Instance.ScoreManager.AddPoint(otherTeam);
+                            ball.ResetBall();
+                        }
                     }
                 }
             }

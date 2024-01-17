@@ -225,6 +225,7 @@ MonoBehaviour:
   _serviceNodesSecondSideContainer: {fileID: 1479596116}
   _firstSideCollidersParentObject: {fileID: 715646685}
   _secondSideCollidersParentObject: {fileID: 715646684}
+  _cameras: []
 --- !u!114 &175529524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +260,7 @@ MonoBehaviour:
   ScoreManager: {fileID: 175529524}
   CameraManager: {fileID: 175529527}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
+  OnlineBallPrefab: {fileID: 5628292310031842273, guid: 40c5d290ebf3644418ee5bc32f90fc25, type: 3}
   _smashTargetGo: {fileID: 1794581272}
   ServiceOnOriginalSide: 0
   _net: {fileID: 1214547176}
@@ -268,6 +270,7 @@ MonoBehaviour:
   - {fileID: 1214547177}
   _leftFaultLineXFromFirstSide: -4.11
   _supporterManager: {fileID: 1214547179}
+  _onlinePlayerPrefab: {fileID: 2559753925550116736, guid: ac485dfe8d492534088a3069485a5678, type: 3}
   _inGameUI: {fileID: 727556089}
   _endGameUI: {fileID: 0}
 --- !u!114 &175529526
@@ -306,7 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soloCamerasContainer: {fileID: 951573797}
   _splitScreenCamerasContainer: {fileID: 0}
-  _endGameUICamera: {fileID: 0}
+  _endGameUICamera: {fileID: 951573798}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,6 +541,11 @@ PrefabInstance:
 --- !u!4 &951573797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1281811816018808137, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
+  m_PrefabInstance: {fileID: 951573796}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &951573798 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9149337193830927704, guid: 4d48bfb2505bac54d897f01faa53d6ca, type: 3}
   m_PrefabInstance: {fileID: 951573796}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1131757905
