@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
     private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
-    [SerializeField] private GameObject _ballInstance;
+    /*[SerializeField] */private GameObject _ballInstance;
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
     private System.Random random = new System.Random();

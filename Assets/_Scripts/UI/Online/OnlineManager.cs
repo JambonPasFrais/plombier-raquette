@@ -5,6 +5,7 @@ using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEditor;
 
 public class OnlineManager : MonoBehaviourPunCallbacks
 {
@@ -163,9 +164,13 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         _isConnecting = false;
         _connectButton.interactable = true;
-		_playCharacterSelectionButton.interactable = false;
+        _playCharacterSelectionButton.interactable = false;
+    }
 
-	}
+    public void GetBackToMainMenu()
+    {
+        PhotonNetwork.Disconnect();
+    }
 
 	public override void OnJoinedRoom()
     {
@@ -195,7 +200,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public void OnStartButtonClicked()
     {
-        PhotonNetwork.LoadLevel("Game");
+        PhotonNetwork.LoadLevel("OnlineScene");
     }
 
     public void OnReadyButtonClicked()
