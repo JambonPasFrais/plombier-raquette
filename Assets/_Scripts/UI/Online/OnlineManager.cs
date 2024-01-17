@@ -27,10 +27,16 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     [Header("Other Menus Reference")]
     // Main Menu Reference
 	[SerializeField] private GameObject _mainMenu;
+    // Connection Panel
+    [SerializeField] private GameObject _connectionPanel;
     // Online Character Selection Menu
     [SerializeField] private GameObject _characterSelection;
     // Online Room Menu Reference
     [SerializeField] private GameObject _roomPanel;
+
+    [Header("Connection Panel Information")]
+    [SerializeField] private TMPro.TextMeshProUGUI _animatedConnectionText;
+    [SerializeField] private float _pointsAppearancePeriod;
 
     [Header("Character Data List")]
     // List of all the possible CharacterData
@@ -49,6 +55,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     private byte _maxPlayersPerRoom = 2;
 
     private bool _isConnecting;
+    private Coroutine _connectionAnimatedTextCoroutine;
 
 	#endregion
 
@@ -88,9 +95,17 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         _playOnlineRoomButton.interactable = false;
     }
 
-	#endregion
+    private void Update()
+    {
+        if(_isConnecting && _connectionAnimatedTextCoroutine == null)
+        {
+            _connectionAnimatedTextCoroutine = StartCoroutine(AnimateConnectionText());
+        }
+    }
 
-	private IEnumerator Connect()
+    #endregion
+
+    private IEnumerator Connect()
     {
         _isConnecting = true;
 
@@ -109,6 +124,25 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         yield return null;
     }
 
+    private IEnumerator AnimateConnectionText()
+    {
+        while (_isConnecting)
+        {
+            yield return new WaitForSeconds(_pointsAppearancePeriod);
+
+            if (_animatedConnectionText.text == ". . . ")
+            {
+                _animatedConnectionText.text = "";
+            }
+            else
+            {
+                _animatedConnectionText.text += ". ";
+            }
+        }
+
+        _connectionAnimatedTextCoroutine = null;
+    }
+
     public override void OnConnectedToMaster()
     {
         if (_isConnecting)
@@ -116,6 +150,8 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 			_playCharacterSelectionButton.interactable = true;
 			_isConnecting = false;
         }
+
+        ChangeActivePanel(_characterSelection.name);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -170,7 +206,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public void OnOnlineButtonClicked()
     {
         StartCoroutine(Connect());
-        ChangeActivePanel(_characterSelection.name);
+        ChangeActivePanel(_connectionPanel.name);
     }
 
     public void OnPlayButtonClicked()
@@ -203,6 +239,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public void ChangeActivePanel(string menuName)
     {
         _mainMenu.SetActive(menuName.Equals(_mainMenu.name));
+        _connectionPanel.SetActive(menuName.Equals(_connectionPanel.name));
         _characterSelection.SetActive(menuName.Equals(_characterSelection.name));
         _roomPanel.SetActive(menuName.Equals(_roomPanel.name));
     }
