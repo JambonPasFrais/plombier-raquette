@@ -428,20 +428,26 @@ public class CharacterSelection : MonoBehaviour
 	    oldGo.gameObject.SetActive(false);
 		
 	    _selectedCharacters[playerIndex] = null;
-	    return true;
+
+		CheckReadyToPlayStatus();
+
+		return true;
     }
 
     private void CheckReadyToPlayStatus()
     {
-	    if (IsSoloMode() || IsOnlineMode())
+		if (IsSoloMode() || IsOnlineMode())
 			return;
 	    
 	    if (IsEveryCharSelectedByLocals())
 	    {
-		    //TransformRandomSelectionInCharacter();
 		    _aceItWindow.SetActive(true);
 		    MenuManager.Instance.PlaySound("AceItSound");
 	    }
+		else
+		{
+			_aceItWindow.SetActive(false);
+		}
     }
 
     private bool IsSoloMode()
