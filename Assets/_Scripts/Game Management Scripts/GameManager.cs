@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [Header("Ball Management")]
     public GameObject BallPrefab;
-    public GameObject OnlineBallPrefab;
 
     [HideInInspector] public bool ServiceOnOriginalSide;
 
@@ -59,7 +58,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
     private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
-    /*[SerializeField] */private GameObject _ballInstance;
+    private GameObject _ballInstance;
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
     private System.Random random = new System.Random();
@@ -103,20 +102,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         GameState = GameState.BEFOREGAME;
 
+        _ballInstance = Instantiate(BallPrefab);
+
         if (PhotonNetwork.IsConnected)
         {
             _loadingScreen.SetActive(true);
             _inGameUI.SetActive(false);
-        }
 
-        if (PhotonNetwork.IsConnected)
-        {
             InstantiatePlayer(PhotonNetwork.IsMasterClient);
 
             if (PhotonNetwork.IsMasterClient)
             {
-                _ballInstance = PhotonNetwork.Instantiate(OnlineBallPrefab.name, new Vector3(0, 100, 0), Quaternion.identity);
-                _ballInstance.GetComponent<Rigidbody>().isKinematic = true;
                 ((PlayerController)_controllers[0]).BallInstance = _ballInstance.GetComponent<Ball>();
                 ((PlayerController)_controllers[0]).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
             }
@@ -124,10 +120,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 photonView.RPC("AskFindController", RpcTarget.MasterClient);
             }
-        }
-        else
-        {
-            _ballInstance = Instantiate(BallPrefab);
         }
     }
 
@@ -380,11 +372,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             _ballInstance.transform.position = _serviceBallInitializationPoint.position;
         }
-
-        if (_serverIndex == 0)
-        {
-            _ballInstance.GetPhotonView().RequestOwnership();
-        }
     }
 
     public void DisableAllServiceDetectionVolumes()
@@ -440,9 +427,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.IsMasterClient)
         {
-            _ballInstance = FindObjectOfType<Ball>().gameObject;
-            _ballInstance.GetComponent<Rigidbody>().isKinematic = true;
-
             foreach (ControllersParent controller in _controllers)
             {
                 ((PlayerController)controller).BallInstance = _ballInstance.GetComponent<Ball>();
@@ -518,16 +502,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void BallThrown()
     {
         _ballInstance.GetComponent<Rigidbody>().isKinematic = false;
-
-        if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
-        {
-            _ballInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-        }
+        _ballInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
     }
 
     [PunRPC]
     private void ShootOnline(Vector3 ballPosition, float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, Player shootingPlayer)
     {
+        _ballInstance.transform.position = ballPosition;
+
         PlayerController shootingPlayerController;
 
         if (Instance.Controllers[0].gameObject.GetPhotonView().Owner == shootingPlayer)

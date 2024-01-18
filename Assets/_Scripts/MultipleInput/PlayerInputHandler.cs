@@ -145,7 +145,7 @@ public class PlayerInputHandler : MonoBehaviour
         Character.PlayerController.PlayerCameraController.AimSmashTarget(context);
     }
 
-	public void OnSmash(InputAction.CallbackContext context)
+    public void OnSmash(InputAction.CallbackContext context)
 	{
 		if (context.performed)
 		{

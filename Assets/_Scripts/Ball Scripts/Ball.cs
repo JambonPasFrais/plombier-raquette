@@ -156,12 +156,9 @@ public class Ball : MonoBehaviour
             actualNormalizedDirection = normalizedDirection;
         }
 
-        _lastPlayerToApplyForce = playerToApplyForce;
+        _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
 
-        if((PhotonNetwork.IsConnected && playerToApplyForce.gameObject.GetPhotonView().IsMine) || !PhotonNetwork.IsConnected)
-        {
-            _currentMovementCoroutine = StartCoroutine(BallMovement(actualHorizontalForce, actualNormalizedDirection.normalized, curvingDirection));
-        }
+        _lastPlayerToApplyForce = playerToApplyForce;
     }
 
     private IEnumerator BallMovement(float actualHorizontalForce, Vector3 actualNormalizedHorizontalDirection, Vector3 curvingDirection)
@@ -218,14 +215,11 @@ public class Ball : MonoBehaviour
         AudioManager.Instance.PlaySfx("ReboundSound");
 
         _reboundsCount++;
-        
+
         //PlayEffect(_reboundEffect);
 
-        if((PhotonNetwork.IsConnected && _lastPlayerToApplyForce.gameObject.GetPhotonView().IsMine) || !PhotonNetwork.IsConnected)
-        {
-            Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
-            _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
-        }
+        Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);
+        _rigidBody.AddForce(direction.normalized * (_shotParameters.AddedForceInSameDirection / _reboundsCount));
     }
 
     #endregion
