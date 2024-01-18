@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,11 +12,12 @@ public class TransitionMenu : MonoBehaviour
     [SerializeField] private Transform _playerInfosContainer;
     [SerializeField] private Transform _playerLocationsParent;
     [SerializeField] private List<Image> _playerTypeImages = new List<Image>(); 
-    [SerializeField] private List<TextMeshProUGUI> _playerTypeTexts = new List<TextMeshProUGUI>(); 
+    [SerializeField] private List<TextMeshProUGUI> _playerTypeTexts = new List<TextMeshProUGUI>();
+    [SerializeField] private GameObject _loadingObject;
 
     private List<CharacterData> _playersCharacters;
-    
-    public void OnMenuLoad()
+
+	public void OnMenuLoad()
     {
         _playersCharacters = new List<CharacterData>(GameParameters.Instance.PlayersCharacter);
 
@@ -50,11 +52,12 @@ public class TransitionMenu : MonoBehaviour
         }
 
         StartCoroutine(WaitBeforePlayMatch());
+        StartCoroutine(LoadingObjectRotation());
 	}
 
     private IEnumerator WaitBeforePlayMatch()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         MenuManager.Instance.PlaySound("PlayMatch");
 
@@ -62,4 +65,14 @@ public class TransitionMenu : MonoBehaviour
 
 		SceneManager.LoadScene("Local_Multiplayer");
 	}
+
+    private IEnumerator LoadingObjectRotation()
+    {
+        while(true)
+        {
+            _loadingObject.transform.Rotate(0f, 0f, -0.5f);
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
 }
