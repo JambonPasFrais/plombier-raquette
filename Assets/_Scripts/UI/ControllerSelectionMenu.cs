@@ -63,6 +63,7 @@ public class ControllerSelectionMenu : MonoBehaviour
     public void MakeValidationButtonInteractable()
     {
         _validationButton.interactable = true;
+        MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_validationButton.gameObject);
     }
 
     public void UpdateControllerCountSentence(int nbControllersConnected, int nbControllersTotal)
