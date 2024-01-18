@@ -86,7 +86,7 @@ public class PlayerInputHandler : MonoBehaviour
 		}
 	}
 
-	public void OnTopSpinShot(InputAction.CallbackContext context)
+    public void OnTopSpinShot(InputAction.CallbackContext context)
 	{
 		if (context.performed)
 		{
