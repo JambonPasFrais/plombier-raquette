@@ -80,13 +80,12 @@ public class CharacterSelection : MonoBehaviour
     #region LISTENERS
     public void OnCharacterSelectionMenuLoad(ControllerSelectionMenu controllerSelectionMenuInstance)
     {
-	    AudioManager.Instance.PlaySfx("ChooseYourCharacter");
+	    MenuManager.Instance.PlaySound("ChooseYourCharacter");
 
 	    _allCharactersData = MenuManager.Instance.Characters;
 	    _characterModelsPool = MenuManager.Instance.CharactersModelsParent;
 	    _characterModelsByName = MenuManager.Instance.CharactersModel;
 	    _controllerSelectionMenu = controllerSelectionMenuInstance;
-	    
 	    _aceItWindow.SetActive(false);
 	    
 	    ClearShowroomsCharEmblems();
@@ -439,9 +438,9 @@ public class CharacterSelection : MonoBehaviour
 	    
 	    if (IsEveryCharSelectedByLocals())
 	    {
-		    TransformRandomSelectionInCharacter();
+		    //TransformRandomSelectionInCharacter();
 		    _aceItWindow.SetActive(true);
-		    AudioManager.Instance.PlaySfx("AceItSound");
+		    MenuManager.Instance.PlaySound("AceItSound");
 	    }
     }
 

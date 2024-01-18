@@ -144,7 +144,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	{
 		//StartCoroutine(WaitBeforeDisplayingAceItMenu());
 		_aceItWindow.SetActive(true);
-		AudioManager.Instance.PlaySfx("AceItSound");
+		MenuManager.Instance.PlaySound("AceItSound");
 		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
