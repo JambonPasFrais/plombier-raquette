@@ -180,7 +180,6 @@ public class ScoreManager : MonoBehaviour
 	public void ChangeSet(int player)
     {
 		_currentSetIndex++;
-		_scoreDisplaying.NewSet();
 
 		GameManager.Instance.ServiceManager.ChangeSides = false;
 		GameManager.Instance.ServiceManager.NbOfGames = 0;
@@ -216,7 +215,7 @@ public class ScoreManager : MonoBehaviour
 		{
 			string score = "";
 
-			foreach(var item in _score)
+			foreach (var item in _score)
 			{
 				score += $"{item.Item1}/{item.Item2} ";
 			}
@@ -232,6 +231,9 @@ public class ScoreManager : MonoBehaviour
 			GameManager.Instance.EndOfGame(1);
 		}
 		else
+		{
 			_score.Add(new Tuple<int, int>(0, 0));
+			_scoreDisplaying.NewSet();
+		}
 	}
 }

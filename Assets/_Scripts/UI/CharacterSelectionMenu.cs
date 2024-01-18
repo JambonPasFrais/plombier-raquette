@@ -127,12 +127,12 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_aceItWindow.SetActive(false);
 			MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
 		}
-		else
+		/*else
 		{
 			OnMenuDisabled();
 			_controllerSelectionMenu.OnBackToControllerSelection();
 			MenuManager.Instance.GoToPreviousMenu();
-		}
+		}*/
 	}
 
 	#region Listeners

@@ -93,7 +93,7 @@ public class Controller : MonoBehaviour
 		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))
 		{
 			_characterSelected = false;
-			_imgCharSelectionIcon.color = Color.white;
+			SetColorVisual();
 		}
 	}
 
