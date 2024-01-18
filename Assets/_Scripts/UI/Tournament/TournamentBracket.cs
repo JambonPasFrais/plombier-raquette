@@ -280,8 +280,11 @@ public class TournamentBracket : MonoBehaviour
 			_firstRoundPlayers[_firstRoundPlayers.IndexOf(winner)] = null;
 		}
 
-		if(!_secondRoundPlayers.Contains(_playersCharacter))
+		if (!_secondRoundPlayers.Contains(_playersCharacter))
+		{
 			StartCoroutine(WaitBeforeShowingLoserMenu());
+			ControllerManager.Instance.DeletePlayerInputHandlers();
+		}
 	}
 
 	private void PlaySecondRound()
@@ -299,14 +302,20 @@ public class TournamentBracket : MonoBehaviour
 		}
 
 		if (!_thirdRoundPlayers.Contains(_playersCharacter))
+		{
 			StartCoroutine(WaitBeforeShowingLoserMenu());
+			ControllerManager.Instance.DeletePlayerInputHandlers();
+		}
 	}
 
 	private void PlayThirdRound()
 	{
 
 		if (_tournamentWinner != _playersCharacter)
+		{
 			StartCoroutine(WaitBeforeShowingLoserMenu());
+			ControllerManager.Instance.DeletePlayerInputHandlers();
+		}
 		else
 			StartCoroutine(WaitBeforeShowingWinnerMenu());
 	}

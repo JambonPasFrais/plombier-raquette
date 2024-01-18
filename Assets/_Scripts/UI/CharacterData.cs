@@ -45,6 +45,6 @@ public class CharacterData : ScriptableObject
 
     public void PlaySound(string soundName)
     {
-        AudioManager.Instance.PlaySfx(_characterSoundsDict[soundName].Clips[random.Next(0, _characterSoundsDict[soundName].Clips.Count)]);
+        AudioManager.Instance.PlaySfx(_characterSoundsDict[soundName].Clips[_random.Next(0, _characterSoundsDict[soundName].Clips.Count)]);
     }
 }
