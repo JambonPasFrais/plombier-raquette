@@ -293,7 +293,7 @@ public class CharacterSelection : MonoBehaviour
 
 		    // Display Model from pool
 		    characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
-		    characterModel.transform.localPosition = Vector3.zero;
+		    characterModel.transform.localPosition = new Vector3(0f, 150f, 0f);
 		    characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
 		    characterModel.SetActive(true);
 		    
@@ -523,9 +523,15 @@ public class CharacterSelection : MonoBehaviour
 		    if (_characterModelsByName.TryGetValue(charNameToLookFor, out var characterModel))
 		    {
 			    characterModel.transform.SetParent(_currentShowroomList[playerIndex].ModelLocation);
-			    characterModel.transform.localPosition = Vector3.zero;
+				if (characterUI.Character.Name == "Random")
+					characterModel.transform.localPosition = new Vector3(0f, 150f, 0f);
+				else
+					characterModel.transform.localPosition = Vector3.zero;
 			    characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
-			    characterModel.transform.localScale = new Vector3(20, 20, 20);
+			    if(characterUI.Character.Name == "Random")
+					characterModel.transform.localScale = new Vector3(2000, 2000, 2000);
+				else
+					characterModel.transform.localScale = new Vector3(20, 20, 20);
 			    characterModel.SetActive(true);
 			    _selectedCharactersUIs[playerIndex] = characterUI;
 			    _selectedCharacters[playerIndex] = characterUI.Character;
