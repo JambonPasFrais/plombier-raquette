@@ -94,6 +94,14 @@ public class PlayerInputHandler : MonoBehaviour
 		}
 	}
 
+	public void OnSliceShot(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			Character.PlayerController.Slice(context);
+		}
+	}
+
 	public void OnDropShot(InputAction.CallbackContext context)
 	{
 		if (context.performed)
@@ -114,7 +122,7 @@ public class PlayerInputHandler : MonoBehaviour
 	{
 		if (context.performed)
 		{
-			Character.PlayerController.Slice(context);
+			Character.PlayerController.SlowTime(context);
 		}
 	}
 
