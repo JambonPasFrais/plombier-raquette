@@ -1,12 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-//[RequireComponent(typeof(GameManager))]
-public class GameManagerLocalMultiplayer : MonoBehaviour
+public class GameManagerTournament : MonoBehaviour
 {
     [Header("Instances")] 
     [SerializeField] private GameManager _gameManager;
@@ -14,10 +10,10 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     [SerializeField] private CharacterCreator _characterCreator;
     
     // Singleton
-    private static GameManagerLocalMultiplayer _instance;
+    private static GameManagerTournament _instance;
 
     #region Getters
-    public static GameManagerLocalMultiplayer Instance => _instance;
+    public static GameManagerTournament Instance => _instance;
     #endregion
     
     #region Unity Functions
@@ -36,6 +32,7 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     private void Start()
     {
         _characterCreator.InitCharacters();
+        
         foreach (var t in _characterCreator.Characters)
         {
             _gameManager.AddControllers(t.GetComponent<ControllersParent>());
@@ -47,15 +44,4 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
     }
 
     #endregion
-
-    public void EndOfGameProcess()
-    {
-        _characterCreator.DestroyCharacters();
-    }
-
-    public void TestScene()
-    {
-        //SceneManager.LoadScene("Local_Multiplayer");
-        GameManager.Instance.EndOfGame(0);
-    }
 }

@@ -21,18 +21,17 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private GameObject _playerInputHandlerPrefab;
     [SerializeField] private string _menuActionMapName;
     [SerializeField] private string _gameActionMapName;
-    [SerializeField] private TextMeshProUGUI _numberOfControllersConnectedOnMenu;
 
     [SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
-    private CharacterSelectionMenu _characterSelectionMenu;
-    private ControllerSelectionMenu _controllerSelectionMenu;
+    private CharacterSelection _characterSelectionMenu;
+    private ControllerSelectionMenu _currentControllerSelectionMenu;
     private Coroutine _currentDeleteCtrlCoroutine;
 
     #region Getters
 
-    public CharacterSelectionMenu CharacterSelectionMenu => _characterSelectionMenu;
+    public CharacterSelection CharacterSelectionMenu => _characterSelectionMenu;
     public static Dictionary<int, PlayerInputHandler> Controllers => _instance._controllers;
     
     #endregion
@@ -74,13 +73,13 @@ public class ControllerManager : MonoBehaviour
         _currentDeleteCtrlCoroutine = StartCoroutine(DeleteControllerCoroutine(playerInput.devices[0].deviceId));
     }
     
-    public void Init(CharacterSelectionMenu characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
+    public void Init(CharacterSelection characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
         _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
         _characterSelectionMenu = characterSelectionMenuRef;
-        _controllerSelectionMenu = controllerSelectionMenu;
+        _currentControllerSelectionMenu = controllerSelectionMenu;
         _controllers = new Dictionary<int, PlayerInputHandler>();
-        _numberOfControllersConnectedOnMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
+        _currentControllerSelectionMenu.UpdateControllerCountSentence(0, _maxPlayerCount);
 	}
     
     public void SwitchCtrlersToCharSelectMode(Transform charSelectionContainer)
@@ -124,7 +123,7 @@ public class ControllerManager : MonoBehaviour
         }
         
         _controllers.Clear();
-        _numberOfControllersConnectedOnMenu.text = $"0 out of {_maxPlayerCount} controllers connected";
+        _currentControllerSelectionMenu.UpdateControllerCountSentence(0, _maxPlayerCount);
     }
 
     public void ResetControllers()
@@ -148,6 +147,13 @@ public class ControllerManager : MonoBehaviour
         foreach (var playerInputHandler in Controllers.Values)
         {
             playerInputHandler.ChangeInputActionMap(_menuActionMapName);
+        }
+    }
+    
+    public void DeletePlayerInputHandlers()
+    {
+        foreach (var playerInputHandler in _controllers.Values)
+        {
             Destroy(playerInputHandler.gameObject);
         }
         _controllers.Clear();
@@ -172,9 +178,9 @@ public class ControllerManager : MonoBehaviour
             _playerInputHandlersFormControllers[i].Controller.SetPlayerIndex(i + 1);
         }
         
-        _controllerSelectionMenu.MakeValidationButtonNotInteractable();
+        _currentControllerSelectionMenu.MakeValidationButtonNotInteractable();
 
-        _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
+        _currentControllerSelectionMenu.UpdateControllerCountSentence(_controllers.Count, _maxPlayerCount);
     }
     
     #endregion
@@ -208,13 +214,13 @@ public class ControllerManager : MonoBehaviour
         switch (inputDevice)
         {
             case Joystick:
-                playerInputHandler.Controller = Instantiate(_joystickPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
+                playerInputHandler.Controller = Instantiate(_joystickPrefab, _currentControllerSelectionMenu.ControllerSelectionContainer);
                 break;
             case Gamepad:
-                playerInputHandler.Controller = Instantiate(_gamepadPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
+                playerInputHandler.Controller = Instantiate(_gamepadPrefab, _currentControllerSelectionMenu.ControllerSelectionContainer);
 				break;
             case Keyboard:
-                playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _controllerSelectionMenu.ControllerSelectionContainer);
+                playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _currentControllerSelectionMenu.ControllerSelectionContainer);
 				break;
         }
 
@@ -233,9 +239,9 @@ public class ControllerManager : MonoBehaviour
         _controllers.Add(inputDevice.deviceId, playerInputHandler);
 
         if (_controllers.Count >= _maxPlayerCount)
-            _controllerSelectionMenu.MakeValidationButtonInteractable();
+            _currentControllerSelectionMenu.MakeValidationButtonInteractable();
 		
-        _numberOfControllersConnectedOnMenu.text = $"{_controllers.Count} out of {_maxPlayerCount} controllers connected";
+        _currentControllerSelectionMenu.UpdateControllerCountSentence(_controllers.Count, _maxPlayerCount);
 	}
     #endregion
     

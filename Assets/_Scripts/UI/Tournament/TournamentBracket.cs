@@ -91,8 +91,9 @@ public class TournamentBracket : MonoBehaviour
 			winnerData = _tournamentWinner.GetComponent<CharacterUI>().Character;
 
 		GameParameters.Instance.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
-		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
-		SceneManager.LoadScene(10);
+		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = null;
+		ControllerManager.Instance.ChangeCtrlersActMapToGame();
+		SceneManager.LoadScene("Tournament_Match");
 	}
 
 	public void GetMatchResults()
@@ -342,9 +343,10 @@ public class TournamentBracket : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	public void Forfait()
+	public void Forfeit()
 	{
-		StartCoroutine(WaitBeforeShowingLoserMenu());
+		ShowLoserMenu();
+		ControllerManager.Instance.DeletePlayerInputHandlers();
 	}
 
 	private IEnumerator WaitBeforeShowingWinnerMenu()
@@ -357,8 +359,13 @@ public class TournamentBracket : MonoBehaviour
 
 	private IEnumerator WaitBeforeShowingLoserMenu()
 	{
-		_playMatchButton.interactable = false;
 		yield return new WaitForSeconds(1);
+		ShowLoserMenu();
+	}
+
+	private void ShowLoserMenu()
+	{
+		_playMatchButton.interactable = false;
 		_tournamentEndMenu.SetLoserMenu(_playersCharacter.GetComponent<CharacterUI>().Character.BasicModel);
 		ResetBracket();
 	}

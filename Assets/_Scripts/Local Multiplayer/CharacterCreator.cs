@@ -29,16 +29,25 @@ public class CharacterCreator : MonoBehaviour
     public List<GameObject> Characters => _characters;
     #endregion
 
-    private void OnEnable()
-    {
-        //InitCharacters();
-    }
-
     public void InitCharacters()
     {
         _characters = new List<GameObject>();
 
-        List<CharacterData> playersCharacter = GameParameters.Instance.PlayersCharacter;
+        List<CharacterData> playersCharacter;
+
+        if (GameParameters.IsTournamentMode)
+        {
+            playersCharacter = new List<CharacterData>(GameParameters.Instance.CurrentTournamentInfos.RoundPlayers[
+                GameParameters.Instance.CurrentTournamentInfos.CurrentRound - 1]);
+            playersCharacter.RemoveRange(2, playersCharacter.Count - 2);
+            GameParameters.Instance.SetCharactersPlayers(playersCharacter);
+        }
+        else
+        {
+            playersCharacter = GameParameters.Instance.PlayersCharacter;
+        }
+        
+        //playersCharacter = GameParameters.Instance.PlayersCharacter;
 
         int nbCharInstantiated = 0;
         bool playerInTeamOne = true;
@@ -87,8 +96,6 @@ public class CharacterCreator : MonoBehaviour
             
             nbCharInstantiated++;
         }
-        
-        //TODO : Place them in the right spot (handled by side manager) with the right parameters (Teams, serve order)
     }
 
     
@@ -104,5 +111,15 @@ public class CharacterCreator : MonoBehaviour
         aiGo.transform.position = Vector3.zero;
             
         _characters.Add(aiGo);
+    }
+
+    public void DestroyCharacters()
+    {
+        foreach (var character in _characters)
+        {
+            Destroy(character);
+        }
+        
+        _characters.Clear();
     }
 }

@@ -80,7 +80,12 @@ public class GameParameters : MonoBehaviour
     {
         _isTournamentMode = true;
         _tournamentDifficulty = difficulty;
+        _COMDifficulty = difficulty;
         _currentTournamentName = _tournamentNames[difficulty];
+        
+        _localNbPlayers = 1;
+        _isDouble = false;
+        _currentGameMode = new GameMode("Tournament", 1, 6);
     }
 
     public int ReturnCupIndex()

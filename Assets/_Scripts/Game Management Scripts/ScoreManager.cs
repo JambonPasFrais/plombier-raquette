@@ -180,7 +180,6 @@ public class ScoreManager : MonoBehaviour
 	public void ChangeSet(int player)
     {
 		_currentSetIndex++;
-		_scoreDisplaying.NewSet();
 
 		GameManager.Instance.ServiceManager.ChangeSides = false;
 		GameManager.Instance.ServiceManager.NbOfGames = 0;
@@ -209,7 +208,7 @@ public class ScoreManager : MonoBehaviour
 			if (GameParameters.IsTournamentMode)
 			{
 				GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM1;
-				SceneManager.LoadScene(0);
+				//SceneManager.LoadScene(0);
 			}
 		}
 		else if (_nbOfSets.Item2 == _nbOfSetsToWin)
@@ -226,12 +225,16 @@ public class ScoreManager : MonoBehaviour
 			if (GameParameters.IsTournamentMode)
 			{
 				GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = Teams.TEAM2;
-				SceneManager.LoadScene(0);
+				//SceneManager.LoadScene(0);
 			}
 
 			GameManager.Instance.EndOfGame(1);
 		}
 		else
+		{
 			_score.Add(new Tuple<int, int>(0, 0));
+			_scoreDisplaying.NewSet();
+		}
+			
 	}
 }
