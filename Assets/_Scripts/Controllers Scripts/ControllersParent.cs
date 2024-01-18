@@ -49,7 +49,7 @@ public class ControllersParent : Agent
     #endregion
 
     #endregion
-    
+
     #region UNITY FUNCTIONS
 
     private void Awake()

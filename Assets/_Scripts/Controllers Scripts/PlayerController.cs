@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -110,7 +111,7 @@ public class PlayerController : ControllersParent
             Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         
             Vector3 forwardVector = Vector3.zero;
-            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing) 
+            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState != PlayerStates.SERVE)  
             {
                 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
             }
@@ -284,7 +285,7 @@ public class PlayerController : ControllersParent
             _ballDetectionArea.Ball.ApplyForce(hitForce, _ballDetectionArea.GetRisingForceFactor(hitType), horizontalDirection.normalized, this);
         }
 
-		AudioManager.Instance.PlaySfx("ShotSound");
+        AudioManager.Instance.PlaySfx("ShotSound");
 	}
 
     public void AimShot(InputAction.CallbackContext context)
@@ -452,9 +453,20 @@ public class PlayerController : ControllersParent
             _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
             _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, "Smash"));
 
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsConnected && gameObject.GetPhotonView().IsMine)
             {
                 GameManager.Instance.photonView.RPC("SmashShot", RpcTarget.Others);
+            }
+            else if (!PhotonNetwork.IsConnected) 
+            {
+                if (GameManager.Instance.Controllers[0] == this && GameManager.Instance.Controllers[1].TryGetComponent(out PlayerController secondController))
+                {
+                    secondController.OtherPlayerIsSmashing = false;
+                }
+                else if(GameManager.Instance.Controllers[1] == this && GameManager.Instance.Controllers[0].TryGetComponent(out PlayerController firstController))
+                {
+                    firstController.OtherPlayerIsSmashing = false;
+                }
             }
 
             Vector3 playerCameraTransformForward = _playerCameraController.FirstPersonCamera.transform.forward;

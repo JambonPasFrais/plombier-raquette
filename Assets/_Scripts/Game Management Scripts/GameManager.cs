@@ -103,8 +103,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         GameState = GameState.BEFOREGAME;
 
-        _loadingScreen.SetActive(true);
-        _inGameUI.SetActive(false);
+        if (PhotonNetwork.IsConnected)
+        {
+            _loadingScreen.SetActive(true);
+            _inGameUI.SetActive(false);
+        }
 
         if (PhotonNetwork.IsConnected)
         {
@@ -377,6 +380,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             _ballInstance.transform.position = _serviceBallInitializationPoint.position;
         }
+
+        if (_serverIndex == 0)
+        {
+            _ballInstance.GetPhotonView().RequestOwnership();
+        }
     }
 
     public void DisableAllServiceDetectionVolumes()
@@ -485,8 +493,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide, PhotonNetwork.IsMasterClient);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
 
-        _loadingScreen.SetActive(false);
-        _inGameUI.SetActive(true);
+        if (PhotonNetwork.IsConnected)
+        {
+            _loadingScreen.SetActive(false);
+            _inGameUI.SetActive(true);
+        }
     }
 
     #region RPC METHODS
