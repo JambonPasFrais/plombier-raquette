@@ -429,6 +429,12 @@ public class CharacterSelection : MonoBehaviour
 		
 	    _selectedCharacters[playerIndex] = null;
 
+		_currentShowroomList[playerIndex].CharacterName.text = "";
+		_currentShowroomList[playerIndex].NameBackground.color = Color.black;
+		_currentShowroomList[playerIndex].Background.color = Color.white;
+		_currentShowroomList[playerIndex].CharacterEmblem.sprite = null;
+		_currentShowroomList[playerIndex].CharacterEmblem.gameObject.SetActive(false);
+
 		CheckReadyToPlayStatus();
 
 		return true;
