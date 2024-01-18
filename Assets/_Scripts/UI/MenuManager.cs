@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,14 +56,17 @@ public class MenuManager : MonoBehaviour
     }
 
     public void GoToNextMenu(GameObject nextMenu)
-    { 
-		nextMenu.SetActive(true);
-		AddMenuInVisitedMenus(nextMenu);
+    {
+		if (!PhotonNetwork.IsConnected)
+		{
+            nextMenu.SetActive(true);
+            AddMenuInVisitedMenus(nextMenu);
+        }
     }
 
 	public void AddMenuInVisitedMenus(GameObject nextMenu)
 	{
-        _visitedMenus.Last().SetActive(false);// Inactive menu break the controllers of the controllerManager
+        _visitedMenus.Last().SetActive(false); // Inactive menu break the controllers of the controllerManager
         _visitedMenus.Add(nextMenu);
         SetDefaultSelected(nextMenu);
     }

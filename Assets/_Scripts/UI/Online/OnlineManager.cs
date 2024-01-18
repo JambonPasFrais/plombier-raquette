@@ -17,7 +17,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     // Online Button from Main Menu
 	[SerializeField] private Button _connectButton;
     // Play Button from Online Character Selection Menu
-    [SerializeField] private Button _playCharacterSelectionButton;
+/*    [SerializeField] private Button _playCharacterSelectionButton;*/
     // Start Button from Online Room Menu
     [SerializeField] private Button _playOnlineRoomButton;
     // Ready Button from Online Room Menu
@@ -148,9 +148,12 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         if (_isConnecting)
         {
-			_playCharacterSelectionButton.interactable = true;
 			_isConnecting = false;
+            /*        _playCharacterSelectionButton.interactable = true;*/
         }
+
+        // Menu player input and characters selection pointer creation.
+        ControllerManager.Instance.OnlineMenuPlayerInputCreation();
 
         ChangeActivePanel(_characterSelection.name);
     }
@@ -164,7 +167,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         _isConnecting = false;
         _connectButton.interactable = true;
-        _playCharacterSelectionButton.interactable = false;
+/*        _playCharacterSelectionButton.interactable = false;*/
     }
 
     public void GetBackToMainMenu()
@@ -211,10 +214,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     public void OnOnlineButtonClicked()
     {
         GameParameters.Instance.SetGameParameters(1, false, new GameMode("Online", 1, 6), 0);
-    }
-
-    public void OnCreateButtonClicked()
-    {
         StartCoroutine(Connect());
         ChangeActivePanel(_connectionPanel.name);
     }
@@ -228,7 +227,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Disconnect();
     }
-    
 
     public void OnLeaveButtonClicked()
     {

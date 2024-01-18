@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,19 +20,22 @@ public class TransitionMenu : MonoBehaviour
 
 	public void OnMenuLoad()
     {
-        _playersCharacters = new List<CharacterData>(GameParameters.Instance.PlayersCharacter);
-
-        for(int i = 0; i < _playersCharacters.Count; i++)
+        if (!PhotonNetwork.IsConnected)
         {
-            GameObject go = Instantiate(_playerInfoPrefab, _playerInfosContainer);
-            string playerType = i >= GameParameters.Instance.LocalNbPlayers ? "COM" : $"P{i + 1}";
-            go.GetComponent<PlayerInfos>().Init(_playersCharacters[i], playerType);
-		}
+            _playersCharacters = new List<CharacterData>(GameParameters.Instance.PlayersCharacter);
 
-        foreach (Transform child in _playerLocationsParent)
-            child.gameObject.SetActive(false);
+            for (int i = 0; i < _playersCharacters.Count; i++)
+            {
+                GameObject go = Instantiate(_playerInfoPrefab, _playerInfosContainer);
+                string playerType = i >= GameParameters.Instance.LocalNbPlayers ? "COM" : $"P{i + 1}";
+                go.GetComponent<PlayerInfos>().Init(_playersCharacters[i], playerType);
+            }
 
-        StartCoroutine(PlayersInstantiation());
+            foreach (Transform child in _playerLocationsParent)
+                child.gameObject.SetActive(false);
+
+            StartCoroutine(PlayersInstantiation());
+        }
 	}
 
     private IEnumerator PlayersInstantiation()

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private Transform _characterModelsPool; //is equivalent to _charactersModelsContainer
     [SerializeField] private Button _returnButton;
     [SerializeField] private Button _nextButton;
-    [SerializeField] private Button _createButton;
+    [SerializeField] private Button _joinRoomButton;
 	[SerializeField] private Button _aceItPlayButton;
     
     [Header("Window Types")]
@@ -79,6 +80,7 @@ public class CharacterSelection : MonoBehaviour
     #endregion
 
     #region LISTENERS
+
     public void OnCharacterSelectionMenuLoad(ControllerSelectionMenu controllerSelectionMenuInstance)
     {
 	    MenuManager.Instance.PlaySound("ChooseYourCharacter");
@@ -109,6 +111,35 @@ public class CharacterSelection : MonoBehaviour
 		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
     }
 
+    public void OnCharacterSelectionMenuLoad()
+    {
+        MenuManager.Instance.PlaySound("ChooseYourCharacter");
+
+        _allCharactersData = MenuManager.Instance.Characters;
+        _characterModelsPool = MenuManager.Instance.CharactersModelsParent;
+		_characterModelsByName = MenuManager.Instance.CharactersModel;
+        _aceItWindow.SetActive(false);
+
+        ClearShowroomsCharEmblems();
+
+        SetShowroomType();
+
+        _selectedCharacters = new List<CharacterData>(new CharacterData[_totalNbPlayers]);
+        _selectedCharactersUIs = new List<CharacterUI>(new CharacterUI[_totalNbPlayers]);
+
+        SetPlayerInfos();
+
+        SetIconsContainer();
+
+        InitNavigationButtons();
+
+        CreateCharacterIcons();
+
+        SetModelRandomForBots();
+
+        MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
+    }
+
     public void LoadFromOnlineMenu(bool isOnline)
 	{
 	    _isOnlineMode = isOnline;
@@ -124,21 +155,28 @@ public class CharacterSelection : MonoBehaviour
     
     public void OnPlay()
     {
-	    TransformRandomSelectionInCharacter();
+		if (!PhotonNetwork.IsConnected)
+		{
+            TransformRandomSelectionInCharacter();
 
-	    GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
-		
-	    _aceItWindow.SetActive(false);
+            GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
+
+            _aceItWindow.SetActive(false);
+        }
+		else
+		{
+            if (_selectedCharacters[0] != null && _selectedCharacters[0].Name == "Random")
+            {
+                SetRandomCharacterForSpecifiedPlayer(0);
+            }
+
+            GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
+        }
     }
 
     public void OnNext()
     {
 	    GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
-    }
-
-    public void OnCreate()
-    {
-	    
     }
     
     #endregion
@@ -314,16 +352,18 @@ public class CharacterSelection : MonoBehaviour
     {
 	    _nextButton.gameObject.SetActive(IsSoloMode() && !IsOnlineMode());
 		_nextButton.interactable = false;
-	    _createButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
-		_createButton.interactable = false;
-		_aceItPlayButton.gameObject.SetActive(false);
+	    _joinRoomButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
+		_joinRoomButton.interactable = false;
+/*        _returnButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
+        _returnButton.interactable = true;*/
+        _aceItPlayButton.gameObject.SetActive(false);
 	}
     
     #endregion
     
     #region RESET
     
-    private void ResetModelPool()
+    public void ResetModelPool()
     {
 	    foreach(var item in _characterModelsByName)
 	    {
@@ -334,7 +374,7 @@ public class CharacterSelection : MonoBehaviour
 	    }
     }
 
-    private void ResetCurrentShowroom()
+    public void ResetCurrentShowroom()
     {
 	    foreach (var item in _currentShowroomList)
 	    {
@@ -346,7 +386,7 @@ public class CharacterSelection : MonoBehaviour
 	    }
     }
 
-    private void ResetSelectedPlayers()
+    public void ResetSelectedPlayers()
     {
 	    for (int i = 0; i < _selectedCharacters.Count; i++)
 	    {
@@ -354,7 +394,7 @@ public class CharacterSelection : MonoBehaviour
 	    }
     }
 
-    private void ResetCharacterUis()
+    public void ResetCharacterUis()
     {
 	    foreach(var item in _allCharactersUi)
 	    {
@@ -455,8 +495,8 @@ public class CharacterSelection : MonoBehaviour
 		}
 		else if (IsSoloMode() && IsOnlineMode() && IsEveryCharSelectedByLocals()) 
 		{
-			_createButton.interactable = true;
-			StartCoroutine(WaitBeforeSelectNewButton(_createButton.gameObject));
+			_joinRoomButton.interactable = true;
+			StartCoroutine(WaitBeforeSelectNewButton(_joinRoomButton.gameObject));
 		}
 		else if (IsEveryCharSelectedByLocals())
 		{
@@ -469,7 +509,7 @@ public class CharacterSelection : MonoBehaviour
 		{
 			_aceItWindow.SetActive(false);
 			_nextButton.interactable = false;
-			_createButton.interactable = false;
+			_joinRoomButton.interactable = false;
 		}
     }
 
@@ -495,6 +535,7 @@ public class CharacterSelection : MonoBehaviour
     } 
 
     #region CALLED EXTERNALLY
+
     public bool HandleCharacterSelectionInput(Ray ray, int playerIndex)
     {
 	    if (Physics.Raycast(ray, out var hit, float.PositiveInfinity, _characterUILayerMask)
@@ -553,9 +594,11 @@ public class CharacterSelection : MonoBehaviour
 	{
 		_nextButton.gameObject.SetActive(false);
 		_nextButton.interactable = false;
-		_createButton.gameObject.SetActive(false);
-		_createButton.interactable = false;
-	}
+		_joinRoomButton.gameObject.SetActive(false);
+		_joinRoomButton.interactable = false;
+/*        _returnButton.gameObject.SetActive(false);
+        _returnButton.interactable = false;*/
+    }
     
     #endregion
 

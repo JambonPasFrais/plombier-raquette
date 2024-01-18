@@ -16,12 +16,14 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private InputAction _joinPlayerAction;
 
     [Header("Instances")]
+    [SerializeField] private Controller _generalControllerPrefab;
     [SerializeField] private Controller _gamepadPrefab;
     [SerializeField] private Controller _keyboardPrefab;
     [SerializeField] private Controller _joystickPrefab;
     [SerializeField] private GameObject _playerInputHandlerPrefab;
     [SerializeField] private string _menuActionMapName;
     [SerializeField] private string _gameActionMapName;
+    [SerializeField] private GameObject _characterSelectionPointerContainer;
 
 	[SerializeField]
 	private List<Color> _playerColors = new List<Color>()
@@ -93,6 +95,13 @@ public class ControllerManager : MonoBehaviour
         _controllers = new Dictionary<int, PlayerInputHandler>();
         _currentControllerSelectionMenu.UpdateControllerCountSentence(0, _maxPlayerCount);
 	}
+
+    public void OnlineInit(CharacterSelection characterSelectionMenuRef)
+    {
+        //_numberOfControllersConnectedOnMenu = MenuManager.Instance.NumberOfControllersConnectedOnMenu;
+        _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
+        _characterSelectionMenu = characterSelectionMenuRef;
+    }
     
     public void SwitchCtrlersToCharSelectMode(Transform charSelectionContainer)
     {
@@ -112,8 +121,8 @@ public class ControllerManager : MonoBehaviour
             controller.Value.Controller.ReturnOnControllerSelectionMenu();
             controller.Value.Controller.SetColorVisual();
 		}
-    }
-    
+    }  
+
     public void ControllerCanBeAdded()
     {
         _joinPlayerAction.performed += PlayerTriesToJoin;
@@ -259,6 +268,30 @@ public class ControllerManager : MonoBehaviour
             _currentControllerSelectionMenu.MakeValidationButtonInteractable();
 
         _currentControllerSelectionMenu.UpdateControllerCountSentence(_controllers.Count, _maxPlayerCount);
+    }
+
+    public void OnlineMenuPlayerInputCreation()
+    {
+        PlayerInput playerInput = PlayerInput.Instantiate(_playerInputHandlerPrefab, -1, null, -1);
+
+        GameObject playerInputHandlerGo = playerInput.gameObject;
+        playerInputHandlerGo.transform.SetParent(gameObject.transform);
+
+        playerInput.neverAutoSwitchControlSchemes = false;
+
+        PlayerInputHandler playerInputHandler = playerInputHandlerGo.GetComponent<PlayerInputHandler>();
+
+        playerInputHandler.Controller = Instantiate(_generalControllerPrefab, _characterSelectionPointerContainer.transform);
+        playerInputHandler.Controller.InitializeRectTransform();
+
+        playerInputHandler.Controller.SetPlayerIndex(1);
+        playerInputHandler.Controller.SetColorVisual(Color.red);
+        playerInputHandler.Controller.CharacterSelectionMode();
+        playerInputHandler.Controller.PlayerInput = playerInput;
+
+        //UI Stuff of the controller prefab
+        playerInputHandler.Controller.gameObject.transform.localScale = Vector3.one;
+        playerInputHandler.Controller.gameObject.transform.position = Vector3.zero;
     }
 
     #endregion

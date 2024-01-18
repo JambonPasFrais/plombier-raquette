@@ -370,8 +370,11 @@ MonoBehaviour:
   ScoreManager: {fileID: 175529524}
   CameraManager: {fileID: 725020315321684905}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-  _smashTargetGo: {fileID: 571886968}
   ServiceOnOriginalSide: 0
+  _loadingScreen: {fileID: 0}
+  _animatedLoadingText: {fileID: 0}
+  _pointsAppearancePeriod: 0
+  _smashTargetGo: {fileID: 571886968}
   _net: {fileID: 8765839553454529616}
   _controllers: []
   _borderPointsContainers:
@@ -379,9 +382,9 @@ MonoBehaviour:
   - {fileID: 6331652104674252970}
   _leftFaultLineXFromFirstSide: -5.97
   _supporterManager: {fileID: 701239864}
+  _onlinePlayerPrefab: {fileID: 0}
   _inGameUI: {fileID: 2042717044}
   _endGameUI: {fileID: 1598844800}
-  _ballInstance: {fileID: 6791794881428895299}
 --- !u!114 &175529522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba485812c5157464e8f0cd2378219847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Cameras: []
   _serviceNodesFirstSideContainer: {fileID: 2520489491286275693}
   _serviceNodesSecondSideContainer: {fileID: 5591607755394599538}
   _firstSideCollidersParentObject: {fileID: 6687714421347538737}
@@ -1618,25 +1622,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1813325884886146112, guid: f3b04026bbd3a2e4695a1c81e3325855, type: 3}
   m_PrefabInstance: {fileID: 1661126888}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1733691847
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1733691848}
-  - component: {fileID: 1733691850}
-  - component: {fileID: 1733691849}
-  m_Layer: 0
-  m_Name: Background
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1733691848
+--- !u!4 &1733691848 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2705008236496920593, guid: 4257b760f77315343b10e63dd43d0106, type: 3}
   m_PrefabInstance: {fileID: 3435564156418700624}

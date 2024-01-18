@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3345858834921888544
 MonoBehaviour:
@@ -54,7 +54,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: c5c47de7-90ca-499f-9623-2210ca905965
-      m_Path: <Keyboard>/anyKey
+      m_Path: <Keyboard>/space
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -62,7 +62,7 @@ MonoBehaviour:
       m_Flags: 0
     - m_Name: 
       m_Id: d05e53aa-2a8a-472f-8086-9b477f31ebd3
-      m_Path: <Gamepad>/buttonSouth
+      m_Path: <Gamepad>/start
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -77,9 +77,16 @@ MonoBehaviour:
       m_Action: Join Player
       m_Flags: 0
     m_Flags: 0
+  _generalControllerPrefab: {fileID: 5501654821748223831, guid: 91c99deb38825854fbc6aee867de3a5e, type: 3}
   _gamepadPrefab: {fileID: 4408058204079684610, guid: 2e415771f753ede458fa0f0391f1485e, type: 3}
   _keyboardPrefab: {fileID: 4408058204079684610, guid: fe6d60504c052aa468d65b5628615696, type: 3}
   _joystickPrefab: {fileID: 4408058204079684610, guid: 11e4b7f330bdbb24f824e5482a93c988, type: 3}
   _playerInputHandlerPrefab: {fileID: 2992191248066274806, guid: acd8ddf34886a6d409ed11d6bfd32eea, type: 3}
   _menuActionMapName: Menu
   _gameActionMapName: Game
+  _playerColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0.015686275, a: 1}
+  _maxPlayerCount: 0

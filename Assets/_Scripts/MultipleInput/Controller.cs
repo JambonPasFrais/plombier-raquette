@@ -33,8 +33,8 @@ public class Controller : MonoBehaviour
 
 	private void Start()
 	{
-		_rectTransform = GetComponent<RectTransform>();
-	}
+		InitializeRectTransform();
+    }
 
 	private void Update()
 	{
@@ -43,6 +43,7 @@ public class Controller : MonoBehaviour
 	#endregion
 
 	#region CALLED EXTERNALLY
+
 	public void TryPunch()
 	{
 		if (_isSelectingCharacter)
@@ -151,9 +152,15 @@ public class Controller : MonoBehaviour
 		_imgCharSelectionIcon.color = new Color(_controllerColor.r * 0.8f, _controllerColor.g * 0.8f, _controllerColor.b * 0.8f, 255);
 	}
 
+	public void InitializeRectTransform()
+	{
+        _rectTransform = GetComponent<RectTransform>();
+    }
+
 	public void ReturnOnControllerSelectionMenu()
 	{
 		_rectTransform.sizeDelta = new Vector2(200f, 250f);
 	}
+
 	#endregion
 }
