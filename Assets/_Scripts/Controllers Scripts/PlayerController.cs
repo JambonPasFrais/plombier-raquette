@@ -46,6 +46,9 @@ public class PlayerController : ControllersParent
 
     public PlayerCameraController PlayerCameraController => _playerCameraController;
 
+    public float MovementSpeed { get => _movementSpeed; set => _movementSpeed = value; }
+    public float CurrentSpeed { get => _currentSpeed; set => _currentSpeed = value; }
+
     #endregion
 
     #region SETTERS
@@ -158,7 +161,6 @@ public class PlayerController : ControllersParent
         if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
             || _ballDetectionArea.Ball.LastPlayerToApplyForce == this || GameManager.Instance.GameState == GameState.ENDPOINT)
         {
-            Debug.Log(1);
             _hitKeyPressedTime = 0f;
             _isCharging = false;
             _chargingShotGo.SetActive(false);
