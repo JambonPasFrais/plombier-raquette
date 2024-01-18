@@ -44,7 +44,6 @@ public class PlayerController : ControllersParent
 
     public List<NamedPhysicMaterials> PossiblePhysicMaterials { get { return _possiblePhysicMaterials; } }
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
-
     public PlayerCameraController PlayerCameraController => _playerCameraController;
 
     #endregion
@@ -111,7 +110,7 @@ public class PlayerController : ControllersParent
             Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         
             Vector3 forwardVector = Vector3.zero;
-            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing || PlayerState == PlayerStates.PLAY) 
+            if (GameManager.Instance.GameState != GameState.SERVICE || !IsServing) 
             {
                 forwardVector = Vector3.Project(GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).forward, Vector3.forward);
             }
@@ -410,7 +409,10 @@ public class PlayerController : ControllersParent
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
-        ThrowBall();
+        if (context.performed)
+        {
+            ThrowBall();
+        }
     }
 
     public void PrepareSmash(InputAction.CallbackContext context)

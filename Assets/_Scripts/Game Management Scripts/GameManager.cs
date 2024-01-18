@@ -29,13 +29,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject BallPrefab;
     public GameObject OnlineBallPrefab;
 
-    [SerializeField] private GameObject _smashTargetGo;
-
     [HideInInspector] public bool ServiceOnOriginalSide;
 
     #endregion
 
     #region PRIVATE FIELDS
+
+    [Header("Loading Screen")]
+    [SerializeField] private GameObject _loadingScreen;
+    [SerializeField] private TMPro.TextMeshProUGUI _animatedLoadingText;
+    [SerializeField] private float _pointsAppearancePeriod;
+
+    [Header("Smash Target")]
+    [SerializeField] private GameObject _smashTargetGo;
 
     [Header("Environment Objects")]
     [SerializeField] private GameObject _net;
@@ -46,7 +52,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _onlinePlayerPrefab;
 
 	[Header("Canvas References")]
-	[SerializeField] private GameObject _inGameUI;
+    [SerializeField] private GameObject _inGameUI;
 	[SerializeField] private GameObject _endGameUI;
 
 	private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
@@ -58,6 +64,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private Transform _serviceBallInitializationPoint;
     private System.Random random = new System.Random();
     private Coroutine _lastCoroutineStarted;
+
+    private Coroutine _loadingScreenAnimatedTextCoroutine;
 
     #endregion
 
@@ -93,6 +101,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             Instance = this;
         }
 
+        GameState = GameState.BEFOREGAME;
+
+        _loadingScreen.SetActive(true);
+        _inGameUI.SetActive(false);
+
         if (PhotonNetwork.IsConnected)
         {
             InstantiatePlayer(PhotonNetwork.IsMasterClient);
@@ -100,7 +113,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsMasterClient)
             {
                 _ballInstance = PhotonNetwork.Instantiate(OnlineBallPrefab.name, new Vector3(0, 100, 0), Quaternion.identity);
+                _ballInstance.GetComponent<Rigidbody>().isKinematic = true;
                 ((PlayerController)_controllers[0]).BallInstance = _ballInstance.GetComponent<Ball>();
+                ((PlayerController)_controllers[0]).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
             }
             else
             {
@@ -110,6 +125,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         else
         {
             _ballInstance = Instantiate(BallPrefab);
+        }
+    }
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsConnected && _loadingScreenAnimatedTextCoroutine == null && GameState == GameState.BEFOREGAME)  
+        {
+            _loadingScreenAnimatedTextCoroutine = StartCoroutine(AnimateLoadingText());
         }
     }
 
@@ -182,18 +205,37 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #endregion
 
-/*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
+    private IEnumerator AnimateLoadingText()
     {
-        foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
+        while (_loadingScreen.activeSelf)
         {
-            if (kvp.Key != currentPlayer)
+            yield return new WaitForSeconds(_pointsAppearancePeriod);
+
+            if (_animatedLoadingText.text == ". . . ")
             {
-                return kvp.Value;
+                _animatedLoadingText.text = "";
+            }
+            else
+            {
+                _animatedLoadingText.text += ". ";
             }
         }
 
-        return null;
-    }*/
+        _loadingScreenAnimatedTextCoroutine = null;
+    }
+
+    /*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
+        {
+            foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
+            {
+                if (kvp.Key != currentPlayer)
+                {
+                    return kvp.Value;
+                }
+            }
+
+            return null;
+        }*/
 
     public Teams? GetPlayerTeam(ControllersParent currentPlayer)
     {
@@ -386,14 +428,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             photonView.RPC("AskFindController", RpcTarget.Others);
             ((PlayerController)_controllers[1]).BallInstance = _ballInstance.GetComponent<Ball>();
+            ((PlayerController)_controllers[1]).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
         }
         else if (!PhotonNetwork.IsMasterClient)
         {
             _ballInstance = FindObjectOfType<Ball>().gameObject;
+            _ballInstance.GetComponent<Rigidbody>().isKinematic = true;
 
             foreach (ControllersParent controller in _controllers)
             {
                 ((PlayerController)controller).BallInstance = _ballInstance.GetComponent<Ball>();
+                ((PlayerController)controller).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
             }
 
             photonView.RPC("StartGame", RpcTarget.AllViaServer);
@@ -439,6 +484,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameManager.Instance.CameraManager.InitSoloCamera();
         GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide, PhotonNetwork.IsMasterClient);
         GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+
+        _loadingScreen.SetActive(false);
+        _inGameUI.SetActive(true);
     }
 
     #region RPC METHODS

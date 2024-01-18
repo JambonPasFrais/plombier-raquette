@@ -7,20 +7,25 @@ using UnityEngine.Serialization;
 
 public class SideManager : MonoBehaviour
 {
+    #region PUBLIC FIELDS
+
+    [HideInInspector] public List<GameObject> Cameras;
+
+    #endregion
+
     #region PRIVATE FIELDS
 
-	[SerializeField] private  Transform _serviceNodesFirstSideContainer;
+    [SerializeField] private  Transform _serviceNodesFirstSideContainer;
 	[SerializeField] private Transform _serviceNodesSecondSideContainer;
 	[SerializeField] private GameObject _firstSideCollidersParentObject;
 	[SerializeField] private GameObject _secondSideCollidersParentObject;
-    [SerializeField] private List<GameObject> _cameras;
 
     private Dictionary<string, List<Transform>> _servicePointsFirstSide = new Dictionary<string, List<Transform>>();
 	private Dictionary<string, List<Transform>> _servicePointsSecondSide = new Dictionary<string, List<Transform>>();
 
     #endregion
 
-	private void Awake()
+    private void Awake()
 	{
 		for (int i = 0; i < _serviceNodesFirstSideContainer.childCount; i++)
 		{
@@ -227,8 +232,8 @@ public class SideManager : MonoBehaviour
         {
             if (isMasterClient)
             {
-                _cameras[0].SetActive(true);
-                _cameras[1].SetActive(false);
+                Cameras[0].SetActive(true);
+                Cameras[1].SetActive(false);
                 players[0].transform.position = _servicePointsFirstSide[side][0].position;
                 players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
                 players[0].IsInOriginalSide = true;
@@ -236,8 +241,8 @@ public class SideManager : MonoBehaviour
             }
             else
             {
-                _cameras[0].SetActive(false);
-                _cameras[1].SetActive(true);
+                Cameras[0].SetActive(false);
+                Cameras[1].SetActive(true);
                 players[0].transform.position = _servicePointsSecondSide[side][0].position;
                 players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
                 players[0].IsInOriginalSide = false;
@@ -248,8 +253,8 @@ public class SideManager : MonoBehaviour
         {
             if (isMasterClient)
             {
-                _cameras[0].SetActive(false);
-                _cameras[1].SetActive(true);
+                Cameras[0].SetActive(false);
+                Cameras[1].SetActive(true);
                 players[0].transform.position = _servicePointsSecondSide[side][0].position;
                 players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
                 players[0].IsInOriginalSide = false;
@@ -257,8 +262,8 @@ public class SideManager : MonoBehaviour
             }
             else
             {
-                _cameras[0].SetActive(true);
-                _cameras[1].SetActive(false);
+                Cameras[0].SetActive(true);
+                Cameras[1].SetActive(false);
                 players[0].transform.position = _servicePointsFirstSide[side][0].position;
                 players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
                 players[0].IsInOriginalSide = true;

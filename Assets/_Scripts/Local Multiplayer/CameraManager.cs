@@ -30,7 +30,7 @@ public class CameraManager : MonoBehaviour
         _soloCameras = new List<Camera>();
         //_activeCameraTransformsBySide = new List<Transform>();
         _splitScreenCamerasBySide = new Dictionary<string, List<Camera>>();
-        
+
         for (int i = 0; i < _soloCamerasContainer.childCount; i++)
         {
             _soloCameras.Add(_soloCamerasContainer.GetChild(i).gameObject.GetComponent<Camera>());
@@ -52,6 +52,16 @@ public class CameraManager : MonoBehaviour
         }
 
         _endGameUICamera.SetActive(false);
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.SideManager.Cameras = new List<GameObject>();
+
+        for (int i = 0; i < _soloCamerasContainer.childCount; i++)
+        {
+            GameManager.Instance.SideManager.Cameras.Add(_soloCamerasContainer.GetChild(i).gameObject);
+        }
     }
 
     public void InitSplitScreenCameras()
@@ -123,12 +133,8 @@ public class CameraManager : MonoBehaviour
                     return cameraBySide[i].transform;
             }
         }
-        else if((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
-        {
-            return _soloCameras[isOriginalSide ? 0 : 1].transform;
-        }
 
-        return _soloCameras[isOriginalSide ? 1 : 0].transform;
+        return _soloCameras[isOriginalSide ? 0 : 1].transform;
     }
 
     public void ToggleGameCamerasForSmash()

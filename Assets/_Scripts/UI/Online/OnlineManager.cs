@@ -303,6 +303,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     private void InstantiateOtherPlayerCard(string otherPlayerCharacterData, string nickname)
     {
         _playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
+        GameParameters.Instance.AddOnlinePlayerCharacter(_charDataDic[otherPlayerCharacterData]);
 
 		photonView.RPC("InstantiatePresentPlayers", RpcTarget.Others, GameParameters.Instance.GetCharactersPlayers().Name, nickname, PhotonNetwork.LocalPlayer.NickName);
     }
@@ -313,6 +314,7 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.NickName == nickname)
         {
 			_playerShowrooms[1].InitializeOnlineShowroom(_charDataDic[otherPlayerCharacterData], nickname);
-		}
+            GameParameters.Instance.AddOnlinePlayerCharacter(_charDataDic[otherPlayerCharacterData]);
+        }
 	}
 }

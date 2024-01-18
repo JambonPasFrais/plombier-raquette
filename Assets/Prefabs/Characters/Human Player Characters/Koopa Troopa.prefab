@@ -3617,6 +3617,7 @@ GameObject:
   - component: {fileID: 5015879663488411531}
   - component: {fileID: 7117207324596024740}
   - component: {fileID: 476262024906409523}
+  - component: {fileID: 8326514732153036337}
   m_Layer: 3
   m_Name: Koopa Troopa
   m_TagString: Untagged
@@ -3690,6 +3691,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
@@ -3723,7 +3728,7 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: bfb979b75805ac742a1f1557ef35c18d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 94fed239063e71143a8b68b2f35cead7, type: 2}
   - Name: Drop
     PhysicMaterial: {fileID: 13400000, guid: 68318175dfe26734abaa7a515fcb135e, type: 2}
   _rigidBody: {fileID: 4712584548301048895}
@@ -3837,6 +3842,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8326514732153036337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6068045979497476300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &6128259103799799804
 GameObject:
   m_ObjectHideFlags: 0

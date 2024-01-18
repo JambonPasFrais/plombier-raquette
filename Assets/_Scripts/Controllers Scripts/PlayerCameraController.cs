@@ -27,10 +27,11 @@ public class PlayerCameraController : MonoBehaviour
     private bool _isFirstPersonView;
     private Vector2 _targetMovements;
     
-    #region GETTERS
+    #region GETTERS & SETTERS
 
     public GameObject FirstPersonCamera => _firstPersonCamera;
     public bool IsFirstPersonView => _isFirstPersonView;
+    public Ball BallInstance { set { _ballInstance = value; } }
     
     #endregion
 
@@ -39,7 +40,6 @@ public class PlayerCameraController : MonoBehaviour
     void Start()
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
-        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
         _smashTargetGo = GameManager.Instance.SmashTargetGo;
     }
 
@@ -75,7 +75,7 @@ public class PlayerCameraController : MonoBehaviour
     #endregion
     
     #region FUNCTIONS CALLED EXTERNALLY
-    
+
     public void ToggleFirstPersonView()
     {
         Vector3 horizontalBallDirection = Vector3.Project(_ballInstance.Rb.velocity, Vector3.forward) +

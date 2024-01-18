@@ -6159,6 +6159,7 @@ GameObject:
   - component: {fileID: 771696388313544605}
   - component: {fileID: -4512499616810439054}
   - component: {fileID: 3239728657709976683}
+  - component: {fileID: 2310342705206993703}
   m_Layer: 3
   m_Name: Para Troopa (done)
   m_TagString: Untagged
@@ -6288,6 +6289,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc96aadbd1c0ef643817a97982189f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
@@ -6311,7 +6316,7 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 94fed239063e71143a8b68b2f35cead7, type: 2}
   _targets:
   - {fileID: 0}
   - {fileID: 0}
@@ -6341,6 +6346,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2310342705206993703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8700133874293538312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &8753052030126516774
 GameObject:
   m_ObjectHideFlags: 0

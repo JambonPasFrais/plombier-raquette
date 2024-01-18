@@ -71,6 +71,11 @@ public class GameParameters : MonoBehaviour
         _playersCharacters = new List<CharacterData>(playersCharacters);
     }
 
+    public void AddOnlinePlayerCharacter(CharacterData data)
+    {
+        _playersCharacters.Add(data);
+    }
+
     public CharacterData GetCharactersPlayers()
     {
         return _playersCharacters[0];
