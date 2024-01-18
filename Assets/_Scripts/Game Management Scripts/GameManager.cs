@@ -121,8 +121,13 @@ public class GameManager : MonoBehaviour
         SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
         
         ServiceManager.SetServiceBoxCollider(false);
+
+        bool isTieBreak = false;
+
+        if (GameParameters.Instance.CurrentGameMode.NbOfGames == 1)
+            isTieBreak = true;
         
-        ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, false); //TODO : can't play just a tiebreak ?
+        ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, isTieBreak); //TODO : can't play just a tiebreak ?
         
         _ballInstance.GetComponent<Ball>().ResetBall();
 
