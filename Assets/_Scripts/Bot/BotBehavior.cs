@@ -110,19 +110,6 @@ public class BotBehavior : ControllersParent
         HitBall();
         _botServiceCoroutine = null;
     }
-
-    public void InitTargetVariables(Transform[] targets, Transform[] firstSideTargetsPositions, Transform[] secondSideTargetsPositions)
-    {
-        _targets = targets;
-        _firstSideTargetsPositions = firstSideTargetsPositions;
-        _secondSideTargetsPositions = secondSideTargetsPositions;
-        
-        _targetPositionsBySide = new Dictionary<string, Transform[]>()
-        {
-            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
-            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
-        };
-    }
     
     private void HitBall()
     {
@@ -166,6 +153,7 @@ public class BotBehavior : ControllersParent
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
             GameManager.Instance.GameState = GameState.PLAYING;
 
+        // TODO : change the hit type depending on bot difficulty
         _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
         _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
         _ballInstance.ApplyForce(force, _ballDetectionArea.GetRisingForceFactor(HitType.Flat), direction.normalized, this);
@@ -173,6 +161,8 @@ public class BotBehavior : ControllersParent
 
     private void MoveTowardsBallX()
     {
+        //TODO : change movements depending on bot difficulty
+        
         // Target pos in X
         _targetPosVector3.x = _ballInstance.gameObject.transform.position.x;
 
@@ -205,6 +195,19 @@ public class BotBehavior : ControllersParent
     #endregion
 
     #region CALLED EXTERNALLY
+    
+    public void InitTargetVariables(Transform[] targets, Transform[] firstSideTargetsPositions, Transform[] secondSideTargetsPositions)
+    {
+        _targets = targets;
+        _firstSideTargetsPositions = firstSideTargetsPositions;
+        _secondSideTargetsPositions = secondSideTargetsPositions;
+        
+        _targetPositionsBySide = new Dictionary<string, Transform[]>()
+        {
+            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
+            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
+        };
+    }
     
     public void InitBotDifficulty(BotDifficulty botDifficulty)
     {
