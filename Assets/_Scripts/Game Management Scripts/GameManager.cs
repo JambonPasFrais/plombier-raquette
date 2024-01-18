@@ -107,15 +107,13 @@ public class GameManager : MonoBehaviour
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
 
-        // Double
-        if (_controllers.Count > 2 )
-        {
-            CameraManager.InitSplitScreenCameras();
-        }else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count) // Simple with 2 locals
+        // More than one player -> Initialize Split-Screen Cameras
+        if (GameParameters.Instance.LocalNbPlayers > 1)
         {
             CameraManager.InitSplitScreenCameras();
         }
-        else // Simple vs bot
+        // One local player -> init solo camera
+        else
         {
             CameraManager.InitSoloCamera();
         }
