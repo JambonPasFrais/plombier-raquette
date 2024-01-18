@@ -13,6 +13,7 @@ public class ControllersParent : Agent
     #region PUBLIC FIELDS
 
     public bool IsServing;
+    public bool IsThrowing;
     public PlayerStates PlayerState;
     public int ServicesCount=0;
     public Teams PlayerTeam;
@@ -151,7 +152,15 @@ public class ControllersParent : Agent
     }
 
     public void ResetAtService()
-    {
+    { 
+        if(this is PlayerController)
+        {
+            ((PlayerController)this).CurrentSpeed = ((PlayerController)this).MovementSpeed;
+            _hitKeyPressedTime = 0f;
+            _isCharging = false;
+            _chargingShotGo.SetActive(false);
+        }
+
         PlayerState = PlayerStates.IDLE;
         ServicesCount = 0;
         ResetLoadedShotVariables();
