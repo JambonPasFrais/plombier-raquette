@@ -10,7 +10,6 @@ public class BallServiceDetection : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Ball>(out Ball ball) && _player.PlayerState == PlayerStates.SERVE)  
         {
-            _player.IsThrowing = false;
             ball.ResetBall();
         }
     }

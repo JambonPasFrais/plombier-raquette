@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
@@ -45,9 +44,6 @@ public class PlayerController : ControllersParent
     public List<NamedActions> PossibleActions { get { return _possibleActions; } }
 
     public PlayerCameraController PlayerCameraController => _playerCameraController;
-
-    public float MovementSpeed { get => _movementSpeed; set => _movementSpeed = value; }
-    public float CurrentSpeed { get => _currentSpeed; set => _currentSpeed = value; }
 
     #endregion
 
@@ -152,10 +148,6 @@ public class PlayerController : ControllersParent
 
     private void Shoot(HitType hitType)
     {
-        if(IsThrowing)
-        {
-            IsThrowing = false;
-        }
         // If there is no ball in the hit volume or if the ball rigidbody is kinematic or if the player already applied force to the ball or if the game phase is in end of point,
         // then the player can't shoot in the ball.
         if (!_ballDetectionArea.IsBallInHitZone  || _ballDetectionArea.Ball.gameObject.GetComponent<Rigidbody>().isKinematic 
@@ -292,7 +284,7 @@ public class PlayerController : ControllersParent
 
     public void Flat(InputAction.CallbackContext context)
     {
-        if (context.performed && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift) && PlayerState != PlayerStates.SERVE || context.performed && IsThrowing == true)
+        if (context.performed && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift))
         {
             Shoot(HitType.Flat);
         }
@@ -300,7 +292,7 @@ public class PlayerController : ControllersParent
 
     public void TopSpin(InputAction.CallbackContext context)
     {
-        if (context.performed && !Input.GetKey(KeyCode.LeftControl) && PlayerState != PlayerStates.SERVE || context.performed && IsThrowing == true) 
+        if (context.performed && !Input.GetKey(KeyCode.LeftControl)) 
         {
             Shoot(HitType.TopSpin);
         }
@@ -308,7 +300,7 @@ public class PlayerController : ControllersParent
 
     public void Drop(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE )
+        if (context.performed && PlayerState != PlayerStates.SERVE)
         {
             Shoot(HitType.Drop);
         }
@@ -316,7 +308,7 @@ public class PlayerController : ControllersParent
 
     public void Slice(InputAction.CallbackContext context)
     {
-        if (context.performed && PlayerState != PlayerStates.SERVE || context.performed && IsThrowing == true)
+        if (context.performed)
         {
             Shoot(HitType.Slice);
         }
@@ -393,11 +385,7 @@ public class PlayerController : ControllersParent
 
     public void ServiceThrow(InputAction.CallbackContext context)
     {
-        if(context.performed && IsThrowing == false)
-        {
-            StartCoroutine(WaitForServiceShot());
-            ThrowBall();  
-        }
+        ThrowBall();
     }
 
     public void PrepareSmash(InputAction.CallbackContext context)
@@ -456,13 +444,5 @@ public class PlayerController : ControllersParent
 		}
 	}
 
-    #endregion
-    #region COROUTINES
-    IEnumerator WaitForServiceShot()
-    {
-       yield return new WaitForEndOfFrame();
-       IsThrowing = true;
-        
-    }
     #endregion
 }
