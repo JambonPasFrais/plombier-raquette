@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 4494511783649874779}
   - component: {fileID: 3348332287441472961}
   - component: {fileID: 4389947741314349085}
+  - component: {fileID: 5002170332334708236}
   m_Layer: 3
   m_Name: Shy Guy(done)
   m_TagString: Untagged
@@ -198,6 +199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc96aadbd1c0ef643817a97982189f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
@@ -207,8 +212,8 @@ MonoBehaviour:
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
   _ballServiceDetectionArea: {fileID: 6522549138349682637}
   _serviceBallInitializationPoint: {fileID: 9170510336492080990}
-  _minimumShotForce: 350
-  _maximumShotForce: 450
+  _minimumShotForce: 325
+  _maximumShotForce: 400
   _maximumDistanceToNet: 0
   _forceMinimumClampFactor: 0
   _forceMaximumClampFactor: 0
@@ -235,7 +240,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _ballDetectionArea: {fileID: 8293586632927631506}
-  _speed: 7.5
+  _speed: 8.5
   _timeBeforeThrowingBallDuringService: 1
   _timeBeforeShootingBallDuringService: 0.35
   _serviceForce: 400
@@ -251,6 +256,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5002170332334708236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377035027854219527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &511616033544668318
 GameObject:
   m_ObjectHideFlags: 0
