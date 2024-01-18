@@ -90,6 +90,7 @@ public class Controller : MonoBehaviour
 			MenuManager.Instance.GoToPreviousMenu();
 			ControllerManager.Instance.CharacterSelectionMenu.OnMenuDisabled();
 			ControllerManager.Instance.ControllerSelectionMenu.OnBackToControllerSelection();
+			ControllerManager.Instance.CharacterSelectionMenu.DisableNavigationButtons();
 		}
 
 		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))

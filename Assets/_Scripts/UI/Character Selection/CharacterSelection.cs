@@ -309,9 +309,10 @@ public class CharacterSelection : MonoBehaviour
 	// Become useless because the buttons doesn't exist anymore 
     private void InitNavigationButtons()
     {
-	    _returnButton.onClick.AddListener(() => _controllerSelectionMenu.OnBackToControllerSelection());
 	    _nextButton.gameObject.SetActive(IsSoloMode() && !IsOnlineMode());
+		_nextButton.interactable = false;
 	    _createButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
+		_createButton.interactable = false;
     }
     
     #endregion
@@ -443,10 +444,11 @@ public class CharacterSelection : MonoBehaviour
 
     private void CheckReadyToPlayStatus()
     {
-		if (IsSoloMode() || IsOnlineMode())
-			return;
-	    
-	    if (IsEveryCharSelectedByLocals())
+		if (IsSoloMode() && !IsOnlineMode() && IsEveryCharSelectedByLocals())
+			_nextButton.interactable = true;
+		else if(IsSoloMode() && IsOnlineMode() && IsEveryCharSelectedByLocals())
+			_createButton.interactable = true;
+		else if (IsEveryCharSelectedByLocals())
 	    {
 		    _aceItWindow.SetActive(true);
 		    MenuManager.Instance.PlaySound("AceItSound");
@@ -454,6 +456,8 @@ public class CharacterSelection : MonoBehaviour
 		else
 		{
 			_aceItWindow.SetActive(false);
+			_nextButton.interactable = false;
+			_createButton.interactable = false;
 		}
     }
 
@@ -526,6 +530,14 @@ public class CharacterSelection : MonoBehaviour
     {
 	    return RemoveCharacterFromPlayerSelectionUi(playerIndex);
     }
+
+	public void DisableNavigationButtons()
+	{
+		_nextButton.gameObject.SetActive(false);
+		_nextButton.interactable = false;
+		_createButton.gameObject.SetActive(false);
+		_createButton.interactable = false;
+	}
     
     #endregion
 }
