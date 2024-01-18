@@ -85,7 +85,7 @@ public class ControllerManager : MonoBehaviour
     
     public void Init(CharacterSelection characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
-        _numberOfControllersConnectedOnMenu = MenuManager.Instance.NumberOfControllersConnectedOnMenu;
+        //_numberOfControllersConnectedOnMenu = MenuManager.Instance.NumberOfControllersConnectedOnMenu;
         _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
         _characterSelectionMenu = characterSelectionMenuRef;
         _currentControllerSelectionMenu = controllerSelectionMenu;

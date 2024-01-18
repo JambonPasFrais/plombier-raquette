@@ -119,14 +119,14 @@ public class CharacterSelection : MonoBehaviour
 	    ResetSelectedPlayers();
 	    ResetCharacterUis();
     }
-
+    
     public void OnPlay()
     {
-	    GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
+	    TransformRandomSelectionInCharacter();
 
-	    ControllerManager.Instance.ChangeCtrlersActMapToGame();
+	    GameParameters.Instance.SetCharactersPlayers(_selectedCharacters);
 		
-	    SceneManager.LoadScene("Local_Multiplayer");
+	    _aceItWindow.SetActive(false);
     }
 
     public void OnNext()
