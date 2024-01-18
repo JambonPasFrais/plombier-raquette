@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-//TODO : set character parameters using public void function(CharacterParameters scriptableObject)
-
 public class BotBehavior : ControllersParent
 {
     #region PRIVATE FIELDS
@@ -33,7 +31,12 @@ public class BotBehavior : ControllersParent
     private Dictionary<string, Transform[]> _targetPositionsBySide;
     private Vector3 _serviceDirection;
     private Coroutine _botServiceCoroutine;
-
+    private bool _isMovementRestricted;
+    private bool _canChargeShot;
+    private bool _canSmash;
+    
+    // Tests
+    [SerializeField] private BotDifficulty _currentBotDifficulty;
     #endregion
 
     public Vector3 TargetPosVector3 { set {  _targetPosVector3 = value; } }
@@ -197,6 +200,26 @@ public class BotBehavior : ControllersParent
             Transform target = _targets[i];
             target.position = _targetPositionsBySide[sideName][i].position;
         }
+    }
+    
+    #endregion
+
+    #region CALLED EXTERNALLY
+    
+    public void InitBotDifficulty(BotDifficulty botDifficulty)
+    {
+        _currentBotDifficulty = botDifficulty;
+        
+        _isMovementRestricted = botDifficulty.IsMovementRestricted;
+        _canChargeShot = botDifficulty.CanChargeShots;
+        _canSmash = botDifficulty.CanSmash;
+
+        _serviceForce = botDifficulty.ServiceForce;
+        _minimumShotForce = botDifficulty.MinimumShotForce;
+        _maximumShotForce = botDifficulty.MaximumShotForce;
+        
+        _possibleActions = botDifficulty.PossibleActions;
+        _possiblePhysicMaterials = botDifficulty.PossiblePhysicMaterials;
     }
     
     #endregion
