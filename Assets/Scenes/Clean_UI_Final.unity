@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -269,7 +269,6 @@ GameObject:
   - component: {fileID: 47396386}
   - component: {fileID: 47396388}
   - component: {fileID: 47396387}
-  - component: {fileID: 47396389}
   m_Layer: 5
   m_Name: LoadingImage
   m_TagString: Untagged
@@ -335,20 +334,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47396385}
   m_CullTransparentMesh: 1
---- !u!114 &47396389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47396385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6692c554aff7a1c4dacd744bd3b2336c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotateFactor: -0.5
-  _isRotating: 0
 --- !u!1 &63868496
 GameObject:
   m_ObjectHideFlags: 0
@@ -5489,7 +5474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6823317724703976918, guid: 4921acaf09ba0c14aa79dcfec1c5bafd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7825026220472512135, guid: 4921acaf09ba0c14aa79dcfec1c5bafd, type: 3}
       propertyPath: m_fontAsset
@@ -22050,7 +22035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1446186243238348714
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23621,7 +23606,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PRESS 'INPUT' TO START
+  m_text: PRESS any key TO START
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ae1dd1cdfb1de040a07b059f47d5612, type: 2}
   m_sharedMaterial: {fileID: -5573976539477335369, guid: 7ae1dd1cdfb1de040a07b059f47d5612, type: 2}
@@ -23654,7 +23639,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -23687,7 +23672,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1990997363779526013
@@ -28361,14 +28346,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7346065529909488869}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: PlaySound
-        m_Mode: 5
+        m_MethodName: SetFirstSelectedButton
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 4214154589360592757}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: ButtonPressed
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 7346065529909488869}
@@ -28385,14 +28370,14 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 7346065529909488869}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: SetFirstSelectedButton
-        m_Mode: 2
+        m_MethodName: PlaySound
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 4214154589360592757}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: ButtonPressed
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &3310181870608997450
@@ -32737,7 +32722,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &4645455551781760223
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40865,7 +40850,7 @@ MonoBehaviour:
   m_text: Defeat
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ae1dd1cdfb1de040a07b059f47d5612, type: 2}
-  m_sharedMaterial: {fileID: -953869684818039940, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
+  m_sharedMaterial: {fileID: -5573976539477335369, guid: 7ae1dd1cdfb1de040a07b059f47d5612, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -40928,7 +40913,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: -185.43575}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!224 &7064511398124636154
@@ -42225,10 +42210,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press any key to continue
+  m_text: Press Any Key to continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ae1dd1cdfb1de040a07b059f47d5612, type: 2}
-  m_sharedMaterial: {fileID: -953869684818039940, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
+  m_sharedMaterial: {fileID: -5573976539477335369, guid: 7ae1dd1cdfb1de040a07b059f47d5612, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -42291,7 +42276,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: -59.302513, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &7264394958942976407
@@ -57589,7 +57574,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &9126318161377831216

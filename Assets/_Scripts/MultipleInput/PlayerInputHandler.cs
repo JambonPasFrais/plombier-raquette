@@ -56,11 +56,22 @@ public class PlayerInputHandler : MonoBehaviour
 		}
 	}
 
+	public void OnContinue(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			/*MenuManager.Instance.PlaySound("LoadingScreenTransition");
+			gameObject.SetActive(false);
+			_menusContainer.SetActive(true);*/
+			Debug.Log("J'appuie");
+		}
+	}
+
 	#endregion
 
 	#region GAME ACTION MAP LISTENERS
-    
-    public void OnAimShot(InputAction.CallbackContext context)
+
+	public void OnAimShot(InputAction.CallbackContext context)
     {
         Character.PlayerController.AimShot(context);
     }

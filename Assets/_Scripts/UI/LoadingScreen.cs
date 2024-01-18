@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class LoadingScreen : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (MenuManager.Instance.CurrentEventSystem.gameObject.GetComponent<InputSystemUIInputModule>().leftClick.action.WasPressedThisFrame())
 		{
 			MenuManager.Instance.PlaySound("LoadingScreenTransition");
 			gameObject.SetActive(false);
