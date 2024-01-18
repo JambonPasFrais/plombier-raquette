@@ -85,7 +85,7 @@ public class GameParameters : MonoBehaviour
         
         _localNbPlayers = 1;
         _isDouble = false;
-        _currentGameMode = new GameMode("Tournament", 6, 1);
+        _currentGameMode = new GameMode("Tournament", 1, 6);
     }
 
     public int ReturnCupIndex()

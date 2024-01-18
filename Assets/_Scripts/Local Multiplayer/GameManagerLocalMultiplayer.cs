@@ -48,6 +48,11 @@ public class GameManagerLocalMultiplayer : MonoBehaviour
 
     #endregion
 
+    public void EndOfGameProcess()
+    {
+        _characterCreator.DestroyCharacters();
+    }
+
     public void TestScene()
     {
         //SceneManager.LoadScene("Local_Multiplayer");

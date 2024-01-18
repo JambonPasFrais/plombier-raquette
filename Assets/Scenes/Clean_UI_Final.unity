@@ -2435,6 +2435,7 @@ MonoBehaviour:
   - {fileID: 1883591547}
   _selectedCharacters: []
   _selectedCharactersUIs: []
+  _isOnlineMode: 0
 --- !u!1 &490380355
 GameObject:
   m_ObjectHideFlags: 0
@@ -9922,7 +9923,7 @@ MonoBehaviour:
   m_text: Tournament Bracket
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
-  m_sharedMaterial: {fileID: 9009333789912078947, guid: 5f4ef3e9c43fb1c469cb93cc3efe3b96, type: 2}
+  m_sharedMaterial: {fileID: -953869684818039940, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11194,7 +11195,7 @@ MonoBehaviour:
   m_text: Play
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
-  m_sharedMaterial: {fileID: 9009333789912078947, guid: 5f4ef3e9c43fb1c469cb93cc3efe3b96, type: 2}
+  m_sharedMaterial: {fileID: -953869684818039940, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -24411,7 +24412,7 @@ GameObject:
   - component: {fileID: 7221611946824403172}
   - component: {fileID: 9079328361518910647}
   m_Layer: 5
-  m_Name: ForfaitButton
+  m_Name: ForfeitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28783,10 +28784,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Forfait
+  m_text: Forfeit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
-  m_sharedMaterial: {fileID: 9009333789912078947, guid: 5f4ef3e9c43fb1c469cb93cc3efe3b96, type: 2}
+  m_sharedMaterial: {fileID: -953869684818039940, guid: 0e70923b20dc0d34aadeda5a4c90d88e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -65172,7 +65173,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 339033736164750781}
         m_TargetAssemblyTypeName: TournamentBracket, Assembly-CSharp
-        m_MethodName: Forfait
+        m_MethodName: Forfeit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -287,11 +287,25 @@ public class GameManager : MonoBehaviour
     public void EndOfGame(int playerIndex)
     {
         //TODO : uncomment when finished
-        StopCoroutine(_lastCoroutineStarted);
+        if (_lastCoroutineStarted != null)
+            StopCoroutine(_lastCoroutineStarted);
+        
         ControllerManager.Instance.ChangeCtrlersActMapToMenu();
+
+        if (!IsInTournament())
+        {
+            ControllerManager.Instance.DeletePlayerInputHandlers();
+        }
+        
+        GameState = GameState.ENDMATCH;
+        Destroy(_ballInstance.gameObject);
+        GameManagerLocalMultiplayer.Instance.EndOfGameProcess();
+        
         _inGameUI.SetActive(false);
         _endGameUI.SetActive(true);
+        
         CameraManager.EndGameCameraMode();
+        
         _endGameUI.transform.GetChild(0).GetComponent<EndMatchUI>().Init(playerIndex);
         //SceneManager.LoadScene("Clean_UI_Final");
         //Debug.Log("End of game !");
@@ -325,5 +339,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         GameParameters.Instance.PlayersCharacter[random.Next(0, GameParameters.Instance.PlayersCharacter.Count())].PlaySound("VariousSounds");
 		_lastCoroutineStarted = StartCoroutine(CharactersSoundsPlayer(random.Next(4, 12)));
+    }
+
+    private bool IsInTournament()
+    {
+        return GameParameters.IsTournamentMode && GameParameters.Instance.CurrentTournamentInfos.CurrentRound < 3;
     }
 }

@@ -147,6 +147,13 @@ public class ControllerManager : MonoBehaviour
         foreach (var playerInputHandler in Controllers.Values)
         {
             playerInputHandler.ChangeInputActionMap(_menuActionMapName);
+        }
+    }
+    
+    public void DeletePlayerInputHandlers()
+    {
+        foreach (var playerInputHandler in _controllers.Values)
+        {
             Destroy(playerInputHandler.gameObject);
         }
         _controllers.Clear();
