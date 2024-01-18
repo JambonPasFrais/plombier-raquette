@@ -13,6 +13,7 @@ public class ControllersParent : Agent
     #region PUBLIC FIELDS
 
     public bool IsServing;
+    public bool IsThrowing;
     public PlayerStates PlayerState;
     public int ServicesCount=0;
     public Teams PlayerTeam;
