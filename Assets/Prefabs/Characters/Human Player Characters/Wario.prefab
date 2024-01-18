@@ -6462,6 +6462,7 @@ GameObject:
   - component: {fileID: 4154532721051498626}
   - component: {fileID: 6346330658548440873}
   - component: {fileID: 3810892503101674026}
+  - component: {fileID: 5266774456181393999}
   m_Layer: 3
   m_Name: Wario
   m_TagString: Untagged
@@ -6550,6 +6551,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98171f29fb8e210469147f3c2eb28e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
@@ -6560,7 +6565,7 @@ MonoBehaviour:
   _ballServiceDetectionArea: {fileID: 8989369161781187418}
   _serviceBallInitializationPoint: {fileID: 8301694566250596886}
   _minimumShotForce: 325
-  _maximumShotForce: 450
+  _maximumShotForce: 500
   _maximumDistanceToNet: 11.89
   _forceMinimumClampFactor: 0.5
   _forceMaximumClampFactor: 1
@@ -6589,7 +6594,7 @@ MonoBehaviour:
   _rigidBody: {fileID: 276236870075182383}
   _ballDetectionArea: {fileID: 546154630469688659}
   _playerCameraController: {fileID: 6346330658548440873}
-  _movementSpeed: 7.5
+  _movementSpeed: 6.5
   _chargingMoveSpeed: 4
   _minimumHitKeyPressTimeToIncrementForce: 0.1
   _maximumHitKeyPressTime: 1.5
@@ -6697,6 +6702,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5266774456181393999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5130325294765744543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &5176586506332369388
 GameObject:
   m_ObjectHideFlags: 0
