@@ -25,9 +25,9 @@ public class PlayerUIAnimator : PlayerAnimator
         ChangeAnimationState(AnimationNames.TakeTheL.ToString());
     }
     
-    public void VictoryAnimation()
+    public void CrowdVictoryAnimation()
     {
-        int random = Random.Range(0, 3);
+        int random = Random.Range(0, 4);
         switch (random)
         {
             case 0:
@@ -41,6 +41,26 @@ public class PlayerUIAnimator : PlayerAnimator
                 break;
         }
     }
+    
+    public void CharacterVictoryAnimation()
+    {
+        int random = Random.Range(0, 4);
+        switch (random)
+        {
+            case 0:
+                ChangeAnimationState(AnimationNames.Victory_1.ToString());
+                break;
+            case 1:
+                ChangeAnimationState(AnimationNames.Victory_2.ToString());
+                break;
+            case 2:
+                ChangeAnimationState(AnimationNames.Victory_3.ToString());
+                break;
+            case 3:
+				ChangeAnimationState(AnimationNames.TakeTheL.ToString());
+				break;
+        }
+    }
 
     #endregion
     
@@ -51,9 +71,9 @@ public class PlayerUIAnimator : PlayerAnimator
         ChangeAnimationState(AnimationNames.ShakingHeadNo.ToString());
     }
     
-    public void DefeatAnimation()
+    public void CrowdDefeatAnimation()
     {
-        int random = Random.Range(0, 3);
+        int random = Random.Range(0, 4);
         switch (random)
         {
             case 0:
@@ -65,7 +85,27 @@ public class PlayerUIAnimator : PlayerAnimator
             case 2:
                 ChangeAnimationState(AnimationNames.Defeat_3.ToString());
                 break;
-        }
+		}
+    }
+    
+    public void CharacterDefeatAnimation()
+    {
+        int random = Random.Range(0, 4);
+        switch (random)
+        {
+            case 0:
+                ChangeAnimationState(AnimationNames.Defeat_1.ToString());
+                break;
+            case 1:
+                ChangeAnimationState(AnimationNames.Defeat_2.ToString());
+                break;
+            case 2:
+                ChangeAnimationState(AnimationNames.Defeat_3.ToString());
+                break;
+            case 3:
+				ChangeAnimationState(AnimationNames.ShakingHeadNo.ToString());
+                break;
+		}
     }
     
     #endregion

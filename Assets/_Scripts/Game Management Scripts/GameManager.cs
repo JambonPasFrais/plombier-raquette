@@ -108,15 +108,13 @@ public class GameManager : MonoBehaviour
         _serverIndex = 0;
         _controllers[_serverIndex].IsServing = true;
 
-        // Double
-        if (_controllers.Count > 2 )
-        {
-            CameraManager.InitSplitScreenCameras();
-        }else if (GameParameters.Instance.LocalNbPlayers == _controllers.Count) // Simple with 2 locals
+        // More than one player -> Initialize Split-Screen Cameras
+        if (GameParameters.Instance.LocalNbPlayers > 1)
         {
             CameraManager.InitSplitScreenCameras();
         }
-        else // Simple vs bot
+        // One local player -> init solo camera
+        else
         {
             CameraManager.InitSoloCamera();
         }
@@ -124,8 +122,13 @@ public class GameManager : MonoBehaviour
         SideManager.SetSides(_controllers, true, ServiceOnOriginalSide);
         
         ServiceManager.SetServiceBoxCollider(false);
+
+        bool isTieBreak = false;
+
+        if (GameParameters.Instance.CurrentGameMode.NbOfGames == 1)
+            isTieBreak = true;
         
-        ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, false); //TODO : can't play just a tiebreak ?
+        ScoreManager.InitGameLoop(GameParameters.Instance.CurrentGameMode.NbOfSets, GameParameters.Instance.CurrentGameMode.NbOfGames, isTieBreak); //TODO : can't play just a tiebreak ?
         
         _ballInstance.GetComponent<Ball>().ResetBall();
 

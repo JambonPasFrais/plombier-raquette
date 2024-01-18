@@ -129,12 +129,12 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_aceItWindow.SetActive(false);
 			MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
 		}
-		else
+		/*else
 		{
 			OnMenuDisabled();
 			_controllerSelectionMenu.OnBackToControllerSelection();
 			MenuManager.Instance.GoToPreviousMenu();
-		}
+		}*/
 	}
 
 	#region Listeners
@@ -142,20 +142,26 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Button "play"
 	public void Play()
 	{
-		TransformRandomSelectionInCharacter();
-		StartCoroutine(WaitBeforeDisplayingAceItMenu());
+		//StartCoroutine(WaitBeforeDisplayingAceItMenu());
+		_aceItWindow.SetActive(true);
+		AudioManager.Instance.PlaySfx("AceItSound");
+		//MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(_confirmPlayButton);
 	}
 
 	// Button "ACE IT"
 	public void OnConfirmPlay()
 	{
+		TransformRandomSelectionInCharacter();
+
 		GameParameters.Instance.SetCharactersPlayers(_playersCharacter);
 		
 		_aceItWindow.SetActive(false);
 
-		ControllerManager.Instance.ChangeCtrlersActMapToGame();
-		
-		SceneManager.LoadScene("Local_Multiplayer");
+		//Debug.Log("Let's Ace It !");
+
+		//ControllerManager.Instance.ChangeCtrlersActMapToGame();   -> A mettre dans le confirmPlay du Transition Menu
+
+		//SceneManager.LoadScene("Local_Multiplayer");
 	}
 	
 	// Display right number of showrooms whether it is a single or double match
@@ -183,7 +189,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 	// Any button that loads the menu
 	public void OnMenuLoaded()
 	{
-		AudioManager.Instance.PlaySfx("ChooseYourCharacter");
+		MenuManager.Instance.PlaySound("ChooseYourCharacter");
 		_characters = MenuManager.Instance.Characters;
 		_availableCharacters = new List<CharacterData>(_characters);
 		_characterModelsPool = MenuManager.Instance.CharactersModelsParent;
@@ -309,7 +315,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 			_currentShowroomList[i].NameBackground.color = characterUI.Character.CharacterSecondaryColor;
 
 			characterModel.transform.SetParent(_currentShowroomList[i].ModelLocation);
-			characterModel.transform.localPosition = Vector3.zero;
+			characterModel.transform.localPosition = new Vector3(0, 200, 0);
 			characterModel.transform.localRotation = Quaternion.Euler(new Vector3(characterUI.Character.Name == "Random" ? -90 : 0, 180, 0));
 			characterModel.SetActive(true);
 			_selectedCharacterUIs[i] = characterUI;
@@ -423,7 +429,7 @@ public class CharacterSelectionMenu : MonoBehaviour
 
 	private IEnumerator WaitBeforeDisplayingAceItMenu()
 	{
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0f);
 
 		_aceItWindow.SetActive(true);
 		AudioManager.Instance.PlaySfx("AceItSound");

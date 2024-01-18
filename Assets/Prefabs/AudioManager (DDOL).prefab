@@ -47,7 +47,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &133060067357042310
 Transform:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 2881712671860293360}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4888668802575313060
 MonoBehaviour:
@@ -165,6 +165,11 @@ MonoBehaviour:
     AudioType: 0
     Clips:
     - {fileID: 8300000, guid: 33b5495c7cb095f44b4ecc01d9b3d37d, type: 3}
+    CurrentClipIndex: 0
+  - Name: CharacterAppearance
+    AudioType: 1
+    Clips:
+    - {fileID: 8300000, guid: 8d230cbbbe235214d9756db23a142935, type: 3}
     CurrentClipIndex: 0
   _audioMixer: {fileID: 24100000, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}
   _audioMixerMaster: {fileID: 24300002, guid: 684bb5bfa9be00f42832c7afa08353b0, type: 2}

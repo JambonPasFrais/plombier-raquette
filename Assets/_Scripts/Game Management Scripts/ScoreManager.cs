@@ -215,7 +215,7 @@ public class ScoreManager : MonoBehaviour
 		{
 			string score = "";
 
-			foreach(var item in _score)
+			foreach (var item in _score)
 			{
 				score += $"{item.Item1}/{item.Item2} ";
 			}

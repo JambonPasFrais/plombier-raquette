@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,12 +15,14 @@ public class MenuManager : MonoBehaviour
 	[SerializeField] private EventSystem _eventSystem;
 	private Dictionary<string, GameObject> _charactersModel = new Dictionary<string, GameObject>();
 	[SerializeField] private GameObject _tournamentBracketMenu;
+	[SerializeField] private TextMeshProUGUI _numberOfControllersConnectedOnMenu;
 
 	public static MenuManager Instance => _instance;
 	public  List<CharacterData> Characters => _characters;
 	public Dictionary<string, GameObject> CharactersModel => _charactersModel;
 	public Transform CharactersModelsParent => _charactersModelsParent;
 	public EventSystem CurrentEventSystem => _eventSystem;
+	public TextMeshProUGUI NumberOfControllersConnectedOnMenu => _numberOfControllersConnectedOnMenu;
 
 	private void Awake()
 	{

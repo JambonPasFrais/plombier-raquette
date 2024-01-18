@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,7 +23,16 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private string _menuActionMapName;
     [SerializeField] private string _gameActionMapName;
 
-    [SerializeField] private int _maxPlayerCount;
+	[SerializeField]
+	private List<Color> _playerColors = new List<Color>()
+	{
+		Color.red,
+		Color.blue,
+		Color.green,
+		Color.yellow
+	};
+
+	[SerializeField] private int _maxPlayerCount;
     private Dictionary<int, PlayerInputHandler> _controllers = new Dictionary<int, PlayerInputHandler>();
     private static ControllerManager _instance;
     private CharacterSelection _characterSelectionMenu;
@@ -75,6 +85,7 @@ public class ControllerManager : MonoBehaviour
     
     public void Init(CharacterSelection characterSelectionMenuRef, ControllerSelectionMenu controllerSelectionMenu)
     {
+        _numberOfControllersConnectedOnMenu = MenuManager.Instance.NumberOfControllersConnectedOnMenu;
         _maxPlayerCount = GameParameters.Instance.LocalNbPlayers;
         _characterSelectionMenu = characterSelectionMenuRef;
         _currentControllerSelectionMenu = controllerSelectionMenu;
@@ -98,6 +109,7 @@ public class ControllerManager : MonoBehaviour
             controller.Value.Controller.gameObject.transform.SetParent(cltrSelectionContainer);
 			controller.Value.Controller.ControllerSelectionMode();
             controller.Value.Controller.ReturnOnControllerSelectionMenu();
+            controller.Value.Controller.SetColorVisual();
 		}
     }
     
@@ -166,7 +178,7 @@ public class ControllerManager : MonoBehaviour
     private IEnumerator DeleteControllerCoroutine(int deviceId)
     {
         yield return new WaitForSeconds(.1f);
-        AudioManager.Instance.PlaySfx("ControllerDisconnected");
+        MenuManager.Instance.PlaySound("ControllerDisconnected");
         Destroy(_controllers[deviceId].Controller.gameObject);
         Destroy(_controllers[deviceId].gameObject);
         _controllers.Remove(deviceId);
@@ -224,10 +236,10 @@ public class ControllerManager : MonoBehaviour
 				break;
         }
 
-        AudioManager.Instance.PlaySfx("ControllerConnected");
+        MenuManager.Instance.PlaySound("ControllerConnected");
 
 		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
-		playerInputHandler.Controller.SetColorVisual(_controllers.Count);
+		playerInputHandler.Controller.SetColorVisual(_playerColors[_controllers.Count]);
 		playerInputHandler.Controller.ControllerSelectionMode();
         playerInputHandler.Controller.PlayerInput = playerInput;
         
