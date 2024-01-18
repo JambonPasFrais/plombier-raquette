@@ -197,7 +197,7 @@ public class AgentController : ControllersParent
             // if the player was serving, the service detection volume of each player and the service lock colliders are disabled.
             if (PlayerState == PlayerStates.SERVE)
             {
-                GameManager.Instance.DesactivateAllServiceDetectionVolumes();
+                GameManager.Instance.DisableAllServiceDetectionVolumes();
                 GameManager.Instance.ServiceManager.DisableLockServiceColliders();
                 _serviceDurationCounter = 0f;
             }

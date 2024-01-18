@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,18 +18,14 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _horizontalOffset;
     [SerializeField] private float _verticalOffsetFromGround;
 
-    [Header("Components")]
-    [SerializeField] private Rigidbody _rigidBody;
-    [SerializeField] private TrailRenderer _trailRenderer;
-    [SerializeField] private SphereCollider _sphereCollider;
-
     [Header("Observed Variables")]
     [SerializeField] private ShotParameters _shotParameters;
     [SerializeField] private ControllersParent _lastPlayerToApplyForce;
     [SerializeField] private int _reboundsCount;
     [SerializeField] private GameObject _smashStarInstance;
 
-    [Header("GA")] [SerializeField] private Gradient _dropColor;
+    [Header("GA")] 
+    [SerializeField] private Gradient _dropColor;
     [SerializeField] private Gradient _lobColor;
     [SerializeField] private Gradient _topSpinColor;
     [SerializeField] private Gradient _sliceColor;
@@ -42,6 +39,9 @@ public class Ball : MonoBehaviour
     private Coroutine _currentCurvingEffectCoroutine;
     private Dictionary<HitType, Gradient> _colorGradientByHitType;
     private Coroutine _currentEffectCoroutine;
+    private Rigidbody _rigidBody;
+    private TrailRenderer _trailRenderer;
+    private SphereCollider _sphereCollider;
 
     #endregion
 
@@ -66,8 +66,10 @@ public class Ball : MonoBehaviour
         CreateColorGradientByHitTypeDict();
         
         #region Effects
+
         _hitEffect.Stop();
         _reboundEffect.Stop();
+        
         #endregion
     }
 
@@ -91,11 +93,18 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<ControllersParent>() && !_rigidBody.isKinematic)
+        if(collision.gameObject.TryGetComponent<ControllersParent>(out ControllersParent player) && !_rigidBody.isKinematic)
         {
-            GameManager.Instance.EndOfPoint(_lastPlayerToApplyForce.PlayerTeam);
-            GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
-            ResetBall();
+            if (PhotonNetwork.IsConnected && player.gameObject.GetPhotonView().IsMine)
+            {
+                GameManager.Instance.photonView.RPC("EndPoint", RpcTarget.AllViaServer, _lastPlayerToApplyForce.PlayerTeam);
+            }
+            else if (!PhotonNetwork.IsConnected)
+            {
+                GameManager.Instance.EndOfPoint(_lastPlayerToApplyForce.PlayerTeam);
+                GameManager.Instance.ScoreManager.AddPoint(_lastPlayerToApplyForce.PlayerTeam);
+                ResetBall();
+            }
         }
     }
 
@@ -206,7 +215,7 @@ public class Ball : MonoBehaviour
         AudioManager.Instance.PlaySfx("ReboundSound");
 
         _reboundsCount++;
-        
+
         //PlayEffect(_reboundEffect);
 
         Vector3 direction = Vector3.Project(_rigidBody.velocity, Vector3.forward) + Vector3.Project(_rigidBody.velocity, Vector3.right);

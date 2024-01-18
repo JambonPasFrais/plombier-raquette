@@ -142,7 +142,7 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -3608389540985164131, guid: 584dbe308431846488876335b2cef5d8, type: 3}
   m_Bones:
-  - {fileID: 8649705543410439525}
+  - {fileID: 8115989196412010828}
   - {fileID: 3454661494586265234}
   - {fileID: 3354018836704760653}
   - {fileID: 8614333011911751912}
@@ -151,7 +151,7 @@ SkinnedMeshRenderer:
   - {fileID: 1097371286613906406}
   - {fileID: 2864940815846608496}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 8649705543410439525}
+  m_RootBone: {fileID: 8115989196412010828}
   m_AABB:
     m_Center: {x: 0.000000007450581, y: 0.000000003958121, z: 0.06294724}
     m_Extent: {x: 0.02301768, y: 0.002741231, z: 0.037958436}
@@ -345,7 +345,7 @@ Transform:
   m_Children:
   - {fileID: 3354018836704760653}
   - {fileID: 8614333011911751912}
-  m_Father: {fileID: 8649705543410439525}
+  m_Father: {fileID: 8115989196412010828}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &493274470121571075
@@ -1138,40 +1138,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.06951539, z: 0.006320279}
     m_Extent: {x: 0.052373745, y: 0.033130698, z: 0.04309959}
   m_DirtyAABB: 0
---- !u!1 &1094771065432627096
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8649705543410439525}
-  m_Layer: 3
-  m_Name: Root.000
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8649705543410439525
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094771065432627096}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000000008089484, y: -0.000000004044742, z: -0.0031602979}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6523534482216486800}
-  - {fileID: 1097371286613906406}
-  - {fileID: 3454661494586265234}
-  m_Father: {fileID: 368624430002965886}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1154439332305210591
 GameObject:
   m_ObjectHideFlags: 0
@@ -2197,7 +2163,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9035949239142479194}
-  m_Father: {fileID: 8649705543410439525}
+  m_Father: {fileID: 8115989196412010828}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2354828456193759919
@@ -3742,7 +3708,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8649705543410439525}
+  - {fileID: 8115989196412010828}
   m_Father: {fileID: 8926699575928143003}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4978,7 +4944,7 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 1996737551401567053, guid: 584dbe308431846488876335b2cef5d8, type: 3}
   m_Bones:
-  - {fileID: 8649705543410439525}
+  - {fileID: 8115989196412010828}
   - {fileID: 3454661494586265234}
   - {fileID: 3354018836704760653}
   - {fileID: 8614333011911751912}
@@ -4987,7 +4953,7 @@ SkinnedMeshRenderer:
   - {fileID: 1097371286613906406}
   - {fileID: 2864940815846608496}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 8649705543410439525}
+  m_RootBone: {fileID: 8115989196412010828}
   m_AABB:
     m_Center: {x: 0.0000000081490725, y: 0.0000000041909516, z: 0.022975188}
     m_Extent: {x: 0.002844015, y: 0.0026852428, z: 0.0022059307}
@@ -5071,7 +5037,7 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 7722833368139569432, guid: 584dbe308431846488876335b2cef5d8, type: 3}
   m_Bones:
-  - {fileID: 8649705543410439525}
+  - {fileID: 8115989196412010828}
   - {fileID: 3454661494586265234}
   - {fileID: 3354018836704760653}
   - {fileID: 8614333011911751912}
@@ -5080,7 +5046,7 @@ SkinnedMeshRenderer:
   - {fileID: 1097371286613906406}
   - {fileID: 2864940815846608496}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 8649705543410439525}
+  m_RootBone: {fileID: 8115989196412010828}
   m_AABB:
     m_Center: {x: 0.000087832566, y: 0.000006227987, z: 0.0019435361}
     m_Extent: {x: 0.0041415696, y: 0.0035686428, z: 0.015953239}
@@ -5114,7 +5080,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2864940815846608496}
-  m_Father: {fileID: 8649705543410439525}
+  m_Father: {fileID: 8115989196412010828}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4380720790635964153
@@ -5855,7 +5821,7 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -1182804307519380989, guid: 584dbe308431846488876335b2cef5d8, type: 3}
   m_Bones:
-  - {fileID: 8649705543410439525}
+  - {fileID: 8115989196412010828}
   - {fileID: 3454661494586265234}
   - {fileID: 3354018836704760653}
   - {fileID: 8614333011911751912}
@@ -5864,7 +5830,7 @@ SkinnedMeshRenderer:
   - {fileID: 1097371286613906406}
   - {fileID: 2864940815846608496}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 8649705543410439525}
+  m_RootBone: {fileID: 8115989196412010828}
   m_AABB:
     m_Center: {x: 0.0000000081490725, y: 0.000000003958121, z: 0.019341093}
     m_Extent: {x: 0.003404078, y: 0.0030886552, z: 0.0014443155}
@@ -6600,7 +6566,7 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: 9ec6ffe3febfe4a4ba5b5505a53818d6, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 94fed239063e71143a8b68b2f35cead7, type: 2}
   _targets:
   - {fileID: 0}
   - {fileID: 0}
@@ -8080,7 +8046,7 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -2122557400164790671, guid: 584dbe308431846488876335b2cef5d8, type: 3}
   m_Bones:
-  - {fileID: 8649705543410439525}
+  - {fileID: 8115989196412010828}
   - {fileID: 3454661494586265234}
   - {fileID: 3354018836704760653}
   - {fileID: 8614333011911751912}
@@ -8089,7 +8055,7 @@ SkinnedMeshRenderer:
   - {fileID: 1097371286613906406}
   - {fileID: 2864940815846608496}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 8649705543410439525}
+  m_RootBone: {fileID: 8115989196412010828}
   m_AABB:
     m_Center: {x: -0.0000015776604, y: 0.0000000040454324, z: 0.07128479}
     m_Extent: {x: 0.021146715, y: 0.0001, z: 0.027581565}
@@ -10441,6 +10407,40 @@ Transform:
   m_Children:
   - {fileID: 5581587562951559279}
   m_Father: {fileID: 7539381350443026400}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8698006142059856717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8115989196412010828}
+  m_Layer: 3
+  m_Name: Root.000
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8115989196412010828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698006142059856717}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.000000008089484, y: -0.000000004044742, z: -0.0031602979}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6523534482216486800}
+  - {fileID: 1097371286613906406}
+  - {fileID: 3454661494586265234}
+  m_Father: {fileID: 368624430002965886}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8727818715416507969

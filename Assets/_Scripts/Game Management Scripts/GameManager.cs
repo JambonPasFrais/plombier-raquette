@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections;
@@ -10,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
     #region PUBLIC FIELDS
 
@@ -27,13 +28,19 @@ public class GameManager : MonoBehaviour
     [Header("Ball Management")]
     public GameObject BallPrefab;
 
-    [SerializeField] private GameObject _smashTargetGo;
-
     [HideInInspector] public bool ServiceOnOriginalSide;
 
     #endregion
 
     #region PRIVATE FIELDS
+
+    [Header("Loading Screen")]
+    [SerializeField] private GameObject _loadingScreen;
+    [SerializeField] private TMPro.TextMeshProUGUI _animatedLoadingText;
+    [SerializeField] private float _pointsAppearancePeriod;
+
+    [Header("Smash Target")]
+    [SerializeField] private GameObject _smashTargetGo;
 
     [Header("Environment Objects")]
     [SerializeField] private GameObject _net;
@@ -41,20 +48,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FieldBorderPointsContainer[] _borderPointsContainers;
     [SerializeField] private float _leftFaultLineXFromFirstSide;
     [SerializeField] private SupporterManager _supporterManager;
+    [SerializeField] private GameObject _onlinePlayerPrefab;
 
 	[Header("Canvas References")]
-	[SerializeField] private GameObject _inGameUI;
+    [SerializeField] private GameObject _inGameUI;
 	[SerializeField] private GameObject _endGameUI;
 
 	private Dictionary<ControllersParent, Teams> _teamControllersAssociated;
     private Dictionary<Teams, FieldBorderPointsContainer> _fieldBorderPointsByTeam;
     private Dictionary<Teams, float[]> _faultLinesXByTeam;
 
-    [SerializeField] private GameObject _ballInstance;
+    private GameObject _ballInstance;
     private int _serverIndex;
     private Transform _serviceBallInitializationPoint;
     private System.Random random = new System.Random();
     private Coroutine _lastCoroutineStarted;
+
+    private Coroutine _loadingScreenAnimatedTextCoroutine;
 
     #endregion
 
@@ -90,7 +100,35 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
+        GameState = GameState.BEFOREGAME;
+
         _ballInstance = Instantiate(BallPrefab);
+
+        if (PhotonNetwork.IsConnected)
+        {
+            _loadingScreen.SetActive(true);
+            _inGameUI.SetActive(false);
+
+            InstantiatePlayer(PhotonNetwork.IsMasterClient);
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                ((PlayerController)_controllers[0]).BallInstance = _ballInstance.GetComponent<Ball>();
+                ((PlayerController)_controllers[0]).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
+            }
+            else
+            {
+                photonView.RPC("AskFindController", RpcTarget.MasterClient);
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsConnected && _loadingScreenAnimatedTextCoroutine == null && GameState == GameState.BEFOREGAME)  
+        {
+            _loadingScreenAnimatedTextCoroutine = StartCoroutine(AnimateLoadingText());
+        }
     }
 
     public void Init()
@@ -165,18 +203,37 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-/*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
+    private IEnumerator AnimateLoadingText()
     {
-        foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
+        while (_loadingScreen.activeSelf)
         {
-            if (kvp.Key != currentPlayer)
+            yield return new WaitForSeconds(_pointsAppearancePeriod);
+
+            if (_animatedLoadingText.text == ". . . ")
             {
-                return kvp.Value;
+                _animatedLoadingText.text = "";
+            }
+            else
+            {
+                _animatedLoadingText.text += ". ";
             }
         }
 
-        return null;
-    }*/
+        _loadingScreenAnimatedTextCoroutine = null;
+    }
+
+    /*    private Teams? GetOtherPlayerTeam(ControllersParent currentPlayer)
+        {
+            foreach (KeyValuePair<ControllersParent, Teams> kvp in _teamControllersAssociated) 
+            {
+                if (kvp.Key != currentPlayer)
+                {
+                    return kvp.Value;
+                }
+            }
+
+            return null;
+        }*/
 
     public Teams? GetPlayerTeam(ControllersParent currentPlayer)
     {
@@ -327,10 +384,14 @@ public class GameManager : MonoBehaviour
     {
         _controllers[_serverIndex].PlayerState = PlayerStates.SERVE;
         _serviceBallInitializationPoint = _controllers[_serverIndex].ServiceBallInitializationPoint;
-        _ballInstance.transform.position = _serviceBallInitializationPoint.position;
+
+        if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected)
+        {
+            _ballInstance.transform.position = _serviceBallInitializationPoint.position;
+        }
     }
 
-    public void DesactivateAllServiceDetectionVolumes()
+    public void DisableAllServiceDetectionVolumes()
     {
         foreach(ControllersParent controller in _controllers)
         {
@@ -349,4 +410,198 @@ public class GameManager : MonoBehaviour
     {
         return GameParameters.IsTournamentMode && GameParameters.Instance.CurrentTournamentInfos.CurrentRound < 3;
     }
+
+    private void InstantiatePlayer(bool isMasterClient)
+    {
+        GameObject playerObject = PhotonNetwork.Instantiate(_onlinePlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+        PlayerController playerController = playerObject.GetComponent<PlayerController>();
+
+        if (isMasterClient)
+        {
+            playerController.PlayerTeam = Teams.TEAM1;
+        }
+        else
+        {
+            playerController.PlayerTeam = Teams.TEAM2;
+        }
+
+        _controllers.Add(playerController);
+    }
+
+    private void FindController()
+    {
+        ControllersParent[] controllers = FindObjectsOfType<ControllersParent>();
+        foreach (ControllersParent controller in controllers)
+        {
+            if (!_controllers.Contains(controller))
+            {
+                controller.PlayerTeam = _controllers[0].PlayerTeam == Teams.TEAM1 ? Teams.TEAM2 : Teams.TEAM1;
+                controller.gameObject.GetComponent<PlayerInput>().enabled = false;
+                _controllers.Add(controller);
+            }
+        }
+
+        if (PhotonNetwork.IsMasterClient && _controllers.Count == PhotonNetwork.CurrentRoom.PlayerCount && GameState == GameState.BEFOREGAME)
+        {
+            photonView.RPC("AskFindController", RpcTarget.Others);
+            ((PlayerController)_controllers[1]).BallInstance = _ballInstance.GetComponent<Ball>();
+            ((PlayerController)_controllers[1]).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
+        }
+        else if (!PhotonNetwork.IsMasterClient)
+        {
+            foreach (ControllersParent controller in _controllers)
+            {
+                ((PlayerController)controller).BallInstance = _ballInstance.GetComponent<Ball>();
+                ((PlayerController)controller).PlayerCameraController.BallInstance = _ballInstance.GetComponent<Ball>();
+            }
+
+            photonView.RPC("StartGame", RpcTarget.AllViaServer);
+        }
+    }
+
+    private void StartOnlineGame()
+    {
+        ServiceOnOriginalSide = true;
+
+        GameState = GameState.SERVICE;
+        foreach (ControllersParent controller in _controllers)
+        {
+            controller.PlayerState = PlayerStates.IDLE;
+        }
+
+        _serverIndex = PhotonNetwork.IsMasterClient ? 0 : 1;
+        _controllers[_serverIndex].IsServing = true;
+        _teamControllersAssociated = new Dictionary<ControllersParent, Teams>();
+        _ballInstance.GetComponent<Ball>().ResetBall();
+
+        int i = 0;
+        foreach (ControllersParent controller in _controllers)
+        {
+            Teams team = (Teams)Enum.GetValues(typeof(Teams)).GetValue(i);
+            _teamControllersAssociated.Add(controller, team);
+            i++;
+        }
+
+        _fieldBorderPointsByTeam = new Dictionary<Teams, FieldBorderPointsContainer>();
+
+        foreach (FieldBorderPointsContainer borderPointsContainer in _borderPointsContainers)
+        {
+            _fieldBorderPointsByTeam.Add(borderPointsContainer.Team, borderPointsContainer);
+        }
+
+        _faultLinesXByTeam = new Dictionary<Teams, float[]>()
+        {
+            {Teams.TEAM1, new float[]{ _leftFaultLineXFromFirstSide, -_leftFaultLineXFromFirstSide } },
+            {Teams.TEAM2, new float[]{ -_leftFaultLineXFromFirstSide, _leftFaultLineXFromFirstSide } }
+        };
+
+        GameManager.Instance.CameraManager.InitSoloCamera();
+        GameManager.Instance.SideManager.SetSidesInOnlineMatch(true, ServiceOnOriginalSide, PhotonNetwork.IsMasterClient);
+        GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
+
+        if (PhotonNetwork.IsConnected)
+        {
+            _loadingScreen.SetActive(false);
+            _inGameUI.SetActive(true);
+        }
+    }
+
+    #region RPC METHODS
+
+    [PunRPC]
+    private void AskFindController()
+    {
+        FindController();
+    }
+
+    [PunRPC]
+    private void StartGame()
+    {
+        StartOnlineGame();
+    }
+
+    [PunRPC]
+    public void BallThrown()
+    {
+        _ballInstance.GetComponent<Rigidbody>().isKinematic = false;
+        _ballInstance.GetComponent<Rigidbody>().AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
+    }
+
+    [PunRPC]
+    private void ShootOnline(Vector3 ballPosition, float force, string hitType, float risingForceFactor, Vector3 normalizedHorizontalDirection, Player shootingPlayer)
+    {
+        _ballInstance.transform.position = ballPosition;
+
+        PlayerController shootingPlayerController;
+
+        if (Instance.Controllers[0].gameObject.GetPhotonView().Owner == shootingPlayer)
+        {
+            shootingPlayerController = (PlayerController)Instance.Controllers[0];
+        }
+        else
+        {
+            shootingPlayerController = (PlayerController)Instance.Controllers[1];
+            shootingPlayerController.PlayerAndGameStatesUpdating();
+        }
+
+        _ballInstance.GetComponent<Ball>().InitializeActionParameters(NamedActions.GetActionParametersByName(_controllers[0].GetComponent<PlayerController>().PossibleActions, hitType));
+        _ballInstance.GetComponent<Ball>().InitializePhysicsMaterial(hitType == "Drop" ? NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Drop") :
+            NamedPhysicMaterials.GetPhysicMaterialByName(_controllers[0].GetComponent<PlayerController>().PossiblePhysicMaterials, "Normal"));
+        _ballInstance.GetComponent<Ball>().ApplyForce(force, risingForceFactor, normalizedHorizontalDirection, shootingPlayerController);
+    }
+
+    [PunRPC]
+    public void SetSidesInOnlineMatch(bool serveRight, bool originalSides)
+    {
+        SideManager.SetSidesInOnlineMatch(serveRight, originalSides, PhotonNetwork.IsMasterClient);
+    }
+
+    [PunRPC]
+    public void ServingPlayerResetAfterWrongFirstService()
+    {
+        Ball ball = _ballInstance.GetComponent<Ball>();
+
+        ball.LastPlayerToApplyForce.ServicesCount++;
+        ball.LastPlayerToApplyForce.BallServiceDetectionArea.gameObject.SetActive(true);
+        ball.LastPlayerToApplyForce.ResetLoadedShotVariables();
+
+        GameManager.Instance.ServiceManager.EnableLockServiceColliders();
+
+        ball.ResetBall();
+    }
+
+    [PunRPC]
+    private void EndPoint(Teams winningPointTeam)
+    {
+        GameManager.Instance.EndOfPoint(winningPointTeam);
+        GameManager.Instance.ScoreManager.AddPoint(winningPointTeam);
+        _ballInstance.GetComponent<Ball>().ResetBall();
+    }
+
+    [PunRPC]
+    public void ResetBall()
+    {
+        _ballInstance.GetComponent<Ball>().ResetBall();
+    }
+
+    #region ONLINE SMASH MANAGEMENT
+
+    [PunRPC]
+    public void OnlineBallPositionSettingDuringSmash(Vector3 ballPosition)
+    {
+        _ballInstance.GetComponent<Rigidbody>().isKinematic = true;
+        _ballInstance.transform.position = ballPosition;
+        ((PlayerController)_controllers[0]).OtherPlayerIsSmashing = true;
+    }
+
+    [PunRPC]
+    public void SmashShot()
+    {
+        _ballInstance.GetComponent<Rigidbody>().isKinematic = false;
+        ((PlayerController)_controllers[0]).OtherPlayerIsSmashing = false;
+    }
+
+    #endregion
+
+    #endregion
 }

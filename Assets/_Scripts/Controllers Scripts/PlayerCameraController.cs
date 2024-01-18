@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
@@ -27,10 +28,11 @@ public class PlayerCameraController : MonoBehaviour
     private bool _isFirstPersonView;
     private Vector2 _targetMovements;
     
-    #region GETTERS
+    #region GETTERS & SETTERS
 
     public GameObject FirstPersonCamera => _firstPersonCamera;
     public bool IsFirstPersonView => _isFirstPersonView;
+    public Ball BallInstance { set { _ballInstance = value; } }
     
     #endregion
 
@@ -39,7 +41,6 @@ public class PlayerCameraController : MonoBehaviour
     void Start()
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
-        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
         _smashTargetGo = GameManager.Instance.SmashTargetGo;
     }
 
@@ -50,9 +51,11 @@ public class PlayerCameraController : MonoBehaviour
             if (!_ballInstance.Rb.isKinematic)
             {
                 _ballInstance.Rb.isKinematic = !_ballInstance.Rb.isKinematic;
-            }
 
-            _ballInstance.gameObject.transform.position = _ballSmashPosition.position;
+                _ballInstance.gameObject.transform.position = _ballSmashPosition.position;
+
+                GameManager.Instance.photonView.RPC("OnlineBallPositionSettingDuringSmash", RpcTarget.Others, _ballSmashPosition.position);
+            }
 
             Vector3 rotation = new Vector3(-_targetMovements.y, _targetMovements.x, 0);
             
@@ -75,7 +78,7 @@ public class PlayerCameraController : MonoBehaviour
     #endregion
     
     #region FUNCTIONS CALLED EXTERNALLY
-    
+
     public void ToggleFirstPersonView()
     {
         Vector3 horizontalBallDirection = Vector3.Project(_ballInstance.Rb.velocity, Vector3.forward) +

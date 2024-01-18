@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -78,15 +79,27 @@ public class ScoreDisplayingUI : MonoBehaviour
 
 		if (!GameParameters.Instance.IsDouble)
 		{
-			for (int i = 0; i < 2; i++)
+			if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected) 
 			{
-				_playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
-				_charactersFacesParentSingle[i].gameObject.SetActive(true);
-				_charactersFacesBackground[i].color = _playersColors[i];
-				_charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
-			}
-		}
-
+                for (int i = 0; i < 2; i++)
+                {
+                    _playersColors.Add(GameParameters.Instance.PlayersCharacter[i].CharacterPrimaryColor);
+                    _charactersFacesParentSingle[i].gameObject.SetActive(true);
+                    _charactersFacesBackground[i].color = _playersColors[i];
+                    _charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[i].Picture;
+                }
+            }
+			else
+			{
+                for (int i = 0; i < 2; i++)
+                {
+					_playersColors.Add(GameParameters.Instance.PlayersCharacter[(i + 1) % 2].CharacterPrimaryColor);
+                    _charactersFacesParentSingle[i].gameObject.SetActive(true);
+                    _charactersFacesBackground[i].color = _playersColors[i];
+                    _charactersFacesSingle[i].sprite = GameParameters.Instance.PlayersCharacter[(i + 1) % 2].Picture;
+                }
+            }
+        }
 		else
 		{
 			for(int i = 0; i < 2; i++)

@@ -2834,7 +2834,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a1e919917bb920498219ca6e5db50f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _trainingManager: {fileID: 0}
   _boxCollider: {fileID: 7816196676974858508}
   _risingForceMinimumFactor: 0.8
   _risingForceMaximumFactor: 1.1
@@ -6206,6 +6205,8 @@ GameObject:
   - component: {fileID: 7312906625559688185}
   - component: {fileID: 8610553696326952507}
   - component: {fileID: 7724758252377468592}
+  - component: {fileID: 32292167935547046}
+  - component: {fileID: 1913454307727717527}
   m_Layer: 3
   m_Name: Agent
   m_TagString: Untagged
@@ -6527,46 +6528,6 @@ MonoBehaviour:
     m_ActionId: 06e53f90-124f-4b04-b16a-b779b1f38378
     m_ActionName: Player/Throw[/Keyboard/rightArrow,/Keyboard/leftArrow,/Keyboard/downArrow]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5cbd6826-4945-4d68-8895-3095e0a90455
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1eb66f71-ca47-47b9-8265-4e9ca7279905
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1dc48233-c9ef-4037-a1fc-960bd75aa509
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 96120ba3-a3cf-4352-bfd1-225aee26928a
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3d29b9e4-10f5-4cfd-b07b-a7184d229363
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 59c463e7-ecc1-4972-94d3-3d956c981d09
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 11c98dc3-914d-4319-af31-109cc3b13aed
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4037cf3a-233b-45d5-b15b-819f9478c13f
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c7fcbc15-d064-4703-8534-0487d8ede1d0
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d54bf2cd-b105-4673-b77a-4c280ad02bd9
-    m_ActionName: UI/TrackedDeviceOrientation
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 134219465042744653}
         m_TargetAssemblyTypeName: AgentController, Assembly-CSharp
@@ -6598,9 +6559,41 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 44001010-2874-4318-959f-aa17fca1a600
     m_ActionName: Player/TechnicalShot
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 194e7edb-539f-4ce4-bc56-402de8fd2a82
+    m_ActionName: Game/AimShot[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e35c7b60-ad1a-42d6-b072-31830aa2fe13
+    m_ActionName: Game/PrepSmash[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7c79a146-536e-4a69-a19f-f7ad694941c7
+    m_ActionName: Game/AimSmash[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 572e612e-4d1a-41c3-9cee-e0ae8cab8b02
+    m_ActionName: Game/Smash[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bafe9232-c6bd-4dfc-932e-7b8aefe77524
+    m_ActionName: Menu/Punch[/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: aad4b6ed-acc1-47f2-b6ea-b13ac2add1ba
+    m_ActionName: Menu/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 68105f7d-94ca-4cf8-a936-01ef8f602863
+    m_ActionName: Menu/Select[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a0c9cc34-ef63-4367-a238-8f4e22466321
+    m_ActionName: Menu/Deselect[/Keyboard/backspace]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &134219465042744653
@@ -6622,17 +6615,21 @@ MonoBehaviour:
   IsServing: 0
   PlayerState: 0
   ServicesCount: 0
-  _trainingManager: {fileID: 0}
+  PlayerTeam: 0
+  IsInOriginalSide: 0
+  _chargingShotGo: {fileID: 0}
   _actionParameters: {fileID: 11400000, guid: 871ec21a1db1d6f43b7357ce27093d96, type: 2}
-  _playerTeam: 1
   _ballServiceDetectionArea: {fileID: 2235423786061844894}
   _serviceBallInitializationPoint: {fileID: 6716864470333118959}
   _minimumShotForce: 325
   _maximumShotForce: 450
-  _extremeShootingDirectionLateralDistanceMargin: 0.1
   _maximumDistanceToNet: 11.89
   _forceMinimumClampFactor: 0.45
   _forceMaximumClampFactor: 1
+  _playerAnimator: {fileID: 0}
+  _isShooting: 0
+  _isSmashing: 0
+  _isCommunicating: 0
   _possibleActions:
   - Name: Flat
     Parameters: {fileID: 11400000, guid: bfd159a40f0c6ef4081fe9ffbb8ed51d, type: 2}
@@ -6646,7 +6643,7 @@ MonoBehaviour:
     Parameters: {fileID: 11400000, guid: b5208ba1a45713d46909a925ba4e44c1, type: 2}
   _possiblePhysicMaterials:
   - Name: Normal
-    PhysicMaterial: {fileID: 13400000, guid: f6dc4df3b61b4224f8e68c5bc8e628e8, type: 2}
+    PhysicMaterial: {fileID: 13400000, guid: 94fed239063e71143a8b68b2f35cead7, type: 2}
   - Name: Drop
     PhysicMaterial: {fileID: 13400000, guid: ad26db2a57054894896000eb51a3a26f, type: 2}
   _rigidBody: {fileID: 1662565903311258972}
@@ -6714,6 +6711,39 @@ MonoBehaviour:
   NumStepsToRecord: 0
   DemonstrationName: ILDemonstration3
   DemonstrationDirectory: Demonstrations
+--- !u!95 &32292167935547046
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4997082742284177480}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1913454307727717527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4997082742284177480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ec90366c2d72c458d81102681300ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5010461871572363494
 GameObject:
   m_ObjectHideFlags: 0

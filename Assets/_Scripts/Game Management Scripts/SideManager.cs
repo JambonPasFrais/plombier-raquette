@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,28 +7,25 @@ using UnityEngine.Serialization;
 
 public class SideManager : MonoBehaviour
 {
-    #region PRIVATE FIELDS
+    #region PUBLIC FIELDS
 
-	[SerializeField] private  Transform _serviceNodesFirstSideContainer;
-	[SerializeField] private Transform _serviceNodesSecondSideContainer;
-	[SerializeField] private GameObject _firstSideCollidersParentObject;
-	[SerializeField] private GameObject _secondSideCollidersParentObject;
-	//SerializeField] private Transform _cameraParent;
-	//[SerializeField] private List<GameObject> _cameras;
-
-	private Dictionary<string, List<Transform>> _servicePointsFirstSide = new Dictionary<string, List<Transform>>();
-	private Dictionary<string, List<Transform>> _servicePointsSecondSide = new Dictionary<string, List<Transform>>();
-	//private Transform _activeCameraTransform;
+    [HideInInspector] public List<GameObject> Cameras;
 
     #endregion
 
-    #region GETTERS
+    #region PRIVATE FIELDS
 
-	//public Transform ActiveCameraTransform { get { return GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(); } }
+    [SerializeField] private  Transform _serviceNodesFirstSideContainer;
+	[SerializeField] private Transform _serviceNodesSecondSideContainer;
+	[SerializeField] private GameObject _firstSideCollidersParentObject;
+	[SerializeField] private GameObject _secondSideCollidersParentObject;
 
-	#endregion
+    private Dictionary<string, List<Transform>> _servicePointsFirstSide = new Dictionary<string, List<Transform>>();
+	private Dictionary<string, List<Transform>> _servicePointsSecondSide = new Dictionary<string, List<Transform>>();
 
-	private void Awake()
+    #endregion
+
+    private void Awake()
 	{
 		for (int i = 0; i < _serviceNodesFirstSideContainer.childCount; i++)
 		{
@@ -200,17 +198,81 @@ public class SideManager : MonoBehaviour
 		{
 			for (int i = 0; i < _firstSideCollidersParentObject.transform.childCount; i++) 
 			{
-				_firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[0];
-				_secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[1];
+				_firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = 
+					players[(!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient) ? 0 : 1]; ;
+				_secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = 
+					players[(!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient) ? 1 : 0];
             }
 		}
 		else
 		{
             for (int i = 0; i < _firstSideCollidersParentObject.transform.childCount; i++)
             {
-                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[1];
-                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = players[0];
+                _firstSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = 
+					players[(!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient) ? 1 : 0];
+                _secondSideCollidersParentObject.transform.GetChild(i).gameObject.GetComponent<FieldGroundPart>().OwnerPlayer = 
+					players[(!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient) ? 0 : 1];
             }
         }
 	}
+
+    public void OnlineWrongFirstService(bool serveRight, bool originalSides)
+    {
+        GameManager.Instance.photonView.RPC("SetSidesInOnlineMatch", RpcTarget.AllViaServer, serveRight, originalSides);
+        GameManager.Instance.photonView.RPC("ServingPlayerResetAfterWrongFirstService", RpcTarget.AllViaServer);
+    }
+
+    public void SetSidesInOnlineMatch(bool serveRight, bool originalSides, bool isMasterClient)
+    {
+        string side = "";
+        List<ControllersParent> players = GameManager.Instance.Controllers;
+        side = serveRight ? "Right" : "Left";
+
+        if (originalSides)
+        {
+            if (isMasterClient)
+            {
+                Cameras[0].SetActive(true);
+                Cameras[1].SetActive(false);
+                players[0].transform.position = _servicePointsFirstSide[side][0].position;
+                players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+                players[0].IsInOriginalSide = true;
+                players[1].IsInOriginalSide = false;
+            }
+            else
+            {
+                Cameras[0].SetActive(false);
+                Cameras[1].SetActive(true);
+                players[0].transform.position = _servicePointsSecondSide[side][0].position;
+                players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+                players[0].IsInOriginalSide = false;
+                players[1].IsInOriginalSide = true;
+            }
+        }
+        else
+        {
+            if (isMasterClient)
+            {
+                Cameras[0].SetActive(false);
+                Cameras[1].SetActive(true);
+                players[0].transform.position = _servicePointsSecondSide[side][0].position;
+                players[0].transform.rotation = _servicePointsSecondSide[side][0].rotation;
+                players[0].IsInOriginalSide = false;
+                players[1].IsInOriginalSide = true;
+            }
+            else
+            {
+                Cameras[0].SetActive(true);
+                Cameras[1].SetActive(false);
+                players[0].transform.position = _servicePointsFirstSide[side][0].position;
+                players[0].transform.rotation = _servicePointsFirstSide[side][0].rotation;
+                players[0].IsInOriginalSide = true;
+                players[1].IsInOriginalSide = false;
+            }
+        }
+
+        GameManager.Instance.CameraManager.ChangeCameraSide(originalSides);
+
+        SetCollidersOwnerPlayers(players, originalSides);
+    }
 }

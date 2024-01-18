@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ public class ControllersParent : Agent
     #endregion
 
     #endregion
-    
+
     #region UNITY FUNCTIONS
 
     private void Awake()
@@ -92,7 +93,6 @@ public class ControllersParent : Agent
     private Vector3 CalculateExtremeShootingDirection(bool rightSideIsTargeted, float forceToDistanceFactor, float actualForce, Vector3 forwardVector)
     {
         float distanceToFirstReboundPosition = forceToDistanceFactor * actualForce;
-        //Debug.Log($"Predicted distance travelled until first rebound : {distanceToFirstReboundPosition}");
         Vector3 rightVector = GameManager.Instance.CameraManager.GetActiveCameraTransformBySide(IsInOriginalSide).right;
         float maximumLateralDistance;
 
@@ -192,16 +192,15 @@ public class ControllersParent : Agent
 
         if (!ballRigidBody.isKinematic)
             return;
-        
-        ballRigidBody.isKinematic = false;
-        ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
 
-        
-        /*if (GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].PlayerState == PlayerStates.SERVE && GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].IsServing && GameManager.Instance.GameState == GameState.SERVICE && ballRigidBody.isKinematic)
+        if (PhotonNetwork.IsConnected)
         {
-            ballRigidBody.isKinematic = false;
-            ballRigidBody.AddForce(Vector3.up * GameManager.Instance.Controllers[GameManager.Instance.ServerIndex].ActionParameters.ServiceThrowForce);
-        }*/
+            GameManager.Instance.photonView.RPC("BallThrown", RpcTarget.AllViaServer);
+        }
+        else
+        {
+            GameManager.Instance.BallThrown();
+        }
     }
     
     #region ANIMATIONS

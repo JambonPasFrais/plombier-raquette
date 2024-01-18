@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,8 +63,17 @@ public class ScoreManager : MonoBehaviour
 				_scoreDisplaying.UpdateGameScore(0, _possiblePoints[_currentGameScore.Item1]);
 				_scoreDisplaying.UpdateGameScore(1, _possiblePoints[_currentGameScore.Item2]);
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+
+				if (PhotonNetwork.IsConnected)
+				{
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+					!GameManager.Instance.ServiceManager.ChangeSides, PhotonNetwork.IsMasterClient);
+                }
+				else
+				{
+                    GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
+                }
 			}
 			else
 			{
@@ -79,8 +89,17 @@ public class ScoreManager : MonoBehaviour
 				}
 
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+
+				if (PhotonNetwork.IsConnected)
+				{
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+					!GameManager.Instance.ServiceManager.ChangeSides, PhotonNetwork.IsMasterClient);
+                }
+				else
+				{
+                    GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
+                }
 			}
 		}
 		else
@@ -106,15 +125,33 @@ public class ScoreManager : MonoBehaviour
 			{
 				GameManager.Instance.ServiceOnOriginalSide = !GameManager.Instance.ServiceOnOriginalSide;
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+
+				if (PhotonNetwork.IsConnected)
+				{
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+					!GameManager.Instance.ServiceManager.ChangeSides, PhotonNetwork.IsMasterClient);
+                }
+				else
+				{
+                    GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
+                }
 			}
 			else if ((_currentGameScore.Item1 + _currentGameScore.Item2) % 2 == 1)
 			{
 				GameManager.Instance.ChangeServer();
 				GameManager.Instance.ServiceManager.SetServiceBoxCollider(false);
-				GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+
+                if (PhotonNetwork.IsConnected)
+                {
+                    GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+                    !GameManager.Instance.ServiceManager.ChangeSides, PhotonNetwork.IsMasterClient);
+                }
+                else
+                {
+                    GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 					!GameManager.Instance.ServiceManager.ChangeSides);
+                }
 			}
         }
     }
@@ -143,8 +180,17 @@ public class ScoreManager : MonoBehaviour
 		_score[_currentSetIndex] = newScore;
 
 		GameManager.Instance.ServiceManager.SetServiceBoxCollider(true);
-		GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
+
+		if (PhotonNetwork.IsConnected)
+		{
+            GameManager.Instance.SideManager.SetSidesInOnlineMatch(GameManager.Instance.ServiceManager.ServeRight,
+			!GameManager.Instance.ServiceManager.ChangeSides, PhotonNetwork.IsMasterClient);
+        }
+		else
+		{
+            GameManager.Instance.SideManager.SetSides(GameManager.Instance.Controllers, GameManager.Instance.ServiceManager.ServeRight,
 			!GameManager.Instance.ServiceManager.ChangeSides);
+        }
 
 		// If the players changed sides, the field border points ownership and the fault lines x values by team need to be changed.
 		if (GameManager.Instance.ServiceManager.NbOfGames == 1)

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
@@ -29,25 +30,38 @@ public class CameraManager : MonoBehaviour
         _soloCameras = new List<Camera>();
         //_activeCameraTransformsBySide = new List<Transform>();
         _splitScreenCamerasBySide = new Dictionary<string, List<Camera>>();
-        
+
         for (int i = 0; i < _soloCamerasContainer.childCount; i++)
         {
             _soloCameras.Add(_soloCamerasContainer.GetChild(i).gameObject.GetComponent<Camera>());
         }
-        
-        for (int i = 0; i < _splitScreenCamerasContainer.childCount; i++)
-        {
-            List<Camera> cameraListForCurrentSide = new List<Camera>();
-            
-            for (int j = 0; j < _splitScreenCamerasContainer.GetChild(i).childCount; j++)
-            {
-                cameraListForCurrentSide.Add(_splitScreenCamerasContainer.GetChild(i).GetChild(j).GetComponent<Camera>());
-            }
 
-            _splitScreenCamerasBySide.Add(i == 0 ? "Left" : "Right", cameraListForCurrentSide);
+        if (!PhotonNetwork.IsConnected)
+        {
+            for (int i = 0; i < _splitScreenCamerasContainer.childCount; i++)
+            {
+                List<Camera> cameraListForCurrentSide = new List<Camera>();
+
+                for (int j = 0; j < _splitScreenCamerasContainer.GetChild(i).childCount; j++)
+                {
+                    cameraListForCurrentSide.Add(_splitScreenCamerasContainer.GetChild(i).GetChild(j).GetComponent<Camera>());
+                }
+
+                _splitScreenCamerasBySide.Add(i == 0 ? "Left" : "Right", cameraListForCurrentSide);
+            }
         }
 
         _endGameUICamera.SetActive(false);
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.SideManager.Cameras = new List<GameObject>();
+
+        for (int i = 0; i < _soloCamerasContainer.childCount; i++)
+        {
+            GameManager.Instance.SideManager.Cameras.Add(_soloCamerasContainer.GetChild(i).gameObject);
+        }
     }
 
     public void InitSplitScreenCameras()
@@ -91,19 +105,19 @@ public class CameraManager : MonoBehaviour
 
             _splitScreenCamerasBySide[isOriginalSide ? "Right" : "Left"][0].gameObject.SetActive(false);
             _splitScreenCamerasBySide[isOriginalSide ? "Right" : "Left"][1].gameObject.SetActive(false);
-
-            /*
-            foreach (var splitScreenCameraFromSide in _splitScreenCamerasBySide.Values)
-            {               
-                splitScreenCameraFromSide[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
-                splitScreenCameraFromSide[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
-            }*/
         }
         else
         {
-            //_activeCameraTransform = _soloCameras[isOriginalSide ? 0 : 1].transform;
-            _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
-            _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
+            if ((PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected) 
+            {
+                _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(true);
+                _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(false);
+            }
+            else
+            {
+                _soloCameras[isOriginalSide ? 1 : 0].gameObject.SetActive(true);
+                _soloCameras[isOriginalSide ? 0 : 1].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -118,8 +132,6 @@ public class CameraManager : MonoBehaviour
                 if (cameraBySide[i].gameObject.activeSelf)
                     return cameraBySide[i].transform;
             }
-
-            //throw new SyntaxErrorException("No Camera active for side: " + isOriginalSide);
         }
 
         return _soloCameras[isOriginalSide ? 0 : 1].transform;
