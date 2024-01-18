@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
 			}
             else
             {
-				_controllers[i].LaunchCelebration();
+				_controllers[i].LaunchDepreciation();
 				GameParameters.Instance.PlayersCharacter[i].PlaySound("Sad");
 			}
 
