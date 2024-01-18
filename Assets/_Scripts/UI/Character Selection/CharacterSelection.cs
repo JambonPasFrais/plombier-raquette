@@ -306,6 +306,7 @@ public class CharacterSelection : MonoBehaviour
 	    _characterIconsContainerMulti.gameObject.SetActive(!IsSoloMode());
     }
 
+	// Become useless because the buttons doesn't exist anymore 
     private void InitNavigationButtons()
     {
 	    _returnButton.onClick.AddListener(() => _controllerSelectionMenu.OnBackToControllerSelection());

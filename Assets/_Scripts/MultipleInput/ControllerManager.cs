@@ -43,6 +43,7 @@ public class ControllerManager : MonoBehaviour
 
     public CharacterSelection CharacterSelectionMenu => _characterSelectionMenu;
     public static Dictionary<int, PlayerInputHandler> Controllers => _instance._controllers;
+    public ControllerSelectionMenu ControllerSelectionMenu => _currentControllerSelectionMenu;
     
     #endregion
     

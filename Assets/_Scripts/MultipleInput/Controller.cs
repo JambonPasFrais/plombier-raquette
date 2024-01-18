@@ -86,7 +86,11 @@ public class Controller : MonoBehaviour
 			return;
 
 		if (!_characterSelected)
-			return;
+		{
+			MenuManager.Instance.GoToPreviousMenu();
+			ControllerManager.Instance.CharacterSelectionMenu.OnMenuDisabled();
+			ControllerManager.Instance.ControllerSelectionMenu.OnBackToControllerSelection();
+		}
 
 		if (ControllerManager.Instance.CharacterSelectionMenu.HandleCharacterDeselectionInput(PlayerInput.playerIndex))
 		{
