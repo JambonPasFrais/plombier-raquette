@@ -71,7 +71,7 @@ public class ControllerManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        CreateControllersDict();//TODO : comment when finish testing
+        //CreateControllersDict();//TODO : comment when finish testing
     }
     #endregion
 
@@ -198,12 +198,13 @@ public class ControllerManager : MonoBehaviour
     #endregion
     
     #region Subscribe function
+
     private void PlayerTriesToJoin(InputAction.CallbackContext context)
     {
         // every player joined 
         if (_controllers.Count >= _maxPlayerCount)
             return;
-        
+
         // if already exists, dont recreate it
         if (_controllers.ContainsKey(context.control.device.deviceId))
             return;
@@ -222,39 +223,43 @@ public class ControllerManager : MonoBehaviour
 
         // Init Controller.cs file
         PlayerInputHandler playerInputHandler = playerInputHandlerGo.GetComponent<PlayerInputHandler>();
-        
+
         switch (inputDevice)
         {
             case Joystick:
-                playerInputHandler.Controller = Instantiate(_joystickPrefab, _currentControllerSelectionMenu.ControllerSelectionContainer);
+                playerInputHandler.Controller = Instantiate(_joystickPrefab,
+                    _currentControllerSelectionMenu.ControllerSelectionContainer);
                 break;
             case Gamepad:
-                playerInputHandler.Controller = Instantiate(_gamepadPrefab, _currentControllerSelectionMenu.ControllerSelectionContainer);
-				break;
+                playerInputHandler.Controller = Instantiate(_gamepadPrefab,
+                    _currentControllerSelectionMenu.ControllerSelectionContainer);
+                break;
             case Keyboard:
-                playerInputHandler.Controller =  Instantiate(_keyboardPrefab, _currentControllerSelectionMenu.ControllerSelectionContainer);
-				break;
+                playerInputHandler.Controller = Instantiate(_keyboardPrefab,
+                    _currentControllerSelectionMenu.ControllerSelectionContainer);
+                break;
         }
 
         MenuManager.Instance.PlaySound("ControllerConnected");
 
-		playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
-		playerInputHandler.Controller.SetColorVisual(_playerColors[_controllers.Count]);
-		playerInputHandler.Controller.ControllerSelectionMode();
+        playerInputHandler.Controller.SetPlayerIndex(_controllers.Count + 1);
+        playerInputHandler.Controller.SetColorVisual(_playerColors[_controllers.Count]);
+        playerInputHandler.Controller.ControllerSelectionMode();
         playerInputHandler.Controller.PlayerInput = playerInput;
-        
+
         //UI Stuff of the controller prefab
         playerInputHandler.Controller.gameObject.transform.localScale = Vector3.one;
         playerInputHandler.Controller.gameObject.transform.position = Vector3.zero;
-        
+
         // Save of the playerInputHandler base on his device id
         _controllers.Add(inputDevice.deviceId, playerInputHandler);
 
         if (_controllers.Count >= _maxPlayerCount)
             _currentControllerSelectionMenu.MakeValidationButtonInteractable();
-		
+
         _currentControllerSelectionMenu.UpdateControllerCountSentence(_controllers.Count, _maxPlayerCount);
-	}
+    }
+
     #endregion
     
     #region LocalMultiplayer implementation test simplification
@@ -272,7 +277,7 @@ public class ControllerManager : MonoBehaviour
                 continue;
             _controllers.Add(pih.PlayerInput.devices[0].deviceId, pih);
         }
-    }
+    }*/
     
     #endregion
 
