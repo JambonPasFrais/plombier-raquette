@@ -22,6 +22,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private Button _returnButton;
     [SerializeField] private Button _nextButton;
     [SerializeField] private Button _createButton;
+	[SerializeField] private Button _aceItPlayButton;
     
     [Header("Window Types")]
     [SerializeField] private GameObject _matchSoloWindow;
@@ -104,6 +105,8 @@ public class CharacterSelection : MonoBehaviour
 	    CreateCharacterIcons();
 	    
 	    SetModelRandomForBots();
+
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(null);
     }
 
     public void LoadFromOnlineMenu(bool isOnline)
@@ -313,7 +316,8 @@ public class CharacterSelection : MonoBehaviour
 		_nextButton.interactable = false;
 	    _createButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
 		_createButton.interactable = false;
-    }
+		_aceItPlayButton.gameObject.SetActive(false);
+	}
     
     #endregion
     
@@ -442,17 +446,25 @@ public class CharacterSelection : MonoBehaviour
 		return true;
     }
 
-    private void CheckReadyToPlayStatus()
-    {
+	private void CheckReadyToPlayStatus()
+	{
 		if (IsSoloMode() && !IsOnlineMode() && IsEveryCharSelectedByLocals())
+		{
 			_nextButton.interactable = true;
-		else if(IsSoloMode() && IsOnlineMode() && IsEveryCharSelectedByLocals())
+			StartCoroutine(WaitBeforeSelectNewButton(_nextButton.gameObject));
+		}
+		else if (IsSoloMode() && IsOnlineMode() && IsEveryCharSelectedByLocals()) 
+		{
 			_createButton.interactable = true;
+			StartCoroutine(WaitBeforeSelectNewButton(_createButton.gameObject));
+		}
 		else if (IsEveryCharSelectedByLocals())
-	    {
-		    _aceItWindow.SetActive(true);
-		    MenuManager.Instance.PlaySound("AceItSound");
-	    }
+		{
+			_aceItWindow.SetActive(true);
+			MenuManager.Instance.PlaySound("AceItSound");
+			_aceItPlayButton.gameObject.SetActive(true);
+			StartCoroutine(WaitBeforeSelectNewButton(_aceItPlayButton.gameObject));
+		}
 		else
 		{
 			_aceItWindow.SetActive(false);
@@ -540,4 +552,10 @@ public class CharacterSelection : MonoBehaviour
 	}
     
     #endregion
+
+	private IEnumerator WaitBeforeSelectNewButton(GameObject buttonToSelect)
+	{
+		yield return new WaitForSeconds(0.1f);
+		MenuManager.Instance.CurrentEventSystem.SetSelectedGameObject(buttonToSelect);
+	}
 }
