@@ -105,7 +105,7 @@ public class PlayerCameraController : MonoBehaviour
         if (!_isFirstPersonView)
             return;
 
-        _targetMovements = context.ReadValue<Vector2>();
+        _targetMovements = context.ReadValue<Vector2>()*0.25f;
     }
 
     #endregion
