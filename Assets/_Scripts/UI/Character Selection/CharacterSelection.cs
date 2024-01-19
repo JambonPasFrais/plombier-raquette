@@ -354,9 +354,9 @@ public class CharacterSelection : MonoBehaviour
 		_nextButton.interactable = false;
 	    _joinRoomButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
 		_joinRoomButton.interactable = false;
-/*        _returnButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
-        _returnButton.interactable = true;*/
-        _aceItPlayButton.gameObject.SetActive(false);
+		_returnButton.gameObject.SetActive(IsSoloMode() && IsOnlineMode());
+		_returnButton.interactable = true;
+		_aceItPlayButton.gameObject.SetActive(false);
 	}
     
     #endregion
@@ -596,9 +596,9 @@ public class CharacterSelection : MonoBehaviour
 		_nextButton.interactable = false;
 		_joinRoomButton.gameObject.SetActive(false);
 		_joinRoomButton.interactable = false;
-/*        _returnButton.gameObject.SetActive(false);
-        _returnButton.interactable = false;*/
-    }
+		_returnButton.gameObject.SetActive(false);
+		_returnButton.interactable = false;
+	}
     
     #endregion
 

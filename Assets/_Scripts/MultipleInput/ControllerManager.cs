@@ -315,4 +315,10 @@ public class ControllerManager : MonoBehaviour
     
     #endregion
 
+    public void DestroyControllerAndOnlineMenuPlayerInput()
+    {
+        GameObject playerInputObject = transform.GetChild(0).gameObject;
+        Destroy(playerInputObject.GetComponent<PlayerInputHandler>().Controller.gameObject);
+        Destroy(playerInputObject);
+    }
 }

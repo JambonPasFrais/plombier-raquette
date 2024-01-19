@@ -149,7 +149,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
         if (_isConnecting)
         {
 			_isConnecting = false;
-            /*        _playCharacterSelectionButton.interactable = true;*/
         }
 
         // Menu player input and characters selection pointer creation.
@@ -167,7 +166,6 @@ public class OnlineManager : MonoBehaviourPunCallbacks
     {
         _isConnecting = false;
         _connectButton.interactable = true;
-/*        _playCharacterSelectionButton.interactable = false;*/
     }
 
     public void GetBackToMainMenu()
@@ -230,14 +228,12 @@ public class OnlineManager : MonoBehaviourPunCallbacks
 
     public void OnLeaveButtonClicked()
     {
-        PhotonNetwork.LeaveRoom();
-
         foreach (var showroom in _playerShowrooms)
         {
             showroom.ResetShowroom();
         }
 
-        //ChangeActivePanel(_characterSelection.name);
+        ChangeActivePanel(_characterSelection.name);
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
