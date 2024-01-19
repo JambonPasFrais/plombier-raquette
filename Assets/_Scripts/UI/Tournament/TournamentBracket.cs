@@ -93,7 +93,7 @@ public class TournamentBracket : MonoBehaviour
 		GameParameters.Instance.CurrentTournamentInfos.SetRoundPlayers(_firstRoundDatas, _secondRoundDatas, _thirdRoundDatas, winnerData);
 		GameParameters.Instance.CurrentTournamentInfos.HasPlayerWon = null;
 		ControllerManager.Instance.ChangeCtrlersActMapToGame();
-		SceneManager.LoadScene("Tournament_Match");
+		SceneManager.LoadScene("LocalScene");
 	}
 
 	public void GetMatchResults()

@@ -67,7 +67,7 @@ public class TransitionMenu : MonoBehaviour
 
 		ControllerManager.Instance.ChangeCtrlersActMapToGame();
 
-		SceneManager.LoadScene("Local_Multiplayer");
+		SceneManager.LoadScene("LocalScene");
 	}
 
     private IEnumerator LoadingObjectRotation()
