@@ -66,7 +66,7 @@ public class TournamentEndMenu : MonoBehaviour
 
     private void Update()
     {
-		if(_inputSystemUIInputModule.leftClick.action.WasPressedThisFrame() && _canReturn)
+		if(_inputSystemUIInputModule.submit.action.WasPressedThisFrame() && _canReturn)
 		{
 			if (_winnerPlayerLocation.childCount != 0)
 			{

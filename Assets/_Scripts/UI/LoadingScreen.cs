@@ -29,7 +29,7 @@ public class LoadingScreen : MonoBehaviour
 
 	private void Update()
 	{
-		if (MenuManager.Instance.CurrentEventSystem.gameObject.GetComponent<InputSystemUIInputModule>().leftClick.action.WasPressedThisFrame())
+		if (MenuManager.Instance.CurrentEventSystem.gameObject.GetComponent<InputSystemUIInputModule>().submit.action.WasPressedThisFrame())
 		{
 			MenuManager.Instance.PlaySound("LoadingScreenTransition");
 			gameObject.SetActive(false);
