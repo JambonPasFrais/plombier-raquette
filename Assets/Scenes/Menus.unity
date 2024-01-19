@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -22817,8 +22817,11 @@ MonoBehaviour:
   _loserPlayerLocation: {fileID: 3592677427274265316}
   _continueText: {fileID: 6018486525345488739}
   _pressInputTextWin: {fileID: 7376928303521571591}
+  _buttonToPressWin: {fileID: 1781922144}
+  _buttonToPressLose: {fileID: 91832041}
   _pressInputTextLose: {fileID: 7263900333946903101}
   _pressInputGlobal: {fileID: 7263900333946903101}
+  _buttonToPressGlobal: {fileID: 0}
   _canReturn: 0
 --- !u!1 &2018550746190006451
 GameObject:
@@ -35524,6 +35527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _menusContainer: {fileID: 2554401238830697104}
   _pressInputText: {fileID: 1990352603991952276}
+  _buttonToPressImage: {fileID: 766927522}
 --- !u!224 &5841009954829921152
 RectTransform:
   m_ObjectHideFlags: 0
