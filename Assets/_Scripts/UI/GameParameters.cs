@@ -6,6 +6,8 @@ using UnityEngine.Serialization;
 
 public class GameParameters : MonoBehaviour
 {
+    [Header("Instances")] [SerializeField] private List<BotDifficulty> _allBotDifficultiesSorted;
+    
 	[SerializeField] private int _localNbPlayers;
 	private bool _isOnline;
 	[SerializeField] private bool _isDouble;
@@ -37,6 +39,10 @@ public class GameParameters : MonoBehaviour
         set { _instance._isTournamentMode = value; }
     }
     public bool IsDouble => _isDouble;
+    
+    public int COMDifficulty => _COMDifficulty;
+    
+    public List<BotDifficulty> AllBotDifficultiesSorted => _allBotDifficultiesSorted;
     
     #endregion
 

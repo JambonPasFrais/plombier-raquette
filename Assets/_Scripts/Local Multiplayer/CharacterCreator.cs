@@ -92,7 +92,7 @@ public class CharacterCreator : MonoBehaviour
                 playerInTeamOne ? Teams.TEAM1 : Teams.TEAM2;
             playerInTeamOne = !playerInTeamOne; 
             
-            // TODO : Init the charParameters here (how?)
+            botBehavior.InitBotDifficulty(GameParameters.Instance.AllBotDifficultiesSorted[GameParameters.Instance.COMDifficulty]);
             
             nbCharInstantiated++;
         }

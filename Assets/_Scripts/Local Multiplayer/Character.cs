@@ -8,10 +8,10 @@ public class Character : MonoBehaviour
 {
     // Variables may be set tup automatically
     
-    [Header("Instances")] [SerializeField] private CharacterParameters _parameters;
+    [Header("Instances")] private CharacterParameters _parameters;
     
     [Header("Components")]
-    [SerializeField] private PlayerController _playerController; // Component for controls
+    private PlayerController _playerController; // Component for controls
     
     #region GETTERS
     

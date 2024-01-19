@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-//TODO : set character parameters using public void function(CharacterParameters scriptableObject)
-
 public class BotBehavior : ControllersParent
 {
     #region PRIVATE FIELDS
@@ -33,7 +31,12 @@ public class BotBehavior : ControllersParent
     private Dictionary<string, Transform[]> _targetPositionsBySide;
     private Vector3 _serviceDirection;
     private Coroutine _botServiceCoroutine;
-
+    private bool _isMovementRestricted;
+    private bool _canChargeShot;
+    private bool _canSmash;
+    
+    // Tests
+    [SerializeField] private BotDifficulty _currentBotDifficulty;
     #endregion
 
     public Vector3 TargetPosVector3 { set {  _targetPosVector3 = value; } }
@@ -107,19 +110,6 @@ public class BotBehavior : ControllersParent
         HitBall();
         _botServiceCoroutine = null;
     }
-
-    public void InitTargetVariables(Transform[] targets, Transform[] firstSideTargetsPositions, Transform[] secondSideTargetsPositions)
-    {
-        _targets = targets;
-        _firstSideTargetsPositions = firstSideTargetsPositions;
-        _secondSideTargetsPositions = secondSideTargetsPositions;
-        
-        _targetPositionsBySide = new Dictionary<string, Transform[]>()
-        {
-            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
-            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
-        };
-    }
     
     private void HitBall()
     {
@@ -163,6 +153,7 @@ public class BotBehavior : ControllersParent
         if (_ballDetectionArea.Ball.LastPlayerToApplyForce != null && GameManager.Instance.GameState == GameState.SERVICE)
             GameManager.Instance.GameState = GameState.PLAYING;
 
+        // TODO : change the hit type depending on bot difficulty
         _ballInstance.InitializePhysicsMaterial(NamedPhysicMaterials.GetPhysicMaterialByName(_possiblePhysicMaterials, "Normal"));
         _ballInstance.InitializeActionParameters(NamedActions.GetActionParametersByName(_possibleActions, HitType.Flat.ToString()));
         _ballInstance.ApplyForce(force, _ballDetectionArea.GetRisingForceFactor(HitType.Flat), direction.normalized, this);
@@ -170,6 +161,8 @@ public class BotBehavior : ControllersParent
 
     private void MoveTowardsBallX()
     {
+        //TODO : change movements depending on bot difficulty
+        
         // Target pos in X
         _targetPosVector3.x = _ballInstance.gameObject.transform.position.x;
 
@@ -197,6 +190,39 @@ public class BotBehavior : ControllersParent
             Transform target = _targets[i];
             target.position = _targetPositionsBySide[sideName][i].position;
         }
+    }
+    
+    #endregion
+
+    #region CALLED EXTERNALLY
+    
+    public void InitTargetVariables(Transform[] targets, Transform[] firstSideTargetsPositions, Transform[] secondSideTargetsPositions)
+    {
+        _targets = targets;
+        _firstSideTargetsPositions = firstSideTargetsPositions;
+        _secondSideTargetsPositions = secondSideTargetsPositions;
+        
+        _targetPositionsBySide = new Dictionary<string, Transform[]>()
+        {
+            { FieldSide.FIRSTSIDE.ToString(), _firstSideTargetsPositions },
+            { FieldSide.SECONDSIDE.ToString(), _secondSideTargetsPositions }
+        };
+    }
+    
+    public void InitBotDifficulty(BotDifficulty botDifficulty)
+    {
+        _currentBotDifficulty = botDifficulty;
+        
+        _isMovementRestricted = botDifficulty.IsMovementRestricted;
+        _canChargeShot = botDifficulty.CanChargeShots;
+        _canSmash = botDifficulty.CanSmash;
+
+        _serviceForce = botDifficulty.ServiceForce;
+        _minimumShotForce = botDifficulty.MinimumShotForce;
+        _maximumShotForce = botDifficulty.MaximumShotForce;
+        
+        _possibleActions = botDifficulty.PossibleActions;
+        _possiblePhysicMaterials = botDifficulty.PossiblePhysicMaterials;
     }
     
     #endregion
