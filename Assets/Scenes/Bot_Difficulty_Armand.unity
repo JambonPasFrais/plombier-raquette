@@ -370,8 +370,11 @@ MonoBehaviour:
   ScoreManager: {fileID: 175529524}
   CameraManager: {fileID: 725020315321684905}
   BallPrefab: {fileID: 5628292310031842273, guid: 76142b1ab88d155479063f94ebdcc367, type: 3}
-  _smashTargetGo: {fileID: 571886968}
   ServiceOnOriginalSide: 0
+  _loadingScreen: {fileID: 0}
+  _animatedLoadingText: {fileID: 0}
+  _pointsAppearancePeriod: 0
+  _smashTargetGo: {fileID: 571886968}
   _net: {fileID: 8765839553454529616}
   _controllers: []
   _borderPointsContainers:
@@ -379,9 +382,9 @@ MonoBehaviour:
   - {fileID: 6331652104674252970}
   _leftFaultLineXFromFirstSide: -5.97
   _supporterManager: {fileID: 701239864}
+  _onlinePlayerPrefab: {fileID: 0}
   _inGameUI: {fileID: 2042717044}
   _endGameUI: {fileID: 1598844800}
-  _ballInstance: {fileID: 6791794881428895299}
 --- !u!114 &175529522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba485812c5157464e8f0cd2378219847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Cameras: []
   _serviceNodesFirstSideContainer: {fileID: 2520489491286275693}
   _serviceNodesSecondSideContainer: {fileID: 5591607755394599538}
   _firstSideCollidersParentObject: {fileID: 6687714421347538737}

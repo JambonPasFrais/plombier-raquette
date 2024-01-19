@@ -42,6 +42,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         _firstPersonCameraComponent = _firstPersonCamera.GetComponent<Camera>();
         _smashTargetGo = GameManager.Instance.SmashTargetGo;
+        _ballInstance = GameManager.Instance.BallInstance.GetComponent<Ball>();
     }
 
     void FixedUpdate()
