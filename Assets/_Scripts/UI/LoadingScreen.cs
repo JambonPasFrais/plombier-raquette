@@ -5,11 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private GameObject _menusContainer;
 	[SerializeField] private TextMeshProUGUI _pressInputText;
+	[SerializeField] private Image _buttonToPressImage;
 	private int _factor = -1;
 
 	private void Start()
@@ -38,6 +40,7 @@ public class LoadingScreen : MonoBehaviour
 		}
 
 		_pressInputText.alpha = _pressInputText.alpha + (1 * _factor * Time.deltaTime);
+		_buttonToPressImage.color = new Color(_buttonToPressImage.color.r, _buttonToPressImage.color.g, _buttonToPressImage.color.b, _buttonToPressImage.color.a + (1 * _factor * Time.deltaTime));
 
 		if (_pressInputText.alpha < 0 || _pressInputText.alpha > 1)
 			_factor *= -1;

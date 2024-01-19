@@ -17,8 +17,11 @@ public class TournamentEndMenu : MonoBehaviour
 	[SerializeField] private GameObject _continueText;
     //[SerializeField] private EventSystem _eventSystem;
     [SerializeField] private TextMeshProUGUI _pressInputTextWin;
+	[SerializeField] private Image _buttonToPressWin;
+	[SerializeField] private Image _buttonToPressLose;
     [SerializeField] private TextMeshProUGUI _pressInputTextLose;
 	[SerializeField] private TextMeshProUGUI _pressInputGlobal;
+	[SerializeField] private Image _buttonToPressGlobal;
     private InputSystemUIInputModule _inputSystemUIInputModule;
 
     [SerializeField]private bool _canReturn = false;
@@ -32,7 +35,9 @@ public class TournamentEndMenu : MonoBehaviour
     public void SetWinnerMenu(GameObject winnerPrefab, Sprite cupSprite)
     {
 		_pressInputGlobal = _pressInputTextWin;
+		_buttonToPressGlobal = _buttonToPressWin;
 		_continueText.SetActive(false);
+		_buttonToPressGlobal.gameObject.SetActive(false);
 		_canReturn = false;
 		_winnerDisplay.SetActive(true);
 		_loserDisplay.SetActive(false);
@@ -50,7 +55,9 @@ public class TournamentEndMenu : MonoBehaviour
 	public void SetLoserMenu(GameObject loserPrefab)
 	{
 		_pressInputGlobal = _pressInputTextLose;
+		_buttonToPressGlobal = _buttonToPressLose;
         _continueText.SetActive(false);
+		_buttonToPressGlobal.gameObject.SetActive(false);
 		_canReturn = false;
 		_loserDisplay.SetActive(true);
 		_winnerDisplay.SetActive(false);
@@ -79,9 +86,13 @@ public class TournamentEndMenu : MonoBehaviour
 			GameParameters.Instance.CurrentTournamentInfos.Reset();
 			MenuManager.Instance.GoBackToMainMenu();
 		}
-        _pressInputGlobal.alpha = _pressInputGlobal.alpha + (1 * _factor * Time.deltaTime);
 
-        if (_pressInputGlobal.alpha < 0 || _pressInputGlobal.alpha > 1)
+        _pressInputGlobal.alpha = _pressInputGlobal.alpha + (1 * _factor * Time.deltaTime);
+		_buttonToPressGlobal.color = new Color(_buttonToPressGlobal.color.r, _buttonToPressGlobal.color.g, _buttonToPressGlobal.color.b,
+			_buttonToPressGlobal.color.a + (1 * _factor * Time.deltaTime));
+
+
+		if (_pressInputGlobal.alpha < 0 || _pressInputGlobal.alpha > 1)
             _factor *= -1;
     }
 
@@ -90,5 +101,6 @@ public class TournamentEndMenu : MonoBehaviour
 		yield return new WaitForSeconds(3f);
 		_canReturn = true;
 		_continueText.SetActive(true);
+		_buttonToPressGlobal.gameObject.SetActive(true);
 	}
 }
